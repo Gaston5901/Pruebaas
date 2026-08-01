@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Biann</title>
+  <title>Guadiss</title>
   <meta name="description" content="Índice con todos los cosos de esta carpeta." />
 
   <!-- Preconnect para fuentes -->
@@ -277,6 +277,74 @@
         animation: none !important;
         transition: none !important;
       }
+    }/* ==========================================
+       ICONO DE TORTA PALPITANTE (COMPU + CELU)
+       ========================================== */
+    .torta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      font-size: 1.4rem;
+      text-decoration: none;
+      
+      /* Estilo botón de cristal rosa/dorado */
+      background: linear-gradient(135deg, #ffe082 0%, #f48fb1 100%);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
+      
+      user-select: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+
+      /* Animación activa siempre en compu y celular */
+      animation: palpitar 1.8s infinite ease-in-out;
+    }
+
+    /* Animación de latido doble continuo */
+    @keyframes palpitar {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
+      }
+      14% {
+        transform: scale(1.18);
+        box-shadow: 0 6px 22px rgba(255, 215, 0, 0.75);
+      }
+      28% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
+      }
+      42% {
+        transform: scale(1.12);
+        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.65);
+      }
+      70% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
+      }
+    }
+
+    /* Efecto hover en Compu: resalta el borde sin cortar la animación */
+    .torta-btn:hover {
+      border-color: #ffe082;
+      filter: brightness(1.1);
+    }
+
+    /* Feedback al hacer clic/tocar */
+    .torta-btn:active {
+      transform: scale(0.92) !important;
+    }
+
+    /* Ajuste de tamaño en Celular */
+    @media (max-width: 600px) {
+      .torta-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1.25rem;
+      }
     }
     
   </style>
@@ -286,34 +354,57 @@
 </head>
 <body>
   <div class="wrap">
-    <header>
+<header>
       <div>
         <h1 class="title">Galería de recuerdos 💘</h1>
-        
-      </div>|
-      <div class="pill" title="Carpeta: sol">Biancaa<33</div>
+      </div>
+      
+      <!-- Contenedor alineado a la derecha -->
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+        <div class="pill" title="Carpeta: sol">Ririi&lt;33</div>
+
+        <!-- Torta flotante con pulso -->
+        <a href="contador/contador.html" class="torta-btn heartbeat" title="¡Especial Cumpleaños!">
+          🎂
+        </a>
+      </div>
     </header>
 
     <div class="grid">
 
-                    <a class="card" data-num="2" href="ereslaqueamo/Eres la que amo.html">
-        <h2><span class="card-number"></span>Para Tu</h2>
+                            <!-- card de bloqueo -->
+              <!-- <a class="card bloqueada" id="card-11" data-num="11" href="corazon_candado_tulipanes/index.html" style="opacity:0.55; pointer-events:none; filter: grayscale(0.7); position:relative;">
+        <h2><span class="card-number"></span>Lunaa</h2>
         <div class="meta">
-          <span class="tag">Señorita Bella🌹</span>
+          <span class="tag">Para Pachucha🌹</span>
+          <span class="arrow">🔒</span>
+        </div>
+        <div class="bloqueo-msg" style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+          <span style="background:rgba(139, 121, 121, 0.8);padding:8px 18px;border-radius:999px;color:#000000;font-weight:600;font-size:1.1em;">Proximamente</span>
+        </div>
+      </a> -->
+
+                                                    <!-- card 18 -->
+         <a class="card" data-num="18" href="flor_conAnimacion/index.html">
+        <h2><span class="card-number"></span>Flor para Vocee</h2>
+        <div class="meta">
+          <span class="tag">Señoritaa Bella🌹</span>
           <span class="arrow">→</span>
         </div>
       </a>
 
-              <a class="card" data-num="1" href="girasolesmorados/Girasoles Morados!.html">
-        <h2><span class="card-number"></span>Girasoles Morados</h2>
+                                                    <!-- card 17 -->
+         <a class="card" data-num="17" href="galaxialindaaa/index.html">
+        <h2><span class="card-number"></span>Ojoss</h2>
         <div class="meta">
-          <span class="tag">Señorita Bella🌹</span>
+          <span class="tag">Señoritaa Iriss🌹</span>
           <span class="arrow">→</span>
         </div>
       </a>
 
+        
 
-                                      
+
 
 
              
@@ -333,7 +424,6 @@ var tarjetasDesbloqueo = {
   'card-3': false,
   'card-4': false
 };
-
 
       // Función para desbloquear una tarjeta por id
       function desbloquearTarjeta(id) {

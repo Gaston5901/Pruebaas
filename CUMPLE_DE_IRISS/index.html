@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Una experiencia inmersiva</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      /* Fondo ajustado para fundirse con videos oscuros */
+      background-color: #07060d;
+    }
+
+    /* Fondo oscuro con degradado inmersivo */
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, #110f1a 0%, #07060d 100%);
+      z-index: 1;
+    }
+
+    /* Partículas sutiles */
+    .sparkle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background-color: rgba(224, 170, 255, 0.6);
+      border-radius: 50%;
+      box-shadow: 0 0 6px #fff;
+      animation: sparkleAnim var(--duration) infinite ease-in-out var(--delay);
+    }
+
+    @keyframes sparkleAnim {
+      0%, 100% { opacity: 0.1; transform: scale(0.7); }
+      50% { opacity: 0.7; transform: scale(1.2); }
+    }
+
+    /* Regalo centrado */
+    .gift-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease, opacity 0.5s ease;
+      user-select: none;
+    }
+
+    .gift-icon {
+      width: 120px;
+      height: 120px;
+      animation: giftGlow 2s infinite ease-in-out;
+    }
+
+    @keyframes giftGlow {
+      0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(247, 37, 133, 0.4)); }
+      50% { transform: scale(1.1) rotate(-1deg); filter: drop-shadow(0 0 25px rgba(247, 37, 133, 0.8)); }
+      100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(247, 37, 133, 0.4)); }
+    }
+
+    .gift-text {
+      margin-top: 15px;
+      color: #e0aaff;
+      font-size: 0.85rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      opacity: 0.8;
+      animation: textPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes textPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.9; } }
+
+    /* CONTENEDOR DE VIDEO INMERSIVO TOTAL */
+    .video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: #000; /* Fondo negro puro solo para la carga */
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .video-container.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* EL TRUCO: Object-fit cover ocupando todo el viewport */
+    video {
+      width: 100vw;
+      height: 96vh;
+      object-fit: cover; /* SE ADAPTA A CUALQUIER PANTALLA SIN BARRAS NEGRAS */
+      pointer-events: none; /* No parece un reproductor */
+    }
+
+    /* Superposición del Botón Final */
+    .surprise-overlay {
+      position: absolute;
+      bottom: 10%; /* Flotando un poco más arriba del borde inferior */
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.2s ease, transform 1s ease;
+    }
+
+    .surprise-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* BOTÓN MORADO FRÍO SUAVE Y LINDO */
+    .btn-surprise {
+      padding: 18px 40px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #ffffff;
+      /* Degradado suave frío (Amatista a Lavanda) */
+      background: linear-gradient(135deg, #6d5cae 0%, #8a7bc0 100%);
+      border: 1px solid rgba(224, 170, 255, 0.3); /* Borde brillante muy sutil */
+      border-radius: 50px;
+      cursor: pointer;
+      /* Sombra pulsante suave */
+      box-shadow: 0 4px 15px rgba(109, 92, 174, 0.4);
+      transition: all 0.4s ease;
+      text-decoration: none;
+      letter-spacing: 1px;
+      display: inline-block;
+      white-space: nowrap;
+      animation: btnPulse 3s infinite;
+    }
+
+    .btn-surprise:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #7c6bb9 0%, #9a8cd0 100%);
+      box-shadow: 0 6px 25px rgba(109, 92, 174, 0.6);
+      border: 1px solid rgba(224, 170, 255, 0.6);
+    }
+
+    @keyframes btnPulse {
+      0% { box-shadow: 0 4px 15px rgba(109, 92, 174, 0.4); }
+      50% { box-shadow: 0 4px 25px rgba(138, 123, 192, 0.6); }
+      100% { box-shadow: 0 4px 15px rgba(109, 92, 174, 0.4); }
+    }
+                .volver-inicio{
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 9999;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.85);
+            border: 1px solid rgba(0,0,0,.10);
+            color: #3b2f2f;
+            text-decoration: none;
+            font-weight: 800;
+            box-shadow: 0 10px 26px rgba(0,0,0,.18);
+        }
+        .volver-inicio:hover{ transform: translateY(-1px); background: rgba(255,255,255,.95); }
+  </style>
+</head>
+<body>
+    	    <a class="volver-inicio" href="../index.html" aria-label="Volver al inicio">← </a>
+
+  <!-- Fondo oscuro inmersivo -->
+  <div class="background" id="bg"></div>
+
+  <!-- Regalo -->
+  <div class="gift-container" id="giftBtn">
+    <svg class="gift-icon" viewBox="0 0 24 24" fill="none" stroke="#f72585" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 12v10H4V12"/>
+      <path d="M2 7h20v5H2z"/>
+      <path d="M12 22V7"/>
+      <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+      <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+    </svg>
+    <div class="gift-text">Toca</div>
+  </div>
+
+  <!-- Video Inmersivo -->
+  <div class="video-container" id="videoContainer">
+    <!-- RECUERDA CAMBIAR ESTO POR TU VIDEO MP4 -->
+    <video id="myVideo" playsinline preload="auto">
+      <source src="21 años.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- Botón Final Sobrepuesto -->
+  <div class="surprise-overlay" id="surpriseOverlay">
+    <a href="https://tu-destino.com" class="btn-surprise" id="surpriseBtn">
+      ¿Estás lista para tu sorpresa?
+    </a>
+  </div>
+
+  <script>
+    // Generador de partículas suave
+    const bg = document.getElementById('bg');
+    for (let i = 0; i < 30; i++) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.top = Math.random() * 100 + '%';
+      sparkle.style.left = Math.random() * 100 + '%';
+      sparkle.style.setProperty('--duration', (3 + Math.random() * 4) + 's');
+      sparkle.style.setProperty('--delay', (Math.random() * 2) + 's');
+      bg.appendChild(sparkle);
+    }
+
+    const giftBtn = document.getElementById('giftBtn');
+    const videoContainer = document.getElementById('videoContainer');
+    const myVideo = document.getElementById('myVideo');
+    const surpriseOverlay = document.getElementById('surpriseOverlay');
+
+    // Manejo del Click
+    giftBtn.addEventListener('click', () => {
+      // Desaparecer regalo
+      giftBtn.style.opacity = '0';
+      setTimeout(() => giftBtn.style.display = 'none', 500);
+
+      // Iniciar experiencia de video
+      videoContainer.classList.add('active');
+      myVideo.muted = false; // Importante: activar sonido
+      myVideo.play().catch(err => {
+        // Fallback si el navegador bloquea autoplay con sonido
+        console.log("Autoplay bloqueado. Mostrando controles (pero intentamos que no pase).");
+        myVideo.controls = true; 
+      });
+    });
+
+    // Final del Video
+    myVideo.addEventListener('ended', () => {
+      // El video se queda congelado en el último frame por defecto
+      // Aparecer el botón suavemente sobre el video
+      surpriseOverlay.classList.add('active');
+    });
+  </script>
+</body>
+</html>

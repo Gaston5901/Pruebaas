@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorpresa Iriss💜</title>
+  
+  <!-- Tipografía Quicksand & Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg1: #fff0f6;
+      --bg2: #fbeaff;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --accent1: #f48fb1;
+      --accent2: #b39ddb;
+      --gold: #ffd700;
+      --text: #7c3a6a;
+      --muted: #b48bbd;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      font-family: 'Quicksand', 'Nunito', sans-serif;
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+      background:
+        radial-gradient(900px 500px at 15% 10%, #ffe0ef 30%, transparent 60%),
+        radial-gradient(900px 500px at 85% 20%, #e1bee7 25%, transparent 60%),
+        radial-gradient(900px 600px at 50% 95%, #fffde7 20%, transparent 60%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      position: relative;
+    }
+
+    /* Fondo con brillitos flotantes */
+    .bg-sparkles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: 
+        radial-gradient(circle, rgba(244, 143, 177, 0.4) 2px, transparent 2px),
+        radial-gradient(circle, rgba(255, 215, 0, 0.5) 1.5px, transparent 1.5px);
+      background-size: 60px 60px, 90px 90px;
+      animation: floatBg 20s linear infinite;
+    }
+
+    @keyframes floatBg {
+      0% { background-position: 0 0, 30px 45px; }
+      100% { background-position: 0 500px, 30px 545px; }
+    }
+
+    /* Contenedor principal */
+    .card-container {
+      position: relative;
+      z-index: 2;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 2px solid var(--accent1);
+      border-radius: 28px;
+      padding: clamp(30px, 5vw, 42px) clamp(16px, 3.5vw, 28px);
+      max-width: 480px;
+      width: 92%;
+      box-shadow: 
+        0 16px 40px rgba(248, 187, 208, 0.45),
+        0 2px 12px rgba(255, 224, 239, 0.8);
+      animation: floatCard 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatCard {
+      from { transform: translateY(0); }
+      to { transform: translateY(-6px); }
+    }
+
+    /* ESTILOS PARA LOS CÍRCULOS DE IMAGEN (ARRIBA Y ABAJO) */
+    .avatar-circle {
+      position: absolute;
+      width: clamp(50px, 12vw, 68px);
+      height: clamp(50px, 12vw, 68px);
+      border-radius: 50%;
+      border: 3px solid #fff;
+      box-shadow: 0 6px 16px rgba(244, 143, 177, 0.4);
+      overflow: hidden;
+      background: #ffe082;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: transform 0.3s ease;
+    }
+
+    .avatar-circle:hover {
+      transform: scale(1.1);
+    }
+
+    .avatar-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Posicionamiento en Esquinas */
+    .avatar-top-left {
+      top: -22px;
+      left: -12px;
+    }
+
+    .avatar-top-right {
+      top: -22px;
+      right: -12px;
+    }
+
+    .avatar-bottom-left {
+      bottom: -22px;
+      left: -12px;
+    }
+
+    .avatar-bottom-right {
+      bottom: -22px;
+      right: -12px;
+    }
+
+    .badge-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #ffe082, #f48fb1);
+      border-radius: 50%;
+      font-size: 1.6rem;
+      box-shadow: 0 6px 18px rgba(244, 143, 177, 0.4);
+      margin-bottom: 8px;
+      border: 2px solid #fff;
+    }
+
+    h1 {
+      font-size: clamp(1.3rem, 4.5vw, 1.65rem);
+      color: var(--text);
+      margin: 0 0 6px 0;
+      font-weight: 700;
+    }
+
+    /* Frases dinámicas cambiantes */
+    .phrase-box {
+      position: relative;
+      min-height: 52px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      gap: 4px;
+    }
+
+    .phrase-counter {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent1);
+      background: rgba(244, 143, 177, 0.15);
+      border: 1px solid rgba(244, 143, 177, 0.3);
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+      transition: opacity 0.4s ease;
+    }
+
+    p.subtext {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(0.85rem, 2.8vw, 0.98rem);
+      font-weight: 600;
+      transition: opacity 0.4s ease;
+    }
+
+    /* Barra de Progreso */
+    .progress-container {
+      margin-bottom: 18px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--accent2);
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: rgba(179, 157, 219, 0.25);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ffe082, #f48fb1);
+      border-radius: 999px;
+      transition: width 1s ease-in-out;
+    }
+
+    /* CONTADOR EN HORIZONTAL COMPLETO (1 SOLA FILA) */
+    .countdown {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1.5px solid var(--accent2);
+      border-radius: 14px;
+      padding: 10px 2px;
+      box-shadow: 0 4px 12px rgba(180, 139, 189, 0.12);
+    }
+
+    .num {
+      font-size: clamp(1.1rem, 4.2vw, 1.7rem);
+      font-weight: 700;
+      color: var(--accent1);
+      line-height: 1;
+    }
+
+    .label {
+      font-size: clamp(0.6rem, 2.2vw, 0.72rem);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+      font-weight: 700;
+    }
+            .volver-inicio{
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 9999;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.85);
+            border: 1px solid rgba(0,0,0,.10);
+            color: #3b2f2f;
+            text-decoration: none;
+            font-weight: 800;
+            box-shadow: 0 10px 26px rgba(0,0,0,.18);
+        }
+        .volver-inicio:hover{ transform: translateY(-1px); background: rgba(255,255,255,.95); }
+  </style>
+</head>
+<body>
+  	    <a class="volver-inicio" href="../index.html" aria-label="Volver al inicio">← </a>
+
+  <!-- Capa de partículas -->
+  <div class="bg-sparkles"></div>
+
+  <!-- Tarjeta central -->
+  <div class="card-container">
+    
+    <!-- CÍRCULOS SUPERIORES PARA IMÁGENES -->
+    <div class="avatar-circle avatar-top-left">
+      <img src="foto1.jpeg" alt="Foto 1" onerror="this.onerror=null; this.parentNode.innerHTML='🌸';">
+    </div>
+    <div class="avatar-circle avatar-top-right">
+      <img src="foto2.png" alt="Foto 2" onerror="this.onerror=null; this.parentNode.innerHTML='✨';">
+    </div>
+
+    <div class="badge-icon">🎂</div>
+    <h1>¡Atención curiosa! 😚</h1>
+
+    <!-- Frase cambiante con indicador de cantidad -->
+    <div class="phrase-box">
+      <span class="phrase-counter" id="phrase-counter">1/6</span>
+      <p class="subtext" id="phrase">Falta para tu sorpresa especial 🌸</p>
+    </div>
+
+    <!-- Barra de progreso -->
+    <div class="progress-container">
+      <div class="progress-info">
+        <span>Sorpresa cargada:</span>
+        <span id="progress-text">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Contador horizontal de 1 sola fila -->
+    <div class="countdown">
+      <div class="box">
+        <div class="num" id="d">--</div>
+        <div class="label">Días</div>
+      </div>
+      <div class="box">
+        <div class="num" id="h">--</div>
+        <div class="label">Horas</div>
+      </div>
+      <div class="box">
+        <div class="num" id="m">--</div>
+        <div class="label">Min</div>
+      </div>
+      <div class="box">
+        <div class="num" id="s">--</div>
+        <div class="label">Seg</div>
+      </div>
+    </div>
+
+    <!-- CÍRCULOS INFERIORES PARA IMÁGENES -->
+    <div class="avatar-circle avatar-bottom-left">
+      <img src="hope.png" alt="Foto 3" onerror="this.onerror=null; this.parentNode.innerHTML='💖';">
+    </div>
+    <div class="avatar-circle avatar-bottom-right">
+      <img src="image.png" alt="Foto 4" onerror="this.onerror=null; this.parentNode.innerHTML='🌷';">
+    </div>
+
+  </div>
+
+  <script>
+    // LISTA DE FRASES DINÁMICAS
+    const frases = [
+      "Falta para tu sorpresa especial 🌸",
+      "Prometo que la espera vale la pena 💖",
+      "No seas ansiosa Señoritaa 😜",
+      "Cada segundo falta menos para tu día ✨",
+      "Preparando los detalles más lindos... 🎨",
+      "Cuenta regresiva activada ⏳"
+    ];
+
+    let currentPhraseIdx = 0;
+    const phraseEl = document.getElementById("phrase");
+    const phraseCounterEl = document.getElementById("phrase-counter");
+
+    function updatePhrase() {
+      phraseEl.textContent = frases[currentPhraseIdx];
+      phraseCounterEl.textContent = `${currentPhraseIdx + 1} / ${frases.length}`;
+    }
+
+    updatePhrase();
+
+    setInterval(() => {
+      phraseEl.style.opacity = 0;
+      phraseCounterEl.style.opacity = 0;
+
+      setTimeout(() => {
+        currentPhraseIdx = (currentPhraseIdx + 1) % frases.length;
+        updatePhrase();
+        phraseEl.style.opacity = 1;
+        phraseCounterEl.style.opacity = 1;
+      }, 400);
+    }, 4000);
+
+    // LÓGICA DE FECHA (1 DE ENERO) Y BARRA DE PROGRESO
+    function getDates() {
+      const now = new Date();
+      let targetYear = now.getFullYear();
+
+      if (now.getMonth() > 0 || (now.getMonth() === 0 && now.getDate() >= 1)) {
+        targetYear++;
+      }
+
+      const target = new Date(2026, 7, 1, 20, 31, 0, 0);
+      const start = new Date(targetYear - 1, 0, 1, 0, 0, 0, 0);
+
+      return { now, start, target };
+    }
+
+    const elD = document.getElementById("d");
+    const elH = document.getElementById("h");
+    const elM = document.getElementById("m");
+    const elS = document.getElementById("s");
+    const progressFill = document.getElementById("progress-fill");
+    const progressText = document.getElementById("progress-text");
+
+function tick() {
+  const { now, start, target } = getDates();
+  let diff = target - now;
+
+  if (diff <= 0) {
+    // Completa la barra justo antes de redirigir
+    progressFill.style.width = "100%";
+    progressText.textContent = "100%";
+
+    window.location.href = "../CUMPLE_DE_IRISS/index.html";
+    return;
+  }
+
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  diff -= d * 24 * 60 * 60 * 1000;
+  const h = Math.floor(diff / (1000 * 60 * 60));
+  diff -= h * 60 * 60 * 1000;
+  const m = Math.floor(diff / (1000 * 60));
+  diff -= m * 60 * 1000;
+  const s = Math.floor(diff / 1000);
+
+  elD.textContent = d;
+  elH.textContent = h.toString().padStart(2, "0");
+  elM.textContent = m.toString().padStart(2, "0");
+  elS.textContent = s.toString().padStart(2, "0");
+
+  const totalTime = target - start;
+  const elapsedTime = now - start;
+
+  // Nunca llega al 100% antes del momento exacto
+  let percentage = Math.min(
+    Math.max((elapsedTime / totalTime) * 100, 5),
+    99.9
+  );
+
+  progressFill.style.width = percentage.toFixed(1) + "%";
+  progressText.textContent = percentage.toFixed(1) + "%";
+}
+
+    setInterval(tick, 1000);
+    tick();
+  </script>
+</body>
+</html>
