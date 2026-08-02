@@ -109,13 +109,18 @@
     }
 
     /* EL TRUCO: Object-fit cover ocupando todo el viewport */
-    video {
-      width: 100vw;
-      height: 96vh;
-      object-fit: cover; /* SE ADAPTA A CUALQUIER PANTALLA SIN BARRAS NEGRAS */
-      pointer-events: none; /* No parece un reproductor */
-    }
+  video {
+  width: 100vw;
+  height: 84vh;
+  object-fit: cover;
+  object-position: center;
+}
 
+@media (max-width: 768px) {
+  video {
+    transform: scale(0.9);
+  }
+}
     /* Superposición del Botón Final */
     .surprise-overlay {
       position: absolute;
