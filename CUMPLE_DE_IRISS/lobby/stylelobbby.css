@@ -1,0 +1,287 @@
+/* ==========================================================
+   RESET Y BASE GENERAL DEL LOBBY
+========================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: 'Outfit', 'Segoe UI', sans-serif;
+  color: white;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(173, 90, 255, .25), transparent 22%),
+    radial-gradient(circle at 80% 10%, rgba(255, 105, 180, .18), transparent 18%),
+    radial-gradient(circle at 50% 70%, rgba(120, 80, 255, .18), transparent 30%),
+    linear-gradient(180deg, #05030d 0%, #12061d 35%, #1b0930 70%, #090511 100%);
+  position: relative;
+}
+
+/* Fondo Estrellado */
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.95) 1px, transparent 2px),
+    radial-gradient(circle, rgba(255,255,255,.6) 1px, transparent 3px),
+    radial-gradient(circle, rgba(190,150,255,.8) 1px, transparent 2px);
+  background-size: 110px 110px, 170px 170px, 250px 250px;
+  animation: starsMove 80s linear infinite;
+  opacity: .85;
+}
+
+@keyframes starsMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(-200px); }
+}
+
+/* ==========================================================
+   CONTENEDOR DEL LOBBY PRINCIPAL
+========================================================== */
+
+.lobby-container.hidden {
+  display: none !important;
+}
+
+.lobby-container {
+  position: relative;
+  z-index: 10;
+  max-width: 560px;
+  margin: auto;
+  padding: 35px 18px 55px;
+  animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Encabezado */
+.phrase-section {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.typewriter-phrase {
+  font-size: 2.1rem;
+  font-weight: 900;
+  color: #f3ddff;
+  text-shadow:
+    0 0 10px #fff,
+    0 0 25px #bb86fc,
+    0 0 45px #8a2be2,
+    0 0 70px #ff70d9;
+  line-height: 1.3;
+}
+
+.typewriter-phrase span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(18px) scale(.4);
+  animation: letterPop .45s forwards;
+}
+
+@keyframes letterPop {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.subtitle {
+  margin-top: 18px;
+  color: #d4b6ff;
+  font-size: .9rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(255,255,255,.3);
+}
+
+/* ==========================================================
+   GRILLA DE SORPRESAS (SIN BRILLOS GIRATORIOS)
+========================================================== */
+
+.gifts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.gift-card {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: .4s;
+}
+
+.gift-card:hover {
+  transform: translateY(-10px);
+}
+
+.gift-card:active {
+  transform: scale(.94);
+}
+
+.gift-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: floatPhoto 5s ease-in-out infinite;
+}
+
+/* Halo Violeta tras las imágenes */
+.gift-box::before {
+  content: "";
+  position: absolute;
+  width: 112%;
+  height: 112%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(174,104,255,.45), rgba(255,120,220,.18), transparent 75%);
+  filter: blur(12px);
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Reflejo superior de cristal */
+.gift-box::after {
+  content: "";
+  position: absolute;
+  width: 32%;
+  height: 32%;
+  top: 12%;
+  left: 18%;
+  border-radius: 50%;
+  background: rgba(255,255,255,.45);
+  filter: blur(7px);
+  z-index: 4;
+}
+
+.gift-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,.95);
+  z-index: 3;
+  transition: .45s;
+  box-shadow:
+    0 0 20px rgba(170,120,255,.5),
+    0 0 40px rgba(255,105,180,.25),
+    0 15px 35px rgba(0,0,0,.45);
+}
+
+.gift-card:hover .gift-img {
+  transform: scale(1.08) rotate(-4deg);
+  box-shadow:
+    0 0 25px #bb86fc,
+    0 0 50px #ff6bd6,
+    0 20px 40px rgba(0,0,0,.5);
+}
+
+.gift-label {
+  margin-top: 15px;
+  padding: 9px 15px;
+  border-radius: 40px;
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255,255,255,.15);
+  color: #efd7ff;
+  font-size: .78rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: .3px;
+  box-shadow: 0 8px 25px rgba(0,0,0,.25);
+  transition: 0.3s ease;
+}
+
+.gift-card:hover .gift-label {
+  background: rgba(255,255,255,.15);
+  color: white;
+  box-shadow:
+    0 0 15px rgba(186,104,255,.5),
+    0 0 30px rgba(255,105,180,.3);
+}
+
+/* ==========================================================
+   CORAZONES FLOTANTES DE FONDO
+========================================================== */
+
+.balloon-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.balloon-heart {
+  position: absolute;
+  bottom: -60px;
+  font-size: 24px;
+  opacity: .85;
+  filter: drop-shadow(0 0 8px rgba(255,120,220,.7));
+  animation: floatUp var(--duration) linear forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(.6);
+    opacity: 0;
+  }
+  15% { opacity: 1; }
+  40% {
+    transform: translateX(-10px) translateY(-35vh) rotate(-8deg);
+  }
+  70% {
+    transform: translateX(10px) translateY(-70vh) rotate(8deg);
+  }
+  100% {
+    transform: translate3d(var(--translateX), -120vh, 0) scale(1.2) rotate(var(--rotate));
+    opacity: 0;
+  }
+}
+
+@keyframes floatPhoto {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: .8; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+/* ==========================================================
+   RESPONSIVE PARA DISPOSITIVOS MÓVILES
+========================================================== */
+
+@media (max-width: 520px) {
+  .lobby-container {
+    padding: 25px 15px 45px;
+  }
+  .typewriter-phrase {
+    font-size: 1.7rem;
+  }
+  .subtitle {
+    font-size: .75rem;
+    letter-spacing: 2px;
+  }
+  .gifts-grid {
+    gap: 20px;
+  }
+  .gift-label {
+    font-size: .7rem;
+    padding: 7px 10px;
+  }
+}

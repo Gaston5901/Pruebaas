@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tu Gran Día - Señorita</title>
+
+  <!-- FUENTES Y LIBRERÍAS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- Iconos Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="styleintro.css">
+  <link rel="stylesheet" href="stylelobbby.css">
+</head>
+
+<body>
+
+  <!-- ==========================================================
+       PANTALLA DE ENTRADA: JARDÍN MÁGICO Y 21 VELAS
+  ========================================================== -->
+  <div id="intro-overlay">
+    
+    <!-- Elementos del ambiente de jardín nocturno -->
+    <div class="garden-vines vine-left"></div>
+    <div class="garden-vines vine-right"></div>
+    <div class="fireflies-container" id="firefliesContainer"></div>
+
+    <!-- Título Principal de la Intro -->
+    <header class="intro-header">
+      <span class="intro-badge">✨ 21 Años Especiales ✨</span>
+      <h1 class="intro-title">Tengo algo para vos, señorita</h1>
+      <p class="intro-subtitle">Tocá cada vela para apagar tus 21 deseos 🕯️✨</p>
+    </header>
+
+    <!-- Área de las 21 Velas con Letras -->
+    <div class="intro-balloons-container" id="introBalloonsContainer"></div>
+    
+    <!-- Contenedor exclusivo para la Cuenta Regresiva (Se activa solo al apagar la última) -->
+    <div id="countdown-wrapper"></div>
+  </div>
+
+  <!-- Fondo de Estrellas/Destellos general -->
+  <div class="bg-overlay"></div>
+
+  <!-- Corazones flotantes del Lobby -->
+  <div class="balloon-container" id="balloonContainer"></div>
+
+  <!-- ==========================================================
+       LOBBY PRINCIPAL (Se activa tras el conteo)
+  ========================================================== -->
+  <main class="lobby-container hidden" id="mainLobby">
+
+    <!-- Encabezado -->
+    <header class="phrase-section">
+      <h1 class="typewriter-phrase" id="typewriterPhrase"></h1>
+      <p class="subtitle">Selecciona una sorpresa</p>
+    </header>
+
+    <!-- Sorpresas (Grilla sin los brillos giratorios) -->
+    <section class="gifts-grid">
+
+      <a href="sorpresa1.html" class="gift-card">
+        <div class="gift-box">
+          <img src="../img/image.png" alt="Para empezar" class="gift-img">
+        </div>
+        <span class="gift-label">Para Empezar</span>
+      </a>
+
+      <a href="sorpresa2.html" class="gift-card">
+        <div class="gift-box">
+          <img src="img/icono_recuerdos.png" alt="Nuestros momentos" class="gift-img">
+        </div>
+        <span class="gift-label">Nuestros Momentos</span>
+      </a>
+
+      <a href="sorpresa3.html" class="gift-card">
+        <div class="gift-box">
+          <img src="img/icono_musica.png" alt="Canción especial" class="gift-img">
+        </div>
+        <span class="gift-label">Canción Especial</span>
+      </a>
+
+      <a href="sorpresa4.html" class="gift-card">
+        <div class="gift-box">
+          <img src="img/icono_carta.png" alt="Una carta" class="gift-img">
+        </div>
+        <span class="gift-label">Una Carta</span>
+      </a>
+
+      <a href="sorpresa5.html" class="gift-card">
+        <div class="gift-box">
+          <img src="img/icono_fotos.png" alt="Galería" class="gift-img">
+        </div>
+        <span class="gift-label">Galería</span>
+      </a>
+
+      <a href="sorpresa6.html" class="gift-card">
+        <div class="gift-box">
+          <img src="img/icono_deseos.png" alt="Un deseo" class="gift-img">
+        </div>
+        <span class="gift-label">Un Deseo</span>
+      </a>
+
+      <a href="sorpresa7.html" class="gift-card">
+        <div class="gift-box">
+          <img src="img/icono_regalo.png" alt="Detallito" class="gift-img">
+        </div>
+        <span class="gift-label">Detallito</span>
+      </a>
+
+      <a href="sorpresa8.html" class="gift-card">
+        <div class="gift-box">
+          <img src="img/icono_corazon.png" alt="Te quiero" class="gift-img">
+        </div>
+        <span class="gift-label">Te Quiero</span>
+      </a>
+
+      <a href="sorpresa9.html" class="gift-card">
+        <div class="gift-box">
+          <img src="img/icono_final.png" alt="El gran final" class="gift-img">
+        </div>
+        <span class="gift-label">El Gran Final</span>
+      </a>
+
+    </section>
+
+  </main>
+
+  <!-- Script principal -->
+  <script src="lobby.js"></script>
+
+</body>
+</html>

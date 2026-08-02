@@ -1,0 +1,308 @@
+/* ==========================================================
+   PANTALLA DE ENTRADA: JARDÍN MÁGICO (#intro-overlay)
+========================================================== */
+
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: 
+    radial-gradient(circle at 50% 30%, rgba(46, 125, 85, 0.25) 0%, transparent 60%),
+    radial-gradient(circle at 50% 80%, rgba(255, 105, 180, 0.15) 0%, transparent 50%),
+    linear-gradient(180deg, #06110d 0%, #0d0614 60%, #05020a 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s ease;
+  padding: 20px;
+  overflow: hidden;
+}
+
+/* Enredaderas decorativas */
+.garden-vines {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  pointer-events: none;
+  opacity: 0.4;
+  background-size: contain;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 10px rgba(123, 237, 159, 0.4));
+}
+
+.vine-left {
+  top: -30px;
+  left: -30px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q50,20 40,80 Q70,40 90,90' stroke='%232ed573' stroke-width='2' fill='none'/%3E%3Ccircle cx='40' cy='80' r='5' fill='%23ff78c4'/%3E%3Ccircle cx='25' cy='18' r='4' fill='%237bed9f'/%3E%3C/svg%3E");
+}
+
+.vine-right {
+  bottom: -30px;
+  right: -30px;
+  transform: rotate(180deg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M10,10 Q50,20 40,80 Q70,40 90,90' stroke='%232ed573' stroke-width='2' fill='none'/%3E%3Ccircle cx='40' cy='80' r='5' fill='%23ff78c4'/%3E%3Ccircle cx='25' cy='18' r='4' fill='%237bed9f'/%3E%3C/svg%3E");
+}
+
+/* Luciérnagas y destellos mágicos */
+.fireflies-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.firefly {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: #fffa75;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #fffa75, 0 0 20px #2ed573;
+  animation: floatFirefly var(--duration) ease-in-out infinite alternate;
+}
+
+@keyframes floatFirefly {
+  0% {
+    transform: translate(0, 0) scale(0.6);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translate(var(--translateX), var(--translateY)) scale(1.4);
+    opacity: 0.9;
+  }
+}
+
+/* Encabezado de la Intro */
+.intro-header {
+  text-align: center;
+  z-index: 2;
+  margin-bottom: 25px;
+}
+
+.intro-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(46, 213, 115, 0.12);
+  border: 1px solid rgba(123, 237, 159, 0.3);
+  border-radius: 20px;
+  color: #7bed9f;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  backdrop-filter: blur(8px);
+}
+
+.intro-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.6), 0 0 30px rgba(255, 120, 196, 0.5);
+  line-height: 1.2;
+}
+
+.intro-subtitle {
+  color: #d4b6ff;
+  font-size: 1rem;
+  margin-top: 8px;
+  opacity: 0.9;
+}
+
+/* Contenedor de Velas */
+.intro-balloons-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 16px 14px;
+  max-width: 850px;
+  z-index: 2;
+  margin-bottom: 20px;
+  min-height: 90px;
+}
+
+/* Agrupador individual para CADA PALABRA (Evita corte de palabras) */
+.candle-word {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+/* Estilos de las Velas */
+.candle-wrapper {
+  position: relative;
+  width: 32px;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  user-select: none;
+}
+
+.candle-wrapper:hover {
+  transform: scale(1.15) translateY(-4px);
+}
+
+.candle-flame {
+  width: 14px;
+  height: 22px;
+  background: radial-gradient(ellipse at bottom, #ffffff 0%, #fffa75 30%, #ff3366 75%, transparent 100%);
+  border-radius: 50% 50% 35% 35%;
+  filter: drop-shadow(0 0 8px #fffa75) drop-shadow(0 0 16px #ff3366);
+  animation: flicker 1.2s infinite alternate ease-in-out;
+  transform-origin: center bottom;
+  margin-bottom: 2px;
+}
+
+@keyframes flicker {
+  0% { transform: scale(1) rotate(-2deg); opacity: 0.95; }
+  50% { transform: scale(1.1) rotate(3deg); opacity: 1; }
+  100% { transform: scale(0.88) rotate(-1deg); opacity: 0.85; }
+}
+
+.candle-body {
+  position: relative;
+  width: 22px;
+  height: 48px;
+  background: linear-gradient(180deg, #ff78c4 0%, #8a2be2 100%);
+  border-radius: 6px 6px 4px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.candle-body::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  width: 2px;
+  height: 5px;
+  background-color: #333;
+}
+
+.candle-letter {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: #ffffff;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  z-index: 2;
+}
+
+/* Vela Apagada */
+.candle-wrapper.extinguished {
+  pointer-events: none;
+}
+
+.candle-wrapper.extinguished .candle-flame {
+  display: none;
+}
+
+.candle-wrapper.extinguished .candle-body {
+  background: linear-gradient(180deg, #4a4a5a 0%, #22222e 100%);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+.candle-wrapper.extinguished .candle-letter {
+  color: #777;
+  text-shadow: none;
+}
+
+/* Humo */
+.smoke-particle {
+  position: absolute;
+  top: 15px;
+  width: 8px;
+  height: 8px;
+  background: rgba(220, 220, 220, 0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: riseSmoke 0.8s ease-out forwards;
+}
+
+@keyframes riseSmoke {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+  100% { transform: translate(var(--smokeX), -35px) scale(2.5); opacity: 0; }
+}
+
+/* Cuenta Regresiva (3, 2, 1) */
+#countdown-wrapper {
+  z-index: 2;
+  min-height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.countdown-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 5rem;
+  font-weight: 700;
+  color: #ff78c4;
+  text-shadow: 0 0 25px rgba(255, 120, 196, 0.9), 0 0 50px rgba(138, 43, 226, 0.6);
+  animation: popNum 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popNum {
+  0% { transform: scale(0.2); opacity: 0; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================
+   AJUSTE RESPONSIVE PERFECTO PARA CELULARES
+========================================================== */
+@media (max-width: 520px) {
+  #intro-overlay {
+    padding: 12px 8px;
+  }
+
+  .intro-title {
+    font-size: 1.8rem;
+  }
+
+  .intro-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .intro-balloons-container {
+    gap: 12px 10px;
+    padding: 0 4px;
+    max-width: 100%;
+  }
+
+  .candle-word {
+    gap: 3px;
+  }
+
+  .candle-wrapper {
+    width: 26px;
+    height: 64px;
+  }
+
+  .candle-flame {
+    width: 11px;
+    height: 17px;
+  }
+
+  .candle-body {
+    width: 19px;
+    height: 41px;
+  }
+
+  .candle-letter {
+    font-size: 0.8rem;
+  }
+}

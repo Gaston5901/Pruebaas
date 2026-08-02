@@ -152,7 +152,7 @@
     /* SOBREPOSICIÓN Y POSICIÓN DEL BOTÓN */
     .surprise-overlay {
       position: absolute;
-      bottom: 12%; /* Subido para PC */
+      bottom: 10%; /* Subido para PC */
       left: 50%;
       transform: translateX(-50%) translateY(20px);
       z-index: 20;
@@ -310,3 +310,5 @@
       transform: translateY(-1px);
       background: rgba(255,255,255,.95);
     }
+
+    
