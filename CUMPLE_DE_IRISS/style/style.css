@@ -1,314 +1,405 @@
 * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent; /* Elimina el recuadro feo al tocar en Chrome/Safari */
+}
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: #07060d;
-    }
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: #07060d;
+}
 
-    .background {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 50% 50%, #160f26 0%, #07060d 100%);
-      z-index: 1;
-    }
+.background {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, #160f26 0%, #07060d 100%);
+  z-index: 1;
+}
 
-    .sparkle {
-      position: absolute;
-      width: 3px;
-      height: 3px;
-      background-color: rgba(224, 170, 255, 0.6);
-      border-radius: 50%;
-      box-shadow: 0 0 6px #fff;
-      animation: sparkleAnim var(--duration) infinite ease-in-out var(--delay);
-    }
+/* Destellos sutiles optimizados */
+.sparkle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background-color: rgba(224, 170, 255, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 6px #fff;
+  animation: sparkleAnim var(--duration) infinite ease-in-out var(--delay);
+  will-change: transform, opacity;
+}
 
-    @keyframes sparkleAnim {
-      0%, 100% { opacity: 0.12; transform: scale(0.75); }
-      50% { opacity: 0.72; transform: scale(1.2); }
-    }
+@keyframes sparkleAnim {
+  0%, 100% { opacity: 0.12; transform: scale(0.75); }
+  50% { opacity: 0.72; transform: scale(1.2); }
+}
 
-    .gift-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s ease, opacity 0.5s ease;
-      user-select: none;
-    }
+/* ==========================================================
+   REGALO 3D FLUIDO Y REALISTA (OPTIMIZADO PARA MOVIL)
+========================================================== */
+.gift-container {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  z-index: 10;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease;
+  user-select: none;
+  touch-action: manipulation;
+  will-change: transform;
+}
 
-    .gift-icon {
-      width: 120px;
-      height: 120px;
-      animation: giftGlow 2s infinite ease-in-out;
-    }
+.gift-container:active {
+  transform: translate3d(-50%, -48%, 0) scale(0.95);
+}
 
-    @keyframes giftGlow {
-      0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(247, 37, 133, 0.4)); }
-      50% { transform: scale(1.1) rotate(-1deg); filter: drop-shadow(0 0 25px rgba(247, 37, 133, 0.8)); }
-      100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(247, 37, 133, 0.4)); }
-    }
+.gift3d {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  animation: floatGift 3.2s infinite ease-in-out;
+  will-change: transform;
+}
 
-    .gift-text {
-      margin-top: 15px;
-      color: #e0aaff;
-      font-size: 0.85rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      opacity: 0.8;
-      animation: textPulse 2s infinite ease-in-out;
-    }
+/* TAPA DEL REGALO */
+.gift-lid {
+  position: absolute;
+  top: 0;
+  left: -7px;
+  width: 144px;
+  height: 34px;
+  background: linear-gradient(135deg, #ff2a85 0%, #d8005f 50%, #99003d 100%);
+  border-radius: 7px;
+  box-shadow: 
+    0 5px 12px rgba(0, 0, 0, 0.5),
+    inset 0 2px 3px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.4);
+  z-index: 3;
+}
 
-    @keyframes textPulse {
-      0%, 100% { opacity: 0.35; }
-      50% { opacity: 0.95; }
-    }
+/* CUERPO DEL REGALO */
+.gift-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 130px;
+  height: 102px;
+  background: linear-gradient(135deg, #e60067 0%, #b3004b 50%, #73002f 100%);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 
+    0 18px 38px rgba(0, 0, 0, 0.65),
+    inset 0 2px 5px rgba(255, 255, 255, 0.35),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
 
-    .video-container {
-      position: absolute;
-      inset: 0;
-      z-index: 5;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 50% 24%, rgba(173, 118, 255, 0.26) 0%, rgba(173, 118, 255, 0.08) 18%, transparent 40%),
-        radial-gradient(circle at center, #1f1231 0%, #0d0a18 58%, #050408 100%);
-      opacity: 0;
-      transition: opacity 1s ease;
-    }
+/* CINTAS DORADAS TEXTURIZADAS */
+.ribbon-v {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 100%;
+  background: linear-gradient(90deg, #b8860b 0%, #ffd700 30%, #fff8dc 50%, #ffd700 70%, #b8860b 100%);
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
 
-    .video-container::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.05), transparent 14%, transparent 84%, rgba(255,255,255,0.04)),
-        radial-gradient(circle at 50% 50%, transparent 34%, rgba(0, 0, 0, 0.35) 100%);
-      pointer-events: none;
-      z-index: 1;
-    }
+.ribbon-h {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 28px;
+  background: linear-gradient(180deg, #b8860b 0%, #ffd700 30%, #fff8dc 50%, #ffd700 70%, #b8860b 100%);
+  box-shadow: 0 0 8px rgba(0,0,0,0.3);
+}
 
-    .video-container.active {
-      display: flex;
-      opacity: 1;
-    }
+/* MOÑO SUPERIOR 3D */
+.bow {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 76px;
+  height: 38px;
+  z-index: 4;
+}
 
-    .video-frame {
-      position: relative;
-      width: min(92vw, 68vh);
-      aspect-ratio: 9 / 16;
-      max-height: calc(100dvh - 24px);
-      padding: 10px;
-      border-radius: 34px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-      border: 1px solid rgba(255, 230, 255, 0.12);
-      box-shadow:
-        0 24px 60px rgba(0, 0, 0, 0.48),
-        0 0 0 1px rgba(255,255,255,0.04),
-        0 0 70px rgba(180, 115, 255, 0.16);
-      z-index: 2;
-      backdrop-filter: blur(10px);
-    }
+.bow::before, .bow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 38px;
+  height: 32px;
+  border-radius: 50% 50% 0 50%;
+  background: linear-gradient(135deg, #ffe066 0%, #ffd700 50%, #b8860b 100%);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.85);
+}
 
-    .video-layer {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      display: block;
-      border-radius: 26px;
-    }
+.bow::before {
+  left: 0;
+  transform: rotate(-22deg);
+}
 
-    .video-bg {
-      object-fit: cover;
-      object-position: center center;
-      filter: blur(32px) brightness(0.58) saturate(1.15);
-      transform: scale(1.18);
-      opacity: 0.9;
-    }
+.bow::after {
+  right: 0;
+  transform: rotate(22deg) scaleX(-1);
+}
 
-    .video-fg {
-      object-fit: contain;
-      object-position: center center;
-      z-index: 2;
-      background: rgba(0, 0, 0, 0.05);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
-    }
+/* SOMBRA INTERACTIVA EN PISO */
+.gift-shadow {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  width: 120px;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 75%);
+  z-index: 0;
+  animation: shadowScale 3.2s infinite ease-in-out;
+  will-change: transform, opacity;
+}
 
-    /* SOBREPOSICIÓN Y POSICIÓN DEL BOTÓN */
-    .surprise-overlay {
-      position: absolute;
-      bottom: 10%; /* Subido para PC */
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      z-index: 20;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 1.2s ease, transform 1s ease;
-    }
+@keyframes floatGift {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, -10px, 0) rotate(1deg); }
+}
 
-    .surprise-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateX(-50%) translateY(0);
-    }
+@keyframes shadowScale {
+  0%, 100% { transform: translate3d(-50%, 0, 0) scale(1); opacity: 0.8; }
+  50% { transform: translate3d(-50%, 0, 0) scale(0.82); opacity: 0.45; }
+}
 
-    .btn-surprise {
-      position: relative;
-      display: inline-block;
-      width: min(90vw, 550px);
-      height: auto;
-      cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.28s ease, filter 0.28s ease;
-      animation: ribbonFloat 2.8s infinite ease-in-out;
-    }
+/* TEXTO "TOCA PARA COMANZAR" */
+.gift-text {
+  margin-top: 32px;
+  color: #ffe89e;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+  animation: textPulse 2s infinite ease-in-out;
+}
 
-    /* TEXTO DIRECTO SOBRE EL LISTÓN (SIN ÓVALO NI BORDES) */
-    .btn-surprise .touch-badge {
-      position: absolute;
-      top: 55%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 3;
-      padding: 0;
-      background: transparent; /* Sin fondo de óvalo */
-      border: none; /* Sin borde */
-      box-shadow: none; /* Sin sombra exterior */
-      color: #ffe89e;
-      font-size: 0.85rem;
-      font-weight: 900;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7), 0 0 12px rgba(255, 215, 120, 0.4);
-      pointer-events: none;
-      white-space: nowrap;
-    }
+@keyframes textPulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.98); }
+  50% { opacity: 1; transform: scale(1.03); }
+}
 
-    .btn-surprise img {
-      width: 100%;
-      height: auto;
-      display: block;
-      filter:
-        drop-shadow(0 18px 32px rgba(0, 0, 0, 0.35))
-        drop-shadow(0 0 14px rgba(255, 198, 90, 0.16));
-      user-select: none;
-      -webkit-user-drag: none;
-      pointer-events: none;
-    }
+/* ==========================================================
+   REPRODUCTOR DE VIDEO ADAPTATIVO
+========================================================== */
+.video-container {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 24%, rgba(173, 118, 255, 0.26) 0%, rgba(173, 118, 255, 0.08) 18%, transparent 40%),
+    radial-gradient(circle at center, #1f1231 0%, #0d0a18 58%, #050408 100%);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
 
-    .btn-surprise:hover {
-      transform: scale(1.03);
-      filter: brightness(1.06);
-    }
+.video-container.active {
+  display: flex;
+  opacity: 1;
+}
 
-    .btn-surprise.cut {
-      transform: scale(0.985);
-      filter: brightness(1.06);
-    }
+.video-frame {
+  position: relative;
+  width: min(92vw, 68vh);
+  aspect-ratio: 9 / 16;
+  max-height: calc(100dvh - 24px);
+  padding: 8px;
+  border-radius: 32px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255, 230, 255, 0.12);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 60px rgba(180, 115, 255, 0.18);
+  z-index: 2;
+  backdrop-filter: blur(10px);
+}
 
-    .btn-cut-line {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 10px;
-      height: 116px;
-      transform: translate(-50%, -50%) rotate(8deg);
-      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.95) 22%, rgba(255, 215, 140, 0.95) 46%, rgba(255,255,255,0.95) 68%, transparent);
-      opacity: 0;
-      z-index: 2;
-      pointer-events: none;
-      filter: blur(0.4px);
-    }
+.video-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 24px;
+}
 
-    .btn-touch-label {
-      display: none;
-    }
+.video-bg {
+  object-fit: cover;
+  filter: blur(28px) brightness(0.55) saturate(1.1);
+  transform: scale(1.15);
+  opacity: 0.88;
+}
 
-    .btn-surprise.cut .btn-cut-line {
-      opacity: 1;
-      animation: cutFlash 0.7s ease-out;
-    }
+.video-fg {
+  object-fit: contain;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.05);
+}
 
-    /* MEDIA QUERIES PARA CELULAR */
-    @media (max-width: 768px) {
-      .video-frame {
-        width: min(96vw, 74vh);
-        max-height: calc(100dvh - 18px);
-        padding: 8px;
-        border-radius: 30px;
-      }
+/* ==========================================================
+   OVERLAY DE REGALO FINAL
+========================================================== */
+.surprise-overlay {
+  position: absolute;
+  bottom: 12%;
+  left: 50%;
+  transform: translate3d(-50%, 20px, 0);
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease, transform 0.8s ease;
+}
 
-      .video-bg {
-        transform: scale(1.22);
-        filter: blur(34px) brightness(0.54) saturate(1.08);
-      }
+.surprise-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate3d(-50%, 0, 0);
+}
 
-      /* Posición bien elevada en celulares */
-      .surprise-overlay {
-        bottom: 15%; /* Subido sustancialmente para celular */
-      }
+.btn-surprise {
+  position: relative;
+  display: inline-block;
+  width: min(88vw, 420px);
+  cursor: pointer;
+  text-decoration: none;
+  animation: ribbonFloat 2.8s infinite ease-in-out;
+}
 
-      .btn-surprise {
-        width: min(85vw, 380px);
-      }
+.btn-surprise .touch-badge {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  z-index: 3;
+  color: #ffe89e;
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 215, 120, 0.5);
+  white-space: nowrap;
+}
 
-      .btn-surprise .touch-badge {
-        font-size: 0.75rem;
-        letter-spacing: 2.5px;
-      }
+.btn-surprise img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.4));
+}
 
-      .btn-cut-line {
-        height: 96px;
-      }
-    }
+.btn-cut-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 110px;
+  transform: translate3d(-50%, -50%, 0) rotate(8deg);
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.95) 50%, transparent);
+  opacity: 0;
+  z-index: 2;
+}
 
-    @keyframes ribbonFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-4px); }
-    }
+.btn-surprise.cut .btn-cut-line {
+  opacity: 1;
+  animation: cutFlash 0.6s ease-out;
+}
 
-    @keyframes cutFlash {
-      0% { transform: translate(-50%, -50%) rotate(8deg) scaleY(0.2); opacity: 0; }
-      35% { transform: translate(-50%, -50%) rotate(8deg) scaleY(1); opacity: 1; }
-      100% { transform: translate(-50%, -50%) rotate(8deg) scaleY(0.4); opacity: 0; }
-    }
+@keyframes ribbonFloat {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -5px, 0); }
+}
 
-    .volver-inicio {
-      position: fixed;
-      top: 14px;
-      left: 14px;
-      z-index: 9999;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.85);
-      border: 1px solid rgba(0,0,0,.10);
-      color: #3b2f2f;
-      text-decoration: none;
-      font-weight: 800;
-      box-shadow: 0 10px 26px rgba(0,0,0,.18);
-    }
+@keyframes cutFlash {
+  0% { transform: translate3d(-50%, -50%, 0) rotate(8deg) scaleY(0.2); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translate3d(-50%, -50%, 0) rotate(8deg) scaleY(1); opacity: 0; }
+}
 
-    .volver-inicio:hover {
-      transform: translateY(-1px);
-      background: rgba(255,255,255,.95);
-    }
+/* BOTÓN VOLVER AL INICIO */
+.volver-inicio {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
 
-    
+.volver-inicio:active {
+  transform: scale(0.92);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* MEDIA QUERIES ESPECÍFICAS PARA MÓVIL */
+@media (max-width: 600px) {
+  .gift3d {
+    width: 115px;
+    height: 115px;
+  }
+
+  .gift-lid {
+    width: 128px;
+    height: 30px;
+    left: -6px;
+  }
+
+  .gift-body {
+    width: 115px;
+    height: 90px;
+  }
+
+  .ribbon-v { width: 24px; }
+  .ribbon-h { height: 24px; }
+
+  .bow {
+    top: -28px;
+    width: 66px;
+    height: 32px;
+  }
+
+  .bow::before, .bow::after {
+    width: 33px;
+    height: 28px;
+  }
+
+  .gift-text {
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    margin-left: 45px;
+  }
+
+  .surprise-overlay {
+    bottom: 14%;
+  }
+}
