@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tu Gran Día - Intro</title>
+
+  <!-- FUENTES Y LIBRERÍAS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,400&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <!-- Iconos Lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Estilos exclusivos de la intro -->
+  <link rel="stylesheet" href="styleintro.css">
+</head>
+
+<body>
+
+  <!-- ==========================================================
+        PANTALLA DE ENTRADA: JARDÍN MÁGICO Y 21 VELAS
+  ========================================================== -->
+  <div id="intro-overlay">
+    
+    <!-- Elementos del ambiente de jardín nocturno -->
+    <div class="garden-vines vine-left"></div>
+    <div class="garden-vines vine-right"></div>
+    <div class="fireflies-container" id="firefliesContainer"></div>
+
+    <!-- Título Principal de la Intro -->
+    <header class="intro-header">
+      <span class="intro-badge">✨ 21 Años Especiales ✨</span>
+      <h1 class="intro-title">Tengo algo para vos, señorita</h1>
+      <p class="intro-subtitle">Tocá cada vela para apagar tus 21 deseos 🕯️✨</p>
+    </header>
+
+    <!-- Área de las 21 Velas -->
+    <div class="intro-balloons-container" id="introBalloonsContainer"></div>
+    
+    <!-- Contenedor para la Cuenta Regresiva (Activa la redirección al terminar) -->
+    <div id="countdown-wrapper"></div>
+  </div>
+
+  <!-- Script de la lógica de las velas -->
+  <script src="lobby.js"></script>
+
+</body>
+</html>

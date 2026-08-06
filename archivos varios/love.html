@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lluvia de Frases</title>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .mensaje-centro {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3em;
+      font-weight: bold;
+      text-align: center;
+      z-index: 1;
+      animation: colores 3s infinite linear;
+      text-shadow: 2px 2px 10px #00fff2;
+    }
+
+    .mensaje-abajo {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2em;
+      font-weight: bold;
+      color: #2600ff;
+      text-shadow: 2px 2px 8px #000000;
+      z-index: 2;
+      letter-spacing: 2px;
+    }
+
+    /* BOTÓN DE AUDIO */
+    .audio-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 20, 147, 0.25);
+      backdrop-filter: blur(5px);
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 999;
+      box-shadow: 0 0 15px #ff1493;
+      transition: 0.3s;
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px #ff69b4;
+    }
+
+    @keyframes colores {
+      0%   { color: #ff69b4; }
+      25%  { color: #ff0088; }
+      50%  { color: #c71585; }
+      75%  { color: #e22bae; }
+      100% { color: #ff69b4; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <canvas id="canvas"></canvas>
+
+  <div class="mensaje-centro">
+    ME GUSTAS MUCHO MI AMOR ❤️
+  </div>
+
+  <div class="mensaje-abajo">
+    😍 bebecita 😍
+  </div>
+
+  <button class="audio-btn" onclick="toggleAudio()">
+    🎵
+  </button>
+
+  <!-- AUDIO -->
+  <audio id="musica" loop>
+    <source src="https://economic-cyan-nf6rn8kxaq.edgeone.app/Love-rafael-codex-audios.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    resizeCanvas();
+
+    const phrases = ["PRECIOSA", "ERES ÚNICA"];
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    function randomColor() {
+      const colors = [
+        "#ff1493",
+        "#ff007f",
+        "#ff69b4",
+        "#ff66cc",
+        "#ff4fa3",
+        "#ff6eb4",
+        "#ff3cac",
+        "#ff85c1"
+      ];
+
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    function randomPhrase() {
+      return phrases[Math.floor(Math.random() * phrases.length)];
+    }
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.font = fontSize + "px Arial";
+
+      for (let i = 0; i < drops.length; i++) {
+        ctx.fillStyle = randomColor();
+
+        const text = randomPhrase();
+
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (
+          drops[i] * fontSize > canvas.height &&
+          Math.random() > 0.975
+        ) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 100);
+
+    window.addEventListener('resize', resizeCanvas);
+
+    const audio = document.getElementById("musica");
+
+    function toggleAudio() {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    }
+  </script>
+
+</body>
+</html>

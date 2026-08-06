@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sorpresa 2 - Nuestros Momentos</title>
+
+  <!-- FUENTES Y LIBRERÍAS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;1,600;1,700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="style_sorpresa2.css">
+</head>
+
+<body>
+
+  <!-- MODAL DE PRESENTACIÓN UNIFORME -->
+  <div class="surprise-intro-overlay" id="surpriseOverlay">
+    <div class="surprise-intro-card">
+      <span class="surprise-tag">Sorpresa 2 📸</span>
+      <h1 class="surprise-title">
+        Nuestros momentos,<br>
+        <span class="highlight-title">Señorita</span> ♥
+      </h1>
+      <p class="surprise-desc">
+        Un pequeño viaje en el tiempo por algunas de las anécdotas y fotos más lindas que compartimos.
+      </p>
+      <button class="btn-enter-surprise" id="btnOpenAlbum">Ver recuerdos ✨</button>
+    </div>
+  </div>
+
+  <!-- FONDO Y NAVEGACIÓN -->
+  <div class="warm-bg"></div>
+
+  <div class="top-bar">
+    <a href="/CUMPLE_DE_IRISS/lobby/lobby.html" class="btn-back">← Volver al Lobby</a>
+  </div>
+
+  <!-- ÁLBUM DE RECUERDOS -->
+  <main class="album-container">
+
+    <header class="album-header">
+      <span class="album-badge">✨ ÁLBUM DE FOTOS</span>
+      <h1 class="album-title">Momentos Inolvidables</h1>
+      <p class="album-subtitle">Deslizá cada tarjeta para ver la foto y leer la anécdota 💖</p>
+    </header>
+
+    <!-- CONTENEDOR DE TARJETAS TIPO GALERÍA -->
+    <div class="memory-grid">
+
+      <!-- Tarjeta 1 -->
+      <article class="memory-card">
+        <div class="photo-frame">
+          <img src="img/icono_recuerdos.png" alt="Recuerdo 1">
+          <span class="photo-tape"></span>
+        </div>
+        <div class="memory-info">
+          <span class="memory-date">🗓️ Un día especial</span>
+          <h3 class="memory-title">Ese momento único</h3>
+          <p class="memory-text">
+            Acá podés contar la historia de esta foto. Recordar de qué se reían ese día, dónde estaban o lo lindo que la pasaron juntos.
+          </p>
+        </div>
+      </article>
+
+      <!-- Tarjeta 2 -->
+      <article class="memory-card">
+        <div class="photo-frame">
+          <img src="img/icono_fotos.png" alt="Recuerdo 2">
+          <span class="photo-tape"></span>
+        </div>
+        <div class="memory-info">
+          <span class="memory-date">🗓️ Otra salida</span>
+          <h3 class="memory-title">Risas y charlas</h3>
+          <p class="memory-text">
+            Acá va otra anécdota especial. Podés sumar todos los detalles y recuerdos divertidos que compartieron.
+          </p>
+        </div>
+      </article>
+
+      <!-- Tarjeta 3 -->
+      <article class="memory-card">
+        <div class="photo-frame">
+          <img src="img/icono_corazon.png" alt="Recuerdo 3">
+          <span class="photo-tape"></span>
+        </div>
+        <div class="memory-info">
+          <span class="memory-date">🗓️ Inolvidable</span>
+          <h3 class="memory-title">Un detalle para recordar</h3>
+          <p class="memory-text">
+            Escribí sobre esta tercera foto. Podés seguir duplicando estas tarjetas si tenés más fotos que quieras incluir.
+          </p>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+
+  <script src="sorpresa2.js"></script>
+
+</body>
+</html>

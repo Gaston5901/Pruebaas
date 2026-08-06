@@ -1,0 +1,336 @@
+/* ==========================================================
+   PALETA CÁLIDA Y DECORATIVA (ESTILO CARTA / HOJA PAPEL)
+========================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  background: #fdf6f0; /* Fondo crema cálido */
+  color: #2c1820;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 20px 12px 40px 12px;
+  overflow-x: hidden;
+}
+
+/* Luces suaves de fondo */
+.warm-bg {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(255, 182, 193, 0.35) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 218, 185, 0.4) 0%, transparent 40%);
+  z-index: -1;
+}
+
+/* Botón Volver */
+.top-bar {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 15px;
+}
+
+.btn-back {
+  display: inline-block;
+  color: #c84b7a;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #f4b4c6;
+  box-shadow: 0 4px 12px rgba(200, 75, 122, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-back:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================================
+   HOJA DE CARTA BLANCA / TIPO PERGAMINO CÁLIDO
+========================================================== */
+
+.paper-card {
+  position: relative;
+  background: #ffffff;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 24px;
+  padding: 40px 28px;
+  box-shadow: 
+    0 15px 35px rgba(180, 120, 140, 0.15),
+    0 2px 10px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f8e1eb;
+  overflow: hidden; /* Mantiene las estampillas adentro */
+}
+
+/* Corazones en las esquinas */
+.corner-heart {
+  position: absolute;
+  font-size: 1.1rem;
+  opacity: 0.7;
+}
+
+.corner-heart.top-left { top: 16px; left: 18px; }
+.corner-heart.top-right { top: 16px; right: 18px; }
+.corner-heart.bottom-left { bottom: 16px; left: 18px; }
+.corner-heart.bottom-right { bottom: 16px; right: 18px; }
+
+/* ESTAMPILLAS / MARCAS DE AGUA EN EL FONDO */
+.stamp {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.12; /* Ajustá la transparencia para que no tape la lectura */
+  filter: sepia(0.3) hue-rotate(300deg);
+}
+
+.stamp img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Posiciones de las marcas de agua dispersas */
+.stamp-1 {
+  width: 120px;
+  top: 15%;
+  right: -20px;
+  transform: rotate(15deg);
+}
+
+.stamp-2 {
+  width: 140px;
+  bottom: 20%;
+  left: -25px;
+  transform: rotate(-12deg);
+}
+
+.stamp-3 {
+  width: 110px;
+  top: 50%;
+  right: 10px;
+  transform: rotate(8deg);
+}
+/* Más abajo de la mitad */
+.stamp-4 {
+  width: 130px;
+  top: 65%; 
+  left: -15px; 
+  transform: rotate(14deg);
+}
+
+/* Yendo hacia el final */
+.stamp-5 {
+  width: 115px;
+  top: 78%; 
+  right: -5px;
+  transform: rotate(-10deg);
+}
+
+/* Casi en la firma */
+.stamp-6 {
+  width: 140px;
+  top: 92%; 
+  left: 10px;
+  transform: rotate(20deg);
+}
+
+/* Encabezado de la Carta */
+.paper-header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.stamp-date {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #d85282;
+  text-transform: uppercase;
+  background: #fff0f5;
+  padding: 4px 14px;
+  border-radius: 12px;
+  border: 1px solid #f7c5d8;
+}
+
+.paper-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #4a1c2b;
+  margin-top: 8px;
+}
+
+.paper-subtitle {
+  font-size: 0.85rem;
+  color: #8c5b6e;
+  margin-top: 2px;
+}
+
+.paper-divider {
+  position: relative;
+  z-index: 2;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #f3b1c8, transparent);
+  margin: 20px 0 28px 0;
+}
+
+/* Cuerpo del texto */
+.paper-body {
+  position: relative;
+  z-index: 2;
+}
+
+.paper-body p {
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: #3b202c;
+  margin-bottom: 20px;
+  font-weight: 400;
+  letter-spacing: 0.1px;
+}
+
+.paper-body p.greeting {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.8rem;
+  color: #c84b7a;
+  margin-bottom: 18px;
+}
+
+/* Firma Cursiva */
+.handwritten-signature {
+  margin-top: 35px;
+  text-align: right;
+  border-top: 1px dashed #f4b4c6;
+  padding-top: 20px;
+}
+
+.handwritten-signature p {
+  font-size: 0.9rem !important;
+  color: #8c5b6e !important;
+  margin-bottom: 0 !important;
+}
+
+.handwritten-signature span {
+  font-family: 'Caveat', cursive;
+  font-size: 2.2rem;
+  color: #c84b7a;
+  display: block;
+}
+
+/* ==========================================================
+   MODAL DE BIENVENIDA (Mantiene tono rosita encendido)
+========================================================== */
+
+.surprise-intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(12, 4, 16, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.surprise-intro-overlay.hidden {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.surprise-intro-card {
+  background: linear-gradient(145deg, #2b0a1a, #14040e);
+  border: 2px solid #ff2a85;
+  border-radius: 28px;
+  padding: 35px 24px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 42, 133, 0.5);
+}
+
+.surprise-tag {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 20px;
+  background: rgba(255, 42, 133, 0.2);
+  border: 1px solid rgba(255, 42, 133, 0.5);
+  color: #ff66b2;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.surprise-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 10px;
+  line-height: 1.25;
+}
+
+.highlight-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2.3rem;
+  color: #ff66b2;
+  text-shadow: 0 0 16px rgba(255, 42, 133, 0.8);
+}
+
+.surprise-desc {
+  color: #ffe6f2;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.btn-enter-surprise {
+  width: 100%;
+  padding: 13px;
+  border-radius: 22px;
+  border: none;
+  background: linear-gradient(135deg, #ff2a85, #9333ea);
+  color: white;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255, 42, 133, 0.7);
+}
+
+/* ADAPTACIÓN MOBILE */
+@media (max-width: 480px) {
+  .paper-card {
+    padding: 30px 18px;
+    border-radius: 20px;
+  }
+
+  .paper-title {
+    font-size: 1.8rem;
+  }
+
+  .paper-body p {
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+}

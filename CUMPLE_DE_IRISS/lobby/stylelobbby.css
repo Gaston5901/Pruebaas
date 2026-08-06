@@ -1,5 +1,10 @@
 /* ==========================================================
-   RESET Y BASE GENERAL DEL LOBBY
+   RESET Y BASE GENERAL CON NUEVA PALETA
+   Colores principales:
+   - Fondo Base: #040209 / #090314
+   - Violeta Neón: #8b5cf6
+   - Rosita Magenta: #ec4899
+   - Azul Cyan: #06b6d4
 ========================================================== */
 
 * {
@@ -11,38 +16,43 @@
 body {
   min-height: 100vh;
   overflow-x: hidden;
-  font-family: 'Outfit', 'Segoe UI', sans-serif;
-  color: white;
-  background:
-    radial-gradient(circle at 20% 15%, rgba(173, 90, 255, .25), transparent 22%),
-    radial-gradient(circle at 80% 10%, rgba(255, 105, 180, .18), transparent 18%),
-    radial-gradient(circle at 50% 70%, rgba(120, 80, 255, .18), transparent 30%),
-    linear-gradient(180deg, #05030d 0%, #12061d 35%, #1b0930 70%, #090511 100%);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #ffffff;
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.28), transparent 30%),
+    radial-gradient(circle at 85% 15%, rgba(236, 72, 153, 0.25), transparent 28%),
+    radial-gradient(circle at 50% 80%, rgba(6, 182, 212, 0.22), transparent 35%),
+    linear-gradient(180deg, #040209 0%, #0d061a 35%, #130826 70%, #05020c 100%);
   position: relative;
 }
 
-/* Fondo Estrellado */
+/* Fondo Estrellado con Destellos Graduales */
 .bg-overlay {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 1;
   background-image:
-    radial-gradient(circle, rgba(255,255,255,.95) 1px, transparent 2px),
-    radial-gradient(circle, rgba(255,255,255,.6) 1px, transparent 3px),
-    radial-gradient(circle, rgba(190,150,255,.8) 1px, transparent 2px);
-  background-size: 110px 110px, 170px 170px, 250px 250px;
-  animation: starsMove 80s linear infinite;
-  opacity: .85;
+    radial-gradient(circle, rgba(255, 255, 255, 0.9) 1px, transparent 1.5px),
+    radial-gradient(circle, rgba(236, 72, 153, 0.7) 1px, transparent 2px),
+    radial-gradient(circle, rgba(6, 182, 212, 0.8) 1.5px, transparent 2.5px),
+    radial-gradient(circle, rgba(139, 92, 246, 0.6) 1px, transparent 2px);
+  background-size: 120px 120px, 180px 180px, 260px 260px, 320px 320px;
+  animation: starsMove 60s linear infinite alternate;
+  opacity: 0.8;
 }
 
 @keyframes starsMove {
-  from { transform: translateY(0); }
-  to { transform: translateY(-200px); }
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    transform: translateY(-80px) scale(1.03);
+  }
 }
 
 /* ==========================================================
-   CONTENEDOR DEL LOBBY PRINCIPAL
+   CONTENEDOR PRINCIPAL
 ========================================================== */
 
 .lobby-container.hidden {
@@ -52,40 +62,117 @@ body {
 .lobby-container {
   position: relative;
   z-index: 10;
-  max-width: 560px;
+  max-width: 600px;
   margin: auto;
-  padding: 35px 18px 55px;
-  animation: fadeIn 1s ease forwards;
+  padding: 40px 20px 60px;
+  animation: smoothEntrance 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes smoothEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
 }
 
 /* Encabezado */
+/* ==========================================================
+   ENCABEZADO PROFESIONAL Y VIBRANTE (NEÓN / GLASS)
+========================================================== */
+
 .phrase-section {
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: 45px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 10;
 }
 
+/* Badge Superior con Rosa Neón y Glassmorphism */
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 18px;
+  border-radius: 30px;
+  background: rgba(244, 114, 182, 0.12);
+  border: 1px solid rgba(244, 114, 182, 0.4);
+  color: #fb7185;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  box-shadow: 
+    0 0 15px rgba(244, 114, 182, 0.25),
+    inset 0 0 10px rgba(244, 114, 182, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: badgeGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes badgeGlow {
+  0% {
+    box-shadow: 0 0 12px rgba(244, 114, 182, 0.2);
+    border-color: rgba(244, 114, 182, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 22px rgba(244, 114, 182, 0.5);
+    border-color: rgba(244, 114, 182, 0.7);
+  }
+}
+
+/* Frase Principal */
 .typewriter-phrase {
   font-size: 2.1rem;
-  font-weight: 900;
-  color: #f3ddff;
-  text-shadow:
-    0 0 10px #fff,
-    0 0 25px #bb86fc,
-    0 0 45px #8a2be2,
-    0 0 70px #ff70d9;
+  font-weight: 800;
   line-height: 1.3;
+  color: #ffffff;
+  text-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
+  margin: 0;
 }
 
-.typewriter-phrase span {
+/* Estilo para la palabra SEÑORITA */
+.highlight-title {
+  display: inline-block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 3.4rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ffffff 0%, #f472b6 45%, #c084fc 75%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 25px rgba(244, 114, 182, 0.65));
+  letter-spacing: 1px;
+  margin-top: 2px;
+  animation: glowPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  0% {
+    filter: drop-shadow(0 0 18px rgba(244, 114, 182, 0.5));
+    transform: scale(1);
+  }
+  100% {
+    filter: drop-shadow(0 0 32px rgba(192, 132, 252, 0.85));
+    transform: scale(1.02);
+  }
+}
+
+/* Animación de letras individuales cuando usás tipeo por JS */
+.typewriter-phrase span:not(.highlight-title) {
   display: inline-block;
   opacity: 0;
-  transform: translateY(18px) scale(.4);
-  animation: letterPop .45s forwards;
+  transform: translateY(15px) scale(0.8);
+  animation: letterPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 @keyframes letterPop {
@@ -95,126 +182,222 @@ body {
   }
 }
 
+/* Subtítulo Elegante con Azul Neón y Rosa */
 .subtitle {
-  margin-top: 18px;
-  color: #d4b6ff;
-  font-size: .9rem;
-  letter-spacing: 4px;
+  margin-top: 16px;
+  color: rgba(224, 231, 255, 0.85);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 4.5px;
   text-transform: uppercase;
-  text-shadow: 0 0 10px rgba(255,255,255,.3);
+  background: linear-gradient(90deg, #38bdf8, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+}
+
+/* Adaptación Mobile */
+@media (max-width: 580px) {
+  .typewriter-phrase {
+    font-size: 1.6rem;
+  }
+  .highlight-title {
+    font-size: 2.7rem;
+  }
+  .subtitle {
+    font-size: 0.68rem;
+    letter-spacing: 3px;
+  }
 }
 
 /* ==========================================================
-   GRILLA DE SORPRESAS (SIN BRILLOS GIRATORIOS)
+   GRILLA DE SORPRESAS OPTIMIZADA (MOBILE FIRST / COMPACTA)
 ========================================================== */
 
 .gifts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  gap: 20px 14px;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
 }
 
+/* Tarjeta individual */
 .gift-card {
   text-decoration: none;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: .4s;
+  gap: 8px; /* Controla la distancia exacta entre el círculo y la etiqueta */
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .gift-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-6px) scale(1.03);
 }
 
 .gift-card:active {
-  transform: scale(.94);
+  transform: scale(0.94);
 }
 
+/* Contenedor Esférico */
 .gift-box {
   position: relative;
   width: 100%;
+  max-width: 110px; /* Tamaño máximo controlado */
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: floatPhoto 5s ease-in-out infinite;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.9), rgba(139, 92, 246, 0.9), rgba(6, 182, 212, 0.9));
+  box-shadow: 
+    0 8px 20px -4px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(139, 92, 246, 0.25);
+  transition: all 0.35s ease;
+  animation: floatPhoto 6s ease-in-out infinite;
 }
 
-/* Halo Violeta tras las imágenes */
+/* Aura resplandeciente trasera */
 .gift-box::before {
   content: "";
   position: absolute;
-  width: 112%;
-  height: 112%;
+  inset: -4px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(174,104,255,.45), rgba(255,120,220,.18), transparent 75%);
-  filter: blur(12px);
+  background: conic-gradient(from 0deg, #ec4899, #8b5cf6, #06b6d4, #ec4899);
+  filter: blur(10px);
+  opacity: 0.45;
+  z-index: -1;
+  transition: opacity 0.35s ease, filter 0.35s ease;
   animation: pulseGlow 4s ease-in-out infinite;
 }
 
-/* Reflejo superior de cristal */
+/* Brillo de cristal superior */
 .gift-box::after {
   content: "";
   position: absolute;
-  width: 32%;
-  height: 32%;
-  top: 12%;
-  left: 18%;
+  width: 38%;
+  height: 38%;
+  top: 7%;
+  left: 14%;
   border-radius: 50%;
-  background: rgba(255,255,255,.45);
-  filter: blur(7px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55), transparent);
+  filter: blur(2px);
   z-index: 4;
+  pointer-events: none;
 }
 
+/* Imagen perfectamente adaptada */
 .gift-img {
   position: relative;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   border-radius: 50%;
-  border: 4px solid rgba(255,255,255,.95);
   z-index: 3;
-  transition: .45s;
-  box-shadow:
-    0 0 20px rgba(170,120,255,.5),
-    0 0 40px rgba(255,105,180,.25),
-    0 15px 35px rgba(0,0,0,.45);
+  transition: transform 0.35s ease;
+}
+
+.gift-card:hover .gift-box {
+  box-shadow: 
+    0 12px 28px -4px rgba(0, 0, 0, 0.65),
+    0 0 22px rgba(236, 72, 153, 0.45),
+    0 0 30px rgba(6, 182, 212, 0.3);
+}
+
+.gift-card:hover .gift-box::before {
+  opacity: 0.85;
+  filter: blur(14px);
 }
 
 .gift-card:hover .gift-img {
-  transform: scale(1.08) rotate(-4deg);
-  box-shadow:
-    0 0 25px #bb86fc,
-    0 0 50px #ff6bd6,
-    0 20px 40px rgba(0,0,0,.5);
+  transform: scale(1.04);
 }
 
+/* Etiqueta de Texto (Glassmorphism elegante) */
 .gift-label {
-  margin-top: 15px;
-  padding: 9px 15px;
-  border-radius: 40px;
-  background: rgba(255,255,255,.08);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255,255,255,.15);
-  color: #efd7ff;
-  font-size: .78rem;
+  width: 100%;
+  padding: 5px 8px;
+  border-radius: 16px;
+  background: rgba(14, 8, 28, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f3e8ff;
+  font-size: 0.72rem;
   font-weight: 700;
   text-align: center;
-  letter-spacing: .3px;
-  box-shadow: 0 8px 25px rgba(0,0,0,.25);
-  transition: 0.3s ease;
+  letter-spacing: 0.2px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .gift-card:hover .gift-label {
-  background: rgba(255,255,255,.15);
-  color: white;
-  box-shadow:
-    0 0 15px rgba(186,104,255,.5),
-    0 0 30px rgba(255,105,180,.3);
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.4), rgba(139, 92, 246, 0.4));
+  border-color: rgba(236, 72, 153, 0.6);
+  color: #ffffff;
+  box-shadow: 
+    0 0 12px rgba(236, 72, 153, 0.4),
+    0 0 20px rgba(6, 182, 212, 0.25);
+}
+
+/* Animaciones de Flotación y Pulso */
+@keyframes floatPhoto {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); opacity: 0.45; }
+  50% { transform: scale(1.08); opacity: 0.75; }
 }
 
 /* ==========================================================
-   CORAZONES FLOTANTES DE FONDO
+   ADAPTACIÓN EXCLUSIVA Y ULTRA-FLUIDA PARA CELULARES
+========================================================== */
+
+@media (max-width: 480px) {
+  .gifts-grid {
+    gap: 16px 10px; /* Menor espacio entre filas y columnas */
+    padding: 0 5px;
+  }
+
+  .gift-box {
+    max-width: 88px; /* Tamaño ideal en pantalla de celular */
+    padding: 2.5px;
+  }
+
+  .gift-label {
+    font-size: 0.65rem;
+    padding: 4px 6px;
+    border-radius: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  /* Soporte para pantallas de celular muy angostas */
+  .gifts-grid {
+    gap: 12px 8px;
+  }
+
+  .gift-box {
+    max-width: 78px;
+  }
+
+  .gift-label {
+    font-size: 0.6rem;
+    padding: 3px 4px;
+  }
+}
+
+/* ==========================================================
+   CORAZONES Y ELEMENTOS FLOTANTES CON NUEVOS TONOS
 ========================================================== */
 
 .balloon-container {
@@ -228,60 +411,239 @@ body {
 .balloon-heart {
   position: absolute;
   bottom: -60px;
-  font-size: 24px;
-  opacity: .85;
-  filter: drop-shadow(0 0 8px rgba(255,120,220,.7));
-  animation: floatUp var(--duration) linear forwards;
+  font-size: 22px;
+  opacity: 0.8;
+  filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.8));
+  animation: floatUp var(--duration) cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
 @keyframes floatUp {
   0% {
-    transform: translateY(0) scale(.6);
+    transform: translateY(0) scale(0.5);
     opacity: 0;
   }
-  15% { opacity: 1; }
-  40% {
-    transform: translateX(-10px) translateY(-35vh) rotate(-8deg);
+  15% { 
+    opacity: 0.9; 
   }
-  70% {
-    transform: translateX(10px) translateY(-70vh) rotate(8deg);
+  50% {
+    transform: translateX(-15px) translateY(-50vh) rotate(-10deg);
+  }
+  80% {
+    transform: translateX(15px) translateY(-85vh) rotate(10deg);
   }
   100% {
-    transform: translate3d(var(--translateX), -120vh, 0) scale(1.2) rotate(var(--rotate));
+    transform: translate3d(var(--translateX), -125vh, 0) scale(1.15) rotate(var(--rotate));
     opacity: 0;
   }
 }
 
 @keyframes floatPhoto {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-8px); }
 }
 
 @keyframes pulseGlow {
-  0%, 100% { transform: scale(1); opacity: .8; }
-  50% { transform: scale(1.08); opacity: 1; }
+  0%, 100% { transform: scale(1); opacity: 0.45; }
+  50% { transform: scale(1.1); opacity: 0.75; }
 }
 
 /* ==========================================================
-   RESPONSIVE PARA DISPOSITIVOS MÓVILES
+   ADAPTACIÓN RESPONSIVA (MÓVILES)
 ========================================================== */
 
-@media (max-width: 520px) {
+@media (max-width: 580px) {
   .lobby-container {
-    padding: 25px 15px 45px;
+    padding: 30px 14px 50px;
   }
+  
   .typewriter-phrase {
-    font-size: 1.7rem;
+    font-size: 1.75rem;
   }
+  
   .subtitle {
-    font-size: .75rem;
-    letter-spacing: 2px;
+    font-size: 0.7rem;
+    letter-spacing: 3.5px;
   }
+  
   .gifts-grid {
-    gap: 20px;
+    gap: 20px 12px;
   }
+  
   .gift-label {
-    font-size: .7rem;
-    padding: 7px 10px;
+    font-size: 0.68rem;
+    padding: 6px 8px;
+    border-radius: 12px;
   }
+}
+
+/* ==========================================================
+   BADGE DE REGALITO (ESQUINA SUPERIOR DERECHA)
+========================================================== */
+
+.gift-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  z-index: 5; /* Por encima de la imagen y los brillos */
+  font-size: 0.95rem;
+  background: rgba(18, 10, 36, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(236, 72, 153, 0.6);
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 0 10px rgba(236, 72, 153, 0.5),
+    0 4px 8px rgba(0, 0, 0, 0.4);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  pointer-events: none; /* Para que el click pase directo a la tarjeta */
+}
+
+/* Efecto al pasar el mouse por la tarjeta */
+.gift-card:hover .gift-badge {
+  transform: scale(1.2) rotate(12deg);
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.9), rgba(139, 92, 246, 0.9));
+  border-color: #ffffff;
+  box-shadow: 
+    0 0 14px rgba(236, 72, 153, 0.8),
+    0 0 20px rgba(6, 182, 212, 0.5);
+}
+
+/* Adaptación para pantallas de celular */
+@media (max-width: 480px) {
+  .gift-badge {
+    width: 22px;
+    height: 22px;
+    font-size: 0.75rem;
+    top: -1px;
+    right: -1px;
+  }
+}
+
+/* ==========================================================
+   MODAL EN ROSA VIVO Y CHICLE (NEÓN)
+========================================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(8, 2, 14, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  animation: fadeInModal 0.35s ease forwards;
+}
+
+.modal-overlay.hidden-modal {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.modal-card {
+  background: linear-gradient(145deg, rgba(38, 8, 30, 0.95), rgba(18, 4, 16, 0.98));
+  border: 2px solid #ff2a85;
+  border-radius: 28px;
+  padding: 30px 22px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 
+    0 15px 45px rgba(0, 0, 0, 0.85),
+    0 0 35px rgba(255, 42, 133, 0.5),
+    inset 0 0 15px rgba(255, 42, 133, 0.2);
+  animation: scaleUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.modal-icon {
+  font-size: 2.5rem;
+  margin-bottom: 6px;
+  filter: drop-shadow(0 0 12px #ff2a85);
+}
+
+.modal-title {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+/* "Señorita" resaltado en rosa bien encendido */
+.highlight-modal {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2.2rem;
+  color: #ff66b2;
+  text-shadow: 0 0 16px rgba(255, 42, 133, 0.9);
+}
+
+.modal-text {
+  color: #ffe6f2;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.modal-tip {
+  background: rgba(255, 42, 133, 0.18);
+  border: 1px dashed rgba(255, 102, 178, 0.6);
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 0 12px rgba(255, 42, 133, 0.2);
+}
+
+/* Botón Rosa Vivo con Brillo Neón */
+.modal-btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 22px;
+  border: none;
+  background: linear-gradient(135deg, #ff2a85, #ff66b2, #9333ea);
+  background-size: 200% 200%;
+  color: white;
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 
+    0 0 20px rgba(255, 42, 133, 0.7),
+    0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-btn:hover {
+  box-shadow: 
+    0 0 28px rgba(255, 42, 133, 0.9),
+    0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.modal-btn:active {
+  transform: scale(0.95);
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUpModal {
+  from { transform: scale(0.8); }
+  to { transform: scale(1); }
 }

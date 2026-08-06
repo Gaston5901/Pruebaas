@@ -1,0 +1,29 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #1a000d; 
+  height: 100vh; 
+}
+
+canvas {
+  display: block;
+}
+
+#gif1, #gif2 {
+  position: absolute;
+  bottom: 5vh; 
+  width: 25vw; 
+  max-width: 150px;
+  height: auto;
+  pointer-events: none; 
+}
+
+#gif1 {
+  left: 25%;  
+}
+
+#gif2 {
+  right: 25%;  
+  transform: scaleX(-1); 
+}
