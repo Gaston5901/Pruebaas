@@ -812,3 +812,18 @@ html, body {
     border-radius: 10px;
 }
 
+/* Frase destacada tipo verso dentro de la carta */
+.compass-quote {
+    display: block;
+    margin: 18px 0;
+    padding: 10px 15px;
+    font-family: 'Cormorant Garamond', serif; /* O la fuente cursiva/serifa que uses para títulos */
+    font-style: italic;
+    font-size: 1.05rem;
+    color: #ffd1e8; /* Rosa pastel suave sofisticado que resalta en fondo oscuro */
+    border-left: 2px solid var(--primary-pink-dark, #ff5fa2); /* Línea delicada al costado */
+    background: rgba(255, 95, 162, 0.05); /* Fondo suave translúcido */
+    border-radius: 0 10px 10px 0;
+    text-align: center;
+    line-height: 1.5;
+}
