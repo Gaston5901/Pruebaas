@@ -154,13 +154,41 @@ body.modal-open {
 }
 
 /* Evita que el scroll de la carta transfiera el movimiento al cuerpo de la página */
+/* ==========================================================================
+   SCROLLBAR DE LA CARTA (ESTILO DELGADO Y REALISTA)
+   ========================================================================== */
+
+/* Contenedor de scroll con detención de propagación */
 .letter-content-scroll {
     overflow-y: auto;
     max-height: calc(85vh - 90px);
-    padding-right: 10px;
+    padding-right: 12px;
     margin-bottom: 5px;
-    overscroll-behavior: contain !important; /* Detiene el scroll para que no baje la página principal */
-    -webkit-overflow-scrolling: touch; /* Garantiza fluidez en Safari/iOS */
+    overscroll-behavior: contain !important;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Ancho super fino de la barra */
+.letter-content-scroll::-webkit-scrollbar {
+    width: 4px; /* Fina y sutil */
+}
+
+/* Pista de fondo casi invisible */
+.letter-content-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+}
+
+/* Barra desplazable (Thumb) elegante */
+.letter-content-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25); /* Tono claro translúcido */
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+/* Efecto hover cuando se pasa el cursor o se toca */
+.letter-content-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-pink-dark, #ff5fa2); /* Se resalta al interactuar */
 }
 
 /* Modal de la Carta (Totalmente Aislado con z-index superior) */
