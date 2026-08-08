@@ -117,7 +117,9 @@ html, body {
     width: 180px;
     height: 180px;
     border-radius: 50%;
-    object-fit: cover;
+    object-fit: contain; /* Evita que la imagen se recorte en zoom */
+    padding: 8px;        /* Crea un margen interno para alejar la foto */
+    background: rgba(15, 12, 26, 0.6); /* Fondo para que encaje con el círculo */
     cursor: pointer;
     border: 3px solid var(--purple-glow);
     box-shadow: 0 16px 42px rgba(0, 0, 0, 0.4), 0 0 28px rgba(168, 85, 247, 0.3);
@@ -543,3 +545,270 @@ html, body {
         gap: 18px;
     }
 }
+
+/* ==========================================================================
+   BADGE FLOTANTE DE VINILO Y MODAL DE DEDICATORIA
+   ========================================================================== */
+
+/* Badge Flotante (Abajo a la derecha) */
+/* Badge Flotante Circular Perfecto */
+.floating-vinyl-badge {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99999 !important;
+    width: 54px;               /* Ancho fijo igual al alto */
+    height: 54px;              /* Alto fijo para hacer un círculo */
+    border-radius: 50%;        /* Hace que sea 100% circular */
+    padding: 0;                /* Quita rellenos sobrantes */
+    background: rgba(18, 18, 30, 0.85);
+    border: 2px solid var(--primary-pink-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;   /* Centra el vinilo en medio */
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 95, 162, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-vinyl-badge:hover {
+    transform: scale(1.1) rotate(15deg);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 22px rgba(168, 85, 247, 0.6);
+}
+
+/* El Disco de Vinilo adentro */
+/* ==========================================================================
+   BADGE FLOTANTE UNIFICADO (PÍLDORA INTERACTIVA)
+   ========================================================================== */
+
+.floating-vinyl-badge {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 99999 !important;
+    background: rgba(18, 18, 30, 0.9);
+    border: 2px solid var(--primary-pink-dark, #ff5fa2);
+    border-radius: 50px; /* Forma de cápsula */
+    padding: 6px 16px 6px 6px; /* Espacio para que el disco encaje perfecto a la izquierda */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 18px rgba(255, 95, 162, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: vinylPulse 2.5s infinite;
+}
+
+.floating-vinyl-badge:hover {
+    transform: scale(1.08) translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 28px rgba(255, 95, 162, 0.7);
+}
+
+/* El Disco de Vinilo (Gira continuamente) */
+/* Badge flotante unificado en una sola pieza */
+.floating-vinyl-badge {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 99999 !important;
+    width: auto;                  /* Permite que se estire según el texto */
+    height: 50px;                 /* Alto fijo parejo */
+    border-radius: 50px;          /* Forma de píldora perfecta */
+    padding: 5px 18px 5px 6px;    /* Espaciado interno: disco a la izq, texto a la der */
+    background: rgba(18, 18, 30, 0.9);
+    border: 2px solid var(--primary-pink-dark, #ff5fa2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 18px rgba(255, 95, 162, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floating-vinyl-badge:hover {
+    transform: scale(1.06) translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 28px rgba(255, 95, 162, 0.7);
+}
+
+/* El disco adentro */
+.vinyl-badge-disc {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: repeating-radial-gradient(circle, #111 0px, #111 2px, #222 3px, #111 4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: spinSlow 6s linear infinite;
+    flex-shrink: 0;
+}
+
+/* El texto "Tócame 🎵" dentro de la misma cápsula */
+.badge-tooltip {
+    position: static;            /* Quita posicionamientos absolutos que lo separaban */
+    background: none;            /* Quita fondos o bordes extras del texto */
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ANIMACIONES */
+@keyframes spinSlow {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes vinylPulse {
+    0%, 100% { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 95, 162, 0.4); }
+    50% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 95, 162, 0.7); }
+}
+
+/* Modal Overlay */
+.dedicated-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+}
+
+/* Modal principal */
+.dedicated-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 90%;
+    max-width: 440px;
+    background: linear-gradient(145deg, rgba(20, 16, 32, 0.98), rgba(10, 8, 18, 0.98));
+    border: 1px solid rgba(255, 95, 162, 0.4);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(168, 85, 247, 0.25);
+    border-radius: 24px;
+    padding: 28px 20px;
+    z-index: 10001;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.dedicated-modal.show,
+.dedicated-modal-overlay.show {
+    display: block;
+}
+
+.dedicated-modal.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    background: none;
+    border: none;
+    color: var(--text-soft-dark);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.modal-record-icon {
+    font-size: 2.2rem;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.modal-record-icon.spinning {
+    animation: rotateBorder 3s linear infinite;
+}
+
+.dedicated-modal-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: var(--text-main-dark);
+}
+
+.dedicated-modal-header p {
+    font-size: 0.88rem;
+    color: var(--text-soft-dark);
+    font-style: italic;
+    margin-top: 4px;
+    margin-bottom: 20px;
+}
+
+/* Lista de opciones dentro del modal */
+.dedicated-track-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-track-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: var(--text-main-dark);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.25s ease;
+}
+
+.modal-track-btn:hover,
+.modal-track-btn.active {
+    background: rgba(168, 85, 247, 0.2);
+    border-color: var(--primary-pink-dark);
+}
+
+.track-text-info strong {
+    display: block;
+    font-size: 0.9rem;
+}
+
+.track-text-info small {
+    color: var(--primary-pink-dark);
+    font-size: 0.75rem;
+    font-style: italic;
+}
+
+.btn-play-state {
+    font-size: 0.78rem;
+    color: var(--secondary-pink-dark);
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+/* Reproductor interno */
+.modal-player-container {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#modal-song-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-soft-dark);
+    margin-bottom: 8px;
+}
+
+.modal-player-container audio {
+    width: 100% !important;
+    border-radius: 10px;
+}
+

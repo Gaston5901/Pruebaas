@@ -22,8 +22,8 @@
         </div>
 
         <div id="love-letter-container" class="section-container">
-            <h2>Una Carta Para Usted💗</h2>
-            <img id="center-image" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=400" alt="Foto Central Interactiva">
+            <h2>Una Carta Para Tu💗</h2>
+            <img id="center-image" src="image.png" alt="Foto Central Interactiva">
             <span class="click-hint">Hacé clic en la foto para abrir tu mensaje</span>
         </div>
 
@@ -100,160 +100,60 @@
             </div>
         </div>
 
+        
+
         <div class="love-phrase">
             "Sos mi canción favorita en un mundo lleno de ruido."
         </div>
 
     </div>
+    <!-- BADGE FLOTANTE DE VINILO (Abajo a la derecha) -->
+<!-- BADGE FLOTANTE UNIFICADO -->
+<button class="floating-vinyl-badge" id="vinyl-badge" onclick="openDedicatedModal()" aria-label="Abrir dedicatoria especial">
+    <div class="vinyl-badge-disc">
+        <div class="vinyl-badge-center">🌸</div>
+    </div>
+    <span class="badge-tooltip">Tocar</span>
+</button>
 
-    <script>
-       const centerImage = document.getElementById('center-image');
-const loveLetter = document.getElementById('love-letter');
-const overlay = document.getElementById('overlay');
-const closeLetterBtn = document.getElementById('close-letter-btn');
+<!-- MODAL DE LA DEDICATORIA ESPECIAL -->
+<div class="dedicated-modal-overlay" id="dedicated-modal-overlay" onclick="closeDedicatedModal()"></div>
 
-centerImage.addEventListener('click', () => {
-    loveLetter.classList.add('show');
-    overlay.classList.add('show');
-    createHeartShower();
-});
+<div class="dedicated-modal" id="dedicated-modal">
+    <button class="close-modal-btn" onclick="closeDedicatedModal()">✕</button>
+    
+    <div class="dedicated-modal-header">
+        <div class="modal-record-icon" id="modal-spinning-record">🎵</div>
+        <h2>Señoritaaa 🌹</h2>
+        <p>Estas dos canciones se las dedico especialmente a usted...</p>
+    </div>
 
-function closeLetter() {
-    loveLetter.classList.remove('show');
-    overlay.classList.remove('show');
-}
+    <!-- Lista de los 2 temas -->
+    <div class="dedicated-track-list">
+        <button class="modal-track-btn" onclick="playModalTrack('dedicadas/volo.mp3', 'Más que Amor', 'Sos un museo lleno de arte, poesía y belleza pura', this)">
+            <div class="track-text-info">
+                <strong>1. Más que Amor - Il Volo</strong>
+                <small>"Sos un museo lleno de arte, poesía y belleza pura"</small>
+            </div>
+            <span class="btn-play-state">Reproducir ▶</span>
+        </button>
 
-closeLetterBtn.addEventListener('click', closeLetter);
-overlay.addEventListener('click', closeLetter);
+        <button class="modal-track-btn" onclick="playModalTrack('dedicadas/axel.mp3', 'Te Voy a Amar - Axel', 'Sin importar el tiempo o la distancia, mi promesa sigue intacta', this)">
+            <div class="track-text-info">
+                <strong>2. Te Voy a Amar - Axel</strong>
+                <small>"Sin importar el tiempo o la distancia, mi promesa sigue intacta"</small>
+            </div>
+            <span class="btn-play-state">Reproducir ▶</span>
+        </button>
+    </div>
 
-const artistsData = {
-    morat: {
-        title: "BTS",
-        desc: "Siete voces, una historia y millones de corazones unidos por su música.",
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXlKjV9LJbM2rKMZJ7hXSmgsQstVCOZilswP0fz_pozi-2J1A7v_Li7-pkc6TDfspJ9rtlF3wvuzqo0FPawekAgTem_G36_HKOAijt8A&s=10",
-        tracks: [
-            { name: "Serendipity", url: "BTS/LoveYourself.mp3" },
-            { name: "Euphoria", url: "BTS/Euphoria.mp3" },
-            { name: "Boy In Luv", url: "BTS/BoyInLuv.mp3" },
-            { name: "Your Eyes Tell", url: "BTS/YourEyesTell.mp3" }
-        ]
-    },
-    reik: {
-        title: "Silvana Estrada",
-        desc: "Delicadeza, sensibilidad y poesía en cada canción.",
-        image: "silvanaEstrada/image copy.png",
-        tracks: [
-            { name: "Flores", url: "silvanaEstrada/Flores.mp3" },
-            { name: "Carta", url: "silvanaEstrada/Carta.mp3" },
-            { name: "Que Problema", url: "silvanaEstrada/QueProblema.mp3" },
-            { name: "Te Guardo", url: "silvanaEstrada/TeGuardo.mp3" }
-        ]
-    },
-    camilo: {
-        title: "Humbe",
-        desc: "Canciones sinceras que transforman emociones cotidianas en momentos inolvidables.",
-        image: "https://upload.wikimedia.org/wikipedia/commons/4/48/Humbe_en_Esencia_Tour_en_Coahuila_%281%29_%28cropped%29.png",
-        tracks: [
-            { name: "Morfina", url: "Humbe/Morfina.mp3" },
-            { name: "Confieso", url: "Humbe/Confieso.mp3" },
-            { name: "Te lo Prometo", url: "Humbe/prometo.mp3" },
-            { name: "Amor de Cine", url: "Humbe/AmorDeCine.mp3" }
-        ]
-    },
-    mafia: {
-        title: "Latin Mafia",
-        desc: "Sonidos frescos que combinan vulnerabilidad, ritmo y mucha personalidad.",
-        image: "mafia/image copy.png",
-        tracks: [
-            { name: "Ciudad de las Luces", url: "mafia/CiudadDeLasLuces.mp3" },
-            { name: "Flores", url: "mafia/Flores.mp3" },
-            { name: "Se Fue la Luz", url: "mafia/Luz.mp3" },
-            { name: "Patadas de Ahogado", url: "mafia/pata.mp3" }
-        ]
-    }
-};
+    <!-- Reproductor dentro del modal -->
+    <div class="modal-player-container">
+        <span id="modal-song-label">Seleccione una canción para escuchar</span>
+        <audio id="modal-audio-player" controls preload="none"></audio>
+    </div>
+</div>
 
-const multimediaSection = document.getElementById('multimedia-section');
-const trackListContainer = document.getElementById('featured-tracks');
-const audioPlayer = document.getElementById('main-audio-player');
-const btnVolverInicio = document.querySelector('.volver-inicio');
-
-// Precarga de imágenes en RAM para rendimiento inmediato
-function preloadImages() {
-    Object.values(artistsData).forEach(artist => {
-        if (artist.image) {
-            const img = new Image();
-            img.src = artist.image;
-        }
-    });
-}
-preloadImages();
-
-function openSpotlight(key) {
-    const data = artistsData[key];
-    if (!data) return;
-
-    const featuredImg = document.getElementById('featured-img');
-
-    // Oculta la foto anterior para evitar destellos
-    featuredImg.style.opacity = '0';
-    featuredImg.src = data.image;
-
-    // Al cargar la nueva imagen, la muestra suavemente
-    featuredImg.onload = () => {
-        featuredImg.style.opacity = '1';
-    };
-
-    document.getElementById('featured-title').innerText = data.title;
-    document.getElementById('featured-desc').innerText = data.desc;
-
-    trackListContainer.innerHTML = "";
-    data.tracks.forEach((track) => {
-        const btn = document.createElement('button');
-        btn.className = "track-button";
-        btn.innerHTML = `${track.name} <span>Reproducir ▶</span>`;
-        btn.onclick = () => playTrack(track.url, btn);
-        trackListContainer.appendChild(btn);
-    });
-
-    audioPlayer.src = "";
-    multimediaSection.classList.add('is-spotlight');
-
-    // Oculta el botón flotante "Volver al inicio"
-    if (btnVolverInicio) btnVolverInicio.style.display = 'none';
-
-    multimediaSection.scrollIntoView({ behavior: 'smooth' });
-}
-
-function closeSpotlight() {
-    audioPlayer.pause();
-    audioPlayer.src = "";
-    multimediaSection.classList.remove('is-spotlight');
-
-    // Reaparece el botón "Volver al inicio" en la vista del catálogo
-    if (btnVolverInicio) btnVolverInicio.style.display = 'inline-flex';
-}
-
-function playTrack(url, clickedButton) {
-    document.querySelectorAll('.track-button').forEach(b => b.classList.remove('active'));
-    clickedButton.classList.add('active');
-    audioPlayer.src = url;
-    audioPlayer.play();
-}
-
-function createHeartShower() {
-    for (let i = 0; i < 15; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'heart-particle';
-        heart.innerText = ['❤️', '💖', '💝', '💕'][Math.floor(Math.random() * 4)];
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDelay = Math.random() * 1.5 + 's';
-        heart.style.fontSize = Math.random() * 0.8 + 1 + 'rem';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 4000);
-    }
-}
-
-</script>
+    <script src="js.js"></script>
 </body>
 </html>
