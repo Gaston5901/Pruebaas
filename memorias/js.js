@@ -19,6 +19,7 @@ if (centerImage && loveLetter && overlay) {
         if (vinylBadge) {
             vinylBadge.style.opacity = '0';
             vinylBadge.style.pointerEvents = 'none';
+            vinylBadge.classList.remove('visible');
         }
 
         if (typeof createHeartShower === 'function') createHeartShower();
@@ -35,12 +36,15 @@ function closeLetter() {
     // Restaura la visibilidad del botón volver al inicio
     if (btnVolverInicio) btnVolverInicio.style.display = 'inline-flex';
 
-    // Restaura el badge si el usuario ya está en la sección adecuada
-    if (vinylBadge) {
-        const multimediaSection = document.getElementById('multimedia-section') || document.querySelector('.artist-grid');
-        if (multimediaSection && multimediaSection.getBoundingClientRect().top < window.innerHeight - 120) {
+    // Restaura el badge si el usuario ya está en la sección adecuada y no está viendo un artista
+    const multimediaSection = document.getElementById('multimedia-section') || document.querySelector('.artist-grid');
+    const isSpotlightActive = multimediaSection && multimediaSection.classList.contains('is-spotlight');
+
+    if (vinylBadge && !isSpotlightActive) {
+        if (multimediaSection && multimediaSection.getBoundingClientRect().top < window.innerHeight - 320) {
             vinylBadge.style.opacity = '1';
             vinylBadge.style.pointerEvents = 'auto';
+            vinylBadge.classList.add('visible');
         }
     }
 }
@@ -56,14 +60,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (vinylBadge && multimediaSection) {
         window.addEventListener('scroll', () => {
-            // Si la carta de amor está abierta, el badge se mantiene oculto
-            if (loveLetter && loveLetter.classList.contains('show')) return;
+            // Si la carta está abierta O si hay un artista abierto, NO se muestra el badge
+            const isSpotlightActive = multimediaSection.classList.contains('is-spotlight');
+            const isLetterActive = loveLetter && loveLetter.classList.contains('show');
 
-            // Detecta cuando la grilla de cantantes entra en pantalla
+            if (isSpotlightActive || isLetterActive) {
+                vinylBadge.style.opacity = '0';
+                vinylBadge.style.pointerEvents = 'none';
+                vinylBadge.classList.remove('visible');
+                return;
+            }
+
+            // Regulación del Scroll: Exige bajar más (320px adentro de la vista)
             const sectionPosition = multimediaSection.getBoundingClientRect().top;
             const screenHeight = window.innerHeight;
 
-            if (sectionPosition < screenHeight - 120) {
+            if (sectionPosition < screenHeight - 320) {
                 vinylBadge.style.opacity = '1';
                 vinylBadge.style.pointerEvents = 'auto';
                 vinylBadge.classList.add('visible');
@@ -175,6 +187,7 @@ function openSpotlight(key) {
     if (vinylBadge) {
         vinylBadge.style.opacity = '0';
         vinylBadge.style.pointerEvents = 'none';
+        vinylBadge.classList.remove('visible');
     }
 
     if (multimediaSection) multimediaSection.scrollIntoView({ behavior: 'smooth' });
@@ -192,6 +205,7 @@ function closeSpotlight() {
     if (vinylBadge) {
         vinylBadge.style.opacity = '1';
         vinylBadge.style.pointerEvents = 'auto';
+        vinylBadge.classList.add('visible');
     }
 }
 
