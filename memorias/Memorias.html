@@ -4,23 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuestro Espacio Privado</title>
-    <link href="https://fonts.googleapis.com/css2=family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="estilos.css">
-    <style>
-
-    </style>
 </head>
 <body>
-          <a class="volver-inicio" href="../index.html" aria-label="Volver al inicio">← </a>
-
+    <a class="volver-inicio" href="../index.html" aria-label="Volver al inicio">← </a>
 
     <div id="memories-page">
         
+        <!-- ENCABEZADO PRINCIPAL -->
         <div class="title-container">
             <span class="subtitle-top">Bienvenido a nuestro rincón</span>
             <h1 class="main-title">Tus Momentos Especiales</h1>
         </div>
 
+        <!-- SECCIÓN DE CARTA INTERACTIVA -->
         <div id="love-letter-container" class="section-container">
             <h2>Una Carta Para Tu💗</h2>
             <img id="center-image" src="image.png" alt="Foto Central Interactiva">
@@ -28,24 +26,34 @@
         </div>
 
         <div id="overlay"></div>
+
+        <!-- MODAL DE LA CARTA (Adaptable para móviles) -->
         <div id="love-letter">
             <h2>Holaa señorita bellaa 🌹</h2>
-<p class="letter-body">
-    Quiero que nunca olvides lo increíble que sos. Tienes una luz especial, una fuerza admirable y una forma única de hacer que todo a tu alrededor sea mejor. Sigue persiguiendo tus sueños, confiando en ti misma y demostrando todo lo que vales, porque eres capaz de lograr cosas maravillosas. Nunca dejes que las dudas te hagan olvidar lo lejos que has llegado ni todo lo bueno que aún te espera.
-    
-    <span class="compass-quote">
-        "Como la brújula de Jack Sparrow... no importa cuántas vueltas dé la vida, mi corazón siempre terminará apuntando hacia ti."
-    </span>
+            
+            <div class="letter-content-scroll">
+                <p class="letter-body">
+                    Quiero que nunca olvides lo increíble que sos. Tienes una luz especial, una fuerza admirable y una forma única de hacer que todo a tu alrededor sea mejor. Sigue persiguiendo tus sueños, confiando en ti misma y demostrando todo lo que vales, porque eres capaz de lograr cosas maravillosas. Nunca dejes que las dudas te hagan olvidar lo lejos que has llegado ni todo lo bueno que aún te espera.
+                    
+                    <span class="compass-quote">
+                        "Como la brújula de Jack Sparrow... no importa cuántas vueltas dé la vida, mi corazón siempre terminará apuntando hacia ti. Vas muy bien, señorita, nunca lo dudes."
+                    </span>
 
-    Estoy muy orgulloso de ti y de la persona tan hermosa que sos, Vas muy bienn. Te Quierouu muchisimo señoritaa ❤️
-</p>
+                    Estoy muy orgulloso de ti y de la persona tan hermosa que sos, Vas muy bienn. Te Quierouu muchisimo señoritaa ❤️
+                </p>
+            </div>
+
             <button class="close-button" id="close-letter-btn">Cerrar con Amor</button>
         </div>
 
+        <!-- SECCIÓN DE CANTANTES -->
         <div class="section-container">
             <h2>Tus Cantantes señoritaa</h2>
+            <p class="section-subtitle">Toca un cantante para ver sus canciones ✨</p>
+            
             <div id="multimedia-section" class="artist-section">
                 
+                <!-- CATÁLOGO DE ARTISTAS -->
                 <div class="artist-grid" id="artist-catalog">
                     
                     <div class="artist-card" onclick="openSpotlight('morat')">
@@ -74,7 +82,7 @@
 
                     <div class="artist-card" onclick="openSpotlight('mafia')">
                         <div class="card-internal">
-                                <img src="mafia/image.png" alt="Latin Mafia">
+                            <img src="mafia/image.png" alt="Latin Mafia">
                             <h3>Latin Mafia</h3>
                             <p>Sonidos que mezclan nostalgia y emoción.</p>
                         </div>
@@ -82,6 +90,7 @@
 
                 </div>
 
+                <!-- VISTA SPOTLIGHT / REPRODUCTOR DEL ARTISTA -->
                 <div class="artist-featured" id="artist-spotlight-view">
                     <div class="featured-cover">
                         <img id="featured-img" src="" alt="Portada Artista">
@@ -94,11 +103,10 @@
                         
                         <div class="playlist-shell">
                             <h3>Elegí una canción:</h3>
-                            <div class="track-list" id="featured-tracks">
-                                </div>
+                            <div class="track-list" id="featured-tracks"></div>
                             <div class="player-shell">
-                                <audio id="main-audio-player" controls preload="none"></audio>
-                            </div>
+    <audio id="main-audio-player" controls controlsList="nodownload" preload="metadata"></audio>
+</div>
                         </div>
                     </div>
                 </div>
@@ -106,59 +114,57 @@
             </div>
         </div>
 
-        
-
         <div class="love-phrase">
             "Sos mi canción favorita en un mundo lleno de ruido."
         </div>
 
     </div>
-    <!-- BADGE FLOTANTE DE VINILO (Abajo a la derecha) -->
-<!-- BADGE FLOTANTE UNIFICADO -->
-<button class="floating-vinyl-badge" id="vinyl-badge" onclick="openDedicatedModal()" aria-label="Abrir dedicatoria especial">
-    <div class="vinyl-badge-disc">
-        <div class="vinyl-badge-center">🌸</div>
+
+    <!-- BADGE FLOTANTE DE VINILO UNIFICADO (Aparece con scroll) -->
+    <button class="floating-vinyl-badge" id="vinyl-badge" onclick="openDedicatedModal()" aria-label="Abrir dedicatoria especial">
+        <div class="vinyl-badge-disc">
+            <div class="vinyl-badge-center">🌸</div>
+        </div>
+        <span class="badge-tooltip">Tocar</span>
+    </button>
+
+    <!-- MODAL DE LA DEDICATORIA ESPECIAL -->
+    <div class="dedicated-modal-overlay" id="dedicated-modal-overlay" onclick="closeDedicatedModal()"></div>
+
+    <div class="dedicated-modal" id="dedicated-modal">
+        <button class="close-modal-btn" onclick="closeDedicatedModal()">✕</button>
+        
+        <div class="dedicated-modal-header">
+            <div class="modal-record-icon" id="modal-spinning-record">🎵</div>
+            <h2>Señoritaaa 🌹</h2>
+            <p>Estas dos canciones se las dedico especialmente a usted...</p>
+        </div>
+
+        <!-- Lista de los 2 temas -->
+        <div class="dedicated-track-list">
+            <button class="modal-track-btn" onclick="playModalTrack('dedicadas/volo.mp3', 'Más que Amor', 'Sos un museo lleno de arte, poesía y belleza pura', this)">
+                <div class="track-text-info">
+                    <strong>1. Más que Amor - Il Volo</strong>
+                    <small>"Sos un museo lleno de arte, poesía y belleza pura"</small>
+                </div>
+                <span class="btn-play-state">Reproducir ▶</span>
+            </button>
+
+            <button class="modal-track-btn" onclick="playModalTrack('dedicadas/axel.mp3', 'Te Voy a Amar - Axel', 'Sin importar el tiempo o la distancia, mi promesa sigue intacta', this)">
+                <div class="track-text-info">
+                    <strong>2. Te Voy a Amar - Axel</strong>
+                    <small>"Sin importar el tiempo o la distancia, mi promesa sigue intacta"</small>
+                </div>
+                <span class="btn-play-state">Reproducir ▶</span>
+            </button>
+        </div>
+
+        <!-- Reproductor dentro del modal -->
+        <div class="modal-player-container">
+            <span id="modal-song-label">Seleccione una canción para escuchar</span>
+            <audio id="modal-audio-player" controls preload="none"></audio>
+        </div>
     </div>
-    <span class="badge-tooltip">Tocar</span>
-</button>
-
-<!-- MODAL DE LA DEDICATORIA ESPECIAL -->
-<div class="dedicated-modal-overlay" id="dedicated-modal-overlay" onclick="closeDedicatedModal()"></div>
-
-<div class="dedicated-modal" id="dedicated-modal">
-    <button class="close-modal-btn" onclick="closeDedicatedModal()">✕</button>
-    
-    <div class="dedicated-modal-header">
-        <div class="modal-record-icon" id="modal-spinning-record">🎵</div>
-        <h2>Señoritaaa 🌹</h2>
-        <p>Estas dos canciones se las dedico especialmente a usted...</p>
-    </div>
-
-    <!-- Lista de los 2 temas -->
-    <div class="dedicated-track-list">
-        <button class="modal-track-btn" onclick="playModalTrack('dedicadas/volo.mp3', 'Más que Amor', 'Sos un museo lleno de arte, poesía y belleza pura', this)">
-            <div class="track-text-info">
-                <strong>1. Más que Amor - Il Volo</strong>
-                <small>"Sos un museo lleno de arte, poesía y belleza pura"</small>
-            </div>
-            <span class="btn-play-state">Reproducir ▶</span>
-        </button>
-
-        <button class="modal-track-btn" onclick="playModalTrack('dedicadas/axel.mp3', 'Te Voy a Amar - Axel', 'Sin importar el tiempo o la distancia, mi promesa sigue intacta', this)">
-            <div class="track-text-info">
-                <strong>2. Te Voy a Amar - Axel</strong>
-                <small>"Sin importar el tiempo o la distancia, mi promesa sigue intacta"</small>
-            </div>
-            <span class="btn-play-state">Reproducir ▶</span>
-        </button>
-    </div>
-
-    <!-- Reproductor dentro del modal -->
-    <div class="modal-player-container">
-        <span id="modal-song-label">Seleccione una canción para escuchar</span>
-        <audio id="modal-audio-player" controls preload="none"></audio>
-    </div>
-</div>
 
     <script src="js.js"></script>
 </body>

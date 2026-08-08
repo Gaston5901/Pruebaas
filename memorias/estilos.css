@@ -63,30 +63,31 @@ html, body {
         radial-gradient(circle at bottom right, rgba(255, 95, 162, 0.12), transparent 28%),
         var(--bg-gradient-dark);
     min-height: 100vh;
-    padding: 60px 16px 40px 16px; /* Aumentado padding superior para dar espacio al botón */
+    padding: 30px 16px 40px 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
+    gap: 25px;
 }
 
 /* Títulos Principales */
 .title-container {
     text-align: center;
     max-width: 800px;
+    margin-top: 10px;
 }
 
 .main-title {
-    font-size: 3.5rem;
+    font-size: 3.2rem;
     font-family: 'Cormorant Garamond', serif;
     color: var(--text-main-dark);
     text-shadow: 0 0 18px rgba(168, 85, 247, 0.6), 0 8px 28px rgba(0, 0, 0, 0.35);
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
 .subtitle-top {
     color: var(--text-soft-dark);
-    font-size: 1.1rem;
+    font-size: 1rem;
     letter-spacing: 2px;
     text-transform: uppercase;
 }
@@ -99,9 +100,16 @@ html, body {
 
 .section-container h2 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 2.5rem;
-    margin-bottom: 25px;
+    font-size: 2.3rem;
+    margin-bottom: 6px;
     text-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+}
+
+.section-subtitle {
+    font-size: 0.88rem;
+    color: var(--text-soft-dark);
+    margin-bottom: 20px;
+    font-style: italic;
 }
 
 /* ==========================================================================
@@ -114,17 +122,17 @@ html, body {
 }
 
 #center-image {
-    width: 180px;
-    height: 180px;
+    width: 170px;
+    height: 170px;
     border-radius: 50%;
-    object-fit: contain; /* Evita que la imagen se recorte en zoom */
-    padding: 8px;        /* Crea un margen interno para alejar la foto */
-    background: rgba(15, 12, 26, 0.6); /* Fondo para que encaje con el círculo */
+    object-fit: contain;
+    padding: 8px;
+    background: rgba(15, 12, 26, 0.6);
     cursor: pointer;
     border: 3px solid var(--purple-glow);
     box-shadow: 0 16px 42px rgba(0, 0, 0, 0.4), 0 0 28px rgba(168, 85, 247, 0.3);
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 #center-image:hover {
@@ -133,59 +141,97 @@ html, body {
 
 .click-hint {
     color: var(--text-soft-dark);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-style: italic;
 }
 
-/* Modal de la Carta */
+/* Modal de la Carta (Optimizado con Scroll Interno) */
 #love-letter {
     display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.9);
-    width: 90%;
-    max-width: 550px;
+    width: 92%;
+    max-width: 520px;
+    max-height: 85vh;
     background: linear-gradient(145deg, rgba(18, 18, 30, 0.98), rgba(11, 12, 18, 0.98));
-    border: 1px solid rgba(168, 85, 247, 0.3);
+    border: 1px solid rgba(168, 85, 247, 0.4);
     color: var(--text-main-dark);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(168, 85, 247, 0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 40px rgba(168, 85, 247, 0.25);
     border-radius: 24px;
-    padding: 40px 30px;
+    padding: 30px 20px 20px 20px;
     z-index: 100;
     opacity: 0;
     transition: transform 0.4s ease, opacity 0.4s ease;
     backdrop-filter: blur(20px);
+    flex-direction: column;
 }
 
 #love-letter.show {
-    display: block;
+    display: flex;
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
 }
 
 #love-letter h2 {
-    margin-bottom: 15px;
-    font-size: 2.2rem;
+    margin-bottom: 12px;
+    font-size: 2rem;
+    text-align: center;
+    flex-shrink: 0;
 }
 
-#love-letter p {
-    font-size: 1.1rem;
+/* Contenedor de Texto con Scroll suave */
+.letter-content-scroll {
+    overflow-y: auto;
+    max-height: calc(85vh - 120px);
+    padding-right: 8px;
+    margin-bottom: 15px;
+}
+
+.letter-content-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+.letter-content-scroll::-webkit-scrollbar-thumb {
+    background: var(--primary-pink-dark);
+    border-radius: 4px;
+}
+
+.letter-body {
+    font-size: 1rem;
     line-height: 1.6;
     color: var(--text-soft-dark);
-    margin-bottom: 20px;
+}
+
+.compass-quote {
+    display: block;
+    margin: 16px 0;
+    padding: 10px 14px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: #ffd1e8;
+    border-left: 2px solid var(--primary-pink-dark);
+    background: rgba(255, 95, 162, 0.06);
+    border-radius: 0 10px 10px 0;
+    text-align: center;
+    line-height: 1.5;
 }
 
 .close-button {
     background: var(--purple-glow);
     color: white;
     border: none;
-    padding: 10px 24px;
+    padding: 12px 24px;
     border-radius: 999px;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s, transform 0.2s;
     box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+    width: 100%;
+    margin-top: auto;
+    flex-shrink: 0;
 }
 
 .close-button:hover {
@@ -200,7 +246,7 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.75);
     backdrop-filter: blur(4px);
     z-index: 99;
 }
@@ -216,21 +262,20 @@ html, body {
     width: 100%;
 }
 
-/* Grilla configurada para 2 columnas fijas (2 x 2) */
 .artist-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Fuerza 2 columnas iguales */
-    gap: 20px; /* Espacio entre tarjetas */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
     width: 100%;
-    max-width: 700px; /* Mantiene un ancho elegante para que no se estiren demasiado */
+    max-width: 700px;
     margin: 0 auto;
-    padding: 10px 0;
+    padding: 5px 0;
 }
 
 .artist-card {
     position: relative;
     border-radius: 24px;
-    padding: 4px;
+    padding: 3px;
     background: transparent;
     cursor: pointer;
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -255,7 +300,7 @@ html, body {
         transparent 90%
     );
     animation: rotateBorder 4s linear infinite;
-    will-change: transform; /* Optimización GPU para dispositivos móviles */
+    will-change: transform;
     z-index: 1;
 }
 
@@ -263,19 +308,19 @@ html, body {
     position: relative;
     background: rgba(15, 12, 26, 0.92);
     border-radius: 21px;
-    padding: 16px;
+    padding: 14px;
     width: 100%;
     height: 100%;
     z-index: 2;
     backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     transition: background 0.3s;
 }
 
 .artist-card:hover {
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-6px) scale(1.02);
 }
 
 .artist-card:hover .card-internal {
@@ -294,15 +339,15 @@ html, body {
 
 .artist-card h3 {
     color: var(--text-main-dark);
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-family: 'Cormorant Garamond', serif;
     font-weight: 600;
 }
 
 .artist-card p {
     color: var(--text-soft-dark);
-    font-size: 0.9rem;
-    line-height: 1.4;
+    font-size: 0.85rem;
+    line-height: 1.3;
 }
 
 @keyframes rotateBorder {
@@ -432,37 +477,97 @@ html, body {
     border-color: rgba(168, 85, 247, 0.5);
 }
 
-/* Ajustes y personalización para el reproductor de audio */
-/* Estilo del reproductor de audio limpio y visible */
-.player-shell {
-    width: 100%;
-    margin-top: 15px;
-}
+/* ==========================================================================
+   REPRODUCTOR PERSONALIZADO Y ELEGANTE (NEÓN / GLASSMORPHISM)
+   ========================================================================== */
 
-.player-shell audio {
+.player-shell,
+.modal-player-container {
     width: 100% !important;
-    border-radius: 16px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Contenedor principal del audio alargado al 100% */
+.player-shell audio,
+.modal-player-container audio {
+    width: 100% !important;
+    height: 48px;
+    border-radius: 30px;
     outline: none;
-    border: 1px solid rgba(255, 95, 162, 0.4);
-    box-shadow: 0 0 15px rgba(255, 95, 162, 0.2);
+    border: 1px solid rgba(255, 95, 162, 0.5);
+    background: linear-gradient(135deg, rgba(30, 22, 50, 0.95), rgba(18, 14, 30, 0.95));
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 95, 162, 0.3);
+    transition: all 0.3s ease;
 }
 
-/* Invierte los controles para que pasen a color claro y resalten sobre el fondo */
-.player-shell audio::-webkit-media-controls-panel {
-    background: rgba(255, 255, 255, 0.1) !important;
-    backdrop-filter: blur(8px);
-    filter: invert(0.9) hue-rotate(180deg);
+.player-shell audio:hover,
+.modal-player-container audio:hover {
+    border-color: var(--primary-pink-dark, #ff5fa2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 22px rgba(255, 95, 162, 0.5);
 }
 
-/* Cambia la tonalidad del reproductor nativo */
-.player-shell audio::-webkit-media-controls-panel {
-    background-color: #161226;
+/* Estilo interno del panel nativo (Invertido a tonos claros y rosados) */
+.player-shell audio::-webkit-media-controls-panel,
+.modal-player-container audio::-webkit-media-controls-panel {
+    background: linear-gradient(135deg, #1e1632, #120e1e) !important;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+}
+
+/* Ocultar los tres puntos de menú/descarga */
+.player-shell audio::-webkit-media-controls-overflow-button,
+.modal-player-container audio::-webkit-media-controls-overflow-button,
+.player-shell audio::-webkit-media-controls-enclosure,
+.modal-player-container audio::-webkit-media-controls-enclosure {
+    overflow: hidden !important;
+}
+
+/* Barra de tiempo y progreso (Alargada y estilizada) */
+.player-shell audio::-webkit-media-controls-timeline,
+.modal-player-container audio::-webkit-media-controls-timeline {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    height: 6px;
+    padding: 0;
+    margin: 0 10px;
+    flex-grow: 1; /* Hace que ocupe todo el espacio central disponible */
+}
+
+/* Botón de Play / Pausa */
+.player-shell audio::-webkit-media-controls-play-button,
+.modal-player-container audio::-webkit-media-controls-play-button {
+    background-color: var(--primary-pink-dark, #ff5fa2);
+    border-radius: 50%;
+    transform: scale(0.95);
+    transition: transform 0.2s ease;
+}
+
+.player-shell audio::-webkit-media-controls-play-button:hover,
+.modal-player-container audio::-webkit-media-controls-play-button:hover {
+    transform: scale(1.1);
+}
+
+/* Texto de tiempo transcurrido (Color blanco nítido) */
+.player-shell audio::-webkit-media-controls-current-time-display,
+.player-shell audio::-webkit-media-controls-time-remaining-display,
+.modal-player-container audio::-webkit-media-controls-current-time-display,
+.modal-player-container audio::-webkit-media-controls-time-remaining-display {
+    color: #ffffff !important;
+    font-size: 0.8rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
 }
 
 .love-phrase {
     text-align: center;
-    font-size: 1.5rem;
-    margin-top: 20px;
+    font-size: 1.4rem;
+    margin-top: 10px;
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     text-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
@@ -497,44 +602,45 @@ html, body {
 
 @media (max-width: 600px) {
     #memories-page {
-        padding-top: 75px; /* Espacio para no encimar con el botón flotante */
+        padding-top: 50px;
+        gap: 20px;
     }
 
     .main-title {
-        font-size: 2.4rem;
+        font-size: 2.2rem;
     }
     
     .section-container h2 {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
 
     .artist-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-        padding: 5px;
+        gap: 12px;
+        padding: 0;
     }
 
     .card-internal {
         padding: 10px;
-        gap: 8px;
+        gap: 6px;
         text-align: center;
     }
 
     .artist-card h3 {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
     }
 
     .artist-card p {
-        font-size: 0.78rem;
+        font-size: 0.75rem;
         display: -webkit-box;
         -webkit-line-clamp: 2;
-        line-clamp: 2; /* Compatibilidad estándar */
+        line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
 
     #love-letter {
-        padding: 25px 20px;
+        padding: 22px 16px 16px 16px;
         width: 92%;
     }
 }
@@ -542,90 +648,44 @@ html, body {
 @media (max-width: 380px) {
     .artist-grid {
         grid-template-columns: 1fr;
-        gap: 18px;
+        gap: 16px;
     }
 }
 
 /* ==========================================================================
-   BADGE FLOTANTE DE VINILO Y MODAL DE DEDICATORIA
+   6. BADGE FLOTANTE DE VINILO Y MODAL DE DEDICATORIA
    ========================================================================== */
 
-/* Badge Flotante (Abajo a la derecha) */
-/* Badge Flotante Circular Perfecto */
+/* Badge Flotante Unificado */
 .floating-vinyl-badge {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 25px;
+    right: 25px;
     z-index: 99999 !important;
-    width: 54px;               /* Ancho fijo igual al alto */
-    height: 54px;              /* Alto fijo para hacer un círculo */
-    border-radius: 50%;        /* Hace que sea 100% circular */
-    padding: 0;                /* Quita rellenos sobrantes */
-    background: rgba(18, 18, 30, 0.85);
+    width: auto;
+    height: 48px;
+    border-radius: 50px;
+    padding: 5px 16px 5px 6px;
+    background: rgba(18, 18, 30, 0.9);
     border: 2px solid var(--primary-pink-dark);
     display: flex;
     align-items: center;
-    justify-content: center;   /* Centra el vinilo en medio */
-    cursor: pointer;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 95, 162, 0.4);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.floating-vinyl-badge:hover {
-    transform: scale(1.1) rotate(15deg);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 22px rgba(168, 85, 247, 0.6);
-}
-
-/* El Disco de Vinilo adentro */
-/* ==========================================================================
-   BADGE FLOTANTE UNIFICADO (PÍLDORA INTERACTIVA)
-   ========================================================================== */
-
-.floating-vinyl-badge {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    z-index: 99999 !important;
-    background: rgba(18, 18, 30, 0.9);
-    border: 2px solid var(--primary-pink-dark, #ff5fa2);
-    border-radius: 50px; /* Forma de cápsula */
-    padding: 6px 16px 6px 6px; /* Espacio para que el disco encaje perfecto a la izquierda */
-    display: flex;
-    align-items: center;
     gap: 10px;
     cursor: pointer;
     backdrop-filter: blur(10px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 18px rgba(255, 95, 162, 0.4);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    animation: vinylPulse 2.5s infinite;
+    transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s ease;
+    
+    /* Control de Scroll (JS agrega .visible) */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
 }
 
-.floating-vinyl-badge:hover {
-    transform: scale(1.08) translateY(-3px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 28px rgba(255, 95, 162, 0.7);
-}
-
-/* El Disco de Vinilo (Gira continuamente) */
-/* Badge flotante unificado en una sola pieza */
-.floating-vinyl-badge {
-    position: fixed;
-    bottom: 25px;
-    right: 25px;
-    z-index: 99999 !important;
-    width: auto;                  /* Permite que se estire según el texto */
-    height: 50px;                 /* Alto fijo parejo */
-    border-radius: 50px;          /* Forma de píldora perfecta */
-    padding: 5px 18px 5px 6px;    /* Espaciado interno: disco a la izq, texto a la der */
-    background: rgba(18, 18, 30, 0.9);
-    border: 2px solid var(--primary-pink-dark, #ff5fa2);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 18px rgba(255, 95, 162, 0.4);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+.floating-vinyl-badge.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
 }
 
 .floating-vinyl-badge:hover {
@@ -633,10 +693,10 @@ html, body {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 28px rgba(255, 95, 162, 0.7);
 }
 
-/* El disco adentro */
+/* Disco interno */
 .vinyl-badge-disc {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: repeating-radial-gradient(circle, #111 0px, #111 2px, #222 3px, #111 4px);
     display: flex;
@@ -647,10 +707,9 @@ html, body {
     flex-shrink: 0;
 }
 
-/* El texto "Tócame 🎵" dentro de la misma cápsula */
 .badge-tooltip {
-    position: static;            /* Quita posicionamientos absolutos que lo separaban */
-    background: none;            /* Quita fondos o bordes extras del texto */
+    position: static;
+    background: none;
     border: none;
     box-shadow: none;
     padding: 0;
@@ -660,14 +719,8 @@ html, body {
     white-space: nowrap;
 }
 
-/* ANIMACIONES */
 @keyframes spinSlow {
     100% { transform: rotate(360deg); }
-}
-
-@keyframes vinylPulse {
-    0%, 100% { box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 95, 162, 0.4); }
-    50% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 95, 162, 0.7); }
 }
 
 /* Modal Overlay */
@@ -746,7 +799,6 @@ html, body {
     margin-bottom: 20px;
 }
 
-/* Lista de opciones dentro del modal */
 .dedicated-track-list {
     display: flex;
     flex-direction: column;
@@ -792,7 +844,6 @@ html, body {
     font-weight: 600;
 }
 
-/* Reproductor interno */
 .modal-player-container {
     background: rgba(0, 0, 0, 0.3);
     padding: 12px;
@@ -810,20 +861,4 @@ html, body {
 .modal-player-container audio {
     width: 100% !important;
     border-radius: 10px;
-}
-
-/* Frase destacada tipo verso dentro de la carta */
-.compass-quote {
-    display: block;
-    margin: 18px 0;
-    padding: 10px 15px;
-    font-family: 'Cormorant Garamond', serif; /* O la fuente cursiva/serifa que uses para títulos */
-    font-style: italic;
-    font-size: 1.05rem;
-    color: #ffd1e8; /* Rosa pastel suave sofisticado que resalta en fondo oscuro */
-    border-left: 2px solid var(--primary-pink-dark, #ff5fa2); /* Línea delicada al costado */
-    background: rgba(255, 95, 162, 0.05); /* Fondo suave translúcido */
-    border-radius: 0 10px 10px 0;
-    text-align: center;
-    line-height: 1.5;
 }

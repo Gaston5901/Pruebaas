@@ -1,22 +1,52 @@
-       const centerImage = document.getElementById('center-image');
+/* ==========================================================================
+   1. ELEMENTOS PRINCIPALES Y CARTA DE AMOR
+   ========================================================================== */
+const centerImage = document.getElementById('center-image');
 const loveLetter = document.getElementById('love-letter');
 const overlay = document.getElementById('overlay');
 const closeLetterBtn = document.getElementById('close-letter-btn');
 
-centerImage.addEventListener('click', () => {
-    loveLetter.classList.add('show');
-    overlay.classList.add('show');
-    createHeartShower();
-});
-
-function closeLetter() {
-    loveLetter.classList.remove('show');
-    overlay.classList.remove('show');
+if (centerImage && loveLetter && overlay) {
+    centerImage.addEventListener('click', () => {
+        loveLetter.classList.add('show');
+        overlay.classList.add('show');
+        createHeartShower();
+    });
 }
 
-closeLetterBtn.addEventListener('click', closeLetter);
-overlay.addEventListener('click', closeLetter);
+function closeLetter() {
+    if (loveLetter) loveLetter.classList.remove('show');
+    if (overlay) overlay.classList.remove('show');
+}
 
+if (closeLetterBtn) closeLetterBtn.addEventListener('click', closeLetter);
+if (overlay) overlay.addEventListener('click', closeLetter);
+
+/* ==========================================================================
+   2. CONTROL DE VISIBILIDAD DEL BADGE FLOTANTE POR SCROLL
+   ========================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    const vinylBadge = document.getElementById('vinyl-badge');
+    const multimediaSection = document.getElementById('multimedia-section') || document.querySelector('.artist-grid');
+
+    if (vinylBadge && multimediaSection) {
+        window.addEventListener('scroll', () => {
+            // Detecta cuando la grilla de cantantes entra en pantalla
+            const sectionPosition = multimediaSection.getBoundingClientRect().top;
+            const screenHeight = window.innerHeight;
+
+            if (sectionPosition < screenHeight - 120) {
+                vinylBadge.classList.add('visible');
+            } else {
+                vinylBadge.classList.remove('visible');
+            }
+        });
+    }
+});
+
+/* ==========================================================================
+   3. DATOS DE ARTISTAS Y SPOTLIGHT
+   ========================================================================== */
 const artistsData = {
     morat: {
         title: "BTS",
@@ -84,10 +114,6 @@ function openSpotlight(key) {
     const data = artistsData[key];
     if (!data) return;
 
-    const multimediaSection = document.getElementById('multimedia-section');
-    const trackListContainer = document.getElementById('featured-tracks');
-    const audioPlayer = document.getElementById('main-audio-player');
-    const btnVolverInicio = document.querySelector('.volver-inicio');
     const vinylBadge = document.querySelector('.floating-vinyl-badge');
     const featuredImg = document.getElementById('featured-img');
 
@@ -114,17 +140,14 @@ function openSpotlight(key) {
     if (audioPlayer) audioPlayer.src = "";
     if (multimediaSection) multimediaSection.classList.add('is-spotlight');
 
-    // Oculta el botón "Volver al inicio" y el badge de vinilo
+    // Oculta el botón "Volver al inicio" y el badge de vinilo al abrir un cantante
     if (btnVolverInicio) btnVolverInicio.style.display = 'none';
-    if (vinylBadge) vinylBadge.style.display = 'none';
+    if (vinylBadge) vinylBadge.style.opacity = '0';
 
     if (multimediaSection) multimediaSection.scrollIntoView({ behavior: 'smooth' });
 }
 
 function closeSpotlight() {
-    const audioPlayer = document.getElementById('main-audio-player');
-    const multimediaSection = document.getElementById('multimedia-section');
-    const btnVolverInicio = document.querySelector('.volver-inicio');
     const vinylBadge = document.querySelector('.floating-vinyl-badge');
 
     if (audioPlayer) {
@@ -133,17 +156,23 @@ function closeSpotlight() {
     }
     if (multimediaSection) multimediaSection.classList.remove('is-spotlight');
 
-    // Muestra nuevamente el botón "Volver al inicio" y el badge de vinilo en el catálogo
+    // Muestra nuevamente el botón "Volver al inicio" y el badge de vinilo al volver al catálogo
     if (btnVolverInicio) btnVolverInicio.style.display = 'inline-flex';
-    if (vinylBadge) vinylBadge.style.display = 'flex';
+    if (vinylBadge) vinylBadge.style.opacity = '1';
 }
+
 function playTrack(url, clickedButton) {
     document.querySelectorAll('.track-button').forEach(b => b.classList.remove('active'));
     clickedButton.classList.add('active');
-    audioPlayer.src = url;
-    audioPlayer.play();
+    if (audioPlayer) {
+        audioPlayer.src = url;
+        audioPlayer.play();
+    }
 }
 
+/* ==========================================================================
+   4. EFECTOS ESPECIALES (LLUVIA DE CORAZONES)
+   ========================================================================== */
 function createHeartShower() {
     for (let i = 0; i < 15; i++) {
         const heart = document.createElement('div');
@@ -157,22 +186,26 @@ function createHeartShower() {
     }
 }
 
+/* ==========================================================================
+   5. MODAL DE DEDICATORIA ESPECIAL (VINILO FLOTANTE)
+   ========================================================================== */
 const modalOverlay = document.getElementById('dedicated-modal-overlay');
 const dedicatedModal = document.getElementById('dedicated-modal');
 const modalAudioPlayer = document.getElementById('modal-audio-player');
 const modalRecordIcon = document.getElementById('modal-spinning-record');
 
 function openDedicatedModal() {
-    modalOverlay.classList.add('show');
-    dedicatedModal.classList.add('show');
+    if (modalOverlay) modalOverlay.classList.add('show');
+    if (dedicatedModal) dedicatedModal.classList.add('show');
 }
 
 function closeDedicatedModal() {
-    modalOverlay.classList.remove('show');
-    dedicatedModal.classList.remove('show');
+    if (modalOverlay) modalOverlay.classList.remove('show');
+    if (dedicatedModal) dedicatedModal.classList.remove('show');
+    
     // Pausa la música si cierran el modal
-    modalAudioPlayer.pause();
-    modalRecordIcon.classList.remove('spinning');
+    if (modalAudioPlayer) modalAudioPlayer.pause();
+    if (modalRecordIcon) modalRecordIcon.classList.remove('spinning');
 }
 
 function playModalTrack(url, titulo, nota, btnElement) {
@@ -184,21 +217,26 @@ function playModalTrack(url, titulo, nota, btnElement) {
     // Limpia la clase activa de los botones dentro del modal
     document.querySelectorAll('.modal-track-btn').forEach(btn => {
         btn.classList.remove('active');
-        btn.querySelector('.btn-play-state').innerText = 'Reproducir ▶';
+        const stateSpan = btn.querySelector('.btn-play-state');
+        if (stateSpan) stateSpan.innerText = 'Reproducir ▶';
     });
 
     // Control de Play / Pausa
-    if (modalAudioPlayer.src.includes(url) && !modalAudioPlayer.paused) {
+    if (modalAudioPlayer && modalAudioPlayer.src.includes(url) && !modalAudioPlayer.paused) {
         modalAudioPlayer.pause();
-        modalRecordIcon.classList.remove('spinning');
-        btnElement.querySelector('.btn-play-state').innerText = 'Reproducir ▶';
-    } else {
+        if (modalRecordIcon) modalRecordIcon.classList.remove('spinning');
+        const stateSpan = btnElement.querySelector('.btn-play-state');
+        if (stateSpan) stateSpan.innerText = 'Reproducir ▶';
+    } else if (modalAudioPlayer) {
         modalAudioPlayer.src = url;
         modalAudioPlayer.play();
-        modalRecordIcon.classList.add('spinning');
+        if (modalRecordIcon) modalRecordIcon.classList.add('spinning');
 
-        document.getElementById('modal-song-label').innerText = `${titulo} - "${nota}"`;
+        const songLabel = document.getElementById('modal-song-label');
+        if (songLabel) songLabel.innerText = `${titulo} - "${nota}"`;
+        
         btnElement.classList.add('active');
-        btnElement.querySelector('.btn-play-state').innerText = 'Sonando 🎵';
+        const stateSpan = btnElement.querySelector('.btn-play-state');
+        if (stateSpan) stateSpan.innerText = 'Sonando 🎵';
     }
 }
