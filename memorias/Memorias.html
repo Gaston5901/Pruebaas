@@ -5,517 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuestro Espacio Privado</title>
     <link href="https://fonts.googleapis.com/css2=family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="estilos.css">
     <style>
-        /* ==========================================================================
-           1. VARIABLES GLOBALES Y CONFIGURACIÓN BASE
-           ========================================================================== */
-        :root {
-            --bg-gradient-dark: linear-gradient(135deg, #07070b 0%, #10111c 38%, #1a1230 70%, #2b1530 100%);
-            --panel-gradient-dark: linear-gradient(145deg, rgba(18, 18, 30, 0.96), rgba(9, 10, 16, 0.98));
-            --panel-soft-dark: rgba(18, 20, 30, 0.  82);
-            --primary-pink-dark: #ff5fa2;
-            --secondary-pink-dark: #ff95c3;
-            --text-main-dark: #f8f4ff;
-            --text-soft-dark: #ccbfe0;
-            --cyan-glow-dark: #7de7ff;
-            --purple-glow: #a855f7;
-        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html, body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--bg-gradient-dark);
-            color: var(--text-main-dark);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        #memories-page {
-            background:
-                radial-gradient(circle at top, rgba(168, 85, 247, 0.16), transparent 30%),
-                radial-gradient(circle at bottom right, rgba(255, 95, 162, 0.12), transparent 28%),
-                var(--bg-gradient-dark);
-            min-height: 100vh;
-            padding: 40px 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-        }
-
-        /* Títulos Principales */
-        .title-container {
-            text-align: center;
-            max-width: 800px;
-        }
-
-        .main-title {
-            font-size: 3.5rem;
-            font-family: 'Cormorant Garamond', serif;
-            color: var(--text-main-dark);
-            text-shadow: 0 0 18px rgba(168, 85, 247, 0.6), 0 8px 28px rgba(0, 0, 0, 0.35);
-            margin-bottom: 10px;
-        }
-
-        .subtitle-top {
-            color: var(--text-soft-dark);
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .section-container {
-            width: 100%;
-            max-width: 1000px;
-            text-align: center;
-        }
-
-        .section-container h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.5rem;
-            margin-bottom: 25px;
-            text-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
-        }
-
-        /* ==========================================================================
-           2. INTERFAZ DE LA CARTA INTERACTIVA
-           ========================================================================== */
-        #love-letter-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #center-image {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            object-fit: cover;
-            cursor: pointer;
-            border: 3px solid var(--purple-glow);
-            box-shadow: 0 16px 42px rgba(0, 0, 0, 0.4), 0 0 28px rgba(168, 85, 247, 0.3);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-bottom: 15px;
-        }
-
-        #center-image:hover {
-            transform: scale(1.08) rotate(3deg);
-        }
-
-        .click-hint {
-            color: var(--text-soft-dark);
-            font-size: 0.9rem;
-            font-style: italic;
-        }
-
-        /* Modal de la Carta */
-        #love-letter {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.9);
-            width: 90%;
-            max-width: 550px;
-            background: linear-gradient(145deg, rgba(18, 18, 30, 0.98), rgba(11, 12, 18, 0.98));
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            color: var(--text-main-dark);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(168, 85, 247, 0.2);
-            border-radius: 24px;
-            padding: 40px 30px;
-            z-index: 100;
-            opacity: 0;
-            transition: transform 0.4s ease, opacity 0.4s ease;
-            backdrop-filter: blur(20px);
-        }
-
-        #love-letter.show {
-            display: block;
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-
-        #love-letter h2 {
-            margin-bottom: 15px;
-            font-size: 2.2rem;
-        }
-
-        #love-letter p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--text-soft-dark);
-            margin-bottom: 20px;
-        }
-
-        .close-button {
-            background: var(--purple-glow);
-            color: white;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 999px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.2s;
-            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
-        }
-
-        .close-button:hover {
-            background: #9333ea;
-            transform: translateY(-2px);
-        }
-
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(4px);
-            z-index: 99;
-        }
-
-        #overlay.show {
-            display: block;
-        }
-
-        /* ==========================================================================
-           3. SECCIÓN MULTIMEDIA (TARJETAS OPTIMIZADAS CON BORDE ANIMADO)
-           ========================================================================== */
-        .artist-section {
-            width: 100%;
-        }
-
-        /* Grid de Tarjetas - Autoadaptable en PC y Celular */
-        .artist-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-            width: 100%;
-            padding: 10px 0;
-        }
-
-        /* Tarjeta con Borde Animado de Colores Permanente */
-        .artist-card {
-            position: relative;
-            border-radius: 24px;
-            padding: 4px; /* Espacio para que se note el borde de color */
-            background: transparent;
-            cursor: pointer;
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* El gradiente de colores que gira de fondo (Morado, Rosa, Cyan) */
-   .artist-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: conic-gradient(
-        from 0deg,
-        transparent 15%,
-        var(--purple-glow) 35%,
-        var(--primary-pink-dark) 55%,
-        var(--cyan-glow-dark) 75%,
-        transparent 90%
-    );
-    animation: rotateBorder 4s linear infinite;
-    z-index: 1;
-}
-
-        /* El contenedor interno tapando el centro para simular el borde */
-        .card-internal {
-            position: relative;
-            background: rgba(15, 12, 26, 0.92);
-            border-radius: 21px;
-            padding: 16px;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: background 0.3s;
-        }
-
-        .artist-card:hover {
-            transform: translateY(-8px) scale(1.02);
-        }
-
-        .artist-card:hover .card-internal {
-            background: rgba(22, 17, 38, 0.95);
-            box-shadow: inset 0 0 15px rgba(168, 85, 247, 0.2);
-        }
-
-        .artist-card img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-            border-radius: 16px;
-            display: block;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-        }
-
-        .artist-card h3 {
-            color: var(--text-main-dark);
-            font-size: 1.4rem;
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 600;
-        }
-
-        .artist-card p {
-            color: var(--text-soft-dark);
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-
-        /* Animación de rotación para el borde */
-        @keyframes rotateBorder {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* ==========================================================================
-           4. VISTA SPOTLIGHT (REPRODUCTOR)
-           ========================================================================== */
-        .artist-section.is-spotlight .artist-grid {
-            display: none;
-        }
-
-        .artist-featured {
-            display: none;
-            grid-template-columns: minmax(260px, 340px) 1fr;
-            gap: 30px;
-            align-items: start;
-            padding: 30px;
-            border-radius: 30px;
-            background: rgba(12, 10, 20, 0.9);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
-            text-align: left;
-        }
-
-        .artist-section.is-spotlight .artist-featured {
-            display: grid;
-        }
-
-        .featured-cover {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            border-radius: 22px;
-            overflow: hidden;
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .featured-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .artist-details h2 {
-            font-size: 2.8rem;
-            margin-top: 10px;
-            margin-bottom: 5px;
-        }
-
-        .artist-details .subtitle {
-            color: var(--secondary-pink-dark);
-            font-size: 0.95rem;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .artist-details p {
-            font-size: 1.05rem;
-            line-height: 1.6;
-            color: var(--text-soft-dark);
-            margin-bottom: 20px;
-        }
-
-        .back-button {
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-main-dark);
-            padding: 10px 20px;
-            border-radius: 999px;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            margin-bottom: 15px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .back-button:hover {
-            transform: translateY(-2px);
-            background: rgba(168, 85, 247, 0.2);
-            border-color: rgba(168, 85, 247, 0.5);
-        }
-
-        .playlist-shell {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 20px;
-        }
-
-        .playlist-shell h3 {
-            font-size: 1.2rem;
-            margin-bottom: 12px;
-        }
-
-        .track-list {
-            display: grid;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .track-button {
-            width: 100%;
-            text-align: left;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(255, 255, 255, 0.03);
-            color: var(--text-main-dark);
-            border-radius: 14px;
-            padding: 12px 16px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .track-button:hover,
-        .track-button.active {
-            transform: translateX(5px);
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(125, 231, 255, 0.1));
-            border-color: rgba(168, 85, 247, 0.5);
-        }
-
-        .player-shell audio {
-            width: 100%;
-            border-radius: 12px;
-        }
-
-        .love-phrase {
-            text-align: center;
-            font-size: 1.5rem;
-            margin-top: 20px;
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            text-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
-        }
-
-        .heart-particle {
-            position: fixed;
-            color: #ff7ab8;
-            font-size: 1.2rem;
-            pointer-events: none;
-            z-index: 999;
-            animation: floatUp 4s linear forwards;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* ==========================================================================
-           5. RESPONSIVE OPTIMIZADO PARA MÓVILES (DISEÑO MÁS PIOLA)
-           ========================================================================== */
-        @media (max-width: 900px) {
-            .artist-featured {
-                grid-template-columns: 1fr;
-                padding: 20px;
-            }
-            .artist-details h2 {
-                font-size: 2.3rem;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .main-title {
-                font-size: 2.4rem;
-            }
-            
-            .section-container h2 {
-                font-size: 2rem;
-            }
-
-            /* Grilla de celular en 2 columnas para que entren cómodo de a dos */
-            .artist-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 14px;
-                padding: 5px;
-            }
-
-            .card-internal {
-                padding: 10px;
-                gap: 8px;
-                text-align: center; /* Queda más limpio centrado en móvil */
-            }
-
-            .artist-card h3 {
-                font-size: 1.15rem;
-            }
-
-            .artist-card p {
-                font-size: 0.78rem;
-                display: -webkit-box;
-                -webkit-line-clamp: 2; /* Recorta textos muy largos para no romper la estética */
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-
-            #love-letter {
-                padding: 25px 20px;
-                width: 92%;
-            }
-        }
-
-        /* Celulares muy chiquitos: Volvemos a 1 columna para que no se aplaste nada */
-        @media (max-width: 380px) {
-            .artist-grid {
-                grid-template-columns: 1fr;
-                gap: 18px;
-            }
-        }
-            .volver-inicio{
-            position: fixed;
-            top: 14px;
-            left: 14px;
-            z-index: 9999;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 12px;
-            border-radius: 999px;
-            background: rgba(255,255,255,.85);
-            border: 1px solid rgba(0,0,0,.10);
-            color: #3b2f2f;
-            text-decoration: none;
-            font-weight: 800;
-            box-shadow: 0 10px 26px rgba(0,0,0,.18);
-        }
-        .volver-inicio:hover{ transform: translateY(-1px); background: rgba(255,255,255,.95); }
     </style>
 </head>
 <body>
@@ -615,123 +107,153 @@
     </div>
 
     <script>
-        const centerImage = document.getElementById('center-image');
-        const loveLetter = document.getElementById('love-letter');
-        const overlay = document.getElementById('overlay');
-        const closeLetterBtn = document.getElementById('close-letter-btn');
+       const centerImage = document.getElementById('center-image');
+const loveLetter = document.getElementById('love-letter');
+const overlay = document.getElementById('overlay');
+const closeLetterBtn = document.getElementById('close-letter-btn');
 
-        centerImage.addEventListener('click', () => {
-            loveLetter.classList.add('show');
-            overlay.classList.add('show');
-            createHeartShower();
-        });
+centerImage.addEventListener('click', () => {
+    loveLetter.classList.add('show');
+    overlay.classList.add('show');
+    createHeartShower();
+});
 
-        function closeLetter() {
-            loveLetter.classList.remove('show');
-            overlay.classList.remove('show');
+function closeLetter() {
+    loveLetter.classList.remove('show');
+    overlay.classList.remove('show');
+}
+
+closeLetterBtn.addEventListener('click', closeLetter);
+overlay.addEventListener('click', closeLetter);
+
+const artistsData = {
+    morat: {
+        title: "BTS",
+        desc: "Siete voces, una historia y millones de corazones unidos por su música.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXlKjV9LJbM2rKMZJ7hXSmgsQstVCOZilswP0fz_pozi-2J1A7v_Li7-pkc6TDfspJ9rtlF3wvuzqo0FPawekAgTem_G36_HKOAijt8A&s=10",
+        tracks: [
+            { name: "Serendipity", url: "BTS/LoveYourself.mp3" },
+            { name: "Euphoria", url: "BTS/Euphoria.mp3" },
+            { name: "Boy In Luv", url: "BTS/BoyInLuv.mp3" },
+            { name: "Your Eyes Tell", url: "BTS/YourEyesTell.mp3" }
+        ]
+    },
+    reik: {
+        title: "Silvana Estrada",
+        desc: "Delicadeza, sensibilidad y poesía en cada canción.",
+        image: "silvanaEstrada/image copy.png",
+        tracks: [
+            { name: "Flores", url: "silvanaEstrada/Flores.mp3" },
+            { name: "Carta", url: "silvanaEstrada/Carta.mp3" },
+            { name: "Que Problema", url: "silvanaEstrada/QueProblema.mp3" },
+            { name: "Te Guardo", url: "silvanaEstrada/TeGuardo.mp3" }
+        ]
+    },
+    camilo: {
+        title: "Humbe",
+        desc: "Canciones sinceras que transforman emociones cotidianas en momentos inolvidables.",
+        image: "https://upload.wikimedia.org/wikipedia/commons/4/48/Humbe_en_Esencia_Tour_en_Coahuila_%281%29_%28cropped%29.png",
+        tracks: [
+            { name: "Morfina", url: "Humbe/Morfina.mp3" },
+            { name: "Confieso", url: "Humbe/Confieso.mp3" },
+            { name: "Te lo Prometo", url: "Humbe/prometo.mp3" },
+            { name: "Amor de Cine", url: "Humbe/AmorDeCine.mp3" }
+        ]
+    },
+    mafia: {
+        title: "Latin Mafia",
+        desc: "Sonidos frescos que combinan vulnerabilidad, ritmo y mucha personalidad.",
+        image: "mafia/image copy.png",
+        tracks: [
+            { name: "Ciudad de las Luces", url: "mafia/CiudadDeLasLuces.mp3" },
+            { name: "Flores", url: "mafia/Flores.mp3" },
+            { name: "Se Fue la Luz", url: "mafia/Luz.mp3" },
+            { name: "Patadas de Ahogado", url: "mafia/pata.mp3" }
+        ]
+    }
+};
+
+const multimediaSection = document.getElementById('multimedia-section');
+const trackListContainer = document.getElementById('featured-tracks');
+const audioPlayer = document.getElementById('main-audio-player');
+const btnVolverInicio = document.querySelector('.volver-inicio');
+
+// Precarga de imágenes en RAM para rendimiento inmediato
+function preloadImages() {
+    Object.values(artistsData).forEach(artist => {
+        if (artist.image) {
+            const img = new Image();
+            img.src = artist.image;
         }
+    });
+}
+preloadImages();
 
-        closeLetterBtn.addEventListener('click', closeLetter);
-        overlay.addEventListener('click', closeLetter);
+function openSpotlight(key) {
+    const data = artistsData[key];
+    if (!data) return;
 
-        const artistsData = {
-            morat: {
-                title: "BTS",
-                desc: "Siete voces, una historia y millones de corazones unidos por su música.",
-                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXlKjV9LJbM2rKMZJ7hXSmgsQstVCOZilswP0fz_pozi-2J1A7v_Li7-pkc6TDfspJ9rtlF3wvuzqo0FPawekAgTem_G36_HKOAijt8A&s=10",
-                tracks: [
-                    { name: "Serendipity", url: "BTS/LoveYourself.mp3" },
-                    { name: "Euphoria", url: "BTS/Euphoria.mp3" },
-                    { name: "Boy In Luv", url: "BTS/BoyInLuv.mp3" },
-                    { name: "Your Eyes Tell", url: "BTS/YourEyesTell.mp3" }
-                ]
-            },
-            reik: {
-                title: "Silvana Estrada",
-                desc: "Delicadeza, sensibilidad y poesía en cada canción.",
-                image: "silvanaEstrada/image copy.png",
-                tracks: [
-                    { name: "Flores", url: "silvanaEstrada/Flores.mp3" },
-                    { name: "Carta", url: "silvanaEstrada/Carta.mp3" },
-                    { name: "Que Problema", url: "silvanaEstrada/QueProblema.mp3" },
-                    { name: "Te Guardo", url: "silvanaEstrada/TeGuardo.mp3" }
-                ]
-            },
-            camilo: {
-                title: "Humbe",
-                desc: "Canciones sinceras que transforman emociones cotidianas en momentos inolvidables.",
-                image: "https://upload.wikimedia.org/wikipedia/commons/4/48/Humbe_en_Esencia_Tour_en_Coahuila_%281%29_%28cropped%29.png",
-                tracks: [
-                    { name: "Morfina", url: "Humbe/Morfina.mp3" },
-                    { name: "Confieso", url: "Humbe/Confieso.mp3" },
-                    { name: "Te lo Prometo", url: "Humbe/prometo.mp3" },
-                    { name: "Amor de Cine", url: "Humbe/AmorDeCine.mp3" }
-                ]
-            },
-            mafia: {
-                title: "Latin Mafia",
-                desc: "Sonidos frescos que combinan vulnerabilidad, ritmo y mucha personalidad.",
-                image: "mafia/image copy.png",
-                tracks: [
-                    { name: "Ciudad de las Luces", url: "mafia/CiudadDeLasLuces.mp3" },
-                    { name: "Flores", url: "mafia/Flores.mp3" },
-                    { name: "Se Fue la Luz", url: "mafia/Luz.mp3" },
-                    { name: "Patadas de Ahogado", url: "mafia/pata.mp3" }
-                ]
-            }
-        };
+    const featuredImg = document.getElementById('featured-img');
 
-        const multimediaSection = document.getElementById('multimedia-section');
-        const trackListContainer = document.getElementById('featured-tracks');
-        const audioPlayer = document.getElementById('main-audio-player');
+    // Oculta la foto anterior para evitar destellos
+    featuredImg.style.opacity = '0';
+    featuredImg.src = data.image;
 
-        function openSpotlight(key) {
-            const data = artistsData[key];
-            if (!data) return;
+    // Al cargar la nueva imagen, la muestra suavemente
+    featuredImg.onload = () => {
+        featuredImg.style.opacity = '1';
+    };
 
-            document.getElementById('featured-img').src = data.image;
-            document.getElementById('featured-title').innerText = data.title;
-            document.getElementById('featured-desc').innerText = data.desc;
+    document.getElementById('featured-title').innerText = data.title;
+    document.getElementById('featured-desc').innerText = data.desc;
 
-            trackListContainer.innerHTML = "";
-            data.tracks.forEach((track) => {
-                const btn = document.createElement('button');
-                btn.className = "track-button";
-                btn.innerHTML = `${track.name} <span>Reproducir ▶</span>`;
-                btn.onclick = () => playTrack(track.url, btn);
-                trackListContainer.appendChild(btn);
-            });
+    trackListContainer.innerHTML = "";
+    data.tracks.forEach((track) => {
+        const btn = document.createElement('button');
+        btn.className = "track-button";
+        btn.innerHTML = `${track.name} <span>Reproducir ▶</span>`;
+        btn.onclick = () => playTrack(track.url, btn);
+        trackListContainer.appendChild(btn);
+    });
 
-            audioPlayer.src = "";
-            multimediaSection.classList.add('is-spotlight');
-            multimediaSection.scrollIntoView({ behavior: 'smooth' });
-        }
+    audioPlayer.src = "";
+    multimediaSection.classList.add('is-spotlight');
 
-        function closeSpotlight() {
-            audioPlayer.pause();
-            audioPlayer.src = "";
-            multimediaSection.classList.remove('is-spotlight');
-        }
+    // Oculta el botón flotante "Volver al inicio"
+    if (btnVolverInicio) btnVolverInicio.style.display = 'none';
 
-        function playTrack(url, clickedButton) {
-            document.querySelectorAll('.track-button').forEach(b => b.classList.remove('active'));
-            clickedButton.classList.add('active');
-            audioPlayer.src = url;
-            audioPlayer.play();
-        }
+    multimediaSection.scrollIntoView({ behavior: 'smooth' });
+}
 
-        function createHeartShower() {
-            for (let i = 0; i < 15; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart-particle';
-                heart.innerText = ['❤️', '💖', '💝', '💕'][Math.floor(Math.random() * 4)];
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDelay = Math.random() * 1.5 + 's';
-                heart.style.fontSize = Math.random() * 0.8 + 1 + 'rem';
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 4000);
-            }
-        }
-    </script>
+function closeSpotlight() {
+    audioPlayer.pause();
+    audioPlayer.src = "";
+    multimediaSection.classList.remove('is-spotlight');
+
+    // Reaparece el botón "Volver al inicio" en la vista del catálogo
+    if (btnVolverInicio) btnVolverInicio.style.display = 'inline-flex';
+}
+
+function playTrack(url, clickedButton) {
+    document.querySelectorAll('.track-button').forEach(b => b.classList.remove('active'));
+    clickedButton.classList.add('active');
+    audioPlayer.src = url;
+    audioPlayer.play();
+}
+
+function createHeartShower() {
+    for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart-particle';
+        heart.innerText = ['❤️', '💖', '💝', '💕'][Math.floor(Math.random() * 4)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDelay = Math.random() * 1.5 + 's';
+        heart.style.fontSize = Math.random() * 0.8 + 1 + 'rem';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 4000);
+    }
+}
+
+</script>
 </body>
 </html>
