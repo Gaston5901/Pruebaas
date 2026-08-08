@@ -27,7 +27,7 @@
 
         <div id="overlay"></div>
 
-        <!-- MODAL DE LA CARTA (Adaptable para móviles) -->
+        <!-- MODAL DE LA CARTA (Con scroll interno y botón al final) -->
         <div id="love-letter">
             <h2>Holaa señorita bellaa 🌹</h2>
             
@@ -41,9 +41,15 @@
 
                     Estoy muy orgulloso de ti y de la persona tan hermosa que sos, Vas muy bienn. Te Quierouu muchisimo señoritaa ❤️
                 </p>
-            </div>
 
-            <button class="close-button" id="close-letter-btn">Cerrar con Amor</button>
+                <!-- Indicador para saber que hay más texto -->
+                <div class="scroll-more-indicator">
+                    
+                </div>
+
+                <!-- Botón de cerrar al final del texto -->
+                <button class="close-button" id="close-letter-btn">Cerrar con Amor</button>
+            </div>
         </div>
 
         <!-- SECCIÓN DE CANTANTES -->
@@ -105,8 +111,8 @@
                             <h3>Elegí una canción:</h3>
                             <div class="track-list" id="featured-tracks"></div>
                             <div class="player-shell">
-    <audio id="main-audio-player" controls controlsList="nodownload" preload="metadata"></audio>
-</div>
+                                <audio id="main-audio-player" controls controlsList="nodownload noboard noplaybackrate" preload="metadata"></audio>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,7 +121,7 @@
         </div>
 
         <div class="love-phrase">
-            "Sos mi canción favorita en un mundo lleno de ruido."
+            "Sos mi canción favorita en un mundo lleno de ruidoo"
         </div>
 
     </div>
@@ -162,7 +168,7 @@
         <!-- Reproductor dentro del modal -->
         <div class="modal-player-container">
             <span id="modal-song-label">Seleccione una canción para escuchar</span>
-            <audio id="modal-audio-player" controls preload="none"></audio>
+            <audio id="modal-audio-player" controls controlsList="nodownload noboard noplaybackrate" preload="metadata"></audio>
         </div>
     </div>
 

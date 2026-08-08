@@ -5,18 +5,42 @@ const centerImage = document.getElementById('center-image');
 const loveLetter = document.getElementById('love-letter');
 const overlay = document.getElementById('overlay');
 const closeLetterBtn = document.getElementById('close-letter-btn');
+const btnVolverInicio = document.querySelector('.volver-inicio');
+const vinylBadge = document.getElementById('vinyl-badge');
 
 if (centerImage && loveLetter && overlay) {
     centerImage.addEventListener('click', () => {
         loveLetter.classList.add('show');
         overlay.classList.add('show');
-        createHeartShower();
+        document.body.classList.add('modal-open');
+
+        // Oculta completamente el botón de volver al inicio y el badge del vinilo
+        if (btnVolverInicio) btnVolverInicio.style.display = 'none';
+        if (vinylBadge) {
+            vinylBadge.style.opacity = '0';
+            vinylBadge.style.pointerEvents = 'none';
+        }
+
+        if (typeof createHeartShower === 'function') createHeartShower();
     });
 }
 
 function closeLetter() {
     if (loveLetter) loveLetter.classList.remove('show');
     if (overlay) overlay.classList.remove('show');
+    document.body.classList.remove('modal-open');
+
+    // Restaura la visibilidad del botón volver al inicio
+    if (btnVolverInicio) btnVolverInicio.style.display = 'inline-flex';
+
+    // Restaura el badge si el usuario ya está en la sección adecuada
+    if (vinylBadge) {
+        const multimediaSection = document.getElementById('multimedia-section') || document.querySelector('.artist-grid');
+        if (multimediaSection && multimediaSection.getBoundingClientRect().top < window.innerHeight - 120) {
+            vinylBadge.style.opacity = '1';
+            vinylBadge.style.pointerEvents = 'auto';
+        }
+    }
 }
 
 if (closeLetterBtn) closeLetterBtn.addEventListener('click', closeLetter);
@@ -26,18 +50,24 @@ if (overlay) overlay.addEventListener('click', closeLetter);
    2. CONTROL DE VISIBILIDAD DEL BADGE FLOTANTE POR SCROLL
    ========================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
-    const vinylBadge = document.getElementById('vinyl-badge');
     const multimediaSection = document.getElementById('multimedia-section') || document.querySelector('.artist-grid');
 
     if (vinylBadge && multimediaSection) {
         window.addEventListener('scroll', () => {
+            // Si la carta de amor está abierta, el badge se mantiene oculto
+            if (loveLetter && loveLetter.classList.contains('show')) return;
+
             // Detecta cuando la grilla de cantantes entra en pantalla
             const sectionPosition = multimediaSection.getBoundingClientRect().top;
             const screenHeight = window.innerHeight;
 
             if (sectionPosition < screenHeight - 120) {
+                vinylBadge.style.opacity = '1';
+                vinylBadge.style.pointerEvents = 'auto';
                 vinylBadge.classList.add('visible');
             } else {
+                vinylBadge.style.opacity = '0';
+                vinylBadge.style.pointerEvents = 'none';
                 vinylBadge.classList.remove('visible');
             }
         });
@@ -97,7 +127,6 @@ const artistsData = {
 const multimediaSection = document.getElementById('multimedia-section');
 const trackListContainer = document.getElementById('featured-tracks');
 const audioPlayer = document.getElementById('main-audio-player');
-const btnVolverInicio = document.querySelector('.volver-inicio');
 
 // Precarga de imágenes en RAM para rendimiento inmediato
 function preloadImages() {
@@ -114,7 +143,6 @@ function openSpotlight(key) {
     const data = artistsData[key];
     if (!data) return;
 
-    const vinylBadge = document.querySelector('.floating-vinyl-badge');
     const featuredImg = document.getElementById('featured-img');
 
     if (featuredImg) {
@@ -142,14 +170,15 @@ function openSpotlight(key) {
 
     // Oculta el botón "Volver al inicio" y el badge de vinilo al abrir un cantante
     if (btnVolverInicio) btnVolverInicio.style.display = 'none';
-    if (vinylBadge) vinylBadge.style.opacity = '0';
+    if (vinylBadge) {
+        vinylBadge.style.opacity = '0';
+        vinylBadge.style.pointerEvents = 'none';
+    }
 
     if (multimediaSection) multimediaSection.scrollIntoView({ behavior: 'smooth' });
 }
 
 function closeSpotlight() {
-    const vinylBadge = document.querySelector('.floating-vinyl-badge');
-
     if (audioPlayer) {
         audioPlayer.pause();
         audioPlayer.src = "";
@@ -158,7 +187,10 @@ function closeSpotlight() {
 
     // Muestra nuevamente el botón "Volver al inicio" y el badge de vinilo al volver al catálogo
     if (btnVolverInicio) btnVolverInicio.style.display = 'inline-flex';
-    if (vinylBadge) vinylBadge.style.opacity = '1';
+    if (vinylBadge) {
+        vinylBadge.style.opacity = '1';
+        vinylBadge.style.pointerEvents = 'auto';
+    }
 }
 
 function playTrack(url, clickedButton) {
