@@ -146,8 +146,21 @@ html, body {
 }
 
 /* Bloquea el scroll de la página de fondo cuando la carta está abierta */
+/* Bloquea el scroll del fondo en teléfonos y PC mientras el modal está abierto */
 body.modal-open {
     overflow: hidden !important;
+    touch-action: none !important; /* Evita gestos táctiles de arrastre en la página */
+    height: 100vh !important;
+}
+
+/* Evita que el scroll de la carta transfiera el movimiento al cuerpo de la página */
+.letter-content-scroll {
+    overflow-y: auto;
+    max-height: calc(85vh - 90px);
+    padding-right: 10px;
+    margin-bottom: 5px;
+    overscroll-behavior: contain !important; /* Detiene el scroll para que no baje la página principal */
+    -webkit-overflow-scrolling: touch; /* Garantiza fluidez en Safari/iOS */
 }
 
 /* Modal de la Carta (Totalmente Aislado con z-index superior) */

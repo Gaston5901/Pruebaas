@@ -28,6 +28,8 @@ if (centerImage && loveLetter && overlay) {
 function closeLetter() {
     if (loveLetter) loveLetter.classList.remove('show');
     if (overlay) overlay.classList.remove('show');
+    
+    // Libera el scroll del cuerpo de la página
     document.body.classList.remove('modal-open');
 
     // Restaura la visibilidad del botón volver al inicio
