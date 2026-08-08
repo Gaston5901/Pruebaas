@@ -109,7 +109,7 @@ const artistsData = {
         image: "silvanaEstrada/image copy.png",
         tracks: [
             { name: "Flores", url: "silvanaEstrada/Flores.mp3" },
-            { name: "Carta", url: "silvanaEstrada/Carta.mp3" },
+            { name: "Carta", url: "silvanaEstrada/carta.mp3" },
             { name: "Que Problema", url: "silvanaEstrada/QueProblema.mp3" },
             { name: "Te Guardo", url: "silvanaEstrada/TeGuardo.mp3" }
         ]
