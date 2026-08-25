@@ -1,0 +1,8 @@
+Poné tus canciones en esta carpeta con estos nombres:
+
+- tema-1.mp3
+- tema-2.mp3
+
+También podés usar .ogg o .wav, pero en ese caso cambiá la extensión en index.html.
+La primera canción empieza al tocar "Entrar a la sorpresa".
+Cuando termina una canción, empieza automáticamente la siguiente.

@@ -10,6 +10,18 @@
 </head>
 <body>
 
+  <audio id="backgroundMusic" preload="metadata"></audio>
+  <div class="music-player" aria-label="Reproductor de música">
+    <span class="music-player-icon" aria-hidden="true">♪</span>
+    <div class="music-player-info">
+      <span class="music-player-label">Música para vos</span>
+      <span class="music-player-track" id="musicTrack">Tema 1</span>
+    </div>
+    <button class="music-control" id="musicPlay" type="button" aria-label="Reproducir música" title="Reproducir música">▶</button>
+    <button class="music-control" id="musicNext" type="button" aria-label="Siguiente canción" title="Siguiente canción">⏭</button>
+    <button class="music-control" id="musicMute" type="button" aria-label="Silenciar música" title="Silenciar música">🔊</button>
+  </div>
+
   <!-- MODAL DE PRESENTACIÓN INICIAL -->
   <div class="surprise-intro-overlay" id="surpriseOverlay">
     <div class="surprise-intro-card">
@@ -85,9 +97,87 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const overlay = document.getElementById('surpriseOverlay');
   const btnOpen = document.getElementById('btnOpenLetter');
+  const backgroundMusic = document.getElementById('backgroundMusic');
+  const musicPlay = document.getElementById('musicPlay');
+  const musicNext = document.getElementById('musicNext');
+  const musicMute = document.getElementById('musicMute');
+  const musicTrack = document.getElementById('musicTrack');
+
+  const playlist = [
+    { name: 'Tema 1', src: './audio/tema-1.mp3' },
+    { name: 'Tema 2', src: './audio/tema-2.mp3' }
+  ];
+  let currentTrack = 0;
+
+  const loadTrack = (trackIndex) => {
+    if (!backgroundMusic || !playlist[trackIndex]) return;
+
+    currentTrack = trackIndex;
+    backgroundMusic.src = playlist[currentTrack].src;
+
+    if (musicTrack) {
+      musicTrack.textContent = playlist[currentTrack].name;
+    }
+  };
+
+  const playMusic = () => {
+    if (!backgroundMusic) return;
+
+    if (!backgroundMusic.src) {
+      loadTrack(currentTrack);
+    }
+
+    backgroundMusic.play().then(() => {
+      if (musicPlay) musicPlay.textContent = 'Ⅱ';
+      if (musicPlay) musicPlay.setAttribute('aria-label', 'Pausar música');
+    }).catch(() => {
+      if (musicTrack) musicTrack.textContent = 'Agregá tus canciones en audio';
+    });
+  };
+
+  const pauseMusic = () => {
+    if (!backgroundMusic) return;
+
+    backgroundMusic.pause();
+    if (musicPlay) musicPlay.textContent = '▶';
+    if (musicPlay) musicPlay.setAttribute('aria-label', 'Reproducir música');
+  };
+
+  const nextTrack = () => {
+    loadTrack((currentTrack + 1) % playlist.length);
+    playMusic();
+  };
+
+  loadTrack(currentTrack);
+
+  if (musicPlay) {
+    musicPlay.addEventListener('click', () => {
+      if (backgroundMusic.paused) {
+        playMusic();
+      } else {
+        pauseMusic();
+      }
+    });
+  }
+
+  if (musicNext) musicNext.addEventListener('click', nextTrack);
+
+  if (musicMute) {
+    musicMute.addEventListener('click', () => {
+      backgroundMusic.muted = !backgroundMusic.muted;
+      musicMute.textContent = backgroundMusic.muted ? '🔇' : '🔊';
+      musicMute.setAttribute('aria-label', backgroundMusic.muted ? 'Activar sonido' : 'Silenciar música');
+    });
+  }
+
+  if (backgroundMusic) {
+    backgroundMusic.addEventListener('ended', nextTrack);
+  }
 
   if (btnOpen && overlay) {
     btnOpen.addEventListener('click', () => {
+
+      playMusic();
 
       overlay.classList.add('hidden');
 
@@ -181,31 +271,40 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. TOQUE / CLICK EN CUALQUIER TARJETA
   // ==========================================================
 
-  cards.forEach(card => {
+  const getCardAtPoint = (clientX, clientY) => {
+    const candidates = [...cards].filter(card => {
+      const rect = card.getBoundingClientRect();
+      return clientX >= rect.left && clientX <= rect.right &&
+        clientY >= rect.top && clientY <= rect.bottom;
+    });
 
-    card.addEventListener('click', (e) => {
+    return candidates.sort((firstCard, secondCard) => {
+      const firstRect = firstCard.getBoundingClientRect();
+      const secondRect = secondCard.getBoundingClientRect();
+      const firstDistance = Math.hypot(
+        clientX - (firstRect.left + firstRect.width / 2),
+        clientY - (firstRect.top + firstRect.height / 2)
+      );
+      const secondDistance = Math.hypot(
+        clientX - (secondRect.left + secondRect.width / 2),
+        clientY - (secondRect.top + secondRect.height / 2)
+      );
 
-      /*
-       * Si el usuario estaba arrastrando el carrusel,
-       * NO abrimos la tarjeta.
-       *
-       * Esto permite diferenciar:
-       * - tocar = abrir
-       * - deslizar = girar
-       */
+      return firstDistance - secondDistance;
+    })[0];
+  };
 
+  if (scene) {
+    scene.addEventListener('click', (e) => {
       if (isDragging) {
         e.preventDefault();
         return;
       }
 
-      e.stopPropagation();
-
+      const card = getCardAtPoint(e.clientX, e.clientY);
       openCard(card);
-
     });
-
-  });
+  }
 
 
   // ==========================================================
