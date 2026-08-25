@@ -2,216 +2,236 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Feliz Día de la Novia Alex Dev</title>
-
-     <!--
-
-Contáctame:
-
-    * Invitame un café
- https://buymeacoffee.com/alexx.dev
-
-    * Portafolio Web
- https://alexxdev.vercel.app
-
-    * Sigueme en tiktok
- https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc
- 
-    *Canal de WhatsApp
- https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
-
- 
- WhatsApp: +52 1 55 6628 1018
-
--->
-  
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital@0;1&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Para mi señorita Iris</title>  
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <style>
-   * {
-     cursor: url('flor.png'), auto !important;
-   }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     body {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      background: radial-gradient(circle at center, #fff0f5 0%, #ffcce0 40%, #ff99c2 100%);
+      min-height: 100vh;
+      /* Fondo atmósfera Morado Romántico */
+      background: radial-gradient(circle at center, #2d1240 0%, #170924 60%, #0a0312 100%);
       overflow: hidden;
       margin: 0;
+      font-family: "Playfair Display", Georgia, serif;
+      color: #f3e8f8;
+      user-select: none;
     }
 
     .main-title {
       font-family: "Great Vibes", cursive;
-      font-size: 75px;
-      color: #d81b60;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
-      margin: 0;
+      font-size: clamp(38px, 7vw, 68px);
+      color: #ebd5f7;
+      text-shadow: 0 0 20px rgba(214, 160, 248, 0.4), 0 2px 5px rgba(0,0,0,0.6);
+      margin: 0 0 10px 0;
       text-align: center;
+      padding: 0 15px;
+      pointer-events: none;
     }
 
+    /* CONTENEDOR DE LA CAJA EN 3D */
     .chocolate-box {
       position: relative;
-      height: 480px;
-      width: 480px;
+      height: 380px;
+      width: 380px;
       cursor: pointer;
+      perspective: 1200px;
       margin-top: 10px;
-      perspective: 1000px;
     }
 
-    .chocolate-box:before, .chocolate-box:after {
-      content:"";
-      position: absolute;
-    }
-
+    /* Base/Interior acolchado de la caja */
     .chocolate-box:before {
-      width: 256px;
-      height: 256px;
-      background-color: #4b301b;
+      content: "";
+      position: absolute;
+      width: 270px;
+      height: 270px;
+      background: linear-gradient(145deg, #1f0a2e 0%, #12041c 100%);
       transform: translate(-50%,-50%);
       top: 50%;
       left: 50%;
-      box-shadow: 16px 16px #392312;
-    }
-
-    .chocolate-box:after {
-      width: 109px;
-      height: 109px;
-      background-color: #2b0900;
-      top:130px;
-      left: 128px;
-      box-shadow: 112px 0 #2b0900, 112px 112px #2b0900, 0px 112px #2b0900;
+      border-radius: 24px;
+      border: 3px solid #7e22ce;
+      box-shadow: 
+        0 20px 45px rgba(0, 0, 0, 0.8),
+        inset 0 0 25px rgba(0, 0, 0, 0.9),
+        0 0 15px rgba(168, 85, 247, 0.25);
     }
 
     .chocs {
       position: absolute;
-      z-index:1;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
     }
 
-    .top-left, .top-right, .bottom-left, .bottom-right {
+    /* COMPARTIMENTOS/MOLDES DE LA CAJA */
+    .item-slot {
       position: absolute;
-      width: 85px;
-      height: 85px;
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-      filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.5));
-      transition: .2s;
+      width: 90px;
+      height: 90px;
+      background: radial-gradient(circle, rgba(42, 16, 62, 0.9) 0%, rgba(20, 7, 31, 0.95) 100%);
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                  border-color 0.25s ease, 
+                  box-shadow 0.25s ease;
+      cursor: pointer;
+      padding: 8px;
     }
 
-    .top-left { top:147px; left:147px; background-image: url('1.png'); }
-    .top-right { top:147px; left: 259px; background-image: url('2.png'); }
-    .bottom-left { top:259px; left: 147px; background-image: url('3.png'); }
-    .bottom-right { left:259px; top: 259px; background-image: url('4.png'); }
-
-    .top-left:hover, .bottom-right:hover, .bottom-left:hover, .top-right:hover {
-      transform: rotate(25deg) scale(1.1);
+    .item-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 5px 8px rgba(0,0,0,0.6));
+      pointer-events: none;
+      transition: transform 0.25s ease;
     }
 
-    .top-left:active, .bottom-right:active, .bottom-left:active, .top-right:active {
-      opacity:0.7;
+    .top-left { top: 92px; left: 92px; }
+    .top-right { top: 92px; left: 198px; }
+    .bottom-left { top: 198px; left: 92px; }
+    .bottom-right { top: 198px; left: 198px; }
+
+    /* Efecto al tocar/pasar mouse */
+    .item-slot:active, .item-slot.touch-active {
+      transform: scale(1.1) rotate(3deg);
+      border-color: #f0abfc;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.5), 0 0 20px rgba(240, 171, 252, 0.5);
     }
 
-    .box-bottom {
-      position: absolute;
-      background-color: #392312;
-      width: 24px;
-      height: 24px;
-      transform: rotate(45deg);
-      left:355px;
-      top:117px;
-      z-index:-1;
-      box-shadow: 0px 338px #392312;
+    .item-slot:hover img {
+      transform: scale(1.12);
     }
 
+    /* TAPA DE LA CAJA REALISTA */
     .cover {
       position: absolute;
-      background-color: #ff4d88;
-      width:240px;
-      height: 240px;
-      border: 8px solid #c2185b;
-      z-index:2;
-      top:112px;
-      left:112px;
+      background: linear-gradient(135deg, #581c87 0%, #3b0764 50%, #240046 100%);
+      width: 270px;
+      height: 270px;
+      border: 3px solid #a855f7;
+      border-radius: 24px;
+      z-index: 2;
+      top: 55px;
+      left: 55px;
       transform-origin: top;
-      transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow: hidden;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.75), inset 0 0 20px rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+    }
+
+    /* Moño decorativo en la tapa */
+    .cover::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 36px;
+      background: linear-gradient(90deg, #d8b4fe 0%, #a855f7 50%, #7e22ce 100%);
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
     }
 
     .chocolate-box.open .cover {
-      transform: rotateX(170deg);
-      box-shadow: 8px -8px 32px rgba(0,0,0,.5);
+      transform: rotateX(160deg);
+      box-shadow: 0 -15px 40px rgba(0,0,0,0.6);
     }
 
-    .chocolate-box.open .cover:before,
-    .chocolate-box.open .cover:after {
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .cover:before {
-      position: absolute;
-      content:"Feliz Día de la Novia";
-      color: #ffe6f0;
-      font-family: "Dancing Script", cursive;
-      padding-top: 27px;
-      padding-bottom: 27px;
-      padding-left: 20px;
-      padding-right: 20px;
-      font-size: 32px;
-      line-height: 1.1;
-      width: 140px;
-      transform: translate(-50%,-50%);
-      left:50%;
-      top:50%;
+    /* CARA EXTERIOR DE LA TAPA */
+    .cover-content {
+      position: relative;
+      z-index: 2;
+      border: 2px double rgba(243, 232, 248, 0.7);
+      border-radius: 16px;
+      padding: 16px 12px;
       text-align: center;
-      border: 3px double;
-      transition: opacity 0.3s;
-      pointer-events: none;
+      width: 84%;
+      height: 84%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(23, 9, 36, 0.85);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      backface-visibility: hidden;
     }
 
-    .cover:after {
+    .cover-content span {
+      color: #f3e8f8;
+      font-family: "Dancing Script", cursive;
+      font-size: 30px;
+      line-height: 1.25;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    }
+
+    /* CARA INTERIOR DE LA TAPA (Visible al abrir) */
+    .cover-inside {
       position: absolute;
-      content:"";
-      background-color: #ffe6f0;
-      height:16px;
-      width: 160px;
-      transform: rotate(-45deg);
-      left:-32px;
-      box-shadow: -8px 264px #ffe6f0;
-      pointer-events: none;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #3b0764 0%, #1f0438 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      transform: rotateY(180deg) rotateZ(180deg);
+      backface-visibility: hidden;
+      border: 2px solid rgba(216, 180, 254, 0.4);
     }
 
+    .cover-inside span {
+      color: #f5d0fe;
+      font-family: "Dancing Script", cursive;
+      font-size: 24px;
+      line-height: 1.3;
+      text-shadow: 0 0 10px rgba(240, 171, 252, 0.4);
+    }
+
+    /* ETIQUETAS FLOTANTES */
     .choco-label {
       position: absolute;
       display: none;
-      color: #4a2c1a;
+      color: #f3e8f8;
       font-family: "Playfair Display", Georgia, serif;
-      font-size: 18px;
+      font-size: 13px;
       font-style: italic;
-      font-weight: 500;
-      transition: .2s;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 8px 16px;
+      background: rgba(22, 9, 33, 0.95);
+      padding: 6px 14px;
       border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      border: 2px solid #ff99c2;
-      width: 200px;
-      text-align: center;
-      word-break: break-word;
-      overflow-wrap: break-word;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      border: 1px solid #c084fc;
+      white-space: nowrap;
       z-index: 5;
+      pointer-events: none;
     }
 
-    #label-top-right { top:155px; left: 360px; }
-    #label-bottom-left { top:267px; left:-95px; }
-    #label-bottom-right { left: 360px; top: 267px; }
-    #label-top-left { left: -95px; top: 155px; }
+    #label-top-left { top: 60px; left: 80px; }
+    #label-top-right { top: 60px; left: 195px; }
+    #label-bottom-left { top: 295px; left: 80px; }
+    #label-bottom-right { top: 295px; left: 195px; }
 
+    /* MODAL DE MENSAJE */
     .love-modal {
       display: none;
       position: fixed;
@@ -219,158 +239,144 @@ Contáctame:
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
+      background: rgba(8, 3, 12, 0.85);
+      backdrop-filter: blur(8px);
       z-index: 100;
       justify-content: center;
       align-items: center;
+      padding: 20px;
     }
 
     .love-modal.active { display: flex; }
 
     .love-message {
-      background-image: url('fondo.png');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      padding: 40px 50px;
-      border-radius: 20px;
+      background: linear-gradient(145deg, #2a0e3f 0%, #13051e 100%);
+      padding: 32px 26px;
+      border-radius: 24px;
       text-align: center;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.4);
-      animation: floatIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-      max-width: 400px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.85), 0 0 30px rgba(168, 85, 247, 0.25);
+      animation: floatIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-width: 380px;
+      width: 100%;
       position: relative;
-      border: 4px solid #ff99c2;
+      border: 1px solid rgba(216, 180, 254, 0.3);
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
     @keyframes floatIn {
-      0% { transform: scale(0.8) translateY(30px); opacity: 0; }
+      0% { transform: scale(0.85) translateY(20px); opacity: 0; }
       100% { transform: scale(1) translateY(0); opacity: 1; }
     }
 
     .love-message h2 {
-      color: #d81b60;
+      color: #ebd5f7;
       font-family: "Great Vibes", cursive;
-      font-size: 55px;
-      margin: 0 0 20px 0;
-      z-index: 2;
+      font-size: 46px;
+      margin: 0 0 12px 0;
+      text-shadow: 0 0 12px rgba(214, 160, 248, 0.4);
     }
 
     .modal-image {
       max-width: 100%;
-      max-height: 220px;
+      max-height: 190px;
       object-fit: cover;
-      margin-bottom: 20px;
-      border-radius: 12px;
+      margin-bottom: 16px;
+      border-radius: 14px;
       display: none;
-      border: 3px solid #f9e3e3;
-      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-      z-index: 2;
+      border: 1.5px solid #a855f7;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
 
     .modal-image.has-image { display: block; }
 
     .love-message p {
-      color: #5a4b4b;
-      font-family: "Playfair Display", Georgia, serif;
-      font-size: 25px;
+      color: #e9d5ff;
+      font-size: 17px;
       margin: 0;
-      line-height: 1.6;
-      padding: 0 10px;
+      line-height: 1.55;
       white-space: pre-wrap;
-      word-wrap: break-word;
-      z-index: 2;
     }
 
     .close-btn {
-      margin-top: 25px;
-      padding: 10px 35px;
-      background: #ffb3d1;
-      color: #d81b60;
+      margin-top: 20px;
+      padding: 10px 30px;
+      background: linear-gradient(135deg, #8b40c6 0%, #581c87 100%);
+      color: #ffffff;
       border: none;
-      border-radius: 25px;
-      font-size: 16px;
+      border-radius: 20px;
+      font-size: 15px;
       cursor: pointer;
       font-family: "Playfair Display", Georgia, serif;
-      font-weight: bold;
-      letter-spacing: 1px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(255, 179, 209, 0.5);
-      z-index: 2;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(139, 64, 198, 0.4);
     }
 
-    .close-btn:hover {
-      background: #ff99c2;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(255, 153, 194, 0.7);
+    .close-btn:active {
+      transform: scale(0.96);
     }
 
-    .decor-left, .decor-right {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      opacity: 0.6;
-    }
-
-    .decor-left {
-      top: 15px;
-      left: 15px;
-      border-left: 2px solid #ff99c2;
-      border-top: 2px solid #ff99c2;
-    }
-
-    .decor-right {
-      bottom: 15px;
-      right: 15px;
-      border-right: 2px solid #ff99c2;
-      border-bottom: 2px solid #ff99c2;
-    }
-
-    @media (max-width: 600px) {
-      .main-title { font-size: 45px; margin-top: -15px; }
-      .chocolate-box { transform: scale(0.75); margin-top: -20px; }
-      .choco-label { font-size: 14px; padding: 6px 12px; max-width: 120px; }
-      #label-top-right { left: 320px; }
-      #label-bottom-left { left: -60px; }
-      #label-bottom-right { left: 320px; }
-      #label-top-left { left: -50px; }
-      .love-message { padding: 30px 20px; margin: 20px; max-width: 300px; }
+    @media (max-width: 480px) {
+      .chocolate-box {
+        transform: scale(0.88);
+      }
       .love-message h2 { font-size: 38px; }
-      .love-message p { font-size: 16px; }
-      .modal-image { max-width: 100%; max-height: 180px; }
+      .love-message p { font-size: 15px; }
     }
   </style>
 </head>
 <body>
 
-  <h1 class="main-title">Feliz día de la novia</h1>
+  <h1 class="main-title">Un detalle para vos</h1>
 
-  <div class="chocolate-box">
+  <div class="chocolate-box" id="boxContainer">
     <div class="chocs">
-      <div id="top-left" class="top-left"></div>
-      <div id="top-right" class="top-right"></div>
-      <div id="bottom-left" class="bottom-left"></div>
-      <div id="bottom-right" class="bottom-right"></div>
-    </div>
-    <div class="box-bottom"></div>
-    <div class="cover"></div> <!-- La tapa de la caja -->
+      <!-- 1. Papas Fritas -->
+      <div id="top-left" class="item-slot top-left" data-pos="top-left">
+        <img src="papas.png" onerror="this.src='papas.png'" alt="Papas Fritas">
+      </div>
 
-    <div id="label-top-left" class="choco-label">Turin</div>
-    <div id="label-top-right" class="choco-label">Lindt </div>
-    <div id="label-bottom-left" class="choco-label">Hershey's Miniaturas</div>
-    <div id="label-bottom-right" class="choco-label">Bon o bon</div>
+      <!-- 2. Mandarina -->
+      <div id="top-right" class="item-slot top-right" data-pos="top-right">
+        <img src="mandarina.png" onerror="this.src='naranja.png'" alt="Mandarina">
+      </div>
+
+      <!-- 3. Jugo de Manzana -->
+      <div id="bottom-left" class="item-slot bottom-left" data-pos="bottom-left">
+        <img src="jugo.png" onerror="this.src='manzana.png'" alt="Jugo de Manzana">
+      </div>
+
+      <!-- 4. Choclo -->
+      <div id="bottom-right" class="item-slot bottom-right" data-pos="bottom-right">
+        <img src="choclo.png" onerror="this.src='https://static.vecteezy.com/system/resources/thumbnails/048/050/944/small/corn-on-the-cob-on-a-transparent-background-png.png'" alt="Choclo">
+      </div>
+    </div>
+
+    <!-- Tapa -->
+    <div class="cover">
+      <div class="cover-content">
+        <span>Señorita Iris</span>
+      </div>
+      <div class="cover-inside">
+        <span>Tocá cada uno para descubrir algo 🌹</span>
+      </div>
+    </div>
+
+    <!-- Etiquetas flotantes -->
+    <div id="label-top-left" class="choco-label">Papas Fritas</div>
+    <div id="label-top-right" class="choco-label">Mandarina</div>
+    <div id="label-bottom-left" class="choco-label">Jugo de Manzana</div>
+    <div id="label-bottom-right" class="choco-label">Choclo</div>
   </div>
 
+  <!-- Modal -->
   <div id="loveModal" class="love-modal">
     <div class="love-message">
-      <div class="decor-left"></div>
-      <div class="decor-right"></div>
-      
       <h2 id="modalTitle"></h2>
-      <img id="modalImage" class="modal-image" src="" alt="Nuestro recuerdo">
+      <img id="modalImage" class="modal-image" src="" alt="Recuerdo">
       <p id="modalText"></p>
       
       <button class="close-btn" onclick="closeModal()">Cerrar</button>
@@ -378,29 +384,28 @@ Contáctame:
   </div>
 
   <script>
-    // Variables de los chocolates
-    const chocolatesData = [
-      { 
-        title: "Gracias por todo", 
-        message: "Mi amor, gracias por tu cariño incondicional y por hacer cada uno de mis días más especiales.", 
-        image: "5.jpeg" 
-      },
-      { 
-        title: "Eres increíble", 
-        message: "Amo tu forma de ser y tu hermoso corazón. Eres la mejor compañera de vida que pude encontrar.", 
-        image: "6.png" 
-      },
-      { 
-        title: "Te amo infinito", 
-        message: "No hay palabras suficientes para describir cuánto te quiero. ¡Eres lo mejor que me ha pasado!", 
-        image: "7.png" 
-      },
-      { 
-        title: "Mi lugar favorito", 
-        message: "Mi lugar favorito en el mundo siempre será entre tus brazos. Gracias por hacerme tan feliz.", 
-        image: "8.jpeg" 
-      }
-    ];
+const detailsData = [
+  { 
+    title: "Papas Fritas", 
+    message: "Quería prepararte un detalle tan lindo como todo lo que transmitís. Sos una persona profundamente especial para mí y me hace feliz tenerte presente en mi vida.", 
+    image: "5.jpeg" 
+  },
+  { 
+    title: "Mandarina", 
+    message: "Tenés un brillo único y una vibra hermosa que no se encuentra en cualquier lado. Me encanta tu manera de ver las cosas, lo auténtica que sos y lo bien que le hace tu presencia a cualquiera. Sos increíble.", 
+    image: "6.png" 
+  },
+  { 
+    title: "Jugo de Manzana", 
+    message: "A veces no hacen falta grandes palabras para decir lo importante que sos. Te quiero un muchisimo señoritaa.", 
+    image: "7.png" 
+  },
+  { 
+    title: "Choclo", 
+    message: "Aunque estos días estemos un poco alejados, mi cariño por vos no cambia en nada: te extraño y te valoro un montón. Quería prepararte este pequeño espacio para recordarte lo especial que sos y sacarte una sonrisa. Te merecés todo lo lindo del mundo, saranghae.", 
+    image: "8.jpeg" 
+  }
+];
 
     const positionMap = {
       'top-left': 0,
@@ -409,14 +414,14 @@ Contáctame:
       'bottom-right': 3
     };
 
-    function showLoveMessage(chocolateId) {
-      const index = positionMap[chocolateId];
-      const choco = chocolatesData[index];
+    function showLoveMessage(itemId) {
+      const index = positionMap[itemId];
+      const item = detailsData[index];
 
-      if (choco) {
-        $('#modalTitle').text(choco.title);
+      if (item) {
+        $('#modalTitle').text(item.title);
         
-        const message = choco.message
+        const message = item.message
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
           .replace(/>/g, '&gt;')
@@ -424,8 +429,8 @@ Contáctame:
         
         $('#modalText').html(message);
 
-        if (choco.image && choco.image.trim() !== '') {
-          $('#modalImage').attr('src', choco.image).addClass('has-image');
+        if (item.image && item.image.trim() !== '') {
+          $('#modalImage').attr('src', item.image).addClass('has-image');
         } else {
           $('#modalImage').removeClass('has-image').attr('src', '');
         }
@@ -434,99 +439,53 @@ Contáctame:
       }
     }
 
+    // AQUÍ ESTÁ EL CAMBIO: Solo oculta el modal, NO cierra la caja
     function closeModal() {
       $('#loveModal').removeClass('active');
-      $('.chocolate-box').removeClass('open');
     }
 
     $(document).ready(function() {
-      
-      $('.chocolate-box, .cover').on('click', function(e) {
-        if ($(e.target).hasClass('top-left') || 
-            $(e.target).hasClass('top-right') || 
-            $(e.target).hasClass('bottom-left') || 
-            $(e.target).hasClass('bottom-right')) {
-          return;
-        }
-        
-        if ($(this).hasClass('cover')) {
-            $('.chocolate-box').toggleClass('open');
-            e.stopPropagation(); 
-            return;
-        }
+      // Abre/cierra la caja solo al hacer clic o toque en la caja/tapa (fuera de las cosas de adentro)
+      $('#boxContainer').on('click touchstart', function(e) {
+        if ($(e.target).closest('.item-slot').length > 0) return;
+        if (e.type === 'touchstart') e.preventDefault();
 
         $(this).toggleClass('open');
       });
 
-      // Cerrar modal
-      $('#loveModal').on('click', function(e) {
-        if (e.target === this) closeModal();
+      // Evento directo sobre cada elemento
+      $('.item-slot').on('click touchstart', function(e) {
+        if (e.type === 'touchstart') e.preventDefault();
+
+        const pos = $(this).data('pos');
+        const $slot = $(this);
+
+        // Feedback táctil suave
+        $slot.addClass('touch-active');
+        setTimeout(() => $slot.removeClass('touch-active'), 250);
+
+        if ($('#boxContainer').hasClass('open')) {
+          showLoveMessage(pos);
+        } else {
+          $('#boxContainer').addClass('open');
+          setTimeout(() => showLoveMessage(pos), 350);
+        }
       });
 
-      // Etiquetas flotantes de chocolates
-      function adjustLabelPosition(label) {
-        const originalLeft = window.getComputedStyle(label).left;
-        label.style.display = 'block';
-        label.style.whiteSpace = 'normal';
-        label.style.overflowWrap = 'break-word';
-        label.style.maxWidth = '180px';
+      // Etiquetas flotantes en Hover (PC)
+      $('.item-slot').on('mouseenter', function() {
+        const pos = $(this).data('pos');
+        $(`#label-${pos}`).stop(true, true).fadeIn(150);
+      }).on('mouseleave', function() {
+        const pos = $(this).data('pos');
+        $(`#label-${pos}`).stop(true, true).fadeOut(150);
+      });
 
-        let labelRect = label.getBoundingClientRect();
-        let currentLeft = parseFloat(window.getComputedStyle(label).left);
-        let newLeft = currentLeft;
-
-        if (labelRect.left < 0) newLeft -= labelRect.left - 10;
-        if (labelRect.right > window.innerWidth) newLeft -= (labelRect.right - window.innerWidth + 10);
-
-        label.style.left = newLeft + 'px';
-        return { originalLeft };
-      }
-
-      function restoreLabelPosition(label, originals) {
-        label.style.left = originals.originalLeft;
-        label.style.display = 'none';
-      }
-
-      const positions = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-      
-      positions.forEach(pos => {
-        $(`#${pos}`).on('mouseenter', function() {
-          const label = $(`#label-${pos}`)[0];
-          this.originals = adjustLabelPosition(label);
-        }).on('mouseout', function() {
-          const label = $(`#label-${pos}`)[0];
-          restoreLabelPosition(label, this.originals);
-        });
-
-        $(`#${pos}`).on('click', function(e) {
-          if ($('.chocolate-box').hasClass('open')) {
-            showLoveMessage(pos);
-            e.stopPropagation(); 
-          }
-        });
+      // Cerrar modal al tocar fuera
+      $('#loveModal').on('click touchstart', function(e) {
+        if (e.target === this) closeModal();
       });
     });
   </script>
 </body>
-
-   <!--
-
-Contáctame:
-
-    * Invitame un café
- https://buymeacoffee.com/alexx.dev
-
-    * Portafolio Web
- https://alexxdev.vercel.app
-
-    * Sigueme en tiktok
- https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc
- 
-    *Canal de WhatsApp
- https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
-
- 
- WhatsApp: +52 1 55 6628 1018
-
--->
 </html>
