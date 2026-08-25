@@ -76,6 +76,7 @@
   </div>
 
   <!-- SCRIPT GENERAL -->
+<!-- SCRIPT GENERAL -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // 1. Control del Modal de Presentación Inicial
@@ -98,10 +99,13 @@
       const modalCardText = document.getElementById('modalCardText');
       const modalCardImg = document.getElementById('modalCardImg');
       const carousel3d = document.getElementById('carousel3d');
+      const cards = document.querySelectorAll('.card');
+      const scene = document.querySelector('.scene');
 
       let isSwiping = false;
 
-      document.querySelectorAll('.card').forEach(card => {
+      // Evento para abrir el modal al tocar/hacer clic en CUALQUIER tarjeta
+      cards.forEach(card => {
         card.addEventListener('click', (e) => {
           if (isSwiping) return;
 
@@ -137,7 +141,6 @@
       // 3. EFECTO 360 TÁCTIL (Dirección natural y destrabado al soltar)
       let startX = 0;
       let currentRotation = 0;
-      const scene = document.querySelector('.scene');
 
       if (scene && carousel3d) {
         scene.addEventListener('touchstart', (e) => {
@@ -154,7 +157,6 @@
             isSwiping = true;
           }
 
-          // Invertido el signo (-0.5) para que el carrusel siga la dirección natural del dedo
           currentRotation -= diffX * 0.5;
           carousel3d.style.transform = `rotateY(${currentRotation}deg)`;
 
@@ -166,7 +168,6 @@
             isSwiping = false;
           }, 150);
           
-          // Reanuda el movimiento automático al soltar la pantalla
           if (carousel3d) {
             carousel3d.classList.remove('paused');
           }

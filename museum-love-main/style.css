@@ -37,7 +37,7 @@
   border-radius: 1.5em;
   backface-visibility: hidden;
   transform: rotatey(calc(var(--i)*var(--ba))) translatez(calc(-1*(.5*var(--w) + .5em)/tan(.5*var(--ba))));
-  pointer-events: auto; /* ¡Asegura que todas las tarjetas del centro y costados reciban los clics! */
+  pointer-events: auto; /* Permite que se puedan tocar siempre */
 }
 
 @media (prefers-reduced-motion: reduce) {
