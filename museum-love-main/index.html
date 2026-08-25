@@ -76,104 +76,318 @@
   </div>
 
   <!-- SCRIPT GENERAL -->
-<!-- SCRIPT GENERAL -->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // 1. Control del Modal de Presentación Inicial
-      const overlay = document.getElementById('surpriseOverlay');
-      const btnOpen = document.getElementById('btnOpenLetter');
+<script>
+document.addEventListener('DOMContentLoaded', () => {
 
-      if (btnOpen && overlay) {
-        btnOpen.addEventListener('click', () => {
-          overlay.classList.add('hidden');
-          setTimeout(() => {
-            overlay.style.display = 'none';
-          }, 400);
-        });
-      }
+  // ==========================================================
+  // 1. MODAL DE PRESENTACIÓN INICIAL
+  // ==========================================================
 
-      // 2. Control del Modal de las Tarjetas del Carrusel
-      const cardModal = document.getElementById('cardModal');
-      const closeCardModal = document.getElementById('btnCloseCardModal');
-      const modalCardTitle = document.getElementById('modalCardTitle');
-      const modalCardText = document.getElementById('modalCardText');
-      const modalCardImg = document.getElementById('modalCardImg');
-      const carousel3d = document.getElementById('carousel3d');
-      const cards = document.querySelectorAll('.card');
-      const scene = document.querySelector('.scene');
+  const overlay = document.getElementById('surpriseOverlay');
+  const btnOpen = document.getElementById('btnOpenLetter');
 
-      let isSwiping = false;
+  if (btnOpen && overlay) {
+    btnOpen.addEventListener('click', () => {
 
-      // Evento para abrir el modal al tocar/hacer clic en CUALQUIER tarjeta
-      cards.forEach(card => {
-        card.addEventListener('click', (e) => {
-          if (isSwiping) return;
+      overlay.classList.add('hidden');
 
-          if (carousel3d) carousel3d.classList.add('paused');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 400);
 
-          const title = card.getAttribute('data-title') || 'Sorpresa';
-          const text = card.getAttribute('data-text') || 'Un momento especial guardado acá para vos.';
-          const imgSrc = card.getAttribute('src');
-
-          modalCardTitle.textContent = title;
-          modalCardText.textContent = text;
-          modalCardImg.setAttribute('src', imgSrc);
-
-          cardModal.classList.add('active');
-        });
-      });
-
-      const closeMyCardModal = () => {
-        cardModal.classList.remove('active');
-        if (carousel3d) carousel3d.classList.remove('paused');
-      };
-
-      if (closeCardModal) {
-        closeCardModal.addEventListener('click', closeMyCardModal);
-      }
-
-      cardModal.addEventListener('click', (e) => {
-        if (e.target === cardModal) {
-          closeMyCardModal();
-        }
-      });
-
-      // 3. EFECTO 360 TÁCTIL (Dirección natural y destrabado al soltar)
-      let startX = 0;
-      let currentRotation = 0;
-
-      if (scene && carousel3d) {
-        scene.addEventListener('touchstart', (e) => {
-          startX = e.touches[0].clientX;
-          isSwiping = false;
-          carousel3d.classList.add('paused');
-        }, { passive: true });
-
-        scene.addEventListener('touchmove', (e) => {
-          const currentX = e.touches[0].clientX;
-          const diffX = currentX - startX;
-
-          if (Math.abs(diffX) > 4) {
-            isSwiping = true;
-          }
-
-          currentRotation -= diffX * 0.5;
-          carousel3d.style.transform = `rotateY(${currentRotation}deg)`;
-
-          startX = currentX;
-        }, { passive: true });
-
-        scene.addEventListener('touchend', () => {
-          setTimeout(() => {
-            isSwiping = false;
-          }, 150);
-          
-          if (carousel3d) {
-            carousel3d.classList.remove('paused');
-          }
-        });
-      }
     });
-  </script>
+  }
+
+
+  // ==========================================================
+  // 2. ELEMENTOS DEL CARRUSEL Y MODAL
+  // ==========================================================
+
+  const cardModal = document.getElementById('cardModal');
+  const closeCardModal = document.getElementById('btnCloseCardModal');
+
+  const modalCardTitle =
+    document.getElementById('modalCardTitle');
+
+  const modalCardText =
+    document.getElementById('modalCardText');
+
+  const modalCardImg =
+    document.getElementById('modalCardImg');
+
+  const carousel3d =
+    document.getElementById('carousel3d');
+
+  const cards =
+    document.querySelectorAll('.card');
+
+  const scene =
+    document.querySelector('.scene');
+
+
+  // ==========================================================
+  // 3. VARIABLES PARA EL CONTROL TÁCTIL
+  // ==========================================================
+
+  let isDragging = false;
+  let startX = 0;
+  let lastX = 0;
+  let currentRotation = 0;
+
+  // Distancia mínima para considerar que realmente se está deslizando
+  const swipeThreshold = 6;
+
+
+  // ==========================================================
+  // 4. FUNCIÓN PARA ABRIR UNA TARJETA
+  // ==========================================================
+
+  const openCard = (card) => {
+
+    if (!cardModal || !card) return;
+
+    const title =
+      card.getAttribute('data-title') || 'Sorpresa';
+
+    const text =
+      card.getAttribute('data-text') ||
+      'Un momento especial guardado acá para vos.';
+
+    const imgSrc =
+      card.getAttribute('src');
+
+    if (modalCardTitle) {
+      modalCardTitle.textContent = title;
+    }
+
+    if (modalCardText) {
+      modalCardText.textContent = text;
+    }
+
+    if (modalCardImg) {
+      modalCardImg.setAttribute('src', imgSrc);
+    }
+
+    // Detener el giro mientras se muestra el mensaje
+    if (carousel3d) {
+      carousel3d.classList.add('paused');
+    }
+
+    cardModal.classList.add('active');
+  };
+
+
+  // ==========================================================
+  // 5. TOQUE / CLICK EN CUALQUIER TARJETA
+  // ==========================================================
+
+  cards.forEach(card => {
+
+    card.addEventListener('click', (e) => {
+
+      /*
+       * Si el usuario estaba arrastrando el carrusel,
+       * NO abrimos la tarjeta.
+       *
+       * Esto permite diferenciar:
+       * - tocar = abrir
+       * - deslizar = girar
+       */
+
+      if (isDragging) {
+        e.preventDefault();
+        return;
+      }
+
+      e.stopPropagation();
+
+      openCard(card);
+
+    });
+
+  });
+
+
+  // ==========================================================
+  // 6. CERRAR MODAL
+  // ==========================================================
+
+  const closeMyCardModal = () => {
+
+    if (!cardModal) return;
+
+    cardModal.classList.remove('active');
+
+    if (carousel3d) {
+      carousel3d.classList.remove('paused');
+    }
+
+  };
+
+
+  if (closeCardModal) {
+
+    closeCardModal.addEventListener(
+      'click',
+      closeMyCardModal
+    );
+
+  }
+
+
+  // Cerrar tocando fuera de la tarjeta del modal
+
+  if (cardModal) {
+
+    cardModal.addEventListener('click', (e) => {
+
+      if (e.target === cardModal) {
+        closeMyCardModal();
+      }
+
+    });
+
+  }
+
+
+  // ==========================================================
+  // 7. CARRUSEL 360° PARA CELULAR
+  // ==========================================================
+
+  if (scene && carousel3d) {
+
+    // ------------------------------------------
+    // COMIENZA EL TOQUE
+    // ------------------------------------------
+
+    scene.addEventListener('touchstart', (e) => {
+
+      if (!e.touches || !e.touches.length) return;
+
+      startX = e.touches[0].clientX;
+      lastX = startX;
+
+      // Todavía no sabemos si será toque o deslizamiento
+      isDragging = false;
+
+      // Detener temporalmente la animación automática
+      carousel3d.classList.add('paused');
+
+    }, {
+      passive: true
+    });
+
+
+    // ------------------------------------------
+    // MOVIMIENTO DEL DEDO
+    // ------------------------------------------
+
+    scene.addEventListener('touchmove', (e) => {
+
+      if (!e.touches || !e.touches.length) return;
+
+      const currentX = e.touches[0].clientX;
+
+      const diffX =
+        currentX - lastX;
+
+      const totalMovement =
+        Math.abs(currentX - startX);
+
+
+      /*
+       * Solamente consideramos que es un arrastre
+       * cuando el dedo realmente se desplazó.
+       */
+
+      if (totalMovement > swipeThreshold) {
+        isDragging = true;
+      }
+
+
+      /*
+       * Si todavía es un toque muy pequeño,
+       * no movemos el carrusel.
+       */
+
+      if (!isDragging) {
+        lastX = currentX;
+        return;
+      }
+
+
+      // Movimiento natural del carrusel
+
+      currentRotation -= diffX * 0.5;
+
+      carousel3d.style.transform =
+        `rotateY(${currentRotation}deg)`;
+
+
+      lastX = currentX;
+
+    }, {
+      passive: true
+    });
+
+
+    // ------------------------------------------
+    // TERMINA EL TOQUE
+    // ------------------------------------------
+
+    scene.addEventListener('touchend', () => {
+
+      /*
+       * Esperamos un poquito antes de volver a
+       * considerar que un toque es un click.
+       *
+       * Esto evita que después de arrastrar se
+       * abra accidentalmente una tarjeta.
+       */
+
+      if (isDragging) {
+
+        setTimeout(() => {
+          isDragging = false;
+        }, 180);
+
+      } else {
+
+        isDragging = false;
+
+      }
+
+
+      // Volver a activar el giro automático
+
+      if (carousel3d) {
+        carousel3d.classList.remove('paused');
+      }
+
+    }, {
+      passive: true
+    });
+
+
+    // ------------------------------------------
+    // SI EL DEDO SALE DE LA PANTALLA
+    // ------------------------------------------
+
+    scene.addEventListener('touchcancel', () => {
+
+      isDragging = false;
+
+      if (carousel3d) {
+        carousel3d.classList.remove('paused');
+      }
+
+    }, {
+      passive: true
+    });
+
+  }
+
+});
+</script>
 </body>
 </html>
