@@ -329,3 +329,13 @@ body {
 .a3d.paused {
   animation-play-state: paused !important;
 }
+
+.card {
+  position: relative;
+  z-index: 100;
+  touch-action: manipulation;
+}
+
+.a3d {
+  isolation: isolate;
+}
