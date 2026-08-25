@@ -63,11 +63,10 @@
     <img src="./assets/foto.png" alt="Corazón">
   </div>
 
-  <!-- MODAL DINÁMICO PARA LAS TARJETAS (Oculto al inicio) -->
+  <!-- MODAL DINÁMICO PARA LAS TARJETAS -->
   <div class="card-modal-overlay" id="cardModal">
     <div class="card-modal-content">
       <button class="close-card-modal" id="btnCloseCardModal">×</button>
-      <!-- Imagen seleccionada para que se vea en el modal -->
       <div class="modal-card-img-container">
         <img id="modalCardImg" src="" alt="Imagen seleccionada">
       </div>
@@ -76,7 +75,7 @@
     </div>
   </div>
 
-  <!-- SCRIPT GENERAL (Modal inicial + Carrusel interactivo + 360 fluido) -->
+  <!-- SCRIPT GENERAL -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // 1. Control del Modal de Presentación Inicial
@@ -103,29 +102,23 @@
       let isSwiping = false;
 
       document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', () => {
-          // Si estaba arrastrando para girar, evitamos que abra el modal por accidente
+        card.addEventListener('click', (e) => {
           if (isSwiping) return;
 
-          // Pausar la animación automática del carrusel
           if (carousel3d) carousel3d.classList.add('paused');
 
-          // Extraer datos de la tarjeta seleccionada
           const title = card.getAttribute('data-title') || 'Sorpresa';
           const text = card.getAttribute('data-text') || 'Un momento especial guardado acá para vos.';
           const imgSrc = card.getAttribute('src');
 
-          // Asignar al modal
           modalCardTitle.textContent = title;
           modalCardText.textContent = text;
           modalCardImg.setAttribute('src', imgSrc);
 
-          // Mostrar modal de tarjeta
           cardModal.classList.add('active');
         });
       });
 
-      // Función para cerrar el modal y reanudar el carrusel
       const closeMyCardModal = () => {
         cardModal.classList.remove('active');
         if (carousel3d) carousel3d.classList.remove('paused');
@@ -141,10 +134,9 @@
         }
       });
 
-      // 3. EFECTO 360 TÁCTIL Y FLUIDO PARA CELULAR
+      // 3. EFECTO 360 TÁCTIL (Dirección natural y destrabado al soltar)
       let startX = 0;
       let currentRotation = 0;
-
       const scene = document.querySelector('.scene');
 
       if (scene && carousel3d) {
@@ -159,11 +151,11 @@
           const diffX = currentX - startX;
 
           if (Math.abs(diffX) > 4) {
-            isSwiping = true; // Detecta desplazamiento para efecto 360
+            isSwiping = true;
           }
 
-          // Sensibilidad del giro 360 al deslizar el dedo
-          currentRotation += diffX * 0.5;
+          // Invertido el signo (-0.5) para que el carrusel siga la dirección natural del dedo
+          currentRotation -= diffX * 0.5;
           carousel3d.style.transform = `rotateY(${currentRotation}deg)`;
 
           startX = currentX;
@@ -173,6 +165,11 @@
           setTimeout(() => {
             isSwiping = false;
           }, 150);
+          
+          // Reanuda el movimiento automático al soltar la pantalla
+          if (carousel3d) {
+            carousel3d.classList.remove('paused');
+          }
         });
       }
     });
