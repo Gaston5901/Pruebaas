@@ -1,4 +1,5 @@
-.scene, .a3d {
+.scene,
+.a3d {
   display: grid;
 }
 
@@ -18,6 +19,7 @@
 .a3d {
   place-self: center;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   animation: ry 32s linear infinite;
 }
 
@@ -30,14 +32,33 @@
 .card {
   --w: 16em;
   --ba: 1turn/var(--n);
+
   grid-area: 1/1;
+
   width: var(--w);
   aspect-ratio: 7/10;
+
   object-fit: cover;
+
   border-radius: 1.5em;
+
   backface-visibility: hidden;
-  transform: rotatey(calc(var(--i)*var(--ba))) translatez(calc(-1*(.5*var(--w) + .5em)/tan(.5*var(--ba))));
-  pointer-events: auto; /* Permite que se puedan tocar siempre */
+  -webkit-backface-visibility: hidden;
+
+  transform:
+    rotateY(calc(var(--i) * var(--ba)))
+    translateZ(
+      calc(
+        -1 * (.5 * var(--w) + .5em) /
+        tan(.5 * var(--ba))
+      )
+    );
+
+  /* IMPORTANTE PARA CELULAR */
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -61,6 +82,10 @@ body {
   overflow: hidden;
 }
 
+/* ==========================================================
+   CABECERA
+========================================================== */
+
 .valentine-header {
   width: 100%;
   padding: 10px;
@@ -81,7 +106,7 @@ body {
 .text-msg {
   position: absolute;
   font-family: 'Pacifico', cursive;
-  font-size: 1.8rem; 
+  font-size: 1.8rem;
   color: #d32f2f;
   opacity: 0;
   animation: fadeText 10s infinite;
@@ -89,19 +114,54 @@ body {
   text-shadow: 0px 0px 5px rgba(255, 243, 237, 0.9);
 }
 
-.text-msg:nth-child(1) { animation-delay: 0s; }
-.text-msg:nth-child(2) { animation-delay: 2s; }
-.text-msg:nth-child(3) { animation-delay: 4s; }
-.text-msg:nth-child(4) { animation-delay: 6s; }
-.text-msg:nth-child(5) { animation-delay: 8s; }
+.text-msg:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.text-msg:nth-child(2) {
+  animation-delay: 2s;
+}
+
+.text-msg:nth-child(3) {
+  animation-delay: 4s;
+}
+
+.text-msg:nth-child(4) {
+  animation-delay: 6s;
+}
+
+.text-msg:nth-child(5) {
+  animation-delay: 8s;
+}
 
 @keyframes fadeText {
-  0% { opacity: 0; transform: translateY(-10px); }
-  5% { opacity: 1; transform: translateY(0); }
-  20% { opacity: 1; }
-  25% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 0; }
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  5% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  25% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
+
+/* ==========================================================
+   PIE DE PÁGINA
+========================================================== */
 
 .valentine-footer {
   width: 100%;
@@ -120,8 +180,14 @@ body {
 }
 
 @keyframes heartbeat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.04);
+  }
 }
 
 /* ==========================================================
@@ -156,7 +222,9 @@ body {
   max-width: 360px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 42, 133, 0.5);
+  box-shadow:
+    0 15px 45px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(255, 42, 133, 0.5);
 }
 
 .modal-img-container {
@@ -326,16 +394,10 @@ body {
   cursor: pointer;
 }
 
+/* ==========================================================
+   CARRUSEL PAUSADO
+========================================================== */
+
 .a3d.paused {
   animation-play-state: paused !important;
-}
-
-.card {
-  position: relative;
-  z-index: 100;
-  touch-action: manipulation;
-}
-
-.a3d {
-  isolation: isolate;
 }
