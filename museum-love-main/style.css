@@ -436,12 +436,12 @@ body {
   }
 
   .scene {
-    height: 330px;
+    height: 380px;
   }
 
   .card {
-    --w: 13em;
-    border-radius: 1.25em;
+    --w: 16em;
+    border-radius: 1.35em;
   }
 
   .text-msg {
