@@ -331,6 +331,7 @@ body {
   padding: 20px;
   opacity: 0;
   pointer-events: none;
+  overscroll-behavior: contain;
   transition: opacity 0.3s ease;
 }
 
@@ -346,9 +347,13 @@ body {
   padding: 25px 20px;
   max-width: 340px;
   width: 100%;
+  max-height: min(82vh, 560px);
+  display: flex;
+  flex-direction: column;
   text-align: center;
   color: #fff;
   position: relative;
+  overflow: hidden;
   box-shadow: 0 15px 40px rgba(255, 42, 133, 0.5);
   transform: translateY(20px);
   transition: transform 0.3s ease;
@@ -382,11 +387,204 @@ body {
   margin-bottom: 8px;
 }
 
-.card-modal-content p {
+.modal-card-text {
   font-size: 0.9rem;
   line-height: 1.5;
   color: #ffe6f2;
   font-family: 'Outfit', sans-serif;
+  margin: 0;
+  overflow-y: auto;
+  max-height: 210px;
+  padding-right: 8px;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+.modal-card-text::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-card-text::-webkit-scrollbar-thumb {
+  background: rgba(255, 102, 178, 0.7);
+  border-radius: 999px;
+}
+
+.modal-card-text::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+.card-modal-content.is-letter {
+  max-width: 390px;
+  background: linear-gradient(165deg, #3a1120 0%, #1a0713 100%);
+  border-color: #ffb8d9;
+  box-shadow: 0 18px 48px rgba(255, 92, 170, 0.42);
+}
+
+.card-modal-content.is-letter .modal-card-img-container {
+  width: 78px;
+  height: 78px;
+  margin-bottom: 10px;
+}
+
+.card-modal-content.is-letter h3 {
+  font-size: 1.55rem;
+  margin-bottom: 10px;
+  color: #ffd3e9;
+  letter-spacing: 0.02em;
+}
+
+.card-modal-content.is-letter .modal-card-text {
+  max-height: 300px;
+  padding-right: 6px;
+}
+
+.letter-paper {
+  text-align: left;
+  padding: 12px 14px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 182, 216, 0.5);
+  background:
+    linear-gradient(180deg, rgba(255, 240, 248, 0.18), rgba(255, 240, 248, 0.06));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
+}
+
+.letter-kicker {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 138, 195, 0.55);
+  background: rgba(255, 138, 195, 0.18);
+  color: #ffd8eb;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.letter-paper p {
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 27px,
+    rgba(255, 230, 242, 0.22) 27px,
+    rgba(255, 230, 242, 0.22) 28px,
+    transparent 28px,
+    transparent 29px
+  );
+  margin: 0 0 8px;
+  line-height: 29px;
+  color: #ffeef7;
+  font-size: 0.95rem;
+}
+
+.letter-highlight {
+  color: #ffd166;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 209, 102, 0.28);
+}
+
+.song-dedication {
+  display: grid;
+  gap: 5px;
+  margin: 14px 0 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 209, 102, 0.5);
+  border-radius: 12px;
+  background: rgba(255, 209, 102, 0.1);
+  text-align: center;
+}
+
+.song-dedication-title {
+  color: #ff9fca;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.12rem;
+}
+
+.song-label {
+  color: #ffd166;
+  font-weight: 700;
+}
+
+.song-dedication em {
+  color: #ffc2df;
+  font-family: 'Caveat', cursive;
+  font-size: 1.12rem;
+  line-height: 1.25;
+}
+
+.song-dedication span:last-child {
+  color: #ffeef7;
+  line-height: 1.45;
+}
+
+.letter-paragraph-1 {
+  color: #ffc1df !important;
+  font-style: italic;
+}
+
+.letter-paragraph-5 {
+  padding: 8px 10px;
+  border-left: 3px solid #ff66b2;
+  color: #ffd3e9 !important;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.08rem !important;
+  font-style: italic;
+}
+
+.letter-paper p:last-of-type {
+  margin-bottom: 10px;
+}
+
+.letter-image-slot {
+  width: 100%;
+  min-height: 92px;
+  margin: 4px 0 14px;
+  border: 1px dashed rgba(255, 182, 216, 0.65);
+  border-radius: 10px;
+  background: rgba(255, 240, 248, 0.08);
+}
+
+.letter-image-caption {
+  display: block;
+  padding: 10px 10px 6px;
+  color: #ffd166;
+  font-family: 'Caveat', cursive;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.letter-image-slot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 220px;
+  border-radius: 9px;
+  object-fit: contain;
+  background: rgba(12, 4, 16, 0.35);
+}
+
+.letter-signature {
+  display: block;
+  text-align: right;
+  color: #ffc2df;
+  font-family: 'Pacifico', cursive;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.card-modal-content.is-letter .close-card-modal {
+  background: rgba(255, 212, 234, 0.2);
+  border-color: rgba(255, 184, 217, 0.65);
+  color: #ffd8eb;
+}
+
+body.modal-scroll-lock {
+  overflow: hidden;
 }
 
 .close-card-modal {
