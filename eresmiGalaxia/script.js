@@ -1,55 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eres Mi Galaxia</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://unpkg.com/three@0.152.2/build/three.module.js",
-        "three/addons/controls/OrbitControls.js": "https://unpkg.com/three@0.152.2/examples/jsm/controls/OrbitControls.js"
-      }
-    }
-  </script>
-</head>
-
-<body>
-  <div id="container"></div>
-
-  <!-- Audio de Fondo -->
-  <audio id="bgMusic" src="https://github.com/codeninja543/codeninja5433/raw/refs/heads/main/L%C3%9AA%20-%20Pensando%20en%20ti%20%5BLetra%5D.mp3" loop style="display:none"></audio>
-
-  <!-- Modal Inicial -->
-  <div id="welcomeModal" class="modal-overlay active">
-    <div class="modal-content">
-      <h2 class="modal-title">Tu Galaxia Amorcitoo 🪐✨</h2>
-      <p class="modal-body">Explora las estrellas y descubre todo lo que hay en este universo hecho para ti. 
-
-Tocá el centro del universo para descubrir un mensaje especial...</p>
-      <button class="modal-btn" onclick="closeWelcomeModal()">Entrar al Universo</button>
-    </div>
-  </div>
-
-  <!-- Modal de Carta (al tocar el centro) -->
-  <div id="letterModal" class="modal-overlay">
-    <div class="modal-content">
-      <button class="close-btn" onclick="closeLetterModal()">✕</button>
-      <h2 class="modal-title">💜 Una Carta Para Ti 💜</h2>
-      <p class="modal-body">Eres el centro de mi universo, la luz que ilumina cada rincón de mi mundo. 
-
-Así como cada estrella brilla en este infinito espacio, cada momento a tu lado ilumina mi vida. Gracias por existir y por llenar cada día de magia.
-
-Te amo infinitamente pachuchitaa. 🪐✨</p>
-      <button class="modal-btn" onclick="closeLetterModal()">Guardar en el Corazón</button>
-    </div>
-  </div>
-
-  <script>
+ // Control de audio y modal inicial
     function closeWelcomeModal() {
       document.getElementById('welcomeModal').classList.remove('active');
       const audio = document.getElementById('bgMusic');
@@ -71,7 +20,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0x05010d, 0.0012);
+scene.fog = new THREE.FogExp2(0x000000, 0.0015);
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
 camera.position.set(0, 18, 55);
@@ -114,22 +63,20 @@ function createGlowMaterial(color, size = 128, opacity = 0.55) {
   return new THREE.Sprite(material);
 }
 
-// Resplandor central en paleta morado-magenta
-const centralGlow = createGlowMaterial('rgba(147,51,234,0.95)', 156, 0.5);
-centralGlow.scale.set(10, 10, 1);
+const centralGlow = createGlowMaterial('rgba(220,20,60,0.95)', 156, 0.45);
+centralGlow.scale.set(8, 8, 1);
 scene.add(centralGlow);
 
-// Paleta de nebulosas en violetas, magenta y azul púrpura
 const nebulaColors = [
-  'rgba(147,51,234,0.65)', 'rgba(168,85,247,0.6)', 'rgba(192,38,211,0.55)',
-  'rgba(126,34,206,0.6)', 'rgba(217,70,239,0.6)', 'rgba(112,26,117,0.55)',
-  'rgba(236,72,153,0.6)', 'rgba(88,28,135,0.55)', 'rgba(139,92,246,0.5)',
-  'rgba(192,132,252,0.6)', 'rgba(76,29,149,0.55)', 'rgba(244,114,182,0.5)',
-  'rgba(162,28,175,0.6)', 'rgba(107,33,168,0.55)', 'rgba(232,121,249,0.6)'
+  'rgba(220,20,60,0.65)', 'rgba(178,34,34,0.6)', 'rgba(255,69,0,0.55)',
+  'rgba(139,0,0,0.6)', 'rgba(255,99,71,0.6)', 'rgba(205,92,92,0.55)',
+  'rgba(240,128,128,0.6)', 'rgba(165,42,42,0.55)', 'rgba(255,0,0,0.5)',
+  'rgba(196,30,58,0.6)', 'rgba(128,0,0,0.55)', 'rgba(255,36,0,0.5)',
+  'rgba(210,4,45,0.6)', 'rgba(180,30,45,0.55)', 'rgba(255,69,58,0.6)'
 ];
 for (let i = 0; i < 15; i++) {
   const nebula = createGlowMaterial(nebulaColors[i], 256);
-  nebula.scale.set(110, 110, 1);
+  nebula.scale.set(100, 100, 1);
   nebula.position.set(
     (Math.random() - 0.5) * 175,
     (Math.random() - 0.5) * 175,
@@ -141,8 +88,8 @@ for (let i = 0; i < 15; i++) {
 const galaxyParameters = {
   count: 100000, arms: 6, radius: 100, spin: 0.5,
   randomness: 0.2, randomnessPower: 20,
-  insideColor: new THREE.Color(0xd8b4fe),
-  outsideColor: new THREE.Color(0x7e22ce),
+  insideColor: new THREE.Color(0xff3366),
+  outsideColor: new THREE.Color(0xff9900),
 };
 
 const defaultHeartImages = [
@@ -199,11 +146,11 @@ for (let i = 0; i < galaxyParameters.count; i++) {
   const t = radius / galaxyParameters.radius;
   const mixedColor = new THREE.Color();
   if (t < 0.33) {
-    mixedColor.setRGB(0.85 + t*0.1, 0.4 + t*0.2, 0.9 + t*0.05);
+    mixedColor.setRGB(1.0, 0.08 + t*0.15, 0.08 + t*0.1);
   } else if (t < 0.66) {
-    mixedColor.setRGB(0.6 + t*0.2, 0.2 + t*0.1, 0.85 + t*0.1);
+    mixedColor.setRGB(0.9 + t*0.1, 0.1 + t*0.18, 0.05 + t*0.08);
   } else {
-    mixedColor.setRGB(0.4 + t*0.15, 0.05 + t*0.05, 0.65);
+    mixedColor.setRGB(0.65 + t*0.15, 0.02 + t*0.05, 0.02);
   }
   mixedColor.multiplyScalar(0.7 + 0.3 * Math.random());
   colors[i3] = mixedColor.r;
@@ -378,7 +325,7 @@ for (let group = 0; group < numGroups; group++) {
   })(cx, cy, cz, centeredPositions);
 }
 
-const ambientLight = new THREE.AmbientLight(0xd8b4fe, 0.35);
+const ambientLight = new THREE.AmbientLight(0xff9999, 0.32);
 scene.add(ambientLight);
 
 const starCount = 20000;
@@ -391,7 +338,7 @@ for (let i = 0; i < starCount; i++) {
 }
 starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
 const starMaterial = new THREE.PointsMaterial({
-  color: 0xffffff, size: 0.7, transparent: true, opacity: 0.75, depthWrite: false
+  color: 0xffffff, size: 0.7, transparent: true, opacity: 0.7, depthWrite: false
 });
 const starField = new THREE.Points(starGeometry, starMaterial);
 starField.renderOrder = 999;
@@ -402,7 +349,7 @@ function createShootingStar() {
   const trailLength = 100;
   const headGeometry = new THREE.SphereGeometry(2, 32, 32);
   const headMaterial = new THREE.MeshBasicMaterial({
-    color: 0xa855f7, transparent: true, opacity: 0, blending: THREE.AdditiveBlending
+    color: 0xdc143c, transparent: true, opacity: 0, blending: THREE.AdditiveBlending
   });
   const head = new THREE.Mesh(headGeometry, headMaterial);
   const glowGeometry = new THREE.SphereGeometry(3, 32, 32);
@@ -419,7 +366,7 @@ function createShootingStar() {
       uniform float time;
       void main() {
           float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
-          gl_FragColor = vec4(0.7, 0.3, 1.0, intensity * (0.8 + sin(time * 5.0) * 0.2));
+          gl_FragColor = vec4(1.0, 0.1, 0.1, intensity * (0.8 + sin(time * 5.0) * 0.2));
       }`,
     transparent: true, blending: THREE.AdditiveBlending, side: THREE.BackSide
   });
@@ -433,7 +380,7 @@ function createShootingStar() {
   }
   const trailGeometry = new THREE.BufferGeometry().setFromPoints(trailPoints);
   const trailMaterial = new THREE.LineBasicMaterial({
-    color: 0xc084fc, transparent: true, opacity: 0.7, linewidth: 2
+    color: 0xff2020, transparent: true, opacity: 0.7, linewidth: 2
   });
   const trail = new THREE.Line(trailGeometry, trailMaterial);
   const group = new THREE.Group();
@@ -459,20 +406,21 @@ function createPlanetTexture(size = 512) {
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext('2d');
   const gradient = ctx.createRadialGradient(size/2, size/2, size/8, size/2, size/2, size/2);
-  gradient.addColorStop(0.00, '#f5d0fe');
-  gradient.addColorStop(0.15, '#e879f9');
-  gradient.addColorStop(0.30, '#c026d3');
-  gradient.addColorStop(0.48, '#9333ea');
-  gradient.addColorStop(0.65, '#6b21a8');
-  gradient.addColorStop(0.82, '#3b0764');
-  gradient.addColorStop(1.00, '#10002b');
+  gradient.addColorStop(0.00, '#ffcccc');
+  gradient.addColorStop(0.10, '#ff2020');
+  gradient.addColorStop(0.25, '#dc143c');
+  gradient.addColorStop(0.40, '#c00020');
+  gradient.addColorStop(0.55, '#8b0000');
+  gradient.addColorStop(0.70, '#6b0010');
+  gradient.addColorStop(0.85, '#450008');
+  gradient.addColorStop(1.00, '#1a0003');
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, size, size);
   for (let i = 0; i < 8; i++) {
     ctx.beginPath();
     ctx.moveTo(0, size*(0.15+i*0.1));
     ctx.bezierCurveTo(size*0.3, size*(0.12+i*0.1), size*0.7, size*(0.18+i*0.1), size, size*(0.15+i*0.1));
-    ctx.strokeStyle = `rgba(217,70,239,${0.25+i*0.03})`;
+    ctx.strokeStyle = `rgba(255,${30+i*10},${20+i*5},0.3)`;
     ctx.lineWidth = 10 + Math.random() * 10;
     ctx.stroke();
   }
@@ -490,7 +438,7 @@ const stormShader = {
       uv.x += twist * sin(time * 0.7); uv.y += twist * cos(time * 0.7);
       vec4 texColor = texture2D(baseTexture, uv);
       float noise = sin(uv.x * 8.0 + time) * sin(uv.y * 8.0 + time) * 0.08;
-      texColor.rgb += noise * vec3(0.6, 0.2, 0.8);
+      texColor.rgb += noise * vec3(0.8, 0.2, 0.2);
       gl_FragColor = texColor;
     }`
 };
@@ -509,7 +457,7 @@ scene.add(planet);
 
 const atmosphereGeometry = new THREE.SphereGeometry(planetRadius * 1.05, 48, 48);
 const atmosphereMaterial = new THREE.ShaderMaterial({
-  uniforms: { glowColor: { value: new THREE.Color(0xa855f7) } },
+  uniforms: { glowColor: { value: new THREE.Color(0xdc143c) } },
   vertexShader: `varying vec3 vNormal; void main() { vNormal = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
   fragmentShader: `varying vec3 vNormal; uniform vec3 glowColor; void main() { float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0); gl_FragColor = vec4(glowColor, 1.0) * intensity; }`,
   side: THREE.BackSide, blending: THREE.AdditiveBlending, transparent: true
@@ -531,7 +479,7 @@ function createTextRings() {
 
     const tempCanvas = document.createElement('canvas');
     const tempCtx = tempCanvas.getContext('2d');
-    tempCtx.font = `bold ${fontSize}px 'Plus Jakarta Sans', sans-serif`;
+    tempCtx.font = `bold ${fontSize}px 'Georgia', serif`;
 
     const singleText = ringTexts[i % ringTexts.length];
     const separator = '    ♥    ';
@@ -549,22 +497,22 @@ function createTextRings() {
     const ctx = textCanvas.getContext('2d');
     ctx.clearRect(0, 0, finalTextureWidth, textureHeight);
 
-    ctx.font = `bold ${fontSize}px 'Plus Jakarta Sans', sans-serif`;
+    ctx.font = `bold ${fontSize}px 'Georgia', serif`;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'alphabetic';
 
-    ctx.shadowColor = '#9333ea';
+    ctx.shadowColor = '#cc0000';
     ctx.shadowBlur = 35;
     ctx.lineWidth = 12;
-    ctx.strokeStyle = '#c026d3';
+    ctx.strokeStyle = '#ff2020';
     ctx.strokeText(fullText, 0, textureHeight * 0.80);
 
-    ctx.shadowColor = '#e879f9';
+    ctx.shadowColor = '#ff8888';
     ctx.shadowBlur = 20;
-    ctx.fillStyle = '#f472b6';
+    ctx.fillStyle = '#ff6666';
     ctx.fillText(fullText, 0, textureHeight * 0.80);
 
-    ctx.shadowColor = '#f5d0fe';
+    ctx.shadowColor = '#ffcccc';
     ctx.shadowBlur = 6;
     ctx.fillStyle = '#ffffff';
     ctx.fillText(fullText, 0, textureHeight * 0.80);
@@ -631,27 +579,27 @@ function createHintText() {
   const text = 'Te amo mucho ';
 
   const bgGrad = context.createRadialGradient(canvasW/2, canvasH/2, 10, canvasW/2, canvasH/2, canvasW/2.2);
-  bgGrad.addColorStop(0, 'rgba(147,51,234,0.6)');
+  bgGrad.addColorStop(0, 'rgba(180,0,0,0.6)');
   bgGrad.addColorStop(1, 'rgba(0,0,0,0)');
   context.fillStyle = bgGrad;
   context.fillRect(0, 0, canvasW, canvasH);
 
-  context.font = `bold 110px 'Cinzel', serif`;
+  context.font = `bold 120px Georgia, 'Times New Roman', serif`;
   context.textAlign = 'center';
   context.textBaseline = 'middle';
 
-  context.shadowColor = '#6b21a8';
+  context.shadowColor = '#8b0000';
   context.shadowBlur = 50;
   context.lineWidth = 8;
-  context.strokeStyle = '#a855f7';
+  context.strokeStyle = '#cc0000';
   context.strokeText(text, canvasW/2, canvasH/2);
 
-  context.shadowColor = '#e879f9';
+  context.shadowColor = '#ff4444';
   context.shadowBlur = 25;
-  context.fillStyle = '#f472b6';
+  context.fillStyle = '#ff2020';
   context.fillText(text, canvasW/2, canvasH/2);
 
-  context.shadowColor = 'rgba(245,208,254,0.9)';
+  context.shadowColor = 'rgba(255,180,180,0.9)';
   context.shadowBlur = 10;
   context.fillStyle = '#ffffff';
   context.fillText(text, canvasW/2, canvasH/2);
@@ -667,42 +615,35 @@ function createHintText() {
 }
 const hintText = createHintText();
 
-// --- CREACIÓN DE FRASES FLOTANTES OPTIMIZADAS ---
+// --- CREACIÓN DE MÁS FRASES FLOTANTES ---
 const floatingPhrasesGroup = [];
 
 function createFloatingPhraseSprite(phraseText) {
-  // Canvas de alta resolución para legibilidad nítida en pantallas móviles
   const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 256;
+  canvas.width = 512;
+  canvas.height = 128;
   const ctx = canvas.getContext('2d');
 
-  ctx.font = "bold 72px 'Plus Jakarta Sans', sans-serif";
+  ctx.font = "bold 44px 'Georgia', serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
-  ctx.shadowColor = "#e879f9";
-  ctx.shadowBlur = 25;
-  ctx.strokeStyle = "#7e22ce";
-  ctx.lineWidth = 8;
-  ctx.strokeText(phraseText, 512, 128);
-
-  ctx.shadowColor = "#f472b6";
+  ctx.shadowColor = "#ff0055";
   ctx.shadowBlur = 15;
   ctx.fillStyle = "#ffffff";
-  ctx.fillText(phraseText, 512, 128);
+  ctx.fillText(phraseText, 256, 64);
 
   const texture = new THREE.CanvasTexture(canvas);
   const material = new THREE.SpriteMaterial({
     map: texture,
     transparent: true,
-    opacity: 0.95,
+    opacity: 0.85,
     depthWrite: false,
     blending: THREE.AdditiveBlending
   });
 
   const sprite = new THREE.Sprite(material);
-  const radius = 25 + Math.random() * 55;
+  const radius = 25 + Math.random() * 60;
   const theta = Math.random() * Math.PI * 2;
   const phi = Math.acos((Math.random() * 2) - 1);
 
@@ -710,11 +651,7 @@ function createFloatingPhraseSprite(phraseText) {
   sprite.position.y = radius * Math.sin(phi) * Math.sin(theta);
   sprite.position.z = radius * Math.cos(phi);
 
-  // Escala adaptativa según tamaño de pantalla
-  const isMobile = window.innerWidth < 768;
-  const scaleX = isMobile ? 22 : 16;
-  const scaleY = isMobile ? 5.5 : 4;
-  sprite.scale.set(scaleX, scaleY, 1);
+  sprite.scale.set(12, 3, 1);
 
   sprite.userData = {
     baseY: sprite.position.y,
@@ -725,13 +662,14 @@ function createFloatingPhraseSprite(phraseText) {
   return sprite;
 }
 
+// Crear varias frases distribuidas en el espacio
 lovePhrases.forEach((phrase) => {
   const sprite = createFloatingPhraseSprite(phrase);
   scene.add(sprite);
   floatingPhrasesGroup.push(sprite);
 });
 
-// --- DETECCIÓN DE CLIC/TOQUE (RAYCASTER) ---
+// --- DETECCIÓN DE CLIC/TOQUE EN EL PLANETA (RAYCASTER) ---
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -770,6 +708,7 @@ function animate() {
     hintText.lookAt(camera.position);
   }
 
+  // Animación suave de las frases flotantes
   floatingPhrasesGroup.forEach((sprite) => {
     sprite.position.y = sprite.userData.baseY + Math.sin(time * sprite.userData.speed + sprite.userData.offset) * 1.5;
   });
@@ -811,11 +750,6 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
   controls.update();
-
-  const isMobile = window.innerWidth < 768;
-  floatingPhrasesGroup.forEach((sprite) => {
-    sprite.scale.set(isMobile ? 22 : 16, isMobile ? 5.5 : 4, 1);
-  });
 });
 
 function setFullScreen() {
@@ -833,6 +767,3 @@ document.addEventListener('touchmove', preventDefault, { passive: false });
 document.addEventListener('gesturestart', preventDefault, { passive: false });
 const container2 = document.getElementById('container');
 if (container2) container2.addEventListener('touchmove', preventDefault, { passive: false });
-  </script>
-</body>
-</html>
