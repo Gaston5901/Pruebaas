@@ -79,3 +79,7 @@ papers.forEach(paper => {
   const p = new Paper();
   p.init(paper);
 });
+
+document.getElementById('backButton').addEventListener('click', () => {
+  window.location.href = '../loby.html';
+});

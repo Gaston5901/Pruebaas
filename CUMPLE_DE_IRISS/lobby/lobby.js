@@ -223,8 +223,19 @@ function checkIfFromCandles() {
    5. ANIMACIONES Y CORAZONES DEL LOBBY
 ========================================================== */
 function initLobbyAnimations() {
-  // Generación continua de corazones
-  setInterval(createHeartBalloon, 1500);
+  const isMobile = window.matchMedia('(max-width: 600px)').matches;
+  const heartInterval = isMobile ? 4200 : 2200;
+  const maxHearts = isMobile ? 4 : 10;
+
+  // En celular se muestran pocos corazones para evitar trabajo continuo de renderizado.
+  const heartTimer = setInterval(() => {
+    const container = document.getElementById('balloonContainer');
+    if (container && container.childElementCount < maxHearts) {
+      createHeartBalloon();
+    }
+  }, heartInterval);
+
+  window.addEventListener('pagehide', () => clearInterval(heartTimer), { once: true });
 
   // Desfase flotante en las tarjetas
   const giftBoxes = document.querySelectorAll('.gift-box');
@@ -232,6 +243,54 @@ function initLobbyAnimations() {
     const randomDelay = Math.random() * 2;
     box.style.animationDelay = `${randomDelay}s`;
   });
+
+  initSurpriseProgress();
+}
+
+function initSurpriseProgress() {
+  const cards = [...document.querySelectorAll('.gift-card[data-surprise]')];
+  const progressText = document.getElementById('progressText');
+  const progressFill = document.getElementById('progressFill');
+  const completionMessage = document.getElementById('completionMessage');
+  if (!cards.length || !progressText || !progressFill) return;
+
+  let visited = [];
+  try {
+    visited = JSON.parse(localStorage.getItem('visitedSurprises') || '[]');
+  } catch {
+    visited = [];
+  }
+
+  const updateProgress = () => {
+    const visitedCount = cards.filter((card) => visited.includes(card.dataset.surprise)).length;
+    progressText.textContent = `${visitedCount} de ${cards.length} descubiertas`;
+    progressFill.style.width = `${(visitedCount / cards.length) * 100}%`;
+
+    if (completionMessage) {
+      completionMessage.hidden = visitedCount !== cards.length;
+    }
+
+    cards.forEach((card) => {
+      card.classList.toggle('is-visited', visited.includes(card.dataset.surprise));
+    });
+  };
+
+  cards.forEach((card) => {
+    card.addEventListener('click', () => {
+      const surpriseId = card.dataset.surprise;
+      if (!visited.includes(surpriseId)) {
+        visited.push(surpriseId);
+        try {
+          localStorage.setItem('visitedSurprises', JSON.stringify(visited));
+        } catch {
+          // El progreso visual sigue funcionando aunque el navegador bloquee storage.
+        }
+        updateProgress();
+      }
+    });
+  });
+
+  updateProgress();
 }
 
 function createHeartBalloon() {

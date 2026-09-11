@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Señoritaa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;1,600;1,700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+      <!-- <a class="volver-inicio" href="../index.html" aria-label="Volver al inicio">← </a> -->
+
+
+  <audio id="backgroundMusic" preload="metadata"></audio>
+  <div class="music-player" aria-label="Reproductor de música">
+    <span class="music-player-icon" aria-hidden="true">♪</span>
+    <div class="music-player-info">
+      <span class="music-player-label">Música para vos</span>
+      <span class="music-player-track" id="musicTrack">Tema 1</span>
+    </div>
+    <button class="music-control" id="musicPlay" type="button" aria-label="Reproducir música" title="Reproducir música">▶</button>
+    <button class="music-control" id="musicNext" type="button" aria-label="Siguiente canción" title="Siguiente canción">⏭</button>
+    <button class="music-control" id="musicMute" type="button" aria-label="Silenciar música" title="Silenciar música">🔊</button>
+  </div>
+
+  <!-- MODAL DE PRESENTACIÓN INICIAL -->
+  <div class="surprise-intro-overlay" id="surpriseOverlay">
+    <div class="surprise-intro-card">
+      <div class="modal-img-container">
+        <img src="./assets/señorita.png" alt="Foto especial">
+      </div>
+
+      <span class="surprise-tag">Sorpresa N°3 🌹</span>
+      <h1 class="surprise-title">
+        Un recorrido por lo que amás,<br>
+        <span class="highlight-title">Señorita</span> ♥
+      </h1>
+      <p class="surprise-desc">
+        Preparé algo muy especial para vos, puedes deslizar y moverlos. Tocá cada imagen giratoria para descubrir mensajes ocultos, recuerdos y tus artistas favoritos. ✨
+      </p>
+      <button class="btn-enter-surprise" id="btnOpenLetter">Entrar a la sorpresa 💌</button>
+    </div>
+  </div>
+
+   <!-- FONDO Y NAVEGACIÓN -->
+  <div class="warm-bg"></div>
+  <div class="top-bar">
+    <a href="/CUMPLE_DE_IRISS/lobby/lobby.html" class="btn-back">← Volver al Lobby</a>
+  </div>
+  <!-- CABECERA CON TEXTOS -->
+  <div class="valentine-header">
+    <div class="valentine-text-container">
+      <span class="text-msg">Eres mi persona favorita ❤️</span>
+      <span class="text-msg">Te amo cada día más 🌹</span>
+      <span class="text-msg">Siempre juntos tú y yo ✨</span>
+      <span class="text-msg">Gracias por existir 💌</span>
+      <span class="text-msg">TE AMOOOO 💘</span>
+    </div>
+  </div>
+
+  <!-- ESCENA 3D / CARRUSEL -->
+  <div class="scene">
+<div class="a3d" id="carousel3d" style="--n: 12">
+  <img class="card" src="./assets/JHOPE.png" style="--i: 0" alt="J-Hope" data-title="J-Hope" data-text="J-Hope es tu favorito absoluto, el dueño incondicional de tu corazón y la luz constante que te sana el alma, Pachuchita. Pero lo verdaderamente mágico es que no solo lo amás: sos el reflejo vivo de todo lo hermoso que él representa. Llevás adentro su misma energía dorada que transforma cualquier oscuridad en alegría, un corazón infinitamente cálido que abruma de puro amor y una pasión inquebrantable para encarar la vida. Sos ese refugio donde todo está bien, la chispa viva que contagia felicidad a quien te rodea y la esperanza hecha persona en mis días. 💫"/>
+  
+  <img class="card" src="./assets/V.png" style="--i: 1" alt="V" data-title="V (Taehyung)" data-text="Como Taehyung, Señorita, vos tenés esa elegancia mágica, ese alma poética y profunda que ve belleza en cada rincón del mundo. Tenés una vibra tan única y fascinante que atrapa el alma, envolviéndolo todo con una delicadeza y un misterio hermoso. Estar a tu lado es como detener el tiempo en un cuadro perfecto que no me canso de admirar. ✨"/>
+  
+  <img class="card" src="./assets/JUNG.png" style="--i: 2" alt="Jungkook" data-title="Jungkook" data-text="Pachuchita, llevás esa chispa de Jungkook: una entrega total y transparente en todo lo que hacés. Sos esa mezcla perfecta entre una determinación imparable que le pone el cuerpo y el alma a cada sueño, y una ternura dulce y auténtica que desarma sin buscarlo. Tu pasión por la vida y por los tuyos es algo hermoso de ver. ♥"/>
+  
+<img class="card" src="./assets/GASTON.png" style="--i: 3" alt="Gaston" data-title="Recuerdo especial" data-text="Vos sos como esta imagen: alguien que se ganó un lugar gigante, imborrable y eterno en el centro de mi corazón y en cada uno de mis días. 🌹" data-modal-variant="letter" data-letter-kicker="Carta para Iriss" data-letter-body="Esta carta fue escrita el 9 de agosto de 2026 para el día 1 de enero de 2027. En caso de leerla antes... pasaron coshitass jjkkfkf.||Holuu Señoritaaa, soy yoo.. no sé si se acuerda de mí, del viejo calvo, sisiii. Hoy es un día súper especial porque es tu cumpleaños, y no quería dejar pasar la oportunidad de decirte todo lo que llevo guardado en el corazón. Sé muy bien que para vos este no es un día fácil; sé que suele sentirse como un día más, que no te agrada demasiado y que tu refugio muchas veces es encerrarte en tu cuarto o salir sola a despejarte, buscando un poco de aire y distancia del resto del mundo. Entiendo perfectamente esa necesidad de desconectar. Aun así, desde mi lugar, intenté y sigo intentando con todas mis fuerzas que esta fecha vuelva a tener sentido para vos. No sé si lo habré logrado, pero hice absolutamente todo lo que estuvo a mi alcance para que sientas un rinconcito de esa magia, de esa ilusión y de la felicidad que te merecés en el día de tu nacimiento.||Sos una persona que me hace tan, pero tan feliz. Cada momento que fuimos construyendo juntos, cada charla larga, cada canción compartida y cada risa en este camino se convirtieron en algo gigante y hermoso para mí. Me acuerdo que un día me dijiste: '¿Por qué no te conocí antes?', y quiero recordarte que todo en esta vida pasa por algo y en el momento justo. Si me tocó llegar a tu vida en ese punto exacto, es porque así tenía que ser, para acompañarnos, sostenernos y construir esto tan lindo que tenemos. Desde el primer día en que te conocí (26/04/2026) sentí una conexión única; supe de inmediato que no eras alguien más en el camino, sino una persona profundamente diferente, especial y con una luz preciosa.||Quiero confesarte algo que llevo muy adentro: cuando llegaste a mi vida yo estaba pasando por una etapa muy difícil, en un momento muy bajón y oscuro donde sentía que todo me pesaba. Sin darte cuenta, con tu forma de ser, tu dulzura y tu compañía, me salvaste y me sacaste de ese lugar. Me devolviste la luz y la ilusión cuando más lo necesitaba. Por eso, mi mayor deseo es poder acompañarte y devolviéndote aunque sea un poquito de todo lo lindo que me diste.||Quiero decirte también, y asegurarme de que nunca se te olvide, lo infinitamente bella y hermosa que sos. Por favor, no seas dura con vos misma ni te juzgues el cuerpo: sos una verdadera obra de arte, perfecta tal y como sos, por dentro y por fuera, sos unica e inigualable señorita.||'Sos el lugar al que siempre quiero volver, la luz que calma la tempestad en mi mente, y la poesía más bonita que la vida eligió escribir en mi camino.'||Sé que la vida y personas del pasado te hicieron mucho daño, dejando marcas que hoy todavía duelen y requieren tiempo para sanar. Entiendo perfectamente que a medida que más nos acercamos y la complicidad crece, dentro tuyo se despiertan miedos e inseguridades. Sé que es tu mecanismo de autoprotección: ese escudo que levantás cuando sentís que las cosas se vuelven muy intensas, que te hace distanciarte o ponerme límites por temor a que la historia se repita. Quiero pedirte perdón si en algún momento, sin querer, te generé esa sensación de vulnerabilidad. Jamás, bajo ninguna circunstancia, buscaría lastimarte. Quiero que sepas que te entiendo, te respeto y no pretendo presionarte. Estoy acá para acompañarte, para caminar a tu lado al ritmo que necesites y para ayudarte a llevar esas cargas juntos. No tenés que fingir estar bien siempre conmigo; tus días grises, tus silencios y tus miedos también son bienvenidos. Tu tranquilidad, tu paz es y va a ser siempre mi prioridad.||Cuando sientas que te invade ese vacío emocional o que los días pesados te quieren arrastrar, no dejes jamás que la depresión te gane. En esos momentos oscuros, aferrate a las cosas bonitas y a esos seres queridos y familiares que tanto confiaron en vos, que te marcaron el alma y que solo desean verte brillar. Pensá en todos los que te aman: en los que están hoy sosteniéndote y en los que ya no están físicamente, pero que desde donde estén te cuidan, te guían y te envían la fortaleza necesaria para levantarte. Todos ellos quieren ver a esa Iriss sonriéndole al mundo, siendo feliz y mostrando lo maravillosa que es. Y si en algún momento la mente te juega una mala pasada, me alegraría enormemente el corazón que recurras a esta paginita que te preparé con tanto amor; ojalá sea tu refugio, te devuelva un poquito de calma y te recuerde lo valiosa que sos.||Por eso te pido, por favor, que no te apresures. Todo en esta vida tiene su momento perfecto, ya sea el estudio, tus proyectos personales o cualquier meta que te propongas. Tené calma con vos misma. No dejes que la ansiedad te nuble la cabeza ni te haga sentir que no estás cumpliendo o que vas con retraso. Estás haciendo las cosas bien, a tu propio ritmo, paso a paso, pero con la mente clara y la mirada firme hacia adelante. Confío en vos con todo mi corazón y sé con total certeza que tenés la fuerza interna para sanar, florecer y lograr todo lo que te plantees.||Ojalá el futuro nos regale la posibilidad de acortar las distancias y festejar juntos, pero sea donde sea que estemos, quiero que recuerdes siempre que sos mi lugar favorito. Gracias por ser mi refugio, por regalarme tu tiempo, tu ternura y por permitirme ser parte de tus días. Perdón por escribir tanto dksjdk, pero necesitaba dejarte todo esto acá plasmado. Espero de corazón que te guste este detalle.||Feliz cumpleaños Señoritaaa. Deseo con el alma que este nuevo año te traiga toda la paz, el amor y la serenidad que te merecés, pase lo que pase siempre estara para ti y para todo lo que necesites.||Te Amooo, Gastón y Luky." data-letter-signature="Con todo mi amor, El señor RRRRR🌹" data-letter-image="image.png"/>  
+
+<img class="card" src="./assets/HUMBEE.png" style="--i: 4" alt="Humbe" data-title="Humbe" data-text="Señoritaaaa, vos sos pura poesía, vulnerabilidad hermosa y arte hecho persona. Como las letras de Humbe, tenés una sensibilidad tan pura que es capaz de pintar de colores los días grises, transformar las emociones en melodía y llenar cada instante compartido de un romanticismo y una magia inolvidable. 💌"/>
+
+  <img class="card" src="./assets/YUKI.png" style="--i: 5" alt="Yuki" data-title="Yuki" data-text="Mi Pachucha hermosa, Quería dedicarle un rinconcito especial a la reina absoluta de la casa: la Yuki. Llegó a tu vida para llenar cada día de ternura, dulzura incondicional y para ser esa compañía perfecta que te calma cualquier momento gris. Sé lo muchísimo que la amás, lo fundamental que es para vos y lo hermosa que es esa conexión única que tienen. Pero bueno, sabés muy bien que aunque sea tu bb, para mí también es mi hijita, Me encanta molestarte con eso desde lejos, pero es la verdad: aunque estemos a distancia, es mi bebita de cuatro patas también y me ganó el corazón por completo. Me encanta cuando me mostrás sus travesuras, verla jugar y sentirla tan cerquita a través de las pantallas. Gracias por cuidarla tan lindo y por permitirme sentirla mi hijita a la distancia. Prometo que cuando nos veamos la voy a llenar de mimos, y mientras tanto, sigo mandándoles todo mi amor desde acá. Las amo muchísimo a las dos. 🌹🐾"/>
+  
+  <img class="card" src="./assets/59.png" style="--i: 6" alt="Momento 59" data-title="Instante mágico" data-text="Este retrato somos nosotros dos, un reflejo de lo lindo que construimos y la forma más hermosa de vernos juntos mientras esperamos el momento de darnos ese primer abrazo. Lo más mágico de todo es saber que esto recién empieza y que nuestra historia continuará. Si Dios quiere, pronto nos vamos a conocer en persona para seguir escribiendo este camino juntos, dejando huella en cada paso y haciendo realidad todo lo que soñamos a la distancia. Gracias por ser mi lugar favorito y por soñar a mi lado todo lo que se nos viene 💘🌹."/>
+  
+  <img class="card" src="./assets/SUGA.png" style="--i: 7" alt="Suga" data-title="Suga" data-text="Pachuchita, tenés esa serenidad sabia y la fuerza inmensa de Suga. Detrás de tu calma habita un corazón gigante y protector, capaz de entender el mundo en silencio y regalar la tranquilidad más profunda. Sos ese lugar seguro, la lealtad pura y la paz que abriga el alma cuando las cosas se complican. 🔥"/>
+  
+  <img class="card" src="./assets/JIMIN.png" style="--i: 8" alt="Jimin" data-title="Jimin" data-text="Señorita, tenés la dulzura infinita, la empatía y la gracia de Jimin. Tu forma de cuidar con tanto cariño a los que querés, esa calidez suave en cada palabra y tu delicadeza hacen que tu presencia sea un abrazo al corazón y que sea imposible no amarte un poquito más cada día. 💖"/>
+  
+  <img class="card" src="./assets/JIN.png" style="--i: 9" alt="Jin" data-title="Jin" data-text="Pachuchita, sos esa sonrisa inmediata en medio de un día difícil y el sol que ilumina la rutina. Llevás el espíritu de Jin: una luz propia que no se apaga, una risa que contagia felicidad verdadera y un amor tan incondicional que hace que la vida se sienta más bonita a tu lado. ✨"/>
+  
+  <img class="card" src="./assets/silvanaE.png" style="--i: 10" alt="Silvana" data-title="Silvana Estrada" data-text="Señorita, vos tenés la voz y la esencia de Silvana Estrada: sos nostalgia dulce, verdad transparente, poesía pura y la personificación exacta de todo lo lindo que tiene la vida. Sos mi melodía favorita y mi refugio preferido, siempre. ♥"/>
+  
+  <img class="card" src="./assets/RM.png" style="--i: 11" alt="RM" data-title="RM" data-text="Pachuchita, tenés la mente brillante, la profundidad y el alma sensible de Namjoon. Perderse en tus pensamientos y tener esas charlas profundas con vos es como encontrar un universo entero de sabiduría y calma. Hablar con vos reconforta el espíritu y vale más que todo el oro del mundo. 🪐"/>
+</div>
+  </div>
+
+  <!-- PIE DE PÁGINA -->
+  <div class="valentine-footer">
+    <img src="./assets/foto.png" alt="Corazón">
+  </div>
+
+  <!-- MODAL DINÁMICO PARA LAS TARJETAS -->
+  <div class="card-modal-overlay" id="cardModal">
+    <div class="card-modal-content">
+      <button class="close-card-modal" id="btnCloseCardModal">×</button>
+      <div class="modal-card-img-container">
+        <img id="modalCardImg" src="" alt="Imagen seleccionada">
+      </div>
+      <h3 id="modalCardTitle">Título</h3>
+      <div class="modal-card-text" id="modalCardText">Mensaje especial...</div>
+    </div>
+  </div>
+
+  <!-- SCRIPT GENERAL -->
+<script>
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ==========================================================
+  // 1. MODAL DE PRESENTACIÓN INICIAL
+  // ==========================================================
+
+  const overlay = document.getElementById('surpriseOverlay');
+  const btnOpen = document.getElementById('btnOpenLetter');
+  const backgroundMusic = document.getElementById('backgroundMusic');
+  const musicPlay = document.getElementById('musicPlay');
+  const musicNext = document.getElementById('musicNext');
+  const musicMute = document.getElementById('musicMute');
+  const musicTrack = document.getElementById('musicTrack');
+
+  const playlist = [
+    { name: 'Tema 1', src: './audio/tema-1.mp3' },
+    { name: 'Tema 2', src: './audio/tema-2.mp3' }
+  ];
+  let currentTrack = 0;
+
+  const loadTrack = (trackIndex) => {
+    if (!backgroundMusic || !playlist[trackIndex]) return;
+
+    currentTrack = trackIndex;
+    backgroundMusic.src = playlist[currentTrack].src;
+
+    if (musicTrack) {
+      musicTrack.textContent = playlist[currentTrack].name;
+    }
+  };
+
+  const playMusic = () => {
+    if (!backgroundMusic) return;
+
+    if (!backgroundMusic.src) {
+      loadTrack(currentTrack);
+    }
+
+    backgroundMusic.play().then(() => {
+      if (musicPlay) musicPlay.textContent = 'Ⅱ';
+      if (musicPlay) musicPlay.setAttribute('aria-label', 'Pausar música');
+    }).catch(() => {
+      if (musicTrack) musicTrack.textContent = 'Agregá tus canciones en audio';
+    });
+  };
+
+  const pauseMusic = () => {
+    if (!backgroundMusic) return;
+
+    backgroundMusic.pause();
+    if (musicPlay) musicPlay.textContent = '▶';
+    if (musicPlay) musicPlay.setAttribute('aria-label', 'Reproducir música');
+  };
+
+  const nextTrack = () => {
+    loadTrack((currentTrack + 1) % playlist.length);
+    playMusic();
+  };
+
+  loadTrack(currentTrack);
+
+  if (musicPlay) {
+    musicPlay.addEventListener('click', () => {
+      if (backgroundMusic.paused) {
+        playMusic();
+      } else {
+        pauseMusic();
+      }
+    });
+  }
+
+  if (musicNext) musicNext.addEventListener('click', nextTrack);
+
+  if (musicMute) {
+    musicMute.addEventListener('click', () => {
+      backgroundMusic.muted = !backgroundMusic.muted;
+      musicMute.textContent = backgroundMusic.muted ? '🔇' : '🔊';
+      musicMute.setAttribute('aria-label', backgroundMusic.muted ? 'Activar sonido' : 'Silenciar música');
+    });
+  }
+
+  if (backgroundMusic) {
+    backgroundMusic.addEventListener('ended', nextTrack);
+  }
+
+  if (btnOpen && overlay) {
+    btnOpen.addEventListener('click', () => {
+
+      playMusic();
+
+      overlay.classList.add('hidden');
+
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 400);
+
+    });
+  }
+
+
+  // ==========================================================
+  // 2. ELEMENTOS DEL CARRUSEL Y MODAL
+  // ==========================================================
+
+  const cardModal = document.getElementById('cardModal');
+  const closeCardModal = document.getElementById('btnCloseCardModal');
+
+  const modalCardTitle =
+    document.getElementById('modalCardTitle');
+
+  const modalCardText =
+    document.getElementById('modalCardText');
+
+  const modalCardImg =
+    document.getElementById('modalCardImg');
+
+  const carousel3d =
+    document.getElementById('carousel3d');
+
+  const cards =
+    document.querySelectorAll('.card');
+
+  const scene =
+    document.querySelector('.scene');
+
+
+  // ==========================================================
+  // 3. VARIABLES PARA EL CONTROL TÁCTIL
+  // ==========================================================
+
+  let isDragging = false;
+  let startX = 0;
+  let lastX = 0;
+  let currentRotation = 0;
+  let lockedScrollY = 0;
+
+  // Distancia mínima para considerar que realmente se está deslizando
+  const swipeThreshold = 6;
+
+  const lockBodyScroll = () => {
+    lockedScrollY = window.scrollY || window.pageYOffset || 0;
+    document.body.style.top = `-${lockedScrollY}px`;
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.classList.add('modal-scroll-lock');
+  };
+
+  const unlockBodyScroll = () => {
+    document.body.classList.remove('modal-scroll-lock');
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, lockedScrollY);
+  };
+
+
+  // ==========================================================
+  // 4. FUNCIÓN PARA ABRIR UNA TARJETA
+  // ==========================================================
+
+  const openCard = (card) => {
+
+    if (!cardModal || !card) return;
+
+    const title =
+      card.getAttribute('data-title') || 'Sorpresa';
+
+    const text =
+      card.getAttribute('data-text') ||
+      'Un momento especial guardado acá para vos.';
+
+    const isLetterVariant =
+      card.getAttribute('data-modal-variant') === 'letter';
+
+    const letterBodyRaw =
+      card.getAttribute('data-letter-body') || '';
+
+    const letterKicker =
+      card.getAttribute('data-letter-kicker') || 'Carta especial';
+
+    const letterSignature =
+      card.getAttribute('data-letter-signature') || '';
+
+    const letterImage =
+      card.getAttribute('data-letter-image') || '';
+
+    const imgSrc =
+      card.getAttribute('src');
+
+    if (modalCardTitle) {
+      modalCardTitle.textContent = title;
+    }
+
+    if (modalCardText) {
+      if (isLetterVariant) {
+        const highlightPhrases = /(Señoritaaa|súper especial|todo lo que llevo guardado en el corazón|obra de arte|mi lugar favorito|Te Amooo)/gi;
+        const songDedicationMarkup = `
+          <div class="song-dedication">
+            <strong class="song-dedication-title">Esta frase de “Boy In Luv” de BTS es para ti</strong>
+            <span class="song-label">Como lo cantan:</span>
+            <em>Dégopa noé opa<br>Noé sarang-í nan nomu gopa<br>Dégopa noé opa<br>Nol katgesó dugobwá</em>
+            <span class="song-label">Traducción:</span>
+            <span>Quiero ser quien te cuide y esté para vos,<br>Tengo tanta sed de tu amor.<br>Quiero ser tu persona especial,<br>Ya vas a ver, me voy a ganar tu corazón.</span>
+          </div>`;
+
+        const blocks = letterBodyRaw
+          .split('||')
+          .map((block) => block.trim())
+          .filter(Boolean)
+          .map((block, index) => {
+            const highlightedBlock = block.replace(
+              highlightPhrases,
+              '<span class="letter-highlight">$1</span>'
+            );
+            const songMarkup = block.startsWith('Feliz cumpleaños')
+              ? songDedicationMarkup
+              : '';
+
+            return `${songMarkup}<p class="letter-paragraph-${index + 1}">${highlightedBlock}</p>`;
+          })
+          .join('');
+
+        const signatureMarkup = letterSignature
+          ? `<span class="letter-signature">${letterSignature}</span>`
+          : '';
+
+        const imageSlotMarkup = letterImage
+          ? `<div class="letter-image-slot"><span class="letter-image-caption">El dibujo que hice para vos, con mucho cariño</span><img src="${letterImage}" alt="Dibujo especial para vos"></div>`
+          : '<div class="letter-image-slot" aria-label="Espacio para agregar una imagen"></div>';
+
+        const kickerMarkup =
+          `<span class="letter-kicker">${letterKicker}</span>`;
+
+        modalCardText.innerHTML =
+          `<div class="letter-paper">${kickerMarkup}${blocks}${imageSlotMarkup}${signatureMarkup}</div>`;
+      } else {
+        modalCardText.textContent = text;
+      }
+    }
+
+    if (modalCardImg) {
+      modalCardImg.setAttribute('src', imgSrc);
+    }
+
+    if (cardModal) {
+      const modalContent = cardModal.querySelector('.card-modal-content');
+      if (modalContent) {
+        modalContent.classList.toggle('is-letter', isLetterVariant);
+      }
+    }
+
+    // Detener el giro mientras se muestra el mensaje
+    if (carousel3d) {
+      carousel3d.classList.add('paused');
+    }
+
+    lockBodyScroll();
+    cardModal.classList.add('active');
+  };
+
+
+  // ==========================================================
+  // 5. TOQUE / CLICK EN CUALQUIER TARJETA
+  // ==========================================================
+
+  const getCardAtPoint = (clientX, clientY) => {
+    const candidates = [...cards].filter(card => {
+      const rect = card.getBoundingClientRect();
+      return clientX >= rect.left && clientX <= rect.right &&
+        clientY >= rect.top && clientY <= rect.bottom;
+    });
+
+    return candidates.sort((firstCard, secondCard) => {
+      const firstRect = firstCard.getBoundingClientRect();
+      const secondRect = secondCard.getBoundingClientRect();
+      const firstDistance = Math.hypot(
+        clientX - (firstRect.left + firstRect.width / 2),
+        clientY - (firstRect.top + firstRect.height / 2)
+      );
+      const secondDistance = Math.hypot(
+        clientX - (secondRect.left + secondRect.width / 2),
+        clientY - (secondRect.top + secondRect.height / 2)
+      );
+
+      return firstDistance - secondDistance;
+    })[0];
+  };
+
+  if (scene) {
+    scene.addEventListener('click', (e) => {
+      if (isDragging) {
+        e.preventDefault();
+        return;
+      }
+
+      const card = getCardAtPoint(e.clientX, e.clientY);
+      openCard(card);
+    });
+  }
+
+
+  // ==========================================================
+  // 6. CERRAR MODAL
+  // ==========================================================
+
+  const closeMyCardModal = () => {
+
+    if (!cardModal) return;
+
+    cardModal.classList.remove('active');
+    unlockBodyScroll();
+
+    if (carousel3d) {
+      carousel3d.classList.remove('paused');
+    }
+
+  };
+
+
+  if (closeCardModal) {
+
+    closeCardModal.addEventListener(
+      'click',
+      closeMyCardModal
+    );
+
+  }
+
+
+  // Cerrar tocando fuera de la tarjeta del modal
+
+  if (cardModal) {
+
+    cardModal.addEventListener('click', (e) => {
+
+      if (e.target === cardModal) {
+        closeMyCardModal();
+      }
+
+    });
+
+  }
+
+
+  // ==========================================================
+  // 7. CARRUSEL 360° PARA CELULAR
+  // ==========================================================
+
+  if (scene && carousel3d) {
+
+    // ------------------------------------------
+    // COMIENZA EL TOQUE
+    // ------------------------------------------
+
+    scene.addEventListener('touchstart', (e) => {
+
+      if (!e.touches || !e.touches.length) return;
+
+      startX = e.touches[0].clientX;
+      lastX = startX;
+
+      // Todavía no sabemos si será toque o deslizamiento
+      isDragging = false;
+
+      // Detener temporalmente la animación automática
+      carousel3d.classList.add('paused');
+
+    }, {
+      passive: true
+    });
+
+
+    // ------------------------------------------
+    // MOVIMIENTO DEL DEDO
+    // ------------------------------------------
+
+    scene.addEventListener('touchmove', (e) => {
+
+      if (!e.touches || !e.touches.length) return;
+
+      const currentX = e.touches[0].clientX;
+
+      const diffX =
+        currentX - lastX;
+
+      const totalMovement =
+        Math.abs(currentX - startX);
+
+
+      /*
+       * Solamente consideramos que es un arrastre
+       * cuando el dedo realmente se desplazó.
+       */
+
+      if (totalMovement > swipeThreshold) {
+        isDragging = true;
+      }
+
+
+      /*
+       * Si todavía es un toque muy pequeño,
+       * no movemos el carrusel.
+       */
+
+      if (!isDragging) {
+        lastX = currentX;
+        return;
+      }
+
+
+      // Movimiento natural del carrusel
+
+      currentRotation -= diffX * 0.5;
+
+      carousel3d.style.transform =
+        `rotateY(${currentRotation}deg)`;
+
+
+      lastX = currentX;
+
+    }, {
+      passive: true
+    });
+
+
+    // ------------------------------------------
+    // TERMINA EL TOQUE
+    // ------------------------------------------
+
+    scene.addEventListener('touchend', () => {
+
+      /*
+       * Esperamos un poquito antes de volver a
+       * considerar que un toque es un click.
+       *
+       * Esto evita que después de arrastrar se
+       * abra accidentalmente una tarjeta.
+       */
+
+      if (isDragging) {
+
+        setTimeout(() => {
+          isDragging = false;
+        }, 180);
+
+      } else {
+
+        isDragging = false;
+
+      }
+
+
+      // Volver a activar el giro automático
+
+      if (carousel3d) {
+        carousel3d.classList.remove('paused');
+      }
+
+    }, {
+      passive: true
+    });
+
+
+    // ------------------------------------------
+    // SI EL DEDO SALE DE LA PANTALLA
+    // ------------------------------------------
+
+    scene.addEventListener('touchcancel', () => {
+
+      isDragging = false;
+
+      if (carousel3d) {
+        carousel3d.classList.remove('paused');
+      }
+
+    }, {
+      passive: true
+    });
+
+  }
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sorpresa 7 - Colección de Detalles</title>
+
+  <!-- FUENTES -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style_detalles.css">
+</head>
+<style>* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  background: #f5d4e8;
+  color: #2d1228;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 14px 48px;
+  overflow-x: hidden;
+}
+
+.warm-bg {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 8% 15%, rgba(209, 60, 137, 0.38) 0%, transparent 34%),
+    radial-gradient(circle at 92% 82%, rgba(113, 77, 181, 0.34) 0%, transparent 34%),
+    linear-gradient(135deg, #f5c2df 0%, #d9c4f0 52%, #f7dce9 100%);
+  z-index: -1;
+}
+
+.top-bar {
+  width: 100%;
+  max-width: 560px;
+  margin-bottom: 34px;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #8d205f;
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #d77eaf;
+  box-shadow: 0 6px 18px rgba(116, 27, 82, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-back:hover,
+.btn-back:focus-visible {
+  background: #ffd9ed;
+  box-shadow: 0 9px 22px rgba(116, 27, 82, 0.28);
+  transform: translateY(-2px);
+}
+
+.btn-back:focus-visible,
+.detail-card:focus-visible {
+  outline: 3px solid rgba(116, 27, 82, 0.42);
+  outline-offset: 4px;
+}
+
+.details-container {
+  width: 100%;
+  max-width: 560px;
+}
+
+.details-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.details-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #8d205f;
+  text-transform: uppercase;
+  background: rgba(255, 220, 240, 0.94);
+  padding: 4px 14px;
+  border-radius: 12px;
+  border: 1px solid #d989b3;
+}
+
+.details-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.3rem, 8vw, 3.25rem);
+  font-weight: 700;
+  color: #57163f;
+  line-height: 0.98;
+  margin-top: 12px;
+}
+
+.details-subtitle {
+  font-size: 0.92rem;
+  color: #704360;
+  margin: 10px auto 0;
+  max-width: 300px;
+  line-height: 1.4;
+}
+
+/* TARJETAS DE OPCIONES */
+.details-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: #ffffff;
+  border: 1px solid #e5afd0;
+  padding: 18px 20px;
+  border-radius: 18px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 10px 24px rgba(100, 48, 103, 0.18);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.detail-card:hover {
+  transform: translateY(-4px);
+  border-color: #c866a1;
+  box-shadow: 0 16px 30px rgba(100, 48, 103, 0.26);
+}
+
+.detail-card:active {
+  transform: scale(0.97);
+  background: #ffd9ed;
+}
+
+.card-icon {
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  font-size: 1.65rem;
+  background: linear-gradient(145deg, #ffd4e9, #dfcdf5);
+  border: 1px solid #d996bd;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-info {
+  flex: 1;
+}
+
+.card-info h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.45rem;
+  color: #451533;
+  margin-bottom: 3px;
+}
+
+.card-info p {
+  font-size: 0.84rem;
+  color: #68415e;
+  line-height: 1.3;
+}
+
+.arrow {
+  flex: 0 0 auto;
+  font-size: 1.35rem;
+  color: #962265;
+  font-weight: 700;
+  transition: transform 0.2s ease;
+}
+
+.detail-card:hover .arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 600px) {
+  body {
+    padding-top: 20px;
+  }
+
+  .top-bar {
+    margin-bottom: 28px;
+  }
+
+  .detail-card {
+    padding: 15px 14px;
+    gap: 12px;
+  }
+
+  .card-icon {
+    flex-basis: 46px;
+    width: 46px;
+    height: 46px;
+    font-size: 1.45rem;
+  }
+
+  .card-info h3 {
+    font-size: 1.3rem;
+  }
+
+  .card-info p {
+    font-size: 0.78rem;
+  }
+}</style>
+
+<body>
+
+  <div class="warm-bg"></div>
+
+  <!-- NAVEGACIÓN PRINCIPAL AL LOBBY GENERAL -->
+  <div class="top-bar">
+    <a href="/CUMPLE_DE_IRISS/lobby/lobby.html" class="btn-back">← Volver</a>
+  </div>
+
+  <main class="details-container">
+    <header class="details-header">
+      <span class="details-badge">SORPRESA N°7</span>
+      <h1 class="details-title">Colección de Detalles</h1>
+      <p class="details-subtitle">Elegí el rincón que quieras explorar 💖</p>
+    </header>
+
+    <!-- LISTADO DE DETALLES -->
+    <div class="details-grid">
+
+      <a href="final.html" class="detail-card">
+        <div class="card-icon">💌</div>
+        <div class="card-info">
+          <h3>Detalle 01</h3>
+          <p>Tocá para descubrir este mensaje especial</p>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+      <a href="papel_amor/index.html" class="detail-card">
+        <div class="card-icon">🌸</div>
+        <div class="card-info">
+          <h3>Detalle 02</h3>
+          <p>Un rincón interactivo lleno de sorpresas</p>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+      <a href="FelizCumpleIris.html" class="detail-card">
+        <div class="card-icon">✨</div>
+        <div class="card-info">
+          <h3>Detalle 03</h3>
+          <p>Una experiencia única y especial amorr</p>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+    </div>
+  </main>
+
+</body>
+</html>

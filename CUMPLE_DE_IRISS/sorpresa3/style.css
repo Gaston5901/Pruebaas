@@ -1,0 +1,709 @@
+.scene, .a3d {
+  display: grid;
+}
+
+.warm-bg {
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(255, 182, 193, 0.35) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 218, 185, 0.4) 0%, transparent 40%);
+  z-index: -1;
+}
+  /* NAVEGACIÓN */
+.top-bar {
+  width: 100%;
+  max-width: 650px;
+  margin-bottom: 15px;
+}
+
+.btn-back {
+  display: inline-block;
+  color: #c84b7a;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #f4b4c6;
+  box-shadow: 0 4px 12px rgba(200, 75, 122, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-back:active {
+  transform: scale(0.95);
+}
+
+        .volver-inicio{
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            z-index: 9999;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.85);
+            border: 1px solid rgba(0,0,0,.10);
+            color: #3b2f2f;
+            text-decoration: none;
+            font-weight: 800;
+            box-shadow: 0 10px 26px rgba(0,0,0,.18);
+        }
+        .volver-inicio:hover{ transform: translateY(-1px); background: rgba(255,255,255,.95); }
+
+.scene {
+  overflow: hidden;
+  perspective: 35em;
+  mask: linear-gradient(90deg, #0000, red 20% 80%, #0000);
+  width: 100%;
+  height: 280px;
+  align-content: center;
+  margin: auto;
+  position: relative;
+  touch-action: pan-y;
+  z-index: 10;
+}
+
+.a3d {
+  place-self: center;
+  transform-style: preserve-3d;
+  animation: ry 32s linear infinite;
+}
+
+@keyframes ry {
+  to {
+    rotate: y 1turn;
+  }
+}
+
+.card {
+  --w: 16em;
+  --ba: 1turn/var(--n);
+  grid-area: 1/1;
+  width: var(--w);
+  aspect-ratio: 7/10;
+  object-fit: cover;
+  border-radius: 1.5em;
+  backface-visibility: hidden;
+  transform: rotatey(calc(var(--i)*var(--ba))) translatez(calc(-1*(.5*var(--w) + .5em)/tan(.5*var(--ba))));
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .a3d {
+    animation-duration: 128s;
+  }
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f3a9b5;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.22) 1px, transparent 1px),
+    linear-gradient(135deg, #f5b49f 0%, #ee94ae 52%, #bdbbe0 100%);
+  background-size: 22px 22px, 100% 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.music-player {
+  position: fixed;
+  top: 12px;
+  right: 14px;
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  max-width: calc(100% - 28px);
+  padding: 7px 9px 7px 11px;
+  border: 1px solid rgba(255, 102, 178, 0.65);
+  border-radius: 18px;
+  background: rgba(35, 8, 25, 0.82);
+  box-shadow: 0 6px 20px rgba(69, 11, 45, 0.25);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.music-player-icon {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #ff66b2;
+  color: #2b0a1a;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.music-player-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 78px;
+  line-height: 1.05;
+}
+
+.music-player-label {
+  color: #ffd5e8;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+}
+
+.music-player-track {
+  max-width: 128px;
+  overflow: hidden;
+  color: #fff;
+  font-size: 0.73rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.music-control {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.78rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.music-control:hover,
+.music-control:focus-visible {
+  background: #ff2a85;
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.valentine-header {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  z-index: 5;
+  pointer-events: none;
+  margin-top: 5px;
+}
+
+.valentine-text-container {
+  position: relative;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-msg {
+  position: absolute;
+  font-family: 'Pacifico', cursive;
+  font-size: 1.8rem; 
+  color: #d32f2f;
+  opacity: 0;
+  animation: fadeText 10s infinite;
+  width: 100%;
+  text-shadow: 0px 0px 5px rgba(255, 243, 237, 0.9);
+}
+
+.text-msg:nth-child(1) { animation-delay: 0s; }
+.text-msg:nth-child(2) { animation-delay: 2s; }
+.text-msg:nth-child(3) { animation-delay: 4s; }
+.text-msg:nth-child(4) { animation-delay: 6s; }
+.text-msg:nth-child(5) { animation-delay: 8s; }
+
+@keyframes fadeText {
+  0% { opacity: 0; transform: translateY(-10px); }
+  5% { opacity: 1; transform: translateY(0); }
+  20% { opacity: 1; }
+  25% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 0; }
+}
+
+.valentine-footer {
+  width: 100%;
+  text-align: center;
+  z-index: 5;
+  pointer-events: none;
+  margin-bottom: 5px;
+}
+
+.valentine-footer img {
+  max-height: 160px;
+  width: auto;
+  object-fit: contain;
+  animation: heartbeat 1.5s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+
+/* ==========================================================
+   MODAL DE BIENVENIDA
+========================================================== */
+
+.surprise-intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(12, 4, 16, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.surprise-intro-overlay.hidden {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.surprise-intro-card {
+  background: linear-gradient(145deg, #2b0a1a, #14040e);
+  border: 2px solid #ff2a85;
+  border-radius: 28px;
+  padding: 25px 20px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 42, 133, 0.5);
+}
+
+.modal-img-container {
+  width: 100%;
+  height: 175px;
+  margin: 0 auto 12px auto;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid #ff66b2;
+  box-shadow: 0 0 15px rgba(255, 42, 133, 0.6);
+  background: #14040e;
+}
+
+.modal-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+
+.surprise-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(255, 42, 133, 0.2);
+  border: 1px solid rgba(255, 42, 133, 0.5);
+  color: #ff66b2;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.surprise-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+  line-height: 1.25;
+  font-family: 'Outfit', sans-serif;
+}
+
+.highlight-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.9rem;
+  color: #ff66b2;
+  text-shadow: 0 0 16px rgba(255, 42, 133, 0.8);
+}
+
+.surprise-desc {
+  color: #ffe6f2;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin-bottom: 18px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.btn-enter-surprise {
+  width: 100%;
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+  background: linear-gradient(135deg, #ff2a85, #9333ea);
+  color: white;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255, 42, 133, 0.7);
+  font-family: 'Outfit', sans-serif;
+}
+
+.btn-enter-surprise:active {
+  transform: scale(0.96);
+}
+
+/* ==========================================================
+   MODAL DE LAS TARJETAS / CARTA SECRETA
+========================================================== */
+
+.card-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(12, 4, 16, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  overscroll-behavior: contain;
+  transition: opacity 0.3s ease;
+}
+
+.card-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.card-modal-content {
+  background: linear-gradient(145deg, #2b0a1a, #14040e);
+  border: 2px solid #ff66b2;
+  border-radius: 26px;
+  padding: 25px 20px;
+  max-width: 340px;
+  width: 100%;
+  max-height: min(82vh, 560px);
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(255, 42, 133, 0.5);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.card-modal-overlay.active .card-modal-content {
+  transform: translateY(0);
+}
+
+.modal-card-img-container {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 14px auto;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #ff66b2;
+  box-shadow: 0 0 20px rgba(255, 42, 133, 0.7);
+  background: #14040e;
+}
+
+.modal-card-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-modal-content h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  color: #ff66b2;
+  margin-bottom: 8px;
+}
+
+.modal-card-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #ffe6f2;
+  font-family: 'Outfit', sans-serif;
+  margin: 0;
+  overflow-y: auto;
+  max-height: 210px;
+  padding-right: 8px;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
+.modal-card-text::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-card-text::-webkit-scrollbar-thumb {
+  background: rgba(255, 102, 178, 0.7);
+  border-radius: 999px;
+}
+
+.modal-card-text::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+}
+
+.card-modal-content.is-letter {
+  max-width: 390px;
+  background: linear-gradient(165deg, #3a1120 0%, #1a0713 100%);
+  border-color: #ffb8d9;
+  box-shadow: 0 18px 48px rgba(255, 92, 170, 0.42);
+}
+
+.card-modal-content.is-letter .modal-card-img-container {
+  width: 78px;
+  height: 78px;
+  margin-bottom: 10px;
+}
+
+.card-modal-content.is-letter h3 {
+  font-size: 1.55rem;
+  margin-bottom: 10px;
+  color: #ffd3e9;
+  letter-spacing: 0.02em;
+}
+
+.card-modal-content.is-letter .modal-card-text {
+  max-height: 300px;
+  padding-right: 6px;
+}
+
+.letter-paper {
+  text-align: left;
+  padding: 12px 14px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 182, 216, 0.5);
+  background:
+    linear-gradient(180deg, rgba(255, 240, 248, 0.18), rgba(255, 240, 248, 0.06));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
+}
+
+.letter-kicker {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 138, 195, 0.55);
+  background: rgba(255, 138, 195, 0.18);
+  color: #ffd8eb;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.letter-paper p {
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 27px,
+    rgba(255, 230, 242, 0.22) 27px,
+    rgba(255, 230, 242, 0.22) 28px,
+    transparent 28px,
+    transparent 29px
+  );
+  margin: 0 0 8px;
+  line-height: 29px;
+  color: #ffeef7;
+  font-size: 0.95rem;
+}
+
+.letter-highlight {
+  color: #ffd166;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 209, 102, 0.28);
+}
+
+.song-dedication {
+  display: grid;
+  gap: 5px;
+  margin: 14px 0 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 209, 102, 0.5);
+  border-radius: 12px;
+  background: rgba(255, 209, 102, 0.1);
+  text-align: center;
+}
+
+.song-dedication-title {
+  color: #ff9fca;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.12rem;
+}
+
+.song-label {
+  color: #ffd166;
+  font-weight: 700;
+}
+
+.song-dedication em {
+  color: #ffc2df;
+  font-family: 'Caveat', cursive;
+  font-size: 1.12rem;
+  line-height: 1.25;
+}
+
+.song-dedication span:last-child {
+  color: #ffeef7;
+  line-height: 1.45;
+}
+
+.letter-paragraph-1 {
+  color: #ffc1df !important;
+  font-style: italic;
+}
+
+.letter-paragraph-5 {
+  padding: 8px 10px;
+  border-left: 3px solid #ff66b2;
+  color: #ffd3e9 !important;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.08rem !important;
+  font-style: italic;
+}
+
+.letter-paper p:last-of-type {
+  margin-bottom: 10px;
+}
+
+.letter-image-slot {
+  width: 100%;
+  min-height: 92px;
+  margin: 4px 0 14px;
+  border: 1px dashed rgba(255, 182, 216, 0.65);
+  border-radius: 10px;
+  background: rgba(255, 240, 248, 0.08);
+}
+
+.letter-image-caption {
+  display: block;
+  padding: 10px 10px 6px;
+  color: #ffd166;
+  font-family: 'Caveat', cursive;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.letter-image-slot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 220px;
+  border-radius: 9px;
+  object-fit: contain;
+  background: rgba(12, 4, 16, 0.35);
+}
+
+.letter-signature {
+  display: block;
+  text-align: right;
+  color: #ffc2df;
+  font-family: 'Pacifico', cursive;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.card-modal-content.is-letter .close-card-modal {
+  background: rgba(255, 212, 234, 0.2);
+  border-color: rgba(255, 184, 217, 0.65);
+  color: #ffd8eb;
+}
+
+body.modal-scroll-lock {
+  overflow: hidden;
+}
+
+.close-card-modal {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: rgba(255, 42, 133, 0.15);
+  border: 1px solid rgba(255, 42, 133, 0.4);
+  color: #ff66b2;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.a3d.paused {
+  animation-play-state: paused !important;
+}
+
+@media (max-width: 600px) {
+  .music-player {
+    top: 8px;
+    right: 8px;
+    gap: 5px;
+    padding: 6px 7px 6px 8px;
+  }
+
+  .valentine-header {
+    padding-top: 58px;
+  }
+
+  .music-player-info {
+    min-width: 65px;
+  }
+
+  .music-player-track {
+    max-width: 92px;
+  }
+
+  .music-control {
+    width: 27px;
+    height: 27px;
+  }
+
+  .scene {
+    height: 410px;
+  }
+
+  .card {
+    --w: 35em;
+    border-radius: 1.45em;
+  }
+
+  .text-msg {
+    font-size: 1.45rem;
+  }
+
+  .valentine-footer img {
+    max-height: 115px;
+  }
+
+  .modal-img-container {
+    height: 165px;
+  }
+}
+

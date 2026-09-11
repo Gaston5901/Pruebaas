@@ -476,6 +476,72 @@ body {
   }
 }
 
+/* Perfil ligero para celulares: conserva la estética sin animaciones costosas. */
+@media (max-width: 600px) {
+  .lobby-container {
+    padding: 26px 14px 42px;
+  }
+
+  .phrase-section {
+    margin-bottom: 30px;
+  }
+
+  .bg-overlay {
+    background-size: 170px 170px, 240px 240px, 330px 330px, 420px 420px;
+    animation: none;
+    opacity: 0.5;
+  }
+
+  .header-badge {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    animation: none;
+    box-shadow: 0 0 12px rgba(244, 114, 182, 0.18);
+  }
+
+  .highlight-title {
+    filter: drop-shadow(0 0 14px rgba(244, 114, 182, 0.48));
+    animation: none;
+  }
+
+  .gift-box {
+    animation: none;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.42), 0 0 10px rgba(139, 92, 246, 0.2);
+  }
+
+  .gift-box::before {
+    display: none;
+  }
+
+  .gift-box::after {
+    filter: none;
+  }
+
+  .gift-label {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.28);
+  }
+
+  .gift-card:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .completion-track {
+    animation: announcementScroll 8s linear infinite !important;
+  }
+}
+
 /* ==========================================================
    BADGE DE REGALITO (ESQUINA SUPERIOR DERECHA)
 ========================================================== */
@@ -646,4 +712,142 @@ body {
 @keyframes scaleUpModal {
   from { transform: scale(0.8); }
   to { transform: scale(1); }
+}
+
+/* Progreso y numeración de cada detalle */
+.progress-summary {
+  width: min(100%, 270px);
+  margin-top: 18px;
+  color: rgba(224, 231, 255, 0.78);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.progress-track {
+  width: 100%;
+  height: 5px;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.progress-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ec4899, #c084fc, #38bdf8);
+  transition: width 0.25s ease;
+}
+
+.completion-message {
+  display: block;
+  width: min(100%, 330px);
+  height: 36px;
+  max-width: calc(100vw - 28px);
+  margin: 18px auto 0;
+  overflow: hidden;
+  padding: 8px 12px;
+  border: 1px solid rgba(236, 72, 153, 0.5);
+  border-radius: 999px;
+  background: rgba(236, 72, 153, 0.12);
+  color: #ffe6f5;
+  font-size: 0.76rem;
+  line-height: 18px;
+  text-align: center;
+  box-shadow: 0 0 18px rgba(236, 72, 153, 0.2);
+  animation: completionReveal 0.45s ease both;
+}
+
+.completion-message[hidden] {
+  display: none;
+}
+
+.completion-track {
+  display: flex;
+  width: max-content;
+  gap: 0;
+  white-space: nowrap;
+  color: #ffb4d7;
+  animation: announcementScroll 7s linear infinite;
+  will-change: transform;
+}
+
+.completion-track span {
+  display: block;
+  padding-right: 48px;
+  font-weight: 700;
+}
+
+@keyframes announcementScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes completionReveal {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.gift-number {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  background: rgba(9, 4, 20, 0.82);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+
+.gift-card.is-visited .gift-number {
+  background: #ec4899;
+  border-color: #ffd1e8;
+}
+
+.gift-card.is-visited .gift-label::after {
+  content: ' · visto';
+  color: #f9a8d4;
+  font-size: 0.62rem;
+}
+
+@media (max-width: 600px) {
+  .progress-summary {
+    margin-top: 14px;
+    font-size: 0.65rem;
+  }
+
+  .completion-message {
+    width: calc(100vw - 28px);
+    max-width: 330px;
+    height: 32px;
+    margin-top: 14px;
+    padding: 6px 10px;
+    font-size: 0.72rem;
+    border-radius: 18px;
+  }
+
+  .completion-track {
+    animation-duration: 8s;
+  }
+
+  .gift-number {
+    left: 4px;
+    bottom: 4px;
+    width: 22px;
+    height: 22px;
+    font-size: 0.56rem;
+  }
 }
