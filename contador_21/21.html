@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <title>¡Feliz 21 de Septiembre! ✨</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Quicksand', sans-serif;
+      color: #fff3e2;
+      text-align: center;
+      padding: 30px 18px;
+      position: relative;
+      overflow-x: hidden;
+      background: linear-gradient(180deg, #140a2e 0%, #2d1447 38%, #57204d 72%, #8a2f45 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(700px 380px at 50% 112%, rgba(255, 170, 60, 0.55), transparent 65%),
+        radial-gradient(500px 260px at 18% 30%, rgba(255, 120, 160, 0.22), transparent 60%),
+        radial-gradient(500px 260px at 85% 22%, rgba(190, 140, 255, 0.25), transparent 60%);
+    }
+
+    .titulo {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2.1rem, 7vw, 3.2rem);
+      margin: 12px 0 4px;
+      background: linear-gradient(90deg, #ffde9b, #ffb4c8, #d7b0ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 3px 16px rgba(255, 170, 110, 0.45));
+    }
+
+    .subtitulo {
+      font-size: clamp(0.95rem, 3vw, 1.1rem);
+      color: #f2d9f2;
+      font-weight: 600;
+      margin: 0 0 26px;
+    }
+
+    .tarjeta {
+      position: relative;
+      z-index: 2;
+      max-width: 660px;
+      margin: 0 auto;
+      padding: 30px 24px;
+      border-radius: 28px;
+      background:
+        linear-gradient(150deg, rgba(40, 20, 66, 0.75), rgba(96, 34, 84, 0.55)),
+        rgba(23, 12, 46, 0.55);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 190, 90, 0.35);
+      box-shadow: 0 24px 60px rgba(10, 4, 28, 0.6), 0 0 40px rgba(255, 140, 80, 0.18);
+    }
+
+    /* 👇 Desde acá podés editar todo a tu gusto: agregá fotos, textos, música, etc. */
+
+    .fotos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin: 22px 0;
+    }
+
+    .foto {
+      width: min(72vw, 280px);
+      object-fit: contain;
+      border-radius: 20px;
+      display: block;
+      border: 3px solid #2a1438;
+      box-shadow:
+        0 0 0 3px rgba(255, 190, 90, 0.5),
+        0 14px 30px rgba(0, 0, 0, 0.45);
+      background: rgba(20, 11, 40, 0.6);
+      margin: 0 auto;
+    }
+
+    .mensaje {
+      font-size: clamp(1rem, 3vw, 1.18rem);
+      font-weight: 600;
+      line-height: 1.8;
+      color: #f2d9f2;
+    }
+
+    .mensaje em {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.35em;
+      background: linear-gradient(90deg, #ffde9b, #ffb4c8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .mensaje strong {
+      color: #ffd76a;
+    }
+
+    .volver {
+      display: inline-flex;
+      margin-top: 26px;
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+      color: #2a1438;
+      background: linear-gradient(90deg, #ffd76a, #ff8fa5, #c39dff);
+      text-decoration: none;
+      box-shadow: 0 10px 28px rgba(255, 160, 90, 0.5);
+      transition: transform 0.2s ease;
+    }
+
+    .volver:hover {
+      transform: translateY(-3px);
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 22px 12px; }
+      .tarjeta {
+        padding: 24px 16px;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .fotos { gap: 20px; }
+      .foto { width: min(74vw, 220px); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="titulo">¡Feliz 21 de Septiembre! ✨</h1>
+  <p class="subtitulo">La estrella parpadeó y este espacio es para vos 💛</p>
+
+  <div class="tarjeta">
+
+    <!-- 👇 FOTOS: guardalas en la carpeta contador_21 y cambiá el src
+         (ej: src="foto3.jpg"). Si querés más, copiá otro <img>. -->
+    <div class="fotos">
+      <img class="foto" src="foto3.jpg" alt="Foto 1" onerror="this.onerror=null; this.remove();">
+      <img class="foto" src="foto4.jpg" alt="Foto 2" onerror="this.onerror=null; this.remove();">
+    </div>
+
+    <!-- 👇 MENSAJE: acá escribí lo que quieras que vea ella. -->
+    <div class="mensaje">
+      <p>
+        Este es el espacio que te preparé, <em>mi persona favorita</em>.<br>
+        El 21 de septiembre siempre va a brillar en mi calendario,<br>
+        porque existe gente que llega para pintarte el cielo<br>
+        y convertirlo en un atardecer eterno de <strong>sol</strong>, <strong>flores</strong> y <strong>sonrisas</strong> 🌻<br><br>
+        Gracias por existir en mi universo.
+      </p>
+    </div>
+
+  </div>
+
+  <a class="volver" href="index.html">← Volver al contador</a>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museo Flore AlexDev</title>
+
+
+
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; user-select: none; background-color: #000; -webkit-tap-highlight-color: transparent;
+}
+        
+
+        *{
+              cursor: url('flor.png'), auto !important;
+
+        }
+        .pantalla {
+            width: 100vw; height: 100vh; position: absolute; top: 0; left: 0;
+            background-size: cover; background-position: center; display: none;
+        }
+        .activa { display: block; }
+        
+        #pag1 { background-image: url('fondo1.gif'); }
+        #pag2 { background-image: url('fondo2.gif'); }
+        #pag3 { background-image: url('fondo3.gif'); }
+        #pag4 { background-image: url('fondo4.gif'); }
+        #pag5 { background-image: url('fondo5.gif'); }
+        #pag6 { background-image: url('fondo6.gif'); }
+
+        .boton-movible {
+            position: absolute; cursor: grab; touch-action: none;
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            background-color: transparent; border: none; 
+        }
+        .boton-movible:active { cursor: grabbing; }
+      
+        
+        #btn-seguir { top: 50%; left: 40%; width: 350px; height: 200px; background-image: url('seguir.png'); }
+
+        #btn1 { top: 40%; left: 21%; width: 350px; height: 150px; background-image: url('btn1.png'); }
+        #btn2 { top: 47%; left: 36%; width: 350px; height: 150px; background-image: url('btn2.png'); }
+        #btn3 { top: 36%; left: 48%; width: 350px; height: 150px; background-image: url('btn3.png'); }
+        #btn4 { top: 52%; left: 60%; width: 350px; height: 150px; background-image: url('btn4.png'); }
+
+        .btn-atras-img { top: 85%; left: 42%; width: 290px; height: 170px; background-image: url('atras.png'); }
+
+    </style>
+</head>
+<body>
+
+    <div id="pag1" class="pantalla activa">
+        <div id="btn-seguir" class="boton-movible"></div>
+    </div>
+
+    <div id="pag2" class="pantalla">
+        <div id="btn1" class="boton-movible"></div>
+        <div id="btn2" class="boton-movible"></div>
+        <div id="btn3" class="boton-movible"></div>
+        <div id="btn4" class="boton-movible"></div>
+    </div>
+
+    <div id="pag3" class="pantalla">
+        <div id="atras3" class="boton-movible btn-atras-img"></div>
+    </div>
+    <div id="pag4" class="pantalla">
+        <div id="atras4" class="boton-movible btn-atras-img"></div>
+    </div>
+    <div id="pag5" class="pantalla">
+        <div id="atras5" class="boton-movible btn-atras-img"></div>
+    </div>
+    <div id="pag6" class="pantalla">
+        <div id="atras6" class="boton-movible btn-atras-img"></div>
+    </div>
+
+    <script>
+        function cambiarPagina(idDestino) {
+            document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
+            document.getElementById(idDestino).classList.add('activa');
+        }
+
+        function hacerMovibleYClickeable(elemento, accionClic) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            let movido = false; 
+
+            elemento.onmousedown = iniciarArrastre;
+            elemento.ontouchstart = iniciarArrastreTouch;
+
+            function iniciarArrastre(e) {
+                e.preventDefault();
+                movido = false;
+                pos3 = e.clientX; pos4 = e.clientY;
+                document.onmouseup = finalizarArrastre;
+                document.onmousemove = arrastrarElemento;
+            }
+
+            function iniciarArrastreTouch(e) {
+                movido = false;
+                let touch = e.touches[0];
+                pos3 = touch.clientX; pos4 = touch.clientY;
+                document.ontouchend = finalizarArrastre;
+                document.ontouchmove = arrastrarElementoTouch;
+            }
+
+            function arrastrarElemento(e) {
+                e.preventDefault();
+                movido = true;
+                pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
+                pos3 = e.clientX; pos4 = e.clientY;
+                actualizarPosicion();
+            }
+
+            function arrastrarElementoTouch(e) {
+                movido = true;
+                let touch = e.touches[0];
+                pos1 = pos3 - touch.clientX; pos2 = pos4 - touch.clientY;
+                pos3 = touch.clientX; pos4 = touch.clientY;
+                actualizarPosicion();
+            }
+
+            function actualizarPosicion() {
+                elemento.style.top = (elemento.offsetTop - pos2) + "px";
+                elemento.style.left = (elemento.offsetLeft - pos1) + "px";
+            }
+
+            function finalizarArrastre() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+                document.ontouchend = null;
+                document.ontouchmove = null;
+                
+                if (!movido) {
+                    accionClic();
+                }
+            }
+        }
+
+        hacerMovibleYClickeable(document.getElementById('btn-seguir'), () => cambiarPagina('pag2'));
+        
+        hacerMovibleYClickeable(document.getElementById('btn1'), () => cambiarPagina('pag3'));
+        hacerMovibleYClickeable(document.getElementById('btn2'), () => cambiarPagina('pag4'));
+        hacerMovibleYClickeable(document.getElementById('btn3'), () => cambiarPagina('pag5'));
+        hacerMovibleYClickeable(document.getElementById('btn4'), () => cambiarPagina('pag6'));
+
+        hacerMovibleYClickeable(document.getElementById('atras3'), () => cambiarPagina('pag2'));
+        hacerMovibleYClickeable(document.getElementById('atras4'), () => cambiarPagina('pag2'));
+        hacerMovibleYClickeable(document.getElementById('atras5'), () => cambiarPagina('pag2'));
+        hacerMovibleYClickeable(document.getElementById('atras6'), () => cambiarPagina('pag2'));
+    </script>
+</body>
+
+ <!--
+
+Contáctame:
+
+   * Crea tus diseños sin código
+ https://comparte-amor.vercel.app/
+
+    * Invitame un café
+ https://buymeacoffee.com/alexx.dev
+
+    * Portafolio Web
+ https://alexxdev.vercel.app
+
+    * Sigueme en tiktok
+ https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc
+ 
+    * Canal de WhatsApp
+ https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
+
+ 
+   * WhatsApp: +52 5587450945
+https://wa.me/525568916053
+
+
+-->
+</html>
