@@ -223,9 +223,9 @@ function checkIfFromCandles() {
    5. ANIMACIONES Y CORAZONES DEL LOBBY
 ========================================================== */
 function initLobbyAnimations() {
-  const isMobile = window.matchMedia('(max-width: 600px)').matches;
-  const heartInterval = isMobile ? 4200 : 2200;
-  const maxHearts = isMobile ? 4 : 10;
+  const isMobile = window.matchMedia('(max-width: 768px)').matches;
+  const heartInterval = isMobile ? 8000 : 2200;
+  const maxHearts = isMobile ? 2 : 10;
 
   // En celular se muestran pocos corazones para evitar trabajo continuo de renderizado.
   const heartTimer = setInterval(() => {

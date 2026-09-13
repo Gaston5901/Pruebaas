@@ -477,9 +477,10 @@ body {
 }
 
 /* Perfil ligero para celulares: conserva la estética sin animaciones costosas. */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .lobby-container {
     padding: 26px 14px 42px;
+    animation: none;
   }
 
   .phrase-section {
@@ -517,6 +518,11 @@ body {
     filter: none;
   }
 
+  .gift-badge {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .gift-label {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -525,6 +531,11 @@ body {
 
   .gift-card:hover {
     transform: none;
+  }
+
+  .modal-overlay {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 }
 
@@ -815,12 +826,6 @@ body {
 .gift-card.is-visited .gift-number {
   background: #ec4899;
   border-color: #ffd1e8;
-}
-
-.gift-card.is-visited .gift-label::after {
-  content: ' · visto';
-  color: #f9a8d4;
-  font-size: 0.62rem;
 }
 
 @media (max-width: 600px) {
