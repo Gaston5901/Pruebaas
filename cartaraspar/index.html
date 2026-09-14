@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Una carta para vos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: radial-gradient(circle at 30% 20%, #2a1a3e, #12081f 60%, #0a0513);
+  }
+
+  /* ====== Fondo animado ====== */
+  #fondo {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .estrella {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    animation: brillar 3s ease-in-out infinite alternate;
+  }
+  @keyframes brillar {
+    from { opacity: .15; transform: scale(.7); }
+    to   { opacity: .9;  transform: scale(1.3); }
+  }
+  .corazon-flotante {
+    position: absolute;
+    font-size: 22px;
+    opacity: 0;
+    animation: subir 8s linear infinite;
+  }
+  @keyframes subir {
+    0%   { transform: translateY(110vh) scale(.6) rotate(-10deg); opacity: 0; }
+    10%  { opacity: .7; }
+    90%  { opacity: .4; }
+    100% { transform: translateY(-10vh) scale(1.1) rotate(10deg); opacity: 0; }
+  }
+
+  /* ====== INTRO ====== */
+  #intro {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 24px;
+    background: radial-gradient(circle at 50% 40%, rgba(180,20,40,.25), transparent 70%);
+    transition: opacity .8s ease;
+    cursor: pointer;
+  }
+  #intro.oculta { opacity: 0; pointer-events: none; }
+
+  #intro .frase {
+    color: #ffd7de;
+    font-size: clamp(20px, 5.5vw, 30px);
+    letter-spacing: 3px;
+    text-shadow: 0 4px 20px rgba(200,20,50,.55);
+    text-align: center;
+  }
+  #intro .subfrase {
+    color: rgba(255,210,220,.85);
+    font-size: clamp(14px, 3.8vw, 18px);
+    font-style: italic;
+  }
+
+  .corazon-boton {
+    position: relative;
+    width: min(230px, 66vw);
+    height: min(200px, 57vw);
+    display: grid;
+    place-items: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    animation: latido 1.6s ease-in-out infinite;
+    filter: drop-shadow(0 18px 30px rgba(200,15,40,.55));
+  }
+  .corazon-boton svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .corazon-boton svg path.corazon-body {
+    stroke: #ffd9a0;
+    stroke-width: 2.5;
+  }
+  .corazon-boton .si {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    font-family: 'Georgia', serif;
+    font-size: clamp(44px, 14vw, 60px);
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 0 3px 10px rgba(120,0,15,.6);
+    transform: translateY(-6px);
+  }
+  @keyframes latido {
+    0%, 100% { transform: scale(1); }
+    25%      { transform: scale(1.07); }
+    45%      { transform: scale(.97); }
+  }
+  .halo {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,60,90,.45), transparent 70%);
+    animation: halo 2.3s ease-in-out infinite;
+    filter: blur(2px);
+    pointer-events: none;
+  }
+  @keyframes halo {
+    0%, 100% { opacity: .5; transform: translate(-50%,-50%) scale(1); }
+    50%      { opacity: 1;   transform: translate(-50%,-50%) scale(1.22); }
+  }
+  #intro .pie {
+    color: rgba(255,214,224,.85);
+    font-size: clamp(13px, 3.4vw, 16px);
+    font-style: italic;
+    animation: pulso 2s ease-in-out infinite;
+    text-align: center;
+  }
+  @keyframes pulso {
+    0%, 100% { opacity: .55; }
+    50%      { opacity: 1; }
+  }
+
+  /* ====== ESCENARIO DE LA CARTA ====== */
+  #escenario {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 22px 10px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .8s ease;
+  }
+  #escenario.visible { opacity: 1; pointer-events: auto; }
+
+  #btn-volver {
+    position: fixed;
+    top: max(16px, env(safe-area-inset-top));
+    left: max(16px, env(safe-area-inset-left));
+    z-index: 70;
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(247,212,134,.7);
+    border-radius: 50%;
+    background: rgba(55, 5, 18, .78);
+    color: #f7d486;
+    font: 28px/1 Georgia, serif;
+    cursor: pointer;
+    box-shadow: 0 5px 16px rgba(0,0,0,.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .5s ease, transform .2s ease, background .2s ease;
+  }
+  #escenario.visible #btn-volver {
+    opacity: 1 !important;
+    pointer-events: auto;
+  }
+  #btn-volver:hover,
+  #btn-volver:focus-visible {
+    background: rgba(120, 15, 35, .95);
+    transform: scale(1.08);
+    outline: none;
+  }
+
+  #btn-raiz {
+    position: fixed;
+    top: max(16px, env(safe-area-inset-top));
+    left: max(16px, env(safe-area-inset-left));
+    z-index: 80;
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(247,212,134,.7);
+    border-radius: 50%;
+    background: rgba(55, 5, 18, .78);
+    color: #f7d486;
+    font: 28px/1 Georgia, serif;
+    text-decoration: none;
+    box-shadow: 0 5px 16px rgba(0,0,0,.35);
+    transition: transform .2s ease, background .2s ease;
+  }
+  #btn-raiz:hover,
+  #btn-raiz:focus-visible {
+    background: rgba(120, 15, 35, .95);
+    transform: scale(1.08);
+    outline: none;
+  }
+
+  #titulo-carta {
+    color: #f7d486;
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(30px, 7vw, 44px);
+    letter-spacing: 2px;
+    text-shadow: 0 2px 14px rgba(255,200,90,.5);
+  }
+
+  .carta-envoltura {
+    position: relative;
+    width: min(420px, 92vw);
+    padding: 14px;
+    background: linear-gradient(150deg, #7a0f22, #4c0714 45%, #26030a);
+    border-radius: 24px;
+    border: 2px solid #d4af37;
+    box-shadow:
+      0 30px 70px rgba(0,0,0,.7),
+      0 0 0 6px rgba(212,175,55,.15),
+      inset 0 0 30px rgba(0,0,0,.6);
+    transform: rotateX(6deg) rotateY(-2deg);
+    animation: aparecer 1s ease both;
+  }
+  @keyframes aparecer {
+    from { transform: rotateX(45deg) rotateY(-8deg) scale(.6); opacity: 0; }
+    to   { transform: rotateX(6deg) rotateY(-2deg) scale(1);   opacity: 1; }
+  }
+
+  .carta-envoltura .filete {
+    position: absolute;
+    inset: 6px;
+    border: 1px dashed rgba(212,175,55,.7);
+    border-radius: 18px;
+    pointer-events: none;
+  }
+  .carta-envoltura .esquina {
+    position: absolute;
+    color: #d4af37;
+    font-size: 16px;
+    pointer-events: none;
+    text-shadow: 0 0 8px rgba(212,175,55,.8);
+  }
+  .carta-envoltura .esquina.n1 { top: 12px;  left: 12px; }
+  .carta-envoltura .esquina.n2 { top: 12px;  right: 12px; }
+  .carta-envoltura .esquina.n3 { bottom: 12px; left: 12px; }
+  .carta-envoltura .esquina.n4 { bottom: 12px; right: 12px; }
+
+  .sello-lacre {
+    position: absolute;
+    top: -16px;
+    right: 22px;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #e0394f, #9c0f28 60%, #5c0515);
+    border: 3px solid #ff9db0;
+    display: grid;
+    place-items: center;
+    font-size: 30px;
+    z-index: 25;
+    box-shadow: 0 6px 18px rgba(0,0,0,.55), inset 0 -4px 8px rgba(0,0,0,.4);
+    transform: rotate(-8deg);
+  }
+  .sello-lacre::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px dashed rgba(255,220,230,.6);
+    border-radius: 50%;
+  }
+  .sello-lacre span { text-shadow: 0 2px 4px rgba(0,0,0,.5); }
+
+  .carta {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 10 / 14;
+    max-height: 62vh;
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fffdf3;
+    box-shadow: inset 0 0 0 1px rgba(150,120,70,.35);
+  }
+
+  /* ====== HOJA PARA ESCRIBIR ====== */
+  .hoja {
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(transparent 0 27px, rgba(120,150,200,.35) 27px 28px),
+      linear-gradient(180deg, #fffef6, #fdf9ea);
+    padding: 34px 30px 60px 42px;
+    display: flex;
+    flex-direction: column;
+    color: #3c2a1d;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .hoja::-webkit-scrollbar { width: 4px; }
+  .hoja::-webkit-scrollbar-thumb { background: rgba(120,30,50,.35); border-radius: 4px; }
+  .hoja::-webkit-scrollbar-track { background: transparent; }
+  .hoja::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 34px; bottom: 0;
+    width: 2px;
+    background: rgba(200,60,70,.55);
+  }
+  .hoja .saludo {
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: clamp(26px, 6.5vw, 32px);
+    margin-bottom: 10px;
+    animation: aparecer-texto .6s ease both;
+  }
+  .hoja .cuerpo {
+    font-family: 'Caveat', cursive;
+    font-weight: 500;
+    font-size: clamp(20px, 5vw, 24px);
+    line-height: 28px;
+    flex: 1;
+    animation: aparecer-texto .6s .25s ease both;
+  }
+  .hoja .cuerpo .corazon-listo { display: inline-block; animation: latido 1.6s ease-in-out infinite; }
+  .hoja .despedida {
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    font-size: clamp(22px, 5.5vw, 27px);
+    text-align: right;
+    animation: aparecer-texto .6s .5s ease both;
+  }
+  .imagen-amor {
+    display: block;
+    width: min(100%, 210px);
+    max-height: 240px;
+    object-fit: cover;
+    margin: 16px auto 18px;
+    border: 5px solid #fffdf3;
+    border-radius: 12px;
+    box-shadow: 0 5px 14px rgba(75, 25, 25, .24), 0 0 0 1px rgba(150,120,70,.45);
+    transform: rotate(-2deg);
+    animation: aparecer-texto .6s .4s ease both;
+  }
+  @keyframes aparecer-texto {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .cinta {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    width: 130px;
+    height: 42px;
+    transform: translateX(-50%) rotate(-4deg);
+    background: rgba(255,214,130,.65);
+    opacity: .9;
+    box-shadow: 0 3px 8px rgba(0,0,0,.15);
+    z-index: 3;
+  }
+  .cinta::before,
+  .cinta::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    width: 0; height: 0;
+    border: 6px solid transparent;
+  }
+  .cinta::before {
+    left: 0;
+    border-top-color: rgba(230,180,90,.65);
+    border-left-color: rgba(230,180,90,.65);
+  }
+  .cinta::after {
+    right: 0;
+    border-top-color: rgba(230,180,90,.65);
+    border-right-color: rgba(230,180,90,.65);
+  }
+  .hoja .pliegue {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 26px;
+    background: linear-gradient(90deg, rgba(0,0,0,0), rgba(210,170,90,.25));
+    pointer-events: none;
+  }
+
+  /* ====== CAPA DE RASPAR ====== */
+  #capa-raspar {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+    touch-action: none;
+    z-index: 20;
+    transition: opacity .9s ease;
+  }
+  #capa-raspar:active { cursor: grabbing; }
+  #capa-raspar.raspada { opacity: 0; pointer-events: none; }
+
+  @media (max-width: 600px) {
+    .corazon-flotante { display: none; }
+    .estrella { animation-duration: 5s; }
+  }
+
+  /* ====== HINT ====== */
+  #aviso {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,214,224,.9);
+    font-size: clamp(13px, 3.4vw, 16px);
+    font-style: italic;
+    text-shadow: 0 2px 10px rgba(200,20,50,.5);
+    z-index: 40;
+    opacity: 0;
+    transition: opacity .6s;
+    pointer-events: none;
+    text-align: center;
+    padding: 0 16px;
+  }
+  #aviso.visible { opacity: 1; }
+
+  #mensaje-final {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 60;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.2s ease;
+    text-align: center;
+    padding: 0 20px;
+  }
+  #mensaje-final.visible { opacity: 1; }
+  #mensaje-final h2 {
+    color: #f7d486;
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(30px, 7vw, 44px);
+    font-weight: normal;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 14px rgba(255,200,90,.6);
+  }
+
+  .oculto { display: none !important; }
+</style>
+</head>
+<body>
+
+<div id="fondo"></div>
+
+<audio id="musica" src="musica.mp3" loop preload="auto"></audio>
+
+<a id="btn-raiz" href="../index.html" aria-label="Volver al inicio principal" title="Volver al inicio principal">↖</a>
+
+<!-- ============ INTRO ============ -->
+<div id="intro">
+  <div class="halo"></div>
+  <p class="frase">Para mi Pachuchitaa🌹</p>
+  <button class="corazon-boton" id="btn-corazon" aria-label="Presioná Sí">
+    <svg viewBox="0 0 200 182" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="gCorazon" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ff4156"/>
+          <stop offset="0.55" stop-color="#d91234"/>
+          <stop offset="1" stop-color="#7c0618"/>
+        </linearGradient>
+        <linearGradient id="gBrillo" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="rgba(255,255,255,0)" />
+          <stop offset="0.45" stop-color="rgba(255,255,255,.55)" />
+          <stop offset="0.55" stop-color="rgba(255,255,255,0)" />
+        </linearGradient>
+      </defs>
+      <path class="corazon-body" fill="url(#gCorazon)" d="M100 174 C 38 122 8 84 15 46 C 21 16 62 6 100 46 C 138 6 179 16 185 46 C 192 84 162 122 100 174 Z"/>
+      <path fill="url(#gBrillo)" d="M100 174 C 38 122 8 84 15 46 C 21 16 62 6 100 46 C 138 6 179 16 185 46 C 192 84 162 122 100 174 Z"/>
+      <text x="100" y="102" text-anchor="middle" font-family="Georgia, serif" font-weight="bold" font-size="46" fill="#ffffff">💘</text>
+    </svg>
+  </button>
+  <p class="pie">presioná el corazón para abrir tu carta ♥</p>
+</div>
+
+<!-- ============ ESCENARIO ============ -->
+<div id="escenario">
+  <button id="btn-volver" type="button" aria-label="Volver al inicio" title="Volver al inicio">↖</button>
+  <div id="titulo-carta">Mi carta para vos</div>
+
+  <div class="carta-envoltura">
+    <div class="filete"></div>
+    <span class="esquina n1">✦</span>
+    <span class="esquina n2">✦</span>
+    <span class="esquina n3">✦</span>
+    <span class="esquina n4">✦</span>
+    <div class="sello-lacre"><span>❤</span></div>
+
+    <div class="carta">
+      <div class="cinta"></div>
+      <div class="hoja">
+        <div class="pliegue"></div>
+        <div class="saludo">Mi amor, mi pachuchita bella🌹,</div>
+        <div class="cuerpo">
+          Te escribo esta carta porque mi corazón necesita decirte todo lo que siente, cruzando cualquier distancia. Sé que a veces te cuesta creerlo o caer en la cuenta de que esto que vivimos es real, pero quiero que te lo grabes en la cabeza y en el alma: esto es tan real como el amor inmenso que siento por vos.
+          <br><br>
+          Si alguna vez alguien te hizo pensar que sos "difícil de amar", quiero borrar esa mentira para siempre. Amarte a vos es lo más natural, lindo y hermoso que me pasó en la vida. Amar cada parte tuya, tu luz, tus días alegres y también tus días tristes es un regalo. Sos mi lugar favorito, mi paz y mi elección de todos los días.
+          <br><br>
+          Sé que hay momentos en los que el dolor por quienes ya no están vuelve y pesa un poco más. Pero acordate de que todo lo hermoso que te dejaron, sus enseñanzas, su cariño y sus abrazos, siguen vivos en vos y en la persona maravillosa que sos hoy. Que el recuerdo de ellos sea siempre un refugio de luz y una razón para sonreír con gratitud por todo lo que te regalaron.
+          <br><br>
+          La distancia son solo kilómetros, porque mi corazón está ahí pegadito al tuyo. No estás sola, mi vida; estoy acá para sostenerte, para abrazarte a la distancia y para amarte tal cual sos, hoy y siempre. Con vos <span class="corazon-listo">❤️</span> lo tengo absolutamente todo, teamooo.
+        </div>
+        <img class="imagen-amor" src="imagen-amor.jpg.png" alt="Dos manos formando un corazón y un mensaje de amor">
+        <div class="despedida">— Siempre tuyo, abrazándote fuerte Pachuu</div>
+      </div>
+      <canvas id="capa-raspar"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- <div id="aviso">Rascá la carta con el dedo para leer el mensaje ☝️</div> -->
+
+<div id="mensaje-final">
+  <!-- <h2>¡Eso fue un SÍ!</h2> -->
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var intro = document.getElementById('intro');
+  var escenario = document.getElementById('escenario');
+  var btnVolver = document.getElementById('btn-volver');
+  var btnRaiz = document.getElementById('btn-raiz');
+  var aviso = document.getElementById('aviso');
+  var musica = document.getElementById('musica');
+  var canvas = document.getElementById('capa-raspar');
+  var ctx = canvas.getContext('2d', { willReadFrequently: true });
+  var msjFinal = document.getElementById('mensaje-final');
+
+  var W = 0, H = 0, rasparActivo = false, iniciado = false, descubierta = false;
+  var haRaspado = false, movimientos = 0;
+  var mini = null, miniCtx = null;
+  var ultimoPunto = null;
+
+  /* ---------- Estrellas y corazones de fondo ---------- */
+  function crearFondo() {
+    var fondo = document.getElementById('fondo');
+    var esMovil = window.matchMedia('(max-width: 600px)').matches;
+    var cantidadEstrellas = esMovil ? 28 : 70;
+    for (var i = 0; i < cantidadEstrellas; i++) {
+      var e = document.createElement('div');
+      e.className = 'estrella';
+      var s = 1 + Math.random() * 3;
+      e.style.cssText = 'width:' + s + 'px;height:' + s + 'px;left:' + (Math.random()*100) + '%;top:' + (Math.random()*100) + '%;animation-delay:' + (Math.random()*3) + 's;';
+      fondo.appendChild(e);
+    }
+    var corazon = ['💗','💕','💘','💝','💖'];
+    var cantidadCorazones = esMovil ? 0 : 14;
+    for (var j = 0; j < cantidadCorazones; j++) {
+      var c = document.createElement('div');
+      c.className = 'corazon-flotante';
+      c.textContent = corazon[Math.floor(Math.random()*corazon.length)];
+      c.style.cssText = 'left:' + (Math.random()*100) + '%;font-size:' + (14 + Math.random()*20) + 'px;animation-delay:' + (Math.random()*8) + 's;animation-duration:' + (6 + Math.random()*5) + 's;';
+      fondo.appendChild(c);
+    }
+  }
+
+  /* ---------- Canvas: preparar la capa de raspar ---------- */
+  function dimensionar() {
+    if (!canvas || !canvas.parentElement) return;
+    var rect = canvas.parentElement.getBoundingClientRect();
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = rect.width;
+    H = rect.height;
+    if (W <= 0 || H <= 0) return;
+    canvas.width = W * dpr;
+    canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (!haRaspado) pintarCapa();
+  }
+
+  function pintarCapa() {
+    if (W <= 0 || H <= 0) return;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.clearRect(0, 0, W, H);
+
+    /* base rojo oscuro bordó */
+    var g = ctx.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, '#8c1024');
+    g.addColorStop(.4, '#5a0513');
+    g.addColorStop(1, '#30030a');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    /* líneas doradas inclinadas */
+    ctx.globalAlpha = .6;
+    ctx.strokeStyle = '#d4af37';
+    ctx.lineWidth = 2;
+    for (var i = -H; i < W + H; i += 40) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i + H, H);
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+
+    /* marco dorado doble */
+    ctx.strokeStyle = 'rgba(212,175,55,.9)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(4, 4, W - 8, H - 8);
+    ctx.strokeStyle = 'rgba(212,175,55,.45)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(11, 11, W - 22, H - 22);
+
+    /* texto central */
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#f7d486';
+    ctx.font = 'bold ' + Math.max(18, W * 0.07) + 'px Georgia, serif';
+    ctx.fillText('RASCÁ', W / 2, H / 2 - Math.max(16, H * 0.05));
+    ctx.fillStyle = '#fbe9b8';
+    ctx.font = Math.max(12, W * 0.048) + 'px Georgia, serif';
+    ctx.fillText('y leé tu carta ❤', W / 2, H / 2 + Math.max(20, H * 0.07));
+  }
+
+  function punto(evento) {
+    var rect = canvas.getBoundingClientRect();
+    var cliente = evento.touches ? evento.touches[0] : evento;
+    return {
+      x: cliente.clientX - rect.left,
+      y: cliente.clientY - rect.top
+    };
+  }
+
+  function raspar(hasta) {
+    if (!hasta) return;
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = Math.max(26, W * 0.11);
+    ctx.beginPath();
+    if (ultimoPunto) { ctx.moveTo(ultimoPunto.x, ultimoPunto.y); }
+    else { ctx.moveTo(hasta.x, hasta.y); }
+    ctx.lineTo(hasta.x, hasta.y);
+    ctx.stroke();
+    ultimoPunto = hasta;
+    haRaspado = true;
+
+    if (iniciado && !descubierta && ++movimientos % 6 === 0) {
+      if (porcentajeRaspado() > 0.5) descubrir();
+    }
+  }
+
+  function porcentajeRaspado() {
+    var mw = Math.max(40, Math.round(W / 8));
+    var mh = Math.max(40, Math.round(H / 8));
+    if (!mini) { mini = document.createElement('canvas'); miniCtx = mini.getContext('2d'); }
+    mini.width = mw;
+    mini.height = mh;
+    miniCtx.clearRect(0, 0, mw, mh);
+    miniCtx.drawImage(canvas, 0, 0, mw, mh);
+    var d = miniCtx.getImageData(0, 0, mw, mh).data;
+    var alfa = 0, total = mw * mh;
+    for (var i = 3; i < d.length; i += 4) { if (d[i] < 16) alfa++; }
+    return alfa / total;
+  }
+
+  function descubrir() {
+    descubierta = true;
+    canvas.classList.add('raspada');
+    if (aviso) aviso.classList.remove('visible');
+    setTimeout(function () {
+      msjFinal.classList.add('visible');
+    }, 900);
+  }
+
+  /* ---------- Transición: al tocar el corazón ---------- */
+  function comenzar(e) {
+    if (e) e.preventDefault();
+    if (iniciado) return;
+    iniciado = true;
+    intro.classList.add('oculta');
+    btnRaiz.classList.add('oculto');
+    escenario.classList.add('visible');
+    if (aviso) aviso.classList.add('visible');
+
+    musica.volume = 1;
+    var p = musica.play();
+    if (p) p.catch(function () {
+      musica.muted = false;
+    });
+
+    setTimeout(function () { dimensionar(); }, 100);
+  }
+
+  function volverAlInicio(e) {
+    if (e) e.preventDefault();
+    musica.pause();
+    musica.currentTime = 0;
+    escenario.classList.remove('visible');
+    intro.classList.remove('oculta');
+    btnRaiz.classList.remove('oculto');
+    msjFinal.classList.remove('visible');
+    canvas.classList.remove('raspada');
+    iniciado = false;
+    descubierta = false;
+    haRaspado = false;
+    movimientos = 0;
+    rasparActivo = false;
+    ultimoPunto = null;
+    setTimeout(dimensionar, 100);
+  }
+
+  /* ---------- Eventos de mouse y táctil ---------- */
+  function abajo(e) {
+    if (e) e.preventDefault();
+    rasparActivo = true;
+    ultimoPunto = punto(e);
+    raspar(ultimoPunto);
+  }
+  function mover(e) {
+    if (e && e.touches && e.touches.length === 0) return;
+    if (!rasparActivo) return;
+    raspar(punto(e));
+  }
+  function arriba() {
+    rasparActivo = false;
+    ultimoPunto = null;
+  }
+
+  canvas.addEventListener('pointerdown', function (e) {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    canvas.setPointerCapture(e.pointerId);
+    abajo(e);
+  });
+  canvas.addEventListener('pointermove', mover);
+  canvas.addEventListener('pointerup', arriba);
+  canvas.addEventListener('pointercancel', arriba);
+
+  document.getElementById('btn-corazon').addEventListener('click', comenzar);
+  document.getElementById('btn-corazon').addEventListener('touchstart', comenzar, { passive: false });
+  intro.addEventListener('click', comenzar);
+  btnVolver.addEventListener('click', volverAlInicio);
+
+  /* ---------- Listo ---------- */
+  crearFondo();
+  window.addEventListener('resize', dimensionar);
+  window.addEventListener('load', dimensionar);
+  setTimeout(dimensionar, 300);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(dimensionar);
+  }
+})();
+</script>
+</body>
+</html>

@@ -198,6 +198,52 @@
       box-shadow: 0 2px 8px #ffe08244;
     }
 
+    /* Variante de la carta para raspar */
+    .card[data-num="25"]{
+      background: linear-gradient(150deg, #7a0f22, #4c0714 52%, #26030a);
+      border-color: #d4af37;
+      box-shadow: 0 8px 32px rgba(48, 3, 10, .35), 0 2px 8px rgba(212,175,55,.35);
+    }
+
+    .card[data-num="25"]::before{
+      background:
+        repeating-linear-gradient(135deg, transparent 0 28px, rgba(212,175,55,.16) 29px 31px),
+        radial-gradient(220px 140px at 10% 10%, #b51d3b 20%, transparent 68%),
+        radial-gradient(240px 150px at 90% 20%, #8c1024 22%, transparent 70%);
+      opacity: .7;
+    }
+
+    .card[data-num="25"] h2{
+      color: #f7d486;
+      text-shadow: 0 1px 8px rgba(255,200,90,.35);
+    }
+
+    .card[data-num="25"] .card-number{
+      background: linear-gradient(135deg, #f7d486, #d4af37);
+      color: #4c0714;
+      border-color: #ffe7a3;
+      box-shadow: 0 2px 8px rgba(212,175,55,.35);
+    }
+
+    .card[data-num="25"] .tag{
+      background: rgba(255,253,243,.95);
+      border-color: #d4af37;
+      color: #6b1525;
+    }
+
+    .card[data-num="25"] .arrow{
+      background: #fffdf3;
+      border-color: #d4af37;
+      color: #8c1024;
+      box-shadow: 0 2px 8px rgba(212,175,55,.35);
+    }
+
+    .card[data-num="25"]:hover{
+      border-color: #ffe7a3;
+      background: linear-gradient(150deg, #8c1024, #5a0513 52%, #30030a);
+      box-shadow: 0 12px 36px rgba(48,3,10,.5), 0 2px 8px rgba(212,175,55,.45);
+    }
+
     footer{
       margin-top: 22px;
       color: #b48bbd;
@@ -390,6 +436,17 @@
           <span style="background:rgba(139, 121, 121, 0.8);padding:8px 18px;border-radius:999px;color:#000000;font-weight:600;font-size:1.1em;">Proximamente</span>
         </div>
       </a> -->
+
+                                                                        <!-- card 25 -->
+         <a class="card" data-num="25" href="cartaraspar/index.html">
+                                                                        <h2><span class="card-number"></span>Una carta para vos</h2>
+        <div class="meta">
+                                                                          <span class="tag">Rascá para descubrirla 💌</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+
 
                                                     <!-- card 18 -->
          <a class="card" data-num="18" href="museum-love-main/index.html">
