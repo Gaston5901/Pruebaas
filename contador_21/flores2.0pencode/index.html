@@ -788,6 +788,25 @@ body.scroll-lock{overflow:hidden;}
   z-index:2000;
 }
 .icono-svg{width:18px; height:18px; fill:#7a5200;}
+
+/* Botón Volver a 21.html */
+.btn-volver-flores{
+  position:fixed; top:14px; left:14px; z-index:2100;
+  width:44px; height:44px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+  font-size:1.25rem; text-decoration:none;
+  color:#2e1c00;
+  background:linear-gradient(135deg,#fff7d0,#ffd166);
+  border:2px solid #c9941f;
+  box-shadow:0 4px 14px rgba(0,0,0,.35), 0 0 18px rgba(255,215,0,.4);
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  transition:transform .18s ease;
+  animation:vueltaBtn 3.2s ease-in-out infinite;
+}
+@keyframes vueltaBtn{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.btn-volver-flores:active{animation:none; transform:scale(.92);}
 </style>
 </head>
 <body>
@@ -799,6 +818,8 @@ body.scroll-lock{overflow:hidden;}
     <path id="svg-shape" d="M8 5v14l11-7z"/>
   </svg>
 </button>
+
+<a class="btn-volver-flores" id="btn-volver" href="../21.html" title="Volver">←</a>
 
 <div class="contador-chips" id="contador">
   <span>🌼</span>
@@ -1141,6 +1162,7 @@ function iniciarSecuenciaFinal() {
   setTimeout(() => {
     flor.style.display = "none";
     document.getElementById("escena-carta").classList.add("ver");
+    document.getElementById("btn-volver").style.display = "flex";
   }, 800);
 }
 
@@ -1191,6 +1213,7 @@ document.getElementById("btn-inicio").addEventListener("click", () => {
   document.getElementById("flor").style.display = "flex";
   document.body.dataset.lluvia = "1";
   document.getElementById("contador").classList.add("visible");
+  document.getElementById("btn-volver").style.display = "none";
   musica.volume = 0.5;
   musica.play().then(() => {
     svgShape.setAttribute("d", "M6 19h4V5H6v14zm8-14v14h4V5h-4z");
