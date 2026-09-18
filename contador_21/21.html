@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-  <title>¡Feliz 21 de Septiembre! ✨🌻</title>
+  <title>Primavera en tus ojos ✨🌻</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +18,7 @@
       font-family: 'Quicksand', sans-serif;
       color: #fff3e2;
       text-align: center;
-      padding: 30px 18px;
+      padding: 64px 18px 30px;
       position: relative;
       overflow-x: hidden;
       background: linear-gradient(180deg, #1f1105 0%, #3a2203 35%, #593606 70%, #281502 100%);
@@ -73,7 +73,7 @@
 
     .titulo {
       font-family: 'Dancing Script', cursive;
-      font-size: clamp(2.3rem, 8vw, 3.8rem);
+      font-size: clamp(1.8rem, 6.5vw, 2.8rem);
       margin: 10px 0 4px;
       background: linear-gradient(90deg, #ffe066, #fcc419, #ffae00);
       -webkit-background-clip: text;
@@ -93,10 +93,10 @@
     .tarjeta {
       position: relative;
       z-index: 2;
-      max-width: 680px;
-      margin: 0 auto 30px;
-      padding: 32px 24px;
-      border-radius: 28px;
+      max-width: 400px;
+      margin: 0 auto 28px;
+      padding: 18px 16px;
+      border-radius: 22px;
       background:
         linear-gradient(150deg, rgba(50, 30, 5, 0.75), rgba(90, 55, 10, 0.55)),
         rgba(30, 18, 4, 0.6);
@@ -128,9 +128,9 @@
     }
 
     .mensaje {
-      font-size: clamp(1rem, 3vw, 1.18rem);
+      font-size: clamp(.9rem, 2.6vw, 1.05rem);
       font-weight: 600;
-      line-height: 1.8;
+      line-height: 1.4;
       color: #fff8e7;
     }
 
@@ -147,7 +147,7 @@
       color: #ffd60a;
     }
 
-    /* Sección de Sorpresas / Accesos Directos */
+    /* Sección de Sorpresas / Tres flores numeradas */
     .seccion-opciones {
       position: relative;
       z-index: 2;
@@ -155,89 +155,157 @@
       margin: 0 auto;
     }
 
-    .grid-opciones {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-      margin-top: 15px;
+    .seccion-titulo {
+      font-family: 'Dancing Script', cursive;
+      font-weight: 700;
+      font-size: clamp(1.6rem, 5vw, 2.1rem);
+      color: #ffe066;
+      text-shadow: 0 3px 14px rgba(255, 200, 0, 0.35);
+      margin: 0 0 4px;
     }
 
-    .card-opcion {
+    .seccion-descripcion {
+      font-size: clamp(.84rem, 2.8vw, 1rem);
+      color: #f3e5ab;
+      font-weight: 600;
+      margin: 0 0 26px;
+    }
+
+    .flores-grid {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: clamp(18px, 5vw, 44px);
+    }
+
+    .flor-btn {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 24px 18px;
-      border-radius: 22px;
-      background: linear-gradient(145deg, rgba(60, 38, 8, 0.7), rgba(35, 20, 3, 0.8));
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 215, 0, 0.35);
+      gap: 12px;
       text-decoration: none;
-      color: #fff;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s ease, box-shadow 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .card-opcion:hover {
-      transform: translateY(-6px) scale(1.02);
-      border-color: rgba(255, 215, 0, 0.8);
-      box-shadow: 0 16px 35px rgba(255, 180, 0, 0.3);
+    .flor-wrap {
+      position: relative;
+      width: clamp(76px, 16vw, 116px);
+      height: clamp(76px, 16vw, 116px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-origin: 50% 100%;
+      animation: mecer 4.2s ease-in-out infinite;
+    }
+    .flor-wrap::before {
+      content: "";
+      position: absolute;
+      inset: -16px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.5), transparent 70%);
+      animation: pulsar 2.8s ease-in-out infinite;
+    }
+    .flor-svg {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.4));
+      transition: transform 0.25s ease;
+    }
+    .numero {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 4;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 800;
+      font-size: 1.08rem;
+      color: #6b4a12;
+      background: linear-gradient(135deg, #fff7d0, #ffd166);
+      border: 2px solid #c9941f;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35), 0 0 12px rgba(255, 215, 0, 0.5);
+      pointer-events: none;
+    }
+    .flor-etiqueta {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: clamp(.78rem, 2.6vw, .95rem);
+      color: #ffecb3;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+      text-align: center;
+      max-width: 110px;
+      line-height: 1.15;
     }
 
-    .card-opcion .icon {
-      font-size: 2.5rem;
-      margin-bottom: 8px;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    .flor-btn:hover .flor-svg {
+      transform: scale(1.14) rotate(-4deg);
+    }
+    .flor-btn:active .flor-svg {
+      transform: scale(0.94);
     }
 
-    .card-opcion h3 {
-      font-family: 'Dancing Script', cursive;
-      font-size: 1.8rem;
-      margin: 0 0 6px;
-      color: #ffe066;
+    @keyframes mecer {
+      0%, 100% { transform: rotate(-5deg) translateY(0); }
+      50% { transform: rotate(5deg) translateY(-7px); }
     }
-
-    .card-opcion p {
-      font-size: 0.9rem;
-      margin: 0;
-      color: #f3e5ab;
-      font-weight: 600;
+    @keyframes pulsar {
+      0%, 100% { transform: scale(0.9); opacity: .55; }
+      50% { transform: scale(1.14); opacity: 1; }
     }
 
     /* Botón Volver */
-    .volver {
-      position: relative;
-      z-index: 2;
-      display: inline-flex;
+    .btn-volver {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 20;
+      width: 44px;
+      height: 44px;
+      display: flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 35px;
-      padding: 12px 26px;
-      border-radius: 999px;
-      font-weight: 700;
-      color: #261400;
-      background: linear-gradient(90deg, #ffe066, #ffb703, #ffd166);
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 1.25rem;
       text-decoration: none;
-      box-shadow: 0 10px 28px rgba(255, 180, 0, 0.4);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      color: #6b4a12;
+      background: linear-gradient(135deg, #fff7d0, #ffd166);
+      border: 2px solid #c9941f;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 18px rgba(255, 215, 0, 0.5);
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      animation: vueltaBtn 3.2s ease-in-out infinite;
     }
 
-    .volver:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 14px 32px rgba(255, 180, 0, 0.6);
+    @keyframes vueltaBtn {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    .btn-volver:active {
+      animation: none;
+      transform: scale(.92);
     }
 
     @media (max-width: 640px) {
-      body { padding: 22px 12px; }
+      body { padding: 60px 12px 22px; }
       .tarjeta {
-        padding: 24px 16px;
+        padding: 18px 16px;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
       }
       .fotos { gap: 16px; }
       .foto { width: min(74vw, 220px); }
-      .grid-opciones { grid-template-columns: 1fr; }
+      .flores-grid { gap: 14px; }
+      .numero { width: 28px; height: 28px; font-size: .95rem; }
+      .btn-volver { width: 40px; height: 40px; font-size: 1.1rem; top: 12px; left: 12px; }
     }
   </style>
 </head>
@@ -247,7 +315,7 @@
   <div class="flowers-bg" id="flowers-container"></div>
 
   <div class="header">
-    <h1 class="titulo">¡Feliz 21 de Septiembre! 🌻</h1>
+    <h1 class="titulo">Primavera en tus ojos 🌻</h1>
     <p class="subtitulo">Un rinconcito amarillo lleno de sol solo para vos ✨</p>
   </div>
 
@@ -259,37 +327,139 @@
 
     <div class="mensaje">
       <p>
-        Este es el espacio que te preparé, <em>mi persona favorita</em>.<br>
-        El 21 de septiembre siempre va a brillar en mi calendario,<br>
-        porque existe gente que llega para pintarte el cielo<br>
-        y convertirlo en un atardecer eterno de <strong>flores amarillas</strong>, <strong>sol</strong> y <strong>sonrisas</strong> 🌼<br><br>
+        Este es el espacio que te preparé, <em>mi persona favorita</em>.<br><br>
+        Tus <strong>ojos</strong> brillan igual<br>
+        que estas <strong>flores amarillas</strong> 🌼<br><br>
         Gracias por existir en mi universo.
       </p>
     </div>
   </div>
 
-  <!-- Tarjetas interactiva para ir a los otros index -->
+  <!-- Tres flores numeradas: cada una lleva a una sorpresa -->
   <div class="seccion-opciones">
-    <div class="grid-opciones">
-      
-      <!-- Opción 1: Cambiá "sorpresa1.html" por la ruta de tu archivo -->
-      <a href="sorpresa1.html" class="card-opcion">
-        <span class="icon">🌻</span>
-        <h3>Un Jardín Especial</h3>
-        <p>Tocá acá para descubrir algo lindo que te guardé</p>
+    <h2 class="seccion-titulo">Elegí una flor 🌻</h2>
+    <p class="seccion-descripcion">Cada una esconde una sorpresita que te preparé</p>
+
+    <div class="flores-grid">
+
+      <!-- Flor 1 -->
+      <a href="museo-flores-main/index.html" class="flor-btn">
+        <span class="flor-wrap">
+          <span class="numero">1</span>
+          <svg class="flor-svg" viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <linearGradient id="gpetalo1" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffe066"/>
+                <stop offset="100%" stop-color="#ffb703"/>
+              </linearGradient>
+              <radialGradient id="gcentro1" cx="40%" cy="35%" r="70%">
+                <stop offset="0%" stop-color="#e9b05a"/>
+                <stop offset="55%" stop-color="#8a5a1b"/>
+                <stop offset="100%" stop-color="#4e3007"/>
+              </radialGradient>
+            </defs>
+            <g transform="translate(50 50)">
+              <g fill="url(#gpetalo1)" stroke="#e09b00" stroke-width="1">
+                <ellipse rx="9.5" ry="27"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(30)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(60)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(90)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(120)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(150)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(180)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(210)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(240)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(270)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(300)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(330)"/>
+              </g>
+              <circle r="17" fill="url(#gcentro1)" stroke="#3a2404" stroke-width="1.5"/>
+            </g>
+          </svg>
+        </span>
+        <span class="flor-etiqueta">Museo de Flores</span>
       </a>
 
-      <!-- Opción 2: Cambiá "sorpresa2.html" por la ruta de tu archivo -->
-      <a href="sorpresa2.html" class="card-opcion">
-        <span class="icon">✨</span>
-        <h3>Nuestra Historia</h3>
-        <p>Un recorrido por momentos que brillan</p>
+      <!-- Flor 2 -->
+      <a href="universo-flores-main/index.html" class="flor-btn">
+        <span class="flor-wrap" style="animation-delay: -1.4s;">
+          <span class="numero">2</span>
+          <svg class="flor-svg" viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <linearGradient id="gpetalo2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffe066"/>
+                <stop offset="100%" stop-color="#ffb703"/>
+              </linearGradient>
+              <radialGradient id="gcentro2" cx="40%" cy="35%" r="70%">
+                <stop offset="0%" stop-color="#e9b05a"/>
+                <stop offset="55%" stop-color="#8a5a1b"/>
+                <stop offset="100%" stop-color="#4e3007"/>
+              </radialGradient>
+            </defs>
+            <g transform="translate(50 50)">
+              <g fill="url(#gpetalo2)" stroke="#e09b00" stroke-width="1">
+                <ellipse rx="9.5" ry="27"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(30)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(60)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(90)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(120)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(150)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(180)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(210)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(240)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(270)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(300)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(330)"/>
+              </g>
+              <circle r="17" fill="url(#gcentro2)" stroke="#3a2404" stroke-width="1.5"/>
+            </g>
+          </svg>
+        </span>
+        <span class="flor-etiqueta">Nuestro Universo</span>
+      </a>
+
+      <!-- Flor 3 -->
+      <a href="../flores2.0pencode/index.html" class="flor-btn">
+        <span class="flor-wrap" style="animation-delay: -2.8s;">
+          <span class="numero">3</span>
+          <svg class="flor-svg" viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <linearGradient id="gpetalo3" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffe066"/>
+                <stop offset="100%" stop-color="#ffb703"/>
+              </linearGradient>
+              <radialGradient id="gcentro3" cx="40%" cy="35%" r="70%">
+                <stop offset="0%" stop-color="#e9b05a"/>
+                <stop offset="55%" stop-color="#8a5a1b"/>
+                <stop offset="100%" stop-color="#4e3007"/>
+              </radialGradient>
+            </defs>
+            <g transform="translate(50 50)">
+              <g fill="url(#gpetalo3)" stroke="#e09b00" stroke-width="1">
+                <ellipse rx="9.5" ry="27"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(30)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(60)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(90)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(120)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(150)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(180)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(210)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(240)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(270)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(300)"/>
+                <ellipse rx="9.5" ry="27" transform="rotate(330)"/>
+              </g>
+              <circle r="17" fill="url(#gcentro3)" stroke="#3a2404" stroke-width="1.5"/>
+            </g>
+          </svg>
+        </span>
+        <span class="flor-etiqueta">La Rosa</span>
       </a>
 
     </div>
   </div>
 
-  <a class="volver" href="index.html">← Volver al contador</a>
+  <a class="btn-volver" href="index.html" title="Volver">←</a>
 
   <script>
     // Generador de flores y estrellas flotantes

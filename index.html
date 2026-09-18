@@ -11,292 +11,398 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <style>
-    :root{
-      --bg1: #fff0f6;
-      --bg2: #fbeaff;
-      --card: rgba(255,255,255,0.85);
-      --card2: rgba(255,255,255,0.95);
-      --stroke: #f8bbd0;
-      --text: #7c3a6a;
-      --muted: #b48bbd;
-      --accent1: #f48fb1;
-      --accent2: #b39ddb;
-      --accent3: #ffe082;
-      --gold: #ffd700;
-    }
+:root{
+  --bg1: #fff0f6;
+  --bg2: #fbeaff;
+  --card: rgba(255,255,255,0.85);
+  --card2: rgba(255,255,255,0.95);
+  --stroke: #f8bbd0;
+  --text: #7c3a6a;
+  --muted: #b48bbd;
+  --accent1: #f48fb1;
+  --accent2: #b39ddb;
+  --accent3: #ffe082;
+  --gold: #ffd700;
+}
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      color:var(--text);
-      font-family: 'Quicksand', 'Nunito', 'Segoe UI', Arial, sans-serif;
-      background:
-        radial-gradient(900px 500px at 15% 10%, #ffe0ef 30%, transparent 60%),
-        radial-gradient(900px 500px at 85% 20%, #e1bee7 25%, transparent 60%),
-        radial-gradient(900px 600px at 50% 95%, #fffde7 20%, transparent 60%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
-      overflow-x:hidden;
-      min-height: 100vh;
-    }
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  color:var(--text);
+  font-family: 'Quicksand', 'Nunito', 'Segoe UI', Arial, sans-serif;
+  background:
+    radial-gradient(900px 500px at 15% 10%, #ffe0ef 30%, transparent 60%),
+    radial-gradient(900px 500px at 85% 20%, #e1bee7 25%, transparent 60%),
+    radial-gradient(900px 600px at 50% 95%, #fffde7 20%, transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+  overflow-x:hidden;
+  min-height: 100vh;
+}
 
-    .wrap{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: clamp(18px, 3vw, 34px);
-    }
+.wrap{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(18px, 3vw, 34px);
+}
 
-    header{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 16px;
-      margin-bottom: 18px;
-    }
+/* ==========================================
+   HEADER Y CONTENEDORES
+   ========================================== */
+header{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 22px;
+}
 
-    .title{
-      line-height:1.05;
-      margin:0;
-      font-size: clamp(2.1rem, 4vw, 3.2rem);
-      letter-spacing:-0.02em;
-      font-family: 'Quicksand', 'Nunito', 'Segoe UI', Arial, sans-serif;
-      color: var(--accent1);
-      text-shadow: 0 2px 12px #ffe0ef80;
-    }
+/* Fila Superior: Título + Badge */
+.header-top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
 
-    .subtitle{
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: clamp(1rem, 1.7vw, 1.15rem);
-      max-width: 56ch;
-    }
+/* Fila Inferior: Botones de íconos distribuidos */
+.header-actions{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Alineados a la derecha en compu */
+  gap: 10px;
+  width: 100%;
+}
 
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 10px 18px;
-      background: linear-gradient(90deg, #ffe0ef 60%, #fffde7 100%);
-      border: 1.5px solid var(--accent1);
-      border-radius: 999px;
-      color: var(--accent1);
-      font-size: 1.05rem;
-      font-weight: 600;
-      box-shadow: 0 4px 18px #f8bbd055;
-      user-select:none;
-      white-space:nowrap;
-      letter-spacing: 0.01em;
-    }
+.title{
+  line-height:1.05;
+  margin:0;
+  font-size: clamp(2.1rem, 4vw, 3.2rem);
+  letter-spacing:-0.02em;
+  font-family: 'Quicksand', 'Nunito', 'Segoe UI', Arial, sans-serif;
+  color: var(--accent1);
+  text-shadow: 0 2px 12px #ffe0ef80;
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-      margin-top: 18px;
-    }
+.subtitle{
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.7vw, 1.15rem);
+  max-width: 56ch;
+}
 
-    .card{
-      grid-column: span 12;
-      text-decoration:none;
-      color:inherit;
-      position:relative;
-      overflow:hidden;
-      border-radius: 22px;
-      background: linear-gradient(180deg, var(--card), var(--card2));
-      border: 2px solid var(--accent1);
-      box-shadow: 0 8px 32px #f8bbd055, 0 2px 8px #fffde7cc;
-      padding: 18px 18px 16px;
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-      backdrop-filter: blur(2px);
-      content-visibility: auto;
-      contain-intrinsic-size: 220px;
-    }
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 10px 18px;
+  background: linear-gradient(90deg, #ffe0ef 60%, #fffde7 100%);
+  border: 1.5px solid var(--accent1);
+  border-radius: 999px;
+  color: var(--accent1);
+  font-size: 1.05rem;
+  font-weight: 600;
+  box-shadow: 0 4px 18px #f8bbd055;
+  user-select:none;
+  white-space:nowrap;
+  letter-spacing: 0.01em;
+}
 
-    .card:hover{
-      transform: translateY(-4px) scale(1.025);
-      border-color: var(--gold);
-      background: linear-gradient(180deg, #fffde7 60%, #ffe0ef 100%);
-      box-shadow: 0 12px 36px #ffd70044, 0 2px 8px #fffde7cc;
-    }
+/* ==========================================
+   GRID Y TARJETAS
+   ========================================== */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
 
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:-40px;
-      background:
-        radial-gradient(220px 140px at 10% 10%, #f8bbd0 30%, transparent 65%),
-        radial-gradient(240px 150px at 90% 20%, #b39ddb 22%, transparent 70%),
-        radial-gradient(200px 160px at 30% 120%, #ffe082 18%, transparent 70%);
-      opacity:.5;
-      pointer-events:none;
-    }
+.card{
+  grid-column: span 12;
+  text-decoration:none;
+  color:inherit;
+  position:relative;
+  overflow:hidden;
+  border-radius: 22px;
+  background: linear-gradient(180deg, var(--card), var(--card2));
+  border: 2px solid var(--accent1);
+  box-shadow: 0 8px 32px #f8bbd055, 0 2px 8px #fffde7cc;
+  padding: 18px 18px 16px;
+  transition: transform .18s ease, border-color .18s ease, background .18s ease;
+  backdrop-filter: blur(2px);
+  content-visibility: auto;
+  contain-intrinsic-size: 220px;
+}
 
-    .card > *{ position:relative; }
+.card:hover{
+  transform: translateY(-4px) scale(1.025);
+  border-color: var(--gold);
+  background: linear-gradient(180deg, #fffde7 60%, #ffe0ef 100%);
+  box-shadow: 0 12px 36px #ffd70044, 0 2px 8px #fffde7cc;
+}
 
-    .card h2{
-      margin: 0 0 8px;
-      font-size: 1.22rem;
-      letter-spacing:-0.01em;
-      color: var(--accent1);
-      font-family: 'Quicksand', 'Nunito', 'Segoe UI', Arial, sans-serif;
-      font-weight: 700;
-      text-shadow: 0 1px 8px #ffe0ef55;
-    }
+.card::before{
+  content:"";
+  position:absolute;
+  inset:-40px;
+  background:
+    radial-gradient(220px 140px at 10% 10%, #f8bbd0 30%, transparent 65%),
+    radial-gradient(240px 150px at 90% 20%, #b39ddb 22%, transparent 70%),
+    radial-gradient(200px 160px at 30% 120%, #ffe082 18%, transparent 70%);
+  opacity:.5;
+  pointer-events:none;
+}
 
-    .card-number{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width: 28px;
-      height: 28px;
-      margin-right: 8px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #f48fb1 0%, #ffe082 100%);
-      color: #7c3a6a;
-      font-size: .9rem;
-      font-weight: 800;
-      box-shadow: 0 2px 8px #f8bbd055;
-      border: 1.5px solid #f8bbd0;
-      flex: 0 0 auto;
-    }
+.card > *{ position:relative; }
 
-    .meta{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      color: var(--muted);
-      font-size: .97rem;
-    }
+.card h2{
+  margin: 0 0 8px;
+  font-size: 1.22rem;
+  letter-spacing:-0.01em;
+  color: var(--accent1);
+  font-family: 'Quicksand', 'Nunito', 'Segoe UI', Arial, sans-serif;
+  font-weight: 700;
+  text-shadow: 0 1px 8px #ffe0ef55;
+}
 
-    .tag{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1.5px solid var(--accent2);
-      background: #f3e5f5;
-      color: #7c3a6a;
-      font-size: .89rem;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-    }
+.card-number{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width: 28px;
+  height: 28px;
+  margin-right: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f48fb1 0%, #ffe082 100%);
+  color: #7c3a6a;
+  font-size: .9rem;
+  font-weight: 800;
+  box-shadow: 0 2px 8px #f8bbd055;
+  border: 1.5px solid #f8bbd0;
+  flex: 0 0 auto;
+}
 
-    .arrow{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      border: 1.5px solid var(--accent3);
-      background: #fffde7;
-      color: #fbc02d;
-      flex: 0 0 auto;
-      font-size: 1.2rem;
-      box-shadow: 0 2px 8px #ffe08244;
-    }
+.meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: .97rem;
+}
 
-    /* Variante de la carta para raspar */
-    .card[data-num="25"]{
-      background: linear-gradient(150deg, #7a0f22, #4c0714 52%, #26030a);
-      border-color: #d4af37;
-      box-shadow: 0 8px 32px rgba(48, 3, 10, .35), 0 2px 8px rgba(212,175,55,.35);
-    }
+.tag{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1.5px solid var(--accent2);
+  background: #f3e5f5;
+  color: #7c3a6a;
+  font-size: .89rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
 
-    .card[data-num="25"]::before{
-      background:
-        repeating-linear-gradient(135deg, transparent 0 28px, rgba(212,175,55,.16) 29px 31px),
-        radial-gradient(220px 140px at 10% 10%, #b51d3b 20%, transparent 68%),
-        radial-gradient(240px 150px at 90% 20%, #8c1024 22%, transparent 70%);
-      opacity: .7;
-    }
+.arrow{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1.5px solid var(--accent3);
+  background: #fffde7;
+  color: #fbc02d;
+  flex: 0 0 auto;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 8px #ffe08244;
+}
 
-    .card[data-num="25"] h2{
-      color: #f7d486;
-      text-shadow: 0 1px 8px rgba(255,200,90,.35);
-    }
+/* Variante de la carta para raspar */
+.card[data-num="25"]{
+  background: linear-gradient(150deg, #7a0f22, #4c0714 52%, #26030a);
+  border-color: #d4af37;
+  box-shadow: 0 8px 32px rgba(48, 3, 10, .35), 0 2px 8px rgba(212,175,55,.35);
+}
 
-    .card[data-num="25"] .card-number{
-      background: linear-gradient(135deg, #f7d486, #d4af37);
-      color: #4c0714;
-      border-color: #ffe7a3;
-      box-shadow: 0 2px 8px rgba(212,175,55,.35);
-    }
+.card[data-num="25"]::before{
+  background:
+    repeating-linear-gradient(135deg, transparent 0 28px, rgba(212,175,55,.16) 29px 31px),
+    radial-gradient(220px 140px at 10% 10%, #b51d3b 20%, transparent 68%),
+    radial-gradient(240px 150px at 90% 20%, #8c1024 22%, transparent 70%);
+  opacity: .7;
+}
 
-    .card[data-num="25"] .tag{
-      background: rgba(255,253,243,.95);
-      border-color: #d4af37;
-      color: #6b1525;
-    }
+.card[data-num="25"] h2{
+  color: #f7d486;
+  text-shadow: 0 1px 8px rgba(255,200,90,.35);
+}
 
-    .card[data-num="25"] .arrow{
-      background: #fffdf3;
-      border-color: #d4af37;
-      color: #8c1024;
-      box-shadow: 0 2px 8px rgba(212,175,55,.35);
-    }
+.card[data-num="25"] .card-number{
+  background: linear-gradient(135deg, #f7d486, #d4af37);
+  color: #4c0714;
+  border-color: #ffe7a3;
+  box-shadow: 0 2px 8px rgba(212,175,55,.35);
+}
 
-    .card[data-num="25"]:hover{
-      border-color: #ffe7a3;
-      background: linear-gradient(150deg, #8c1024, #5a0513 52%, #30030a);
-      box-shadow: 0 12px 36px rgba(48,3,10,.5), 0 2px 8px rgba(212,175,55,.45);
-    }
+.card[data-num="25"] .tag{
+  background: rgba(255,253,243,.95);
+  border-color: #d4af37;
+  color: #6b1525;
+}
 
-    footer{
-      margin-top: 22px;
-      color: #b48bbd;
-      font-size: .95rem;
-      text-align: center;
-    }
+.card[data-num="25"] .arrow{
+  background: #fffdf3;
+  border-color: #d4af37;
+  color: #8c1024;
+  box-shadow: 0 2px 8px rgba(212,175,55,.35);
+}
 
-    .badge-desbloqueo{
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      z-index: 3;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #ffe082 0%, #f48fb1 55%, #e1bee7 100%);
-      color: #7c3a6a;
-      font-weight: 800;
-      font-size: .9rem;
-      box-shadow: 0 6px 18px #f8bbd055, 0 2px 8px #fffde7cc;
-      border: 2px solid #f8bbd0;
-      text-shadow: 0 1px 6px #fffde7cc;
-    }
+.card[data-num="25"]:hover{
+  border-color: #ffe7a3;
+  background: linear-gradient(150deg, #8c1024, #5a0513 52%, #30030a);
+  box-shadow: 0 12px 36px rgba(48,3,10,.5), 0 2px 8px rgba(212,175,55,.45);
+}
 
-    @media (min-width: 740px){
-      .card{ grid-column: span 6; padding: 22px; }
-    }
-    @media (min-width: 1020px){
-      .card{ grid-column: span 4; }
-    }
+footer{
+  margin-top: 22px;
+  color: #b48bbd;
+  font-size: .95rem;
+  text-align: center;
+}
 
-    /* Optimización móvil */
-/* Optimización móvil con Efecto Stacking (Tarjetas Apilables) */
+.badge-desbloqueo{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffe082 0%, #f48fb1 55%, #e1bee7 100%);
+  color: #7c3a6a;
+  font-weight: 800;
+  font-size: .9rem;
+  box-shadow: 0 6px 18px #f8bbd055, 0 2px 8px #fffde7cc;
+  border: 2px solid #f8bbd0;
+  text-shadow: 0 1px 6px #fffde7cc;
+}
+
+/* ==========================================
+   BOTONES DE ICONOS PALPITANTES
+   ========================================== */
+.torta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  font-size: 1.4rem;
+  text-decoration: none;
+  background: linear-gradient(135deg, #ffe082 0%, #f48fb1 100%);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
+  user-select: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  animation: palpitar 1.8s infinite ease-in-out;
+}
+
+@keyframes palpitar {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
+  }
+  14% {
+    transform: scale(1.18);
+    box-shadow: 0 6px 22px rgba(255, 215, 0, 0.75);
+  }
+  28% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
+  }
+  42% {
+    transform: scale(1.12);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.65);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
+  }
+}
+
+.torta-btn:hover {
+  border-color: #ffe082;
+  filter: brightness(1.1);
+}
+
+.torta-btn:active {
+  transform: scale(0.92) !important;
+}
+
+/* ==========================================
+   MEDIA QUERIES / RESPONSIVE
+   ========================================== */
+@media (min-width: 740px){
+  .card{ grid-column: span 6; padding: 22px; }
+}
+
+@media (min-width: 1020px){
+  .card{ grid-column: span 4; }
+}
+
+/* Optimización móvil con Efecto Stacking */
 @media (max-width: 600px) {
   body {
     background: linear-gradient(180deg, var(--bg1), var(--bg2));
+  }
+
+  /* Ajustes del Header en Celular */
+  header {
+    gap: 12px;
+  }
+
+  .header-top {
+    align-items: flex-start;
+  }
+
+  .title {
+    font-size: clamp(1.8rem, 6vw, 2.4rem);
+    line-height: 1.15;
+  }
+
+  .pill {
+    padding: 6px 14px;
+    font-size: 0.9rem;
+  }
+
+  .header-actions {
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .torta-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.25rem;
   }
 
   /* Contenedor Grid en móvil */
   .grid {
     display: flex;
     flex-direction: column;
-    gap: 24px; /* Un poco más de espacio para que se note el despegue */
-    padding-bottom: 60vh; /* Espacio al final para que la última tarjeta también pueda scrollear hacia arriba */
+    gap: 24px;
+    padding-bottom: 60vh;
   }
 
-  /* Efecto de apilamiento para las tarjetas */
   .card {
-    box-shadow: 0 -4px 16px rgba(124, 58, 106, 0.08); /* Sombra suave superior */
+    box-shadow: 0 -4px 16px rgba(124, 58, 106, 0.08);
     backdrop-filter: none;
-    
-    /* Magia del Sticky Stacking */
     position: sticky;
-    top: 20px; /* Distancia desde el borde superior de la pantalla donde se frenará cada tarjeta */
+    top: 20px;
   }
 
   .card::before { 
@@ -317,82 +423,13 @@
   }
 }
 
-    /* Reduce motion */
-    @media (prefers-reduced-motion: reduce){
-      *{
-        animation: none !important;
-        transition: none !important;
-      }
-    }/* ==========================================
-       ICONO DE TORTA PALPITANTE (COMPU + CELU)
-       ========================================== */
-    .torta-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 42px;
-      height: 42px;
-      font-size: 1.4rem;
-      text-decoration: none;
-      
-      /* Estilo botón de cristal rosa/dorado */
-      background: linear-gradient(135deg, #ffe082 0%, #f48fb1 100%);
-      border: 2px solid #fff;
-      border-radius: 50%;
-      box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
-      
-      user-select: none;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-
-      /* Animación activa siempre en compu y celular */
-      animation: palpitar 1.8s infinite ease-in-out;
-    }
-
-    /* Animación de latido doble continuo */
-    @keyframes palpitar {
-      0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
-      }
-      14% {
-        transform: scale(1.18);
-        box-shadow: 0 6px 22px rgba(255, 215, 0, 0.75);
-      }
-      28% {
-        transform: scale(1);
-        box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
-      }
-      42% {
-        transform: scale(1.12);
-        box-shadow: 0 6px 20px rgba(255, 215, 0, 0.65);
-      }
-      70% {
-        transform: scale(1);
-        box-shadow: 0 4px 15px rgba(244, 143, 177, 0.45);
-      }
-    }
-
-    /* Efecto hover en Compu: resalta el borde sin cortar la animación */
-    .torta-btn:hover {
-      border-color: #ffe082;
-      filter: brightness(1.1);
-    }
-
-    /* Feedback al hacer clic/tocar */
-    .torta-btn:active {
-      transform: scale(0.92) !important;
-    }
-
-    /* Ajuste de tamaño en Celular */
-    @media (max-width: 600px) {
-      .torta-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 1.25rem;
-      }
-    }
-    
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce){
+  *{
+    animation: none !important;
+    transition: none !important;
+  }
+}
   </style>
 
   <!-- Google Fonts: Quicksand & Nunito -->
@@ -401,37 +438,28 @@
 <body>
   <div class="wrap">
 <header>
-      <div>
-        <h1 class="title">Galería de recuerdos 💘</h1>
-      </div>
-      
-      <!-- Contenedor alineado a la derecha -->
-      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
-        <div class="pill" title="Carpeta: sol">Ririi&lt;33</div>
-
-     <!-- Fila exclusiva para Torta + Anillo + Flor + Paloma pegados en horizontal -->
-    <div style="display: flex; flex-direction: row; align-items: center; gap: 8px;">
-     <a href="contador/contador.html" class="torta-btn heartbeat" title="¡Especial Cumpleaños!">
-  🎂
-</a>
-
- 
-    <a href="pp.html" class="torta-btn heartbeat" id="" title="Anillo">
-  💍
-</a>
-
-<a href="contador_21/index.html" class="torta-btn heartbeat" id="anilloBtn" title="Flor Amarilla">
-    🌻
-  </a>
-
-<!-- Nuevo botón de la paloma blanca -->
-<a href="palomadepaz/index.html" class="torta-btn heartbeat" title="En memoria">
-    🕊️
-  </a>
-      </div>
-    </header>
-
-    <div class="grid">
+  <!-- Fila Superior: Título a la izquierda, etiqueta a la derecha -->
+  <div class="header-top">
+    <h1 class="title">Galería de recuerdos 💘</h1>
+    <div class="pill" title="Carpeta: sol">Ririi&lt;33</div>
+  </div>
+  
+  <!-- Fila Inferior: Botones de íconos agrupados y centrados -->
+  <div class="header-actions">
+    <a href="contador/contador.html" class="torta-btn heartbeat" title="¡Especial Cumpleaños!">
+      🎂
+    </a>
+    <a href="pp.html" class="torta-btn heartbeat" title="Anillo">
+      💍
+    </a>
+    <a href="contador_21/index.html" class="torta-btn heartbeat" id="anilloBtn" title="Flor Amarilla">
+      🌻
+    </a>
+    <a href="palomadepaz/index.html" class="torta-btn heartbeat" title="En memoria">
+      🕊️
+    </a>
+  </div>
+</header>    <div class="grid">
 
                             <!-- card de bloqueo -->
               <!-- <a class="card bloqueada" id="card-11" data-num="11" href="corazon_candado_tulipanes/index.html" style="opacity:0.55; pointer-events:none; filter: grayscale(0.7); position:relative;">

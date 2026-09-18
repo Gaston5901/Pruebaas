@@ -172,6 +172,31 @@ body.scroll-lock{overflow:hidden;}
   0%{background-position:0% center;}
   100%{background-position:220% center;}
 }
+
+/* ===== Botón volver ===== */
+.btn-volver{
+  position:fixed;
+  top:14px; left:14px;
+  z-index:50;
+  width:44px; height:44px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+  font-size:1.25rem;
+  text-decoration:none;
+  color:var(--texto);
+  background:linear-gradient(135deg, #fff8ec, #f7e3b8);
+  border:2px solid var(--dorado);
+  box-shadow:0 4px 14px rgba(120,80,40,.28), 0 0 18px rgba(255,240,200,.6);
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  transition:transform .18s ease, box-shadow .18s ease;
+  animation:vueltaBtn 3.2s ease-in-out infinite;
+}
+@keyframes vueltaBtn{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-4px);}
+}
+.btn-volver:active{animation:none; transform:scale(.92);}
 .subtitulo{
   font-size:clamp(.88rem, 3.2vw, 1.02rem);
   font-weight:400;
@@ -328,6 +353,8 @@ body.scroll-lock{overflow:hidden;}
 
 @media (max-width:480px){
   .escena{padding:20px 6px 34px;}
+  .petalo-cae{font-size:.82rem;}
+  .btn-volver{width:40px; height:40px; font-size:1.1rem; top:12px; left:12px;}
 }
 @media (prefers-reduced-motion: reduce){
   *{animation:none !important; transition:none !important;}
@@ -337,6 +364,9 @@ body.scroll-lock{overflow:hidden;}
 <body>
 
 <div id="fondo"></div>
+
+<!-- ===== VOLVER AL INICIO ===== -->
+<a href="../index.html" class="btn-volver" title="Volver">←</a>
 
 <!-- ===== CAMPO DE FLORES ===== -->
 <svg class="campo" viewBox="0 0 1440 280" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
@@ -407,6 +437,15 @@ body.scroll-lock{overflow:hidden;}
   <use href="#amapola"   x="850"  y="256" transform="scale(.9)"/>
   <use href="#margarita" x="1120" y="250" transform="scale(.85)"/>
   <use href="#florDorada" x="1360" y="245" transform="scale(1)"/>
+  <use href="#florDorada" x="200" y="268" transform="scale(.85)"/>
+  <use href="#amapola"   x="455"  y="262" transform="scale(.8)"/>
+  <use href="#florDorada" x="700"  y="265" transform="scale(.9)"/>
+  <use href="#amapola"   x="980"  y="266" transform="scale(.8)"/>
+  <use href="#florDorada" x="1250" y="262" transform="scale(.9)"/>
+  <use href="#margarita" x="72"   y="222" transform="scale(.75)"/>
+  <use href="#margarita" x="1520" y="238" transform="scale(.85)"/>
+  <use href="#florDorada" x="1180" y="272" transform="scale(1)"/>
+  <use href="#florDorada" x="290"  y="272" transform="scale(.8)"/>
   <!-- tulipanes -->
   <use href="#tulipan" x="60"   y="188" transform="scale(1)"/>
   <use href="#tulipan" x="235"  y="208" transform="scale(.9)"/>
@@ -419,6 +458,11 @@ body.scroll-lock{overflow:hidden;}
   <use href="#tulipan" x="320"  y="258" transform="scale(.85)"/>
   <use href="#tulipan" x="770"  y="258" transform="scale(.9)"/>
   <use href="#tulipan" x="1420" y="200" transform="scale(1)"/>
+  <use href="#tulipan" x="160"  y="222" transform="scale(.8)"/>
+  <use href="#tulipan" x="630"  y="210" transform="scale(.85)"/>
+  <use href="#tulipan" x="1140" y="266" transform="scale(.85)"/>
+  <use href="#tulipan" x="80"   y="268" transform="scale(.8)"/>
+  <use href="#tulipan" x="1480" y="258" transform="scale(.9)"/>
 </svg>
 
 <!-- ===== ESCENA PRINCIPAL ===== -->
@@ -499,16 +543,32 @@ palomas.forEach(p => {
   fondo.appendChild(s);
 });
 const PETALOS = ["🌸","🌼","🌷"];
-for (let i = 0; i < 12; i++) {
+const esMovil = window.innerWidth <= 600;
+function crearPetalo(lento) {
   const p = document.createElement("span");
   p.className = "petalo-cae";
-  p.textContent = PETALOS[i % PETALOS.length];
+  p.textContent = PETALOS[Math.floor(Math.random() * PETALOS.length)];
   p.style.left = (Math.random() * 96) + "vw";
-  p.style.setProperty("--dx", (Math.random() * 100 - 50) + "px");
-  p.style.setProperty("--rot", (Math.random() * 500 + 200) + "deg");
-  p.style.animationDuration = (7 + Math.random() * 6) + "s";
-  p.style.animationDelay = (Math.random() * 8) + "s";
+  p.style.setProperty("--dx", (Math.random() * 60 - 30) + "px");
+  p.style.setProperty("--rot", (Math.random() * 360 + 160) + "deg");
+  const dur = lento ? (12 + Math.random() * 8) : (8 + Math.random() * 6);
+  p.style.animationDuration = dur + "s";
+  p.style.animationDelay = (Math.random() * 2) + "s";
   fondo.appendChild(p);
+  setTimeout(() => p.remove(), (dur + 3) * 1000);
+}
+if (esMovil) {
+  for (let i = 0; i < 4; i++) setTimeout(() => crearPetalo(true), i * 900);
+  setInterval(() => {
+    const activos = fondo.querySelectorAll(".petalo-cae").length;
+    if (activos < 6) crearPetalo(true);
+  }, 2600);
+} else {
+  for (let i = 0; i < 14; i++) setTimeout(() => crearPetalo(false), i * 250);
+  setInterval(() => {
+    const activos = fondo.querySelectorAll(".petalo-cae").length;
+    if (activos < 12) crearPetalo(false);
+  }, 2000);
 }
 
 /* ===== Carta del mensaje ===== */
