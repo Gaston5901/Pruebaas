@@ -3,25 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Museo Flore AlexDev</title>
+    <title>Museo Flore AlexDev ✨</title>
 
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; user-select: none; background-color: #000; -webkit-tap-highlight-color: transparent;
-}
-        
-
-        *{
-              cursor: url('flor.png'), auto !important;
-
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            overflow: hidden; user-select: none; background-color: #05020a; 
+            -webkit-tap-highlight-color: transparent; font-family: 'Quicksand', sans-serif;
         }
+
+        * {
+            cursor: url('flor.png'), auto !important;
+        }
+
+        /* Transición suave tipo Fade entre pantallas */
         .pantalla {
             width: 100vw; height: 100vh; position: absolute; top: 0; left: 0;
-            background-size: cover; background-position: center; display: none;
+            background-size: cover; background-position: center; 
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            z-index: 1;
         }
-        .activa { display: block; }
         
+        .activa { 
+            opacity: 1; 
+            visibility: visible; 
+            z-index: 2;
+        }
+
         #pag1 { background-image: url('fondo1.gif'); }
         #pag2 { background-image: url('fondo2.gif'); }
         #pag3 { background-image: url('fondo3.gif'); }
@@ -29,26 +42,80 @@
         #pag5 { background-image: url('fondo5.gif'); }
         #pag6 { background-image: url('fondo6.gif'); }
 
+        /* Botones arrastrables con efectos de levitación y brillo */
         .boton-movible {
             position: absolute; cursor: grab; touch-action: none;
             background-size: contain; background-repeat: no-repeat; background-position: center;
-            background-color: transparent; border: none; 
+            background-color: transparent; border: none;
+            filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.4));
+            transition: transform 0.2s ease, filter 0.3s ease;
+            animation: flotar 3.5s ease-in-out infinite;
         }
-        .boton-movible:active { cursor: grabbing; }
-      
-        
+
+        .boton-movible:hover {
+            filter: drop-shadow(0 0 22px rgba(255, 223, 100, 0.9));
+            transform: scale(1.05);
+        }
+
+        .boton-movible:active { 
+            cursor: grabbing; 
+            transform: scale(0.98);
+        }
+
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
         #btn-seguir { top: 50%; left: 40%; width: 350px; height: 200px; background-image: url('seguir.png'); }
 
-        #btn1 { top: 40%; left: 21%; width: 350px; height: 150px; background-image: url('btn1.png'); }
-        #btn2 { top: 47%; left: 36%; width: 350px; height: 150px; background-image: url('btn2.png'); }
-        #btn3 { top: 36%; left: 48%; width: 350px; height: 150px; background-image: url('btn3.png'); }
-        #btn4 { top: 52%; left: 60%; width: 350px; height: 150px; background-image: url('btn4.png'); }
+        #btn1 { top: 38%; left: 18%; width: 320px; height: 150px; background-image: url('btn1.png'); }
+        #btn2 { top: 45%; left: 35%; width: 320px; height: 150px; background-image: url('btn2.png'); }
+        #btn3 { top: 34%; left: 52%; width: 320px; height: 150px; background-image: url('btn3.png'); }
+        #btn4 { top: 50%; left: 66%; width: 320px; height: 150px; background-image: url('btn4.png'); }
 
-        .btn-atras-img { top: 85%; left: 42%; width: 290px; height: 170px; background-image: url('atras.png'); }
+        .btn-atras-img { top: 82%; left: 42%; width: 280px; height: 160px; background-image: url('atras.png'); }
 
+        /* Estela Mágica del Cursor */
+        .sparkle {
+            position: absolute; pointer-events: none;
+            width: 14px; height: 14px;
+            background: radial-gradient(circle, #ffe066 10%, rgba(255,183,3,0.8) 50%, transparent 80%);
+            border-radius: 50%;
+            animation: fadeSparkle 1s forwards ease-out;
+            z-index: 9999;
+        }
+
+        @keyframes fadeSparkle {
+            0% { transform: scale(1) translateY(0); opacity: 1; }
+            100% { transform: scale(0.2) translateY(20px); opacity: 0; }
+        }
+
+        /* Reproductor de Música Flotante */
+        .audio-control {
+            position: fixed; top: 18px; right: 20px; z-index: 10000;
+            background: rgba(30, 15, 5, 0.65);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            border-radius: 50px; padding: 10px 18px;
+            color: #ffe066; font-size: 0.9rem; font-weight: bold;
+            display: flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .audio-control:hover {
+            background: rgba(60, 35, 10, 0.85);
+            border-color: rgba(255, 215, 0, 0.8);
+        }
     </style>
 </head>
 <body>
+
+    <div class="audio-control" id="toggle-audio">
+        <span>🎵</span> <span id="audio-text">Música: OFF</span>
+    </div>
+    <audio id="bg-music" loop src="musica.mp3"></audio>
 
     <div id="pag1" class="pantalla activa">
         <div id="btn-seguir" class="boton-movible"></div>
@@ -75,11 +142,13 @@
     </div>
 
     <script>
+        // --- 1. Cambio de Página Suave (Fade Out/Fade In) ---
         function cambiarPagina(idDestino) {
             document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
             document.getElementById(idDestino).classList.add('activa');
         }
 
+        // --- 2. Lógica de Arrastrar y Hacer Clic ---
         function hacerMovibleYClickeable(elemento, accionClic) {
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
             let movido = false; 
@@ -136,6 +205,7 @@
             }
         }
 
+        // Vinculación de Botones
         hacerMovibleYClickeable(document.getElementById('btn-seguir'), () => cambiarPagina('pag2'));
         
         hacerMovibleYClickeable(document.getElementById('btn1'), () => cambiarPagina('pag3'));
@@ -147,32 +217,34 @@
         hacerMovibleYClickeable(document.getElementById('atras4'), () => cambiarPagina('pag2'));
         hacerMovibleYClickeable(document.getElementById('atras5'), () => cambiarPagina('pag2'));
         hacerMovibleYClickeable(document.getElementById('atras6'), () => cambiarPagina('pag2'));
+
+        // --- 3. Estela Mágica en el Cursor ---
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.4) return; // Limitar densidad de partículas
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = (e.clientX - 7) + 'px';
+            sparkle.style.top = (e.clientY - 7) + 'px';
+            document.body.appendChild(sparkle);
+            setTimeout(() => sparkle.remove(), 1000);
+        });
+
+        // --- 4. Control de Audio ---
+        const audio = document.getElementById('bg-music');
+        const audioBtn = document.getElementById('toggle-audio');
+        const audioText = document.getElementById('audio-text');
+        let isPlaying = false;
+
+        audioBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                audioText.textContent = "Música: OFF";
+            } else {
+                audio.play();
+                audioText.textContent = "Música: ON 🎶";
+            }
+            isPlaying = !isPlaying;
+        });
     </script>
 </body>
-
- <!--
-
-Contáctame:
-
-   * Crea tus diseños sin código
- https://comparte-amor.vercel.app/
-
-    * Invitame un café
- https://buymeacoffee.com/alexx.dev
-
-    * Portafolio Web
- https://alexxdev.vercel.app
-
-    * Sigueme en tiktok
- https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc
- 
-    * Canal de WhatsApp
- https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
-
- 
-   * WhatsApp: +52 5587450945
-https://wa.me/525568916053
-
-
--->
 </html>

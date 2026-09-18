@@ -243,3 +243,131 @@ body.galaxy-started #galaxyUI .sound-btn, body.galaxy-started #galaxyUI .galaxy-
 }
 
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; } }
+
+@media (max-width: 700px) {
+  /* Fondo responsivo */
+  #startModal { 
+    background-image: url('3.jpg'); 
+    background-position: center; 
+  }
+  #startModal::after { inset: 7px; }
+  
+  .intro-header { padding-top: 15px; }
+  .intro { row-gap: 12px; padding: 20px 16px 30px; }
+  
+  /* Ajuste de título */
+  .title { width: 100%; font-size: clamp(38px, 10vw, 52px); line-height: 0.85; }
+  .title em { margin-top: 8px; font-size: .75em; }
+
+  /* Stage y GIF/Oso más chico en celular */
+  .stage { 
+    width: 280px; 
+    height: 220px; 
+    margin: 0 auto; 
+  }
+.bear { 
+    top: 0;
+    width: 210px;
+    max-width: 85%;
+    /* Ajustá este valor para bajarlo más o menos */
+    transform: translateY(100px); 
+  }
+  .stage-orbit { width: 230px; height: 100px; }
+  .orbit-two { width: 260px; height: 120px; }
+  .stage-glow { width: 260px; }
+
+  /* Botón más compacto y centrado */
+  #startBtn { 
+    top: 0; 
+    gap: 8px; 
+    padding: 12px 26px; /* Botón más chico */
+    width: auto;
+    max-width: 90%;
+  }
+  .btn-copy { 
+    font-size: 13px; /* Texto del botón levemente más chico */
+    letter-spacing: .15em;
+  }
+  .btn-icon svg { width: 14px; height: 14px; }
+
+  /* Ajustes de controles en la UI de la galaxia */
+  .intro-footer { padding-bottom: 12px; }
+  .fullscreen-btn { top: 14px; left: 14px; width: 36px; height: 36px; }
+  .sound-btn { top: 14px; right: 14px; padding: 8px 12px; }
+  .galaxy-hint { bottom: 14px; font-size: 8px; padding: 8px 14px; }
+}
+
+/* Ajustes extra para teléfonos con pantallas muy cortas (alto menor a 660px) */
+@media (max-width: 700px) and (max-height: 660px) {
+  .intro { row-gap: 4px; padding: 10px 12px 20px; }
+  .title { font-size: clamp(32px, 8vw, 42px); }
+  .stage { width: 230px; height: 180px; }
+  .bear { width: 170px; }
+  #startBtn { padding: 10px 22px; }
+  .btn-copy { font-size: 12px; }
+}
+
+/* Dedicatoria especial en la galaxia */
+.space-dedication {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  pointer-events: none;
+  animation: floatDedication 5s ease-in-out infinite alternate;
+}
+
+.space-dedication .sparkle-icon {
+  font-size: 22px;
+  filter: drop-shadow(0 0 10px var(--yellow));
+  animation: loaderPulse 1.5s ease-in-out infinite;
+}
+
+.dedication-text {
+  margin: 0;
+  color: var(--cream);
+  font-family: var(--serif);
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-shadow: 
+    0 0 12px rgba(255, 204, 0, 0.8),
+    0 0 28px rgba(255, 200, 0, 0.4);
+}
+
+.dedication-sub {
+  color: var(--yellow-soft);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  opacity: .85;
+  text-shadow: 0 0 8px rgba(255, 204, 0, 0.5);
+}
+
+/* Animación suave de flotación */
+@keyframes floatDedication {
+  0% { transform: translate(-50%, 0); }
+  100% { transform: translate(-50%, -12px); }
+}
+
+/* Ajustes para celulares */
+@media (max-width: 700px) {
+  .space-dedication {
+    top: 12%;
+    width: 90%;
+  }
+  .dedication-text {
+    font-size: clamp(20px, 6vw, 26px);
+  }
+  .dedication-sub {
+    font-size: 9px;
+    letter-spacing: .12em;
+  }
+}

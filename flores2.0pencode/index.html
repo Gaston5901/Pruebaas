@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Señoritaa 2.1 🌼</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --amarillo:#ffd54f;
+  --amarillo-osc:#f5a623;
+  --dorado:#ffc107;
+  --crema:#fff8e1;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  height:100%;
+  width:100%;
+  overflow-x:hidden;
+}
+body{
+  font-family:"Poppins",sans-serif;
+  background:linear-gradient(160deg, #fffde7 0%, #ffe082 50%, #ffcc80 100%);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+/* ===== Fondo Dinámico ===== */
+.hoja{
+  position:fixed;
+  top:-40px;
+  font-size:24px;
+  pointer-events:none;
+  z-index:1;
+  animation:caer linear forwards;
+}
+@keyframes caer{
+  0%{transform:translate(0,-10vh) rotate(0deg);opacity:0;}
+  15%{opacity:0.9;}
+  100%{transform:translate(var(--drift,50px),105vh) rotate(var(--spin,360deg));opacity:0;}
+}
+
+/* ===== Pantalla de Inicio ===== */
+.pantalla-inicio{
+  position:relative; z-index:5;
+  text-align:center;
+  padding:20px;
+  width:92%;
+  max-width:440px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.marco-foto-inicio{
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  border:4px solid #fff;
+  background:#ffe082;
+  box-shadow:0 8px 20px rgba(245,166,35,0.4);
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:15px;
+}
+.marco-foto-inicio img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.titulo{
+  font-family:"Caveat",cursive;
+  font-weight:700;
+  font-size:clamp(2rem, 7vw, 3.2rem);
+  color:#8a5e00;
+  line-height:1.2;
+  margin:10px 0;
+  text-shadow:0 2px 0 #ffe082;
+  word-break:normal;
+  overflow-wrap:normal;
+}
+.titulo span{display:inline-block;opacity:0;transform:translateY(12px);}
+.titulo span.mostrar{opacity:1;transform:translateY(0);transition:all .45s ease;}
+
+.subtitulo{
+  font-size:clamp(0.85rem, 3.2vw, 1.05rem);
+  color:#9e7418;
+  margin-bottom:24px;
+  font-weight:600;
+  white-space:nowrap;
+}
+
+.btn{
+  font-family:"Poppins",sans-serif;
+  font-weight:700;
+  font-size:1rem;
+  color:#5c3e00;
+  padding:14px 36px;
+  border:none;
+  border-radius:50px;
+  cursor:pointer;
+  background:linear-gradient(90deg,#ffe082,#ffd54f,#ffb300);
+  box-shadow:0 6px 0 #d99b00, 0 10px 20px rgba(217,155,0,.35);
+  transition:all .2s ease;
+  position:relative;
+  overflow:hidden;
+}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #d99b00;}
+
+/* ===== Contador ===== */
+.contador-chips{
+  position:fixed;
+  top:16px; left:50%;
+  transform:translateX(-50%);
+  z-index:600;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(255,253,245,.95);
+  backdrop-filter:blur(6px);
+  border:2px solid #ffd54f;
+  border-radius:40px;
+  padding:6px 16px;
+  font-weight:700;
+  color:#8a5e00;
+  box-shadow:0 4px 15px rgba(0,0,0,.1);
+  font-size:0.9rem;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .4s;
+}
+.contador-chips.visible{opacity:1;}
+.contador-chips .barra{
+  width:70px;height:8px;
+  border-radius:8px;
+  background:#ffe082;
+  overflow:hidden;
+}
+.contador-chips .relleno{
+  height:100%;width:0%;
+  border-radius:8px;
+  background:linear-gradient(90deg,#f5a623,#ffd54f);
+  transition:width .3s ease;
+}
+
+/* ===== Flor y Maceta ===== */
+.flor-container{
+  position:relative; z-index:5;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  max-width:420px;
+  padding:10px;
+}
+.svg-maceta{
+  width:100%;
+  max-height:65vh;
+  display:block;
+  margin:0 auto;
+}
+.cartelito{
+  font-family:"Caveat",cursive;
+  font-size:clamp(1.2rem,4.2vw,1.6rem);
+  font-weight:700;
+  color:#7a5200;
+  background:rgba(255,248,225,.9);
+  padding:8px 22px;
+  border-radius:30px;
+  text-align:center;
+  border:2px dashed #ffca28;
+  margin-top:8px;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+  cursor:pointer;
+  transition:transform 0.2s, background 0.2s;
+}
+.cartelito.boton-activo{
+  background:#ffd54f;
+  border-style:solid;
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+
+.texto-maceta{
+  font-family:"Caveat",cursive;
+  font-weight:700;
+  font-size:22px;
+  fill:#5c3e00;
+  text-anchor:middle;
+}
+
+.petalo-g{cursor:pointer;}
+.petalo-g.sacado{
+  transition:transform .6s cubic-bezier(.5,-.2,.3,1.2),opacity .6s;
+  transform:scale(.05) rotate(160deg);
+  opacity:0;
+  pointer-events:none;
+}
+.petalo{
+  fill:url(#gradPetalo);
+  stroke:#fbc02d;
+  stroke-width:1.5;
+  transform-box:fill-box;
+  transform-origin:center;
+}
+.centro{
+  fill:url(#gradCentro);
+  stroke:#e65100;
+  stroke-width:2;
+  filter:drop-shadow(0px 3px 6px rgba(180, 80, 0, 0.35));
+}
+
+/* ===== Tarjeta Frases ===== */
+.tarjeta{
+  position:fixed; inset:0;
+  display:none; align-items:center; justify-content:center;
+  background:rgba(40,25,5,.45);
+  backdrop-filter:blur(4px);
+  z-index:1000; padding:20px;
+}
+.tarjeta.ver{display:flex;}
+.tarjeta-caja{
+  position:relative;
+  background:linear-gradient(170deg,#fffdf5,#fffae8);
+  border:2.5px solid #ffca28;
+  border-radius:24px;
+  padding:28px 20px 20px;
+  max-width:360px; width:100%;
+  text-align:center;
+  box-shadow:0 15px 35px rgba(0,0,0,.25);
+}
+.tarjeta-frase{
+  font-family:"Caveat",cursive;
+  font-weight:700;
+  font-size:clamp(1.5rem,5vw,2rem);
+  color:#6e4800;
+  line-height:1.3;
+  margin:12px 0;
+}
+.chips-letrero{font-size:.85rem;color:#a37a1f;font-weight:600;margin-top:8px;}
+.cerrar-x{
+  position:absolute;top:10px;right:14px;
+  font-size:1.4rem; color:#b98a2e;
+  background:none;border:none;cursor:pointer;
+}
+
+/* ===== ESCENA CARTA ===== */
+#escena-carta{
+  position:fixed; inset:0;
+  display:none; align-items:center; justify-content:center;
+  z-index:1500;
+  background:
+    radial-gradient(1100px 500px at 50% 0%, rgba(214,185,130,.25), transparent 60%),
+    radial-gradient(900px 600px at 85% 100%, rgba(90,70,40,.35), transparent 60%),
+    radial-gradient(circle at center, #2b2217 0%, #191208 55%, #0f0a05 100%);
+  padding:15px;
+  overflow:hidden;
+}
+#escena-carta.ver{display:flex;}
+#escena-carta::before{
+  content:"";
+  position:absolute; inset:0;
+  background:radial-gradient(circle at 50% 42%, rgba(255,255,255,.10), transparent 45%);
+  pointer-events:none;
+}
+#escena-carta::after{
+  content:"";
+  position:absolute; inset:-20%;
+  background-image:
+    radial-gradient(1.6px 1.6px at 20% 30%, rgba(255,255,255,.95), transparent 1.6px),
+    radial-gradient(1px 1px at 70% 15%, rgba(255,224,130,.95), transparent 1px),
+    radial-gradient(1.6px 1.6px at 40% 70%, rgba(255,255,255,.75), transparent 1.6px),
+    radial-gradient(1px 1px at 85% 55%, rgba(233,205,150,.95), transparent 1px),
+    radial-gradient(1.6px 1.6px at 12% 82%, rgba(255,255,255,.85), transparent 1.6px),
+    radial-gradient(1px 1px at 55% 8%, rgba(255,224,130,.85), transparent 1px),
+    radial-gradient(1px 1px at 90% 88%, rgba(255,255,255,.6), transparent 1px),
+    radial-gradient(1.6px 1.6px at 8% 50%, rgba(233,205,150,.7), transparent 1.6px),
+    radial-gradient(1px 1px at 33% 92%, rgba(255,255,255,.8), transparent 1px),
+    radial-gradient(1.6px 1.6px at 65% 45%, rgba(255,255,255,.5), transparent 1.6px);
+  background-size:440px 440px;
+  animation:brillarEstrellas 5s ease-in-out infinite alternate;
+  pointer-events:none;
+  z-index:1;
+}
+@keyframes brillarEstrellas{
+  0%{opacity:.3; transform:scale(1) translateY(0);}
+  100%{opacity:.85; transform:scale(1.05) translateY(-8px);}
+}
+
+.sobre-wrap{
+  position:relative;
+  width:min(92vw, 440px);
+  height:260px;
+  z-index:5;
+  cursor:pointer;
+  margin-top:50px;
+  perspective:1200px;
+  animation:flotarSobre 5s ease-in-out infinite;
+}
+@keyframes flotarSobre{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+}
+.sobre-wrap::after{
+  content:"";
+  position:absolute; inset:0;
+  border-radius:14px;
+  background:linear-gradient(115deg, transparent 28%, rgba(255,255,255,.35) 44%, rgba(255,255,255,.08) 50%, transparent 60%);
+  transform:translateX(-130%);
+  animation:brilloSobre 4.5s ease-in-out infinite;
+  z-index:20;
+  pointer-events:none;
+}
+@keyframes brilloSobre{
+  0%{transform:translateX(-130%);}
+  55%{transform:translateX(130%);}
+  100%{transform:translateX(130%);}
+}
+.sobre{
+  position:absolute; inset:0;
+  transform-style:preserve-3d;
+  filter:drop-shadow(0 20px 30px rgba(0,0,0,0.6));
+}
+
+.sobre-cuerpo{
+  position:absolute; inset:0;
+  background:
+    linear-gradient(160deg, rgba(255,255,255,.85), transparent 50%),
+    repeating-linear-gradient(0deg, rgba(150,130,90,.03) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #fdfcf8 0%, #f6f1e6 55%, #ece4d3 100%);
+  border-radius:14px;
+  border:1px solid #d8cdb8;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.9), inset 0 -22px 44px rgba(120,100,60,.14), 0 20px 45px rgba(0,0,0,.55);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:20px;
+}
+
+.sobre-cuerpo::before{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(255,255,255,.5) 0%, transparent 45%),
+             linear-gradient(-135deg, rgba(150,130,90,.08) 0%, transparent 45%);
+  pointer-events:none;
+  z-index:2;
+}
+.sobre-cuerpo::after{
+  content:"";
+  position:absolute; inset:7px;
+  border:1px solid rgba(180,160,120,.35);
+  border-radius:9px;
+  pointer-events:none;
+  z-index:3;
+}
+/* Solapas laterales que se juntan al centro (efecto sobre real) */
+.sobre-solapas{position:absolute; inset:0; border-radius:14px; overflow:hidden; pointer-events:none; z-index:1;}
+.sobre-solapas::before{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, #f9f5ec 0%, #efe7d5 100%);
+  clip-path:polygon(0 0, 50% 50%, 0 100%);
+  filter:drop-shadow(1px 0 1px rgba(120,100,60,.22));
+}
+.sobre-solapas::after{
+  content:"";
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, #f9f5ec 0%, #efe7d5 100%);
+  clip-path:polygon(100% 0, 50% 50%, 100% 100%);
+  filter:drop-shadow(-1px 0 1px rgba(120,100,60,.22));
+}
+
+/* DESTINATARIO: Centrado abajo en el cuerpo principal */
+.sobre-destinatario{
+  text-align:center;
+  z-index:10;
+  transition:opacity 0.4s ease;
+  margin-bottom:15px;
+}
+.sobre-destinatario .etiqueta-para{
+  font-family:"Poppins",sans-serif;
+  font-size:0.66rem;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  color:#b08a2e;
+  display:block;
+  font-weight:600;
+}
+.sobre-destinatario .nombre-para{
+  position:relative;
+  display:inline-block;
+  font-family:"Dancing Script",cursive;
+  font-weight:700;
+  font-size:clamp(1.35rem, 5vw, 1.75rem);
+  color:#3a2e1a;
+  text-shadow:0 1px 0 rgba(255,255,255,.8);
+  line-height:1.2;
+  padding:0 40px;
+}
+.sobre-destinatario .nombre-para::before,
+.sobre-destinatario .nombre-para::after{
+  content:"✦";
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:.8rem;
+  color:#d4af37;
+  font-family:"Poppins",sans-serif;
+}
+.sobre-destinatario .nombre-para::before{left:4px;}
+.sobre-destinatario .nombre-para::after{right:4px;}
+
+/* MARCO FOTO */
+.marco-foto-sobre{
+  position:absolute;
+  bottom:16px; right:18px;
+  width:54px; height:54px;
+  border:2.5px solid #fff;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,.3);
+  z-index:11;
+  background:#ece4d3;
+  transform:rotate(4deg);
+  transition:opacity 0.4s ease;
+}
+.marco-foto-sobre img{width:100%; height:100%; object-fit:cover;}
+
+.sobre.abierto .marco-foto-sobre,
+.sobre.abierto .sobre-destinatario,
+.sobre.abierto .sobre-remitente,
+.sobre.abierto .sobre-sello{
+  opacity:0;
+  pointer-events:none;
+}
+
+/* SOLAPA SUPERIOR */
+.sobre-tapa{
+  position:absolute; top:0;left:0;right:0; height:68%;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.85), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(150,130,90,.03) 0 1px, transparent 1px 3px),
+    linear-gradient(175deg, #fbf8f0, #f0e8d7 70%, #e6dcc6);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top center;
+  transition:transform .7s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index:12;
+  border-bottom:1px solid #d8cdb8;
+  filter:drop-shadow(0 5px 6px rgba(0,0,0,.18));
+  display:flex;
+  justify-content:center;
+  padding-top:14px;
+}
+.sobre.abierto .sobre-tapa{transform:rotateX(-165deg);}
+
+/* REMITENTE: Ubicado en la solapa/triángulo superior */
+.sobre-remitente{
+  text-align:center;
+  z-index:13;
+  transition:opacity 0.4s ease;
+}
+.sobre-remitente .etiqueta-de{
+  font-family:"Poppins",sans-serif;
+  font-size:0.6rem;
+  text-transform:uppercase;
+  letter-spacing:2.5px;
+  color:#b08a2e;
+  display:block;
+  font-weight:700;
+}
+.sobre-remitente .nombre-de{
+  position:relative;
+  display:inline-block;
+  font-family:"Dancing Script",cursive;
+  font-weight:700;
+  font-size:clamp(1rem, 3.6vw, 1.25rem);
+  color:#3a2e1a;
+  text-shadow:0 1px 0 rgba(255,255,255,.8);
+  line-height:1.1;
+  padding:0 30px;
+}
+.sobre-remitente .nombre-de::before,
+.sobre-remitente .nombre-de::after{
+  content:"❀";
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:.65rem;
+  color:#d4af37;
+}
+.sobre-remitente .nombre-de::before{left:2px;}
+.sobre-remitente .nombre-de::after{right:2px;}
+
+/* SELLO DE CERA 3D */
+.sobre-sello{
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:52px; height:52px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 32% 30%, #ff7b7b 0%, #e53935 35%, #b71c1c 68%, #7f0000 100%);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.4rem;
+  box-shadow:0 6px 16px rgba(0,0,0,.45), inset 0 2px 5px rgba(255,255,255,.5), inset 0 -4px 8px rgba(0,0,0,.4);
+  z-index:14;
+  border:1.5px solid rgba(255,255,255,.45);
+  transition:opacity 0.4s ease;
+}
+.sobre-sello::after{
+  content:"";
+  position:absolute; inset:4px;
+  border-radius:50%;
+  border:1px dashed rgba(255,255,255,.5);
+  opacity:.9;
+  pointer-events:none;
+}
+
+/* Carta Interna */
+.carta-papel{
+  position:absolute; left:3%; right:3%; top:0;
+  background:
+    radial-gradient(120% 90% at 15% 10%, rgba(186,104,200,.18), transparent 45%),
+    radial-gradient(120% 90% at 85% 90%, rgba(103,58,183,.14), transparent 45%),
+    repeating-linear-gradient(0deg, rgba(120,60,170,.045) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #fdfbff 0%, #f4eafb 45%, #eadcf7 100%);
+  border:1.5px solid #b388ff;
+  border-radius:12px;
+  padding:26px 20px;
+  box-shadow:0 14px 40px rgba(0,0,0,.45), inset 0 0 60px rgba(124,58,173,.12);
+  z-index:50;
+  transform:translateY(0) scale(.88);
+  opacity:0;
+  transition:transform .7s cubic-bezier(.34,1.25,.6,1), opacity .4s;
+  max-height:72vh;
+  overflow-y:auto;
+}
+.sobre.abierto .carta-papel{
+  transform:translateY(-22%) scale(1);
+  opacity:1;
+}
+.carta-papel::before{
+  content:"🌼";
+  position:absolute;
+  font-size:6.5rem;
+  right:-8px; bottom:-18px;
+  opacity:.06;
+  transform:rotate(-12deg);
+  pointer-events:none;
+}
+.carta-papel::after{
+  content:"";
+  position:absolute; inset:8px;
+  border:1px dashed rgba(124,58,173,.4);
+  border-radius:8px;
+  pointer-events:none;
+}
+.carta-papel::-webkit-scrollbar{width:6px;}
+.carta-papel::-webkit-scrollbar-thumb{background:#ce93d8;border-radius:6px;}
+
+.carta-encabezado{
+  position:relative;
+  text-align:center;
+  font-family:"Dancing Script",cursive;
+  font-weight:700;
+  font-size:clamp(1.6rem,5vw,2.1rem);
+  color:#4a1a6d;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:1.5px dashed rgba(124,58,173,.45);
+}
+.carta-encabezado::before,
+.carta-encabezado::after{
+  content:"❀";
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:1rem;
+  color:#9c27b0;
+  opacity:.8;
+}
+.carta-encabezado::before{left:6%;}
+.carta-encabezado::after{right:6%;}
+
+.carta-texto{
+  font-family:"Caveat",cursive;
+  font-size:clamp(1.15rem, 3.8vw, 1.4rem);
+  line-height:1.5;
+  color:#3d2060;
+  text-shadow:0 1px 0 rgba(255,255,255,.6);
+}
+.carta-texto .linea{
+  opacity:0; transform:translateY(8px);
+  transition:all .5s ease;
+  display:block;
+  margin-bottom:10px;
+}
+.carta-texto .linea.ver{opacity:1; transform:none;}
+
+.carta-footer-dedicatoria{
+  position:relative;
+  font-family:"Dancing Script",cursive;
+  font-weight:700;
+  font-size:1.5rem;
+  color:#6a1b9a;
+  text-align:right;
+  margin-top:18px;
+}
+.carta-footer-dedicatoria::before{
+  content:"── ❀ ──";
+  position:absolute;
+  left:0; top:50%;
+  transform:translateY(-50%);
+  font-size:.85rem;
+  color:rgba(156,39,176,.4);
+  letter-spacing:2px;
+}
+
+.boton-cerrar-carta{
+  position:absolute; top:10px; right:12px;
+  width:30px; height:30px; border-radius:50%;
+  background:linear-gradient(135deg,#e1bee7,#ab47bc);
+  border:none;
+  font-size:0.9rem; font-weight:bold; color:#fff;
+  cursor:pointer; z-index:60;
+  box-shadow:0 2px 6px rgba(74,26,109,.4);
+}
+
+#fx-layer{position:fixed; inset:0; pointer-events:none; z-index:1400;}
+
+#boton-musica{
+  position:fixed; top:14px; right:14px;
+  width:44px; height:44px;
+  background:rgba(255,248,225,.92);
+  border:2px solid #ffd54f;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,.15);
+  z-index:2000;
+}
+.icono-svg{width:18px; height:18px; fill:#7a5200;}
+</style>
+</head>
+<body>
+
+<div id="fx-layer"></div>
+
+<button id="boton-musica" title="Reproducir / Pausar">
+  <svg id="icono-musica" class="icono-svg" viewBox="0 0 24 24">
+    <path id="svg-shape" d="M8 5v14l11-7z"/>
+  </svg>
+</button>
+
+<div class="contador-chips" id="contador">
+  <span>🌼</span>
+  <span id="contador-num">0/16</span>
+  <div class="barra"><div class="relleno" id="relleno"></div></div>
+</div>
+
+<!-- ===== INICIO ===== -->
+<div class="pantalla-inicio" id="inicio">
+  <div class="marco-foto-inicio">
+    <img id="img-inicio" src="" alt="Foto">
+  </div>
+  <h1 class="titulo" id="titulo"></h1>
+  <p class="subtitulo">Tocá continuar y esperá lo que viene niña bella ✨</p>
+  <button class="btn" id="btn-inicio">Continuar</button>
+</div>
+
+<!-- ===== FLOR ===== -->
+<div class="flor-container" id="flor">
+  <svg class="svg-maceta flor" viewBox="0 0 280 420">
+    <defs>
+      <linearGradient id="gradPetalo" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fff59d"/>
+        <stop offset="100%" stop-color="#ffb300"/>
+      </linearGradient>
+      
+      <radialGradient id="gradCentro" cx="35%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#ffe082"/>
+        <stop offset="45%" stop-color="#f57c00"/>
+        <stop offset="100%" stop-color="#b71c1c"/>
+      </radialGradient>
+
+      <linearGradient id="gradMaceta" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#e69c24"/>
+        <stop offset="50%" stop-color="#ffc107"/>
+        <stop offset="100%" stop-color="#c67c00"/>
+      </linearGradient>
+
+      <g id="petaloShape">
+        <path d="M0 -72 C20 -52 22 0 0 36 C-22 0 -20 -52 0 -72 Z"/>
+      </g>
+    </defs>
+
+    <!-- Tallo y Hojas -->
+    <rect x="133" y="150" width="14" height="190" rx="7" fill="#388e3c" stroke="#1b5e20" stroke-width="2"/>
+    <path d="M140 210 Q180 180 205 205 Q175 240 140 210 Z" fill="#4caf50" stroke="#1b5e20" stroke-width="1.5"/>
+    <path d="M140 260 Q100 230 75 255 Q105 290 140 260 Z" fill="#4caf50" stroke="#1b5e20" stroke-width="1.5"/>
+
+    <!-- Maceta con grabado Ririi -->
+    <g transform="translate(0, 5)">
+      <path d="M96 330 L184 330 L175 410 L105 410 Z" fill="url(#gradMaceta)" stroke="#b77900" stroke-width="2"/>
+      <rect x="90" y="318" width="100" height="16" rx="4" fill="#ffe082" stroke="#b77900" stroke-width="2"/>
+      <text x="140" y="375" class="texto-maceta">Ririi</text>
+    </g>
+
+    <!-- Pétalos -->
+    <g id="petalos" transform="translate(140 140)"></g>
+    
+    <!-- Centro original -->
+    <circle class="centro" cx="140" cy="140" r="38"/>
+
+    <!-- Brillitos -->
+    <g id="brillos-centro">
+      <circle cx="125" cy="120" r="6" fill="rgba(255,255,255,0.9)"/>
+      <circle cx="152" cy="124" r="4.5" fill="rgba(255,255,255,0.85)"/>
+      <circle cx="122" cy="150" r="3.5" fill="rgba(255,255,255,0.8)"/>
+      <circle cx="150" cy="154" r="5" fill="rgba(255,255,255,0.85)"/>
+    </g>
+  </svg>
+
+  <div class="cartelito" id="cartelito">Tocá cada pétalo, te quiero nomás pa eso 🌼</div>
+</div>
+
+<!-- ===== TARJETA FRASE ===== -->
+<div class="tarjeta" id="tarjeta">
+  <div class="tarjeta-caja">
+    <button class="cerrar-x" id="cerrar-frase">✕</button>
+    <div style="font-size: 2.2rem;">🌼</div>
+    <p class="tarjeta-frase" id="frase"></p>
+    <button class="btn" id="btn-frase">Seguir</button>
+    <div class="chips-letrero" id="letrero"></div>
+  </div>
+</div>
+
+<!-- ===== ESCENA CARTA ===== -->
+<div id="escena-carta">
+  <div class="sobre-wrap">
+    <div class="sobre" id="sobre">
+      <div class="carta-papel">
+        <button class="boton-cerrar-carta" id="cerrar-carta">✕</button>
+        <div class="carta-encabezado">🌸 Para mi Señoritaa 🌸</div>
+        <div class="carta-texto" id="carta-texto"></div>
+        <div class="carta-footer-dedicatoria">De: Abelardo 💛</div>
+      </div>
+      <div class="sobre-cuerpo">
+        <div class="sobre-solapas"></div>
+        <div class="sobre-destinatario">
+          <span class="etiqueta-para">Para:</span>
+          <span class="nombre-para">Iris Guadalupe Tevez 💌</span>
+        </div>
+        <div class="marco-foto-sobre">
+          <img id="foto-sobre" src="" alt="Foto">
+        </div>
+      </div>
+      <div class="sobre-tapa">
+        <div class="sobre-remitente">
+          <span class="etiqueta-de">De:</span>
+          <span class="nombre-de">Abelardo 💛</span>
+        </div>
+      </div>
+      <div class="sobre-sello" id="sello">🌼</div>
+    </div>
+  </div>
+</div>
+
+<!-- MÚSICAS -->
+<audio id="musica" loop preload="auto">
+  <source src="musica.mp4" type="audio/mp4">
+</audio>
+<audio id="carta_musica" loop preload="auto">
+  <source src="carta_musica.mp4" type="audio/mp4">
+</audio>
+<audio id="portal" preload="auto">
+  <source src="portal.mp4" type="audio/mp4">
+</audio>
+
+<script>
+const FRASES_PETALOS = [
+  "Eres mi sol en los días nublados ☀️",
+  // "Tu sonrisa ilumina mi mundo ✨",
+  // "Mis locuras van con tus locuras 🤭",
+  // "Gracias por existir 🌼",
+  // "Eres un sueño hecho realidad 💫",
+  // "Te pienso en cada 11:11 🌟",
+  // "Brillas con luz propia y eso inspira 🌸",
+  // "Mi lugar favorito es a tu lado 💖",
+  // "Me haces inmensamente feliz 🥰",
+  // "Contigo todo es mejor 🌻",
+  // "Eres única e irremplazable 🌟",
+  // "Cada día contigo es un regalo 🎁",
+  // "Siempre pienso en vos 😘",
+  // "Sos mi manca favoritaa 😄",
+  // "Me vuelves cursi y feliz 🤭",
+  // "Soy tu fan #1 💘"
+];
+
+const PARRAFOS_CARTA = [
+  "Aunque todavía no nos hayamos visto en persona, ya sos mi lugar seguro y mi alegría del día 💫. Cada palabra tuya me acerca y cada ocurrencia me hace sonreír como un boludoo 🙈.",
+  "No somos novios (todavíaa), pero se siente como si lo fuérais. Siempre voy a estar orgulloso de vos, soy tu fan #1 💘, y en tus bajones voy a bancarte con todo mi corazón 💝.",
+  "Sí, soy cursi, pero con vos me sale natural: romántico y medio tontoo ksksks 🤭. Me muero por ese abrazo pendiente, por mirarte a los ojos por primera vez y por todas las risas que nos esperan.",
+  "No puedo dártelo en persona 🥺, pero quiero que estas flores amarillas virtuales sean mi abrazo para vos en este día especial 🌼💛.",
+  "Gracias por existir; sos mi persona favorita en este mundoo y en todos los universos paralelos. MY LOVEE 😏✨."
+];
+
+/* ===== LLUVIA ===== */
+const esMovil = window.innerWidth <= 600;
+function crearHoja(){
+  const h = document.createElement("div");
+  h.className = "hoja";
+  h.textContent = ["🌼","🌻","💛"][Math.floor(Math.random()*3)];
+  h.style.left = Math.random()*95 + "vw";
+  h.style.fontSize = (esMovil ? 14 : 20) + "px";
+  h.style.setProperty("--drift", (Math.random()*60 - 30) + "px");
+  h.style.setProperty("--spin", (Math.random()*360) + "deg");
+  h.style.animationDuration = (esMovil ? 6 : 8) + "s";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 8000);
+}
+setInterval(() => {
+  if (document.body.dataset.lluvia === "1") crearHoja();
+}, esMovil ? 1000 : 450);
+
+/* ===== TÍTULO INICIO ===== */
+const TITULO = "Bienvenida a tu sorpresa, Señouritaa 2.0 🌼";
+const tituloEl = document.getElementById("titulo");
+TITULO.split("").forEach(c => {
+  const s = document.createElement("span");
+  s.textContent = c === " " ? "\u00A0" : c;
+  tituloEl.appendChild(s);
+});
+setTimeout(() => {
+  [...tituloEl.children].forEach((s, i) => {
+    setTimeout(() => s.classList.add("mostrar"), i * 35);
+  });
+}, 300);
+
+/* ===== CONTROL DE AUDIO ===== */
+const musica = document.getElementById("musica");
+const cartaMusica = document.getElementById("carta_musica");
+const portal = document.getElementById("portal");
+const btnMusica = document.getElementById("boton-musica");
+const svgShape = document.getElementById("svg-shape");
+let audioActual = musica;
+
+btnMusica.addEventListener("click", () => {
+  if (audioActual.paused) {
+    audioActual.play().catch(()=>{});
+    svgShape.setAttribute("d", "M6 19h4V5H6v14zm8-14v14h4V5h-4z");
+  } else {
+    audioActual.pause();
+    svgShape.setAttribute("d", "M8 5v14l11-7z");
+  }
+});
+
+function cambiarA_MusicaCarta() {
+  musica.pause();
+  musica.currentTime = 0;
+  audioActual = cartaMusica;
+  cartaMusica.volume = 0.6;
+  cartaMusica.play().then(() => {
+    svgShape.setAttribute("d", "M6 19h4V5H6v14zm8-14v14h4V5h-4z");
+  }).catch(()=>{});
+}
+
+/* ===== PETALOS ===== */
+const petalosG = document.getElementById("petalos");
+const N_PETALOS = FRASES_PETALOS.length;
+let removidos = 0;
+
+FRASES_PETALOS.forEach((frase, i) => {
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  g.setAttribute("class", "petalo-g");
+  g.setAttribute("transform", `rotate(${(360 / N_PETALOS) * i})`);
+  const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+  use.setAttribute("href", "#petaloShape");
+  use.setAttribute("class", "petalo");
+  g.appendChild(use);
+  g.dataset.frase = frase;
+  petalosG.appendChild(g);
+});
+
+const contadorNum = document.getElementById("contador-num");
+const relleno = document.getElementById("relleno");
+const tarjeta = document.getElementById("tarjeta");
+const fraseEl = document.getElementById("frase");
+const btnFrase = document.getElementById("btn-frase");
+const letrero = document.getElementById("letrero");
+const cartelito = document.getElementById("cartelito");
+let esUltimo = false;
+
+function actualizarContador() {
+  contadorNum.textContent = removidos + "/" + N_PETALOS;
+  relleno.style.width = (removidos / N_PETALOS * 100) + "%";
+}
+
+function mostrarTarjeta(frase, esUltimoFlag) {
+  esUltimo = esUltimoFlag;
+  fraseEl.textContent = frase;
+  letrero.textContent = esUltimo
+    ? "Tocaste todos los pétalos... toca seguir 💛"
+    : (N_PETALOS - removidos) + " pétalos restantes 🌼";
+  btnFrase.style.display = esUltimo ? "inline-flex" : "none";
+  tarjeta.classList.add("ver");
+}
+
+function cerrarTarjeta() {
+  tarjeta.classList.remove("ver");
+  if (removidos === N_PETALOS) {
+    cartelito.textContent = "✨ Tocá acá para ver la sorpresa final ✨";
+    cartelito.classList.add("boton-activo");
+  }
+}
+
+petalosG.addEventListener("click", (e) => {
+  const g = e.target.closest(".petalo-g");
+  if (!g || g.classList.contains("sacado")) return;
+  g.classList.add("sacado");
+  removidos++;
+  actualizarContador();
+  mostrarTarjeta(g.dataset.frase, removidos === N_PETALOS);
+});
+
+document.getElementById("cerrar-frase").addEventListener("click", cerrarTarjeta);
+
+btnFrase.addEventListener("click", () => {
+  cerrarTarjeta();
+  if (esUltimo) iniciarSecuenciaFinal();
+});
+
+cartelito.addEventListener("click", () => {
+  if (removidos === N_PETALOS) iniciarSecuenciaFinal();
+});
+
+/* ===== FINAL Y CARTA ===== */
+function iniciarSecuenciaFinal() {
+  document.body.dataset.lluvia = "1";
+  document.getElementById("contador").classList.remove("visible");
+  cartelito.style.display = "none";
+  
+  cambiarA_MusicaCarta();
+  
+  const flor = document.getElementById("flor");
+  portal.play().catch(()=>{});
+  
+  setTimeout(() => {
+    flor.style.display = "none";
+    document.getElementById("escena-carta").classList.add("ver");
+  }, 800);
+}
+
+const sobre = document.getElementById("sobre");
+const cartaTexto = document.getElementById("carta-texto");
+let cartaAbierta = false;
+
+sobre.addEventListener("click", (e) => {
+  if (cartaAbierta || e.target.closest("#cerrar-carta")) return;
+  cartaAbierta = true;
+  sobre.classList.add("abierto");
+
+  setTimeout(() => {
+    cartaTexto.innerHTML = "";
+    PARRAFOS_CARTA.forEach((parrafo) => {
+      const p = document.createElement("span");
+      p.className = "linea";
+      p.textContent = parrafo;
+      cartaTexto.appendChild(p);
+    });
+    
+    const lineas = [...cartaTexto.children];
+    lineas.forEach((linea, idx) => {
+      setTimeout(() => linea.classList.add("ver"), idx * 450);
+    });
+  }, 400);
+});
+
+document.getElementById("cerrar-carta").addEventListener("click", (e) => {
+  e.stopPropagation();
+  sobre.classList.remove("abierto");
+  cartaTexto.innerHTML = "";
+  cartaAbierta = false;
+});
+
+/* ===== BOTÓN INICIO ===== */
+document.getElementById("btn-inicio").addEventListener("click", () => {
+  document.getElementById("inicio").style.display = "none";
+  document.getElementById("flor").style.display = "flex";
+  document.body.dataset.lluvia = "1";
+  document.getElementById("contador").classList.add("visible");
+  musica.volume = 0.5;
+  musica.play().then(() => {
+    svgShape.setAttribute("d", "M6 19h4V5H6v14zm8-14v14h4V5h-4z");
+  }).catch(()=>{});
+});
+</script>
+</body>
+</html>

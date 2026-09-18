@@ -537,134 +537,141 @@
   </div>
 
   <script>
-    // Frases dinámicas
-    const frases = [
-      "Falta para que parpadee una estrella nueva ✨",
-      "El 21 de septiembre está más cerca 💫",
-      "Cada segundo nos acerca un poquito más 🌙",
-      "Tengo algo guardado que brilla solo para vos 🌟",
-      "La espera de lo lindo nunca es en vano 💖",
-      "Preparando magia bajo este cielo 🎇"
-    ];
+  // Frases dinámicas
+  const frases = [
+    "Falta para que parpadee una estrella nueva ✨",
+    "El 21 de septiembre está más cerca 💫",
+    "Cada segundo nos acerca un poquito más 🌙",
+    "Tengo algo guardado que brilla solo para vos 🌟",
+    "La espera de lo lindo nunca es en vano 💖",
+    "Preparando magia bajo este cielo 🎇"
+  ];
 
-    let currentPhraseIdx = 0;
-    const phraseEl = document.getElementById("phrase");
-    const phraseCounterEl = document.getElementById("phrase-counter");
+  let currentPhraseIdx = 0;
+  const phraseEl = document.getElementById("phrase");
+  const phraseCounterEl = document.getElementById("phrase-counter");
 
-    function updatePhrase() {
-      phraseEl.textContent = frases[currentPhraseIdx];
-      phraseCounterEl.textContent = `${currentPhraseIdx + 1} / ${frases.length}`;
-    }
+  function updatePhrase() {
+    phraseEl.textContent = frases[currentPhraseIdx];
+    phraseCounterEl.textContent = `${currentPhraseIdx + 1} / ${frases.length}`;
+  }
 
-    updatePhrase();
+  updatePhrase();
 
-    setInterval(() => {
-      phraseEl.style.opacity = 0;
-      phraseCounterEl.style.opacity = 0;
-      setTimeout(() => {
-        currentPhraseIdx = (currentPhraseIdx + 1) % frases.length;
-        updatePhrase();
-        phraseEl.style.opacity = 1;
-        phraseCounterEl.style.opacity = 1;
-      }, 400);
-    }, 4000);
+  const phraseInterval = setInterval(() => {
+    phraseEl.style.opacity = 0;
+    phraseCounterEl.style.opacity = 0;
+    setTimeout(() => {
+      currentPhraseIdx = (currentPhraseIdx + 1) % frases.length;
+      updatePhrase();
+      phraseEl.style.opacity = 1;
+      phraseCounterEl.style.opacity = 1;
+    }, 400);
+  }, 4000);
 
-    // Menos partículas en celu para que no se trabe
-    const isMobile = window.innerWidth < 640;
+  // Menos partículas en celu para que no se trabe
+  const isMobile = window.innerWidth < 640;
 
-    // Estrellas fugaces
-    const shootingEl = document.getElementById("shooting");
-    const shootCount = isMobile ? 3 : 6;
-    for (let i = 0; i < shootCount; i++) {
-      const s = document.createElement("span");
-      s.style.top = 6 + Math.random() * 35 + "vh";
-      s.style.left = 30 + Math.random() * 65 + "vw";
-      s.style.animationDuration = 5 + Math.random() * 6 + "s";
-      s.style.animationDelay = Math.random() * 10 + "s";
-      shootingEl.appendChild(s);
-    }
+  // Estrellas fugaces
+  const shootingEl = document.getElementById("shooting");
+  const shootCount = isMobile ? 3 : 6;
+  for (let i = 0; i < shootCount; i++) {
+    const s = document.createElement("span");
+    s.style.top = 6 + Math.random() * 35 + "vh";
+    s.style.left = 30 + Math.random() * 65 + "vw";
+    s.style.animationDuration = 5 + Math.random() * 6 + "s";
+    s.style.animationDelay = Math.random() * 10 + "s";
+    shootingEl.appendChild(s);
+  }
 
-    // Corazones flotando
-    const heartsContainer = document.getElementById("hearts");
-    const emojis = ["💛", "🌻", "🌼", "🌟", "💖", "✨"];
-    const heartCount = isMobile ? 10 : 18;
-    for (let i = 0; i < heartCount; i++) {
-      const span = document.createElement("span");
-      span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-      span.style.left = Math.random() * 100 + "vw";
-      span.style.fontSize = 13 + Math.random() * 20 + "px";
-      span.style.animationDuration = 8 + Math.random() * 8 + "s";
-      span.style.animationDelay = Math.random() * 10 + "s";
-      heartsContainer.appendChild(span);
-    }
+  // Corazones flotando
+  const heartsContainer = document.getElementById("hearts");
+  const emojis = ["💛", "🌻", "🌼", "🌟", "💖", "✨"];
+  const heartCount = isMobile ? 10 : 18;
+  for (let i = 0; i < heartCount; i++) {
+    const span = document.createElement("span");
+    span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    span.style.left = Math.random() * 100 + "vw";
+    span.style.fontSize = 13 + Math.random() * 20 + "px";
+    span.style.animationDuration = 8 + Math.random() * 8 + "s";
+    span.style.animationDelay = Math.random() * 10 + "s";
+    heartsContainer.appendChild(span);
+  }
 
-    // Contador: 21 de septiembre de este año
-    function getDates() {
-      const now = new Date();
-      const target = new Date(now.getFullYear(), 8, 21, 0, 0, 0, 0);
-      const start = new Date(now.getFullYear(), 0, 1, 0, 0, 0, 0);
-      return { now, start, target };
-    }
+  // Elementos DOM
+  const elD = document.getElementById("d");
+  const elH = document.getElementById("h");
+  const elM = document.getElementById("m");
+  const elS = document.getElementById("s");
+  const progressFill = document.getElementById("progress-fill");
+  const progressText = document.getElementById("progress-text");
+  const overlay = document.getElementById("overlay");
+  const btnEnter = document.getElementById("btn-enter");
 
-    const elD = document.getElementById("d");
-    const elH = document.getElementById("h");
-    const elM = document.getElementById("m");
-    const elS = document.getElementById("s");
-    const progressFill = document.getElementById("progress-fill");
-    const progressText = document.getElementById("progress-text");
-    const overlay = document.getElementById("overlay");
-    const btnEnter = document.getElementById("btn-enter");
+  // FECHA REAL vs SIMULADA PARA PRUEBAS (En este caso 2 minutos para que cuente)
+  let testTime = 120; // 120 segundos = 2 minutos
 
-    function unlock() {
+  function unlock() {
+    // 1. Frena la rotación de frases normales
+    clearInterval(phraseInterval);
+
+    // 2. Muestra la frase especial de llegada
+    phraseEl.style.opacity = 0;
+    phraseCounterEl.style.opacity = 0;
+
+    setTimeout(() => {
+      phraseCounterEl.textContent = "✨ ¡LLEGÓ EL DÍA! ✨";
+      phraseEl.textContent = "¡Hoy brilla la estrella más linda del cielo! 💛";
+      phraseEl.style.opacity = 1;
+      phraseCounterEl.style.opacity = 1;
+    }, 400);
+
+    // 3. Abre el overlay después de mostrar el mensaje
+    setTimeout(() => {
       overlay.classList.add("show");
-      setTimeout(() => {
-        window.location.href = "21.html";
-      }, 6000);
+    }, 2500);
+  }
+
+  // Solo redirige cuando toca el botón manualmente
+  btnEnter.addEventListener("click", () => {
+    // window.location.href = "21.html";
+    window.location.href = "../flores2.0Opencode/index.html";
+  });
+
+  let timer;
+  function tick() {
+    if (testTime <= 0) {
+      elD.textContent = "0";
+      elH.textContent = "00";
+      elM.textContent = "00";
+      elS.textContent = "00";
+      progressFill.style.width = "100%";
+      progressText.textContent = "100%";
+
+      unlock();
+      clearInterval(timer);
+      return;
     }
 
-    btnEnter.addEventListener("click", () => {
-      window.location.href = "21.html";
-    });
+    // Descuento segundo a segundo de prueba
+    const m = Math.floor(testTime / 60);
+    const s = testTime % 60;
 
-    let timer;
-    function tick() {
-      const { now, start, target } = getDates();
-      let diff = target - now;
+    elD.textContent = "0";
+    elH.textContent = "00";
+    elM.textContent = m.toString().padStart(2, "0");
+    elS.textContent = s.toString().padStart(2, "0");
 
-      if (diff <= 0) {
-        progressFill.style.width = "100%";
-        progressText.textContent = "100%";
-        unlock();
-        clearInterval(timer);
-        return;
-      }
+    // Barra simulada
+    const percentage = Math.min(100, Math.max(5, ((120 - testTime) / 120) * 100));
+    progressFill.style.width = percentage.toFixed(1) + "%";
+    progressText.textContent = percentage.toFixed(1) + "%";
 
-      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-      diff -= d * 24 * 60 * 60 * 1000;
-      const h = Math.floor(diff / (1000 * 60 * 60));
-      diff -= h * 60 * 60 * 1000;
-      const m = Math.floor(diff / (1000 * 60));
-      diff -= m * 60 * 1000;
-      const s = Math.floor(diff / 1000);
+    testTime--;
+  }
 
-      elD.textContent = d;
-      elH.textContent = h.toString().padStart(2, "0");
-      elM.textContent = m.toString().padStart(2, "0");
-      elS.textContent = s.toString().padStart(2, "0");
-
-      const totalTime = target - start;
-      const elapsedTime = now - start;
-      const percentage = Math.min(
-        Math.max((elapsedTime / totalTime) * 100, 5),
-        99.9
-      );
-
-      progressFill.style.width = percentage.toFixed(1) + "%";
-      progressText.textContent = percentage.toFixed(1) + "%";
-    }
-
-    tick();
-    timer = setInterval(tick, 1000);
-  </script>
+  tick();
+  timer = setInterval(tick, 1000);
+</script>
 </body>
 </html>

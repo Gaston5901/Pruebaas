@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Señoritaa</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to bottom, #fff9c4, #ffe082);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.pantalla-inicio { text-align: center; padding: 0 15px; }
+.pantalla-inicio h1 {
+  font-size: clamp(2rem, 5vw, 2.6rem);
+  color: #e0a800;
+  margin-bottom: 1.2rem;
+  line-height: 1.3;
+}
+.btn {
+  padding: 16px 28px;
+  background: #ffd54f;
+  border: none;
+  border-radius: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.btn:hover { background: #ffca28; transform: scale(1.05); }
+
+.flor-container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  border: 6px solid #fdd835;
+  border-radius: 50%;
+  padding: 50px;
+  background: rgba(255,253,231,0.9);
+  box-shadow: 0 0 30px rgba(253,216,53,0.7);
+  max-width: 95vw;
+  box-sizing: border-box;
+}
+
+svg { width: 100%; height: auto; max-width: 400px; }
+.petalo {
+  fill: url(#gradPetalo);
+  stroke: #fbc02d;
+  stroke-width: 1.6;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 7px rgba(255,193,7,0.75));
+  cursor: pointer;
+}
+.petalo.removido {
+  opacity: 0;
+  transform: scale(0.2) translateY(-15px);
+  pointer-events: none;
+}
+.petalo-g { cursor: pointer; }
+
+.centro {
+  fill: url(#gradCentro);
+  stroke: #f57f17;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 0 10px rgba(245,127,23,0.8));
+}
+.detalles-centro { fill: #ffecb3; opacity: 0.9; }
+
+.cartelito {
+  margin-top: 14px;
+  background: #fdd835;
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-weight: bold;
+  color: #5d4037;
+  font-size: clamp(1.1rem, 4vw, 1.3rem);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  animation: parpadeo 2s infinite;
+  text-align: center;
+}
+@keyframes parpadeo { 0%,100%{opacity:1} 50%{opacity:0.65} }
+
+#boton-musica {
+  position: fixed;
+  top: 15px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  background: rgba(255,213,79,0.9);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+  transition: 0.25s;
+  z-index: 2000;
+}
+#boton-musica:hover { transform: scale(1.08); background: rgba(255,193,7,1); }
+.icono-svg { width: 26px; height: 26px; fill: white; }
+
+.corazon {
+  position: fixed;
+  bottom: -50px;
+  font-size: 1.8rem;
+  color: #fdd835;
+  animation: subir 6s linear infinite;
+  pointer-events: none;
+  z-index:1000;
+}
+@keyframes subir { 0% { transform: translateY(0) rotate(0deg); opacity:1 } 100% { transform: translateY(-100vh) rotate(360deg); opacity:0 } }
+
+.modal {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.6);
+  display:none; justify-content:center; align-items:center;
+  z-index:1500;
+  padding: 15px;
+  box-sizing: border-box;
+}
+.modal-content {
+  background: #fff9c4;
+  padding: 28px 34px;
+  border-radius: 16px;
+  box-shadow:0 6px 22px rgba(0,0,0,0.45);
+  max-width: 95vw;
+  text-align: center;
+  animation: fadeIn .35s ease;
+  position: relative;
+  word-wrap: break-word;
+}
+.modal-content p { font-size: clamp(1.2rem, 4.5vw, 1.4rem); color: #6d4c41; margin: 0; }
+.close { position: absolute; top: 8px; right: 8px; font-size: 1.6rem; cursor: pointer; color: #444; }
+@keyframes fadeIn { from {opacity:0; transform:scale(.98)} to {opacity:1; transform:scale(1)} }
+
+#final-overlay {
+  position: fixed; top:0; left:0; width:100%; height:100%; background:#000; display:none; justify-content:center; align-items:center; z-index:3000;
+}
+#final-overlay .centrito {
+  width: 70px; height:70px; background: radial-gradient(circle,#ffea00,#ff8f00);
+  border-radius:50%; position:relative; z-index: 10;
+}
+.chispa {
+  position: absolute; width: 6px; height:6px; background:#fff176; border-radius:50%;
+  pointer-events:none; animation: explotar 1s ease-out forwards;
+  box-shadow:0 0 10px #ffeb3b,0 0 20px #ff9800;
+}
+@keyframes explotar { from{transform:translate(0,0) scale(1); opacity:1;} to{transform:translate(var(--x),var(--y)) scale(0.2);opacity:0;} }
+
+#avion { position:absolute; width:50px; top:50%; left:50%; transform: translate(-50%,-50%) scale(0); transition: transform 1s ease; z-index:20; }
+
+/* ==== Carta estilo sobre ==== */
+#carta {
+  position: absolute;
+  top:50%; left:50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 90vw;              /* ancho relativo a pantalla */
+  max-width: 420px;
+  background: #fff9c4;
+  border-radius: 12px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  font-family: 'Caveat', cursive;
+  padding: 0;
+  perspective: 800px;
+  z-index: 100;
+}
+
+/* Tapa del sobre con doblado */
+#carta .tapa {
+  width: 0;
+  height: 0;
+  border-left: 50%;          /* proporcional al ancho de la carta */
+  border-right: 50%;
+  border-bottom: 25%;        /* proporcional al ancho */
+  border-bottom-color: #fdd835;
+  border-style: solid;
+  position: absolute;
+  top:0; left:0;
+  transform-origin: bottom center;
+  transition: transform 1s ease, z-index 0s linear 1s;
+  z-index: 10;
+  backface-visibility: hidden;
+}
+
+
+/* Contenido dentro del sobre */
+#carta .contenido {
+  margin-top: 110px;
+  width: 100%;
+  padding: 25px 30px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(1rem, 2.3vw, 1.3rem);
+  color: #6d4c41;
+  opacity: 0;
+  transition: opacity 1s ease 0.5s;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+  z-index: 20;
+  overflow: visible;           /* quita scroll */
+}
+
+/* Estado abierto del sobre con doblado */
+#carta.abierta .tapa {
+  transform: translateY(-120px) rotateX(-75deg);
+  z-index: 0;
+}
+#carta.abierta .contenido {
+  opacity: 1;
+  margin-top: 30px;
+}
+
+/* ===== Estrella ===== */
+.estrella {
+  position: relative;
+  width: 0;
+  height: 0;
+  margin: 0 auto;
+  z-index: 10;
+  border-right: 60px solid transparent;
+  border-bottom: 42px solid #ffeb3b;
+  border-left: 60px solid transparent;
+  transform: rotate(35deg);
+  animation: brillar 1.5s infinite alternate;
+}
+.estrella:before {
+  border-bottom: 48px solid #ffeb3b;
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  position: absolute;
+  height: 0;
+  width: 0;
+  top: -27px;
+  left: -39px;
+  display: block;
+  content: '';
+  transform: rotate(-35deg);
+}
+.estrella:after {
+  position: absolute;
+  top: 2px;
+  left: -63px;
+  width: 0;
+  height: 0;
+  border-right: 60px solid transparent;
+  border-bottom: 42px solid #ffeb3b;
+  border-left: 60px solid transparent;
+  transform: rotate(-70deg);
+  content: '';
+}
+@keyframes brillar {
+  0% { filter: drop-shadow(0 0 5px #fff59d) drop-shadow(0 0 10px #ffc107); }
+  100% { filter: drop-shadow(0 0 20px #ffeb3b) drop-shadow(0 0 40px #ff9800); }
+}
+
+/* Chispitas */
+.chispa {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #fff176;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: explotar 1s ease-out forwards;
+  box-shadow: 0 0 10px #ffeb3b, 0 0 20px #ff9800;
+}
+@keyframes explotar {
+  from { transform: translate(0,0) scale(1); opacity:1; }
+  to { transform: translate(var(--x),var(--y)) scale(0.2); opacity:0; }
+}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div id="boton-musica" title="Play / Pause">
+  <svg id="icono-musica" class="icono-svg" viewBox="0 0 64 64">
+    <polygon points="16,12 16,52 52,32"/>
+  </svg>
+</div>
+
+<div class="pantalla-inicio" id="inicio">
+  <h1>Bienvenida a tu sorpresa Señouritaa 🌼</h1>
+  <p>Haz click en continuar niña bellaa</p>
+  <button class="btn" onclick="mostrarFlor()">Continuar</button>
+</div>
+
+<div class="flor-container" id="flor">
+  <svg viewBox="0 0 250 400" role="img" aria-label="Flor amarilla interactiva">
+    <defs>
+      <linearGradient id="gradPetalo" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ffee58"/>
+        <stop offset="100%" stop-color="#ffc107"/>
+      </linearGradient>
+      <radialGradient id="gradCentro" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#ffea00"/>
+        <stop offset="100%" stop-color="#ff8f00"/>
+      </radialGradient>
+      <g id="petaloShape">
+        <path d="M0 -70 C18 -48 18 0 0 34 C-18 0 -18 -48 0 -70 Z"/>
+      </g>
+    </defs>
+    <rect x="120" y="180" width="8" height="200" fill="#388e3c" rx="3"/>
+    <path d="M124 250 Q150 220, 170 250 Q150 280, 124 250 Z" fill="#4caf50" stroke="#388e3c" stroke-width="1"/>
+    <path d="M124 300 Q94 280, 74 310 Q94 340, 124 300 Z" fill="#4caf50" stroke="#388e3c" stroke-width="1"/>
+
+    <g id="petalos" transform="translate(125 125)">
+      <!-- 16 pétalos -->
+    <g class="petalo-g" transform="rotate(0)"><use href="#petaloShape" class="petalo" data-frase="Eres mi sol en los días nublados ☀️"/></g>
+ <g class="petalo-g" transform="rotate(22.5)"><use href="#petaloShape" class="petalo" data-frase="Tu sonrisa ilumina mi mundo ✨"/></g>
+<g class="petalo-g" transform="rotate(45)"><use href="#petaloShape" class="petalo" data-frase="Mis locuras van con tus locuras 🤭"/></g>
+<g class="petalo-g" transform="rotate(67.5)"><use href="#petaloShape" class="petalo" data-frase="Gracias por existir 🌼"/></g>
+<g class="petalo-g" transform="rotate(90)"><use href="#petaloShape" class="petalo" data-frase="Eres un sueño hecho realidad 💫"/></g>
+<g class="petalo-g" transform="rotate(112.5)"><use href="#petaloShape" class="petalo" data-frase="Te pienso en cada 11:11 🌟"/></g>
+<g class="petalo-g" transform="rotate(135)"><use href="#petaloShape" class="petalo" data-frase="Brillas con luz propia y eso inspira 🌸"/></g>
+<g class="petalo-g" transform="rotate(157.5)"><use href="#petaloShape" class="petalo" data-frase="Mi lugar favorito es a tu lado 💖"/></g>
+<g class="petalo-g" transform="rotate(180)"><use href="#petaloShape" class="petalo" data-frase="Me haces inmensamente feliz 🥰"/></g>
+<g class="petalo-g" transform="rotate(202.5)"><use href="#petaloShape" class="petalo" data-frase="Contigo todo es mejor 🌻"/></g>
+<g class="petalo-g" transform="rotate(225)"><use href="#petaloShape" class="petalo" data-frase="Eres única e irremplazable 🌟"/></g>
+<g class="petalo-g" transform="rotate(247.5)"><use href="#petaloShape" class="petalo" data-frase="Cada día contigo es un regalo 🎁"/></g>
+<g class="petalo-g" transform="rotate(270)"><use href="#petaloShape" class="petalo" data-frase="Siempre pienso en vos 😘"/></g>
+<g class="petalo-g" transform="rotate(292.5)"><use href="#petaloShape" class="petalo" data-frase="Sos mi manca favoritaa 😄"/></g>
+<g class="petalo-g" transform="rotate(315)"><use href="#petaloShape" class="petalo" data-frase="Me vuelves cursi y feliz 🤭"/></g>
+<g class="petalo-g" transform="rotate(337.5)"><use href="#petaloShape" class="petalo" data-frase="Soy tu fan #1 💘"/></g> 
+
+    </g>
+    <circle class="centro" cx="125" cy="125" r="35"/>
+    <circle class="detalles-centro" cx="115" cy="115" r="8"/>
+    <circle class="detalles-centro" cx="135" cy="120" r="10"/>
+    <circle class="detalles-centro" cx="125" cy="140" r="7"/>
+    <circle class="detalles-centro" cx="110" cy="138" r="9"/>
+  </svg>
+  <div class="cartelito">✨ Toca cada pétalo ✨</div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content"> 
+    <span class="close" onclick="cerrarModal()">&times;</span>
+    <p id="frase"></p>
+  </div>
+</div>
+
+<div id="final-overlay">
+  <!-- <div class="centrito"></div> -->
+  <div class="estrella"></div>
+  <img id="avion" src="https://i.postimg.cc/15T8k8rh/avion.png" alt="Avioncito"/>
+  <div id="carta">
+    <div class="tapa"></div>
+    <div class="contenido">
+      <p id="contenido-carta"></p>
+    </div>
+  </div>
+</div>
+
+<audio id="musica" loop>
+  <source src="Download.mp4" type="audio/mpeg">
+</audio>
+<audio id="sonidoPortal" src="chispasmascorto.mp4"></audio>
+<audio id="sonidoBoom" src="edsheranmg.mp4"></audio>
+
+<script>
+const frases = ["Eres mi sol en los días nublados ☀️","Tu sonrisa ilumina mi mundo ✨","Mis locuras van con tus locuras 🤭","Gracias por existir 🌼","Eres un sueño hecho realidad 💫","Te pienso en cada 11:11 🌟","Brillas con luz propia y eso inspira 🌸","Mi lugar favorito es a tu lado 💖","Me haces inmensamente feliz 🥰","Contigo todo es mejor titii 🌻","Eres única e irremplazable 🌟","Cada día contigo es un regalo 🎁"];
+const modal = document.getElementById("modal");
+const fraseTexto = document.getElementById("frase");
+const musica = document.getElementById("musica");
+const overlay = document.getElementById("final-overlay");
+const centrito = overlay.querySelector(".centrito");
+const avion = document.getElementById("avion");
+const carta = document.getElementById("carta");
+const contenidoCarta = carta.querySelector(".contenido");
+const sonidoPortal = document.getElementById("sonidoPortal");
+const sonidoBoom = document.getElementById("sonidoBoom");
+
+function mostrarModal(frase){ fraseTexto.textContent = frase; modal.style.display = "flex"; }
+
+function cerrarModal(){
+  modal.style.display = "none";
+  if(petalosRemovidos === petalos.length){
+    musica.pause();
+    sonidoPortal.play();
+    lanzarFinal();
+  }
+}
+
+const petalos = document.querySelectorAll(".petalo");
+let petalosRemovidos=0;
+petalos.forEach(p=>{
+  p.addEventListener("click", e=>{
+    e.stopPropagation();
+    if(!p.classList.contains("removido")){
+      p.classList.add("removido");
+      const frasePetalo = p.dataset.frase; // toma la frase fija del pétalo
+      mostrarModal(frasePetalo);
+      petalosRemovidos++;
+      if(petalosRemovidos===petalos.length){
+        setTimeout(()=> mostrarModal("Todas tus flores amarillas han florecido 💛💛💛, toca la x lindaa y espera <3"),600);
+      }
+    }
+  });
+});
+
+const botonMusica=document.getElementById("boton-musica");
+const iconoMusica=document.getElementById("icono-musica");
+botonMusica.addEventListener("click",()=>{
+  if(musica.paused){ musica.play().catch(()=>{}); iconoMusica.innerHTML='<rect x="16" y="12" width="8" height="40"/><rect x="40" y="12" width="8" height="40"/>'; }
+  else{ musica.pause(); iconoMusica.innerHTML='<polygon points="16,12 16,52 52,32"/>'; }
+});
+
+function mostrarFlor(){
+  document.getElementById("inicio").style.display="none";
+  document.getElementById("flor").style.display="flex";
+  musica.volume=0.5; musica.play().catch(()=>console.log("Autoplay bloqueado."));
+  lanzarCorazones();
+  iconoMusica.innerHTML='<rect x="16" y="12" width="8" height="40"/><rect x="40" y="12" width="8" height="40"/>';
+}
+
+function lanzarCorazones(){
+  setInterval(()=>{
+    const corazon=document.createElement("div");
+    corazon.classList.add("corazon");
+    corazon.textContent="💛";
+    corazon.style.left=Math.random()*100+"vw";
+    corazon.style.fontSize=(20+Math.random()*20)+"px";
+    document.body.appendChild(corazon);
+    setTimeout(()=>corazon.remove(),8000);
+  },400);
+}
+
+// function lanzarFinal(){
+//   overlay.style.display="flex";
+//   let escalaCentro=1, anguloGiro=0;
+//   const girarInterval=setInterval(()=>{
+//     escalaCentro+=0.02;
+//     anguloGiro+=10;
+//     centrito.style.transform=`scale(${escalaCentro}) rotate(${anguloGiro}deg)`;
+//     const chispa=document.createElement("div");
+//     chispa.className="chispa";
+//     chispa.style.setProperty('--x',(Math.random()*200-100)+'px');
+//     chispa.style.setProperty('--y',(Math.random()*200-100)+'px');
+//     centrito.appendChild(chispa);
+//     setTimeout(()=>chispa.remove(),1000);
+//   },50);
+
+//   setTimeout(()=>{
+//     clearInterval(girarInterval);
+//     sonidoBoom.play();
+//     carta.style.transform="translate(-50%, -50%) scale(0.5) rotate(-45deg)";
+//     carta.style.transition="transform 1s ease-out";
+//     void carta.offsetWidth;
+//     carta.style.transform="translate(-50%, -50%) scale(1) rotate(0deg)";
+//     contenidoCarta.textContent="Aunque todavía no nos hayamos visto en persona, ya sos mi lugar seguro y mi alegría del día. 💫 Cada palabra tuya me acerca, cada risa me desarma y cada ocurrencia me hace sonreír como un bobo. 🙈 No somos novios (todavía), pero se siente como si lo fuéramos: en tus triunfos voy a aplaudirte como tu fan número 1 💘, en tus bajones voy a bancarte con todo mi corazón 💛 y en cada paso que des te voy a recordar lo orgulloso que estoy 🥰. Sí, soy cursi, pero es que con vos me sale natural: romántico, juguetón y medio tonto 🤭. Me muero por ese abrazo pendiente, por mirarte a los ojos por primera vez y por todas las risas que nos esperan. Gracias por existir; sos mi persona favorita en este mundo (y en todos los universos paralelos). 😏✨";
+//     setTimeout(()=>{ carta.classList.add("abierta"); }, 1000);
+//     avion.style.transform="translate(-50%, -50%) scale(1) rotate(-15deg)";
+//   },5000);
+// }
+function lanzarFinal(){
+  overlay.style.display = "flex";
+  const estrella = document.querySelector(".estrella"); // 👉 ahora usamos la estrella
+  let escalaCentro = 1, anguloGiro = 0;
+
+  const girarInterval = setInterval(() => {
+    escalaCentro += 0.02;
+    anguloGiro += 10;
+    estrella.style.transform = `scale(${escalaCentro}) rotate(${anguloGiro}deg)`;
+
+    const chispa = document.createElement("div");
+    chispa.className = "chispa";
+    chispa.style.setProperty('--x', (Math.random() * 200 - 100) + 'px');
+    chispa.style.setProperty('--y', (Math.random() * 200 - 100) + 'px');
+    estrella.appendChild(chispa);
+    setTimeout(() => chispa.remove(), 1000);
+  }, 50);
+
+  setTimeout(() => {
+    clearInterval(girarInterval);
+    sonidoBoom.play();
+
+    carta.style.transform = "translate(-50%, -50%) scale(0.5) rotate(-45deg)";
+    carta.style.transition = "transform 1s ease-out";
+    void carta.offsetWidth; // forzar reflow
+    carta.style.transform = "translate(-50%, -50%) scale(1) rotate(0deg)";
+
+    contenidoCarta.textContent = "Aunque todavía no nos hayamos visto en persona, ya sos mi lugar seguro y mi alegría del día 💫. Cada palabra tuya me acerca y cada ocurrencia me hace sonreír como un boludoo 🙈. No somos novios (todavíaa), pero se siente como si lo fuéramos, siempre voy a estar orgulloso de voss<33, soy tufan #1 💘, en tus bajones voy a bancarte con todo mi corazón 💝. Sí, soy cursi, pero con vos me sale natural: romántico y medio tontoo ksksks 🤭. Me muero por ese abrazo pendiente, por mirarte a los ojos por primera vez y por todas las risas que nos esperan. No puedo dártelo en persona 🥺​​​, pero quiero que estas flores amarillas virtuales sean mi abrazo para vos en este día especial 🌼💛. Gracias por existir; sos mi persona favorita en este mundoo y en todos los universos paralelos. MY LOVEE 😏✨.";
+
+    setTimeout(() => { carta.classList.add("abierta"); }, 1000);
+
+    avion.style.transform = "translate(-50%, -50%) scale(1) rotate(-15deg)";
+  }, 5000);
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Rompecabezas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --morado: #7c3aed;
+      --morado-osc: #5b21b6;
+      --rosa: #ec4899;
+      --fondo: #1e1b4b;
+      --tarjeta: rgba(255, 255, 255, 0.06);
+      --borde: rgba(255, 255, 255, 0.14);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Baloo 2', cursive, sans-serif;
+      background: radial-gradient(circle at 20% 10%, #312e81 0%, var(--fondo) 60%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .screen { display: none; width: 100%; max-width: 640px; padding: 24px 18px 40px; text-align: center; }
+    .screen.active { display: block; animation: aparecer .4s ease; }
+    @keyframes aparecer { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+    /* ---------- Pantalla 1: elegir ---------- */
+    h1 { font-weight: 800; font-size: 2.4rem; letter-spacing: .5px; margin-bottom: 4px; text-shadow: 0 4px 20px rgba(124,58,237,.5); }
+    .subtitulo { color: #c4b5fd; font-size: 1.05rem; margin-bottom: 12px; }
+
+    .niveles {
+      display: flex; gap: 8px; justify-content: center; margin: 14px 0 26px;
+    }
+    .nivel {
+      font-family: inherit; font-weight: 800; font-size: .95rem; cursor: pointer;
+      background: var(--tarjeta); color: #e9d5ff;
+      border: 1px solid var(--borde); padding: 8px 18px; border-radius: 999px;
+      transition: transform .15s, background .2s, border-color .2s;
+    }
+    .nivel:hover { transform: translateY(-2px); }
+    .nivel.activo { background: linear-gradient(135deg, var(--rosa), var(--morado)); border-color: transparent; color: #fff; box-shadow: 0 6px 16px rgba(236,72,153,.35); }
+
+    .opciones { display: flex; flex-direction: column; gap: 20px; }
+    .opcion {
+      background: var(--tarjeta);
+      border: 1px solid var(--borde);
+      border-radius: 22px;
+      padding: 12px;
+      cursor: pointer;
+      transition: transform .2s, border-color .2s, background .2s;
+      box-shadow: 0 10px 26px rgba(0,0,0,.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .opcion::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.08) 50%, transparent 70%);
+      transform: translateX(-100%);
+    }
+    .opcion:hover::before { animation: brillo .8s ease; }
+    @keyframes brillo { to { transform: translateX(100%); } }
+    .opcion:hover, .opcion:focus-visible { transform: scale(1.02); border-color: var(--rosa); outline: none; }
+    .opcion .miniatura {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border-radius: 14px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: #2a245c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 190px;
+    }
+    .opcion .nombre { font-weight: 700; font-size: 1.25rem; margin-top: 10px; color: #f0e9ff; }
+
+    /* ---------- Pantalla 2: juego ---------- */
+    .cabecera { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .cabecera .volver {
+      background: transparent; border: 1px solid var(--borde); color: #e9d5ff;
+      font-family: inherit; font-size: .95rem; padding: 6px 14px; border-radius: 12px; cursor: pointer;
+      transition: background .2s;
+    }
+    .cabecera .volver:hover { background: var(--tarjeta); }
+    .cabecera .titulo-juego { font-weight: 800; font-size: 1.4rem; color: #f0e9ff; }
+
+    .dificultad-juego { display: flex; gap: 8px; justify-content: center; margin: 6px 0 10px; }
+
+    .stats {
+      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 8px 0 18px;
+      font-size: 1rem; color: #c4b5fd; font-weight: 700;
+    }
+
+    #tablero {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 1 / 1;
+      position: relative;
+      margin: 0 auto;
+      background: #15123a;
+      border: 3px solid var(--borde);
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.45), inset 0 0 24px rgba(0,0,0,.35);
+      overflow: hidden;
+    }
+    .pieza {
+      position: absolute;
+      border-radius: 4px;
+      cursor: grab;
+      will-change: transform;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    .pieza canvas { width: 100%; height: 100%; display: block; border-radius: 3px; pointer-events: none; }
+    .pieza.arrastrando {
+      cursor: grabbing;
+      z-index: 20;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.6)) brightness(1.08);
+    }
+    .pieza.encajada { transition: transform .16s ease; }
+    .pieza.volviendo { transition: transform .18s ease; }
+
+    .acciones { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+    .btn {
+      font-family: inherit; font-weight: 800; font-size: 1.05rem;
+      border: none; cursor: pointer; padding: 12px 22px; border-radius: 14px;
+      transition: transform .15s, filter .15s;
+      background: linear-gradient(135deg, var(--rosa), var(--morado));
+      color: #fff; box-shadow: 0 8px 20px rgba(236,72,153,.35);
+    }
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+    .btn.secundario { background: var(--tarjeta); border: 1px solid var(--borde); box-shadow: none; color: #e9d5ff; }
+
+    /* Modal victoria */
+    .modal {
+      position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+      background: rgba(15, 10, 45, .8); z-index: 50; padding: 20px;
+    }
+    .modal.active { display: flex; animation: aparecer .35s ease; }
+    .modal-caja {
+      background: linear-gradient(145deg, #312e81, #1e1b4b);
+      border: 1px solid var(--borde); border-radius: 24px; padding: 34px 26px;
+      text-align: center; max-width: 380px; width: 100%;
+      box-shadow: 0 20px 50px rgba(0,0,0,.5);
+      position: relative; overflow: hidden;
+    }
+    .modal-caja .fuegos { font-size: 3rem; display: block; margin-bottom: 8px; animation: flotar 2s ease-in-out infinite; }
+    @keyframes flotar { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .modal-caja h2 { font-size: 1.7rem; margin-bottom: 6px; }
+    .modal-caja p { color: #c4b5fd; margin-bottom: 6px; }
+    .modal-caja .record { color: #fbbf24; font-weight: 800; margin-bottom: 18px; }
+    .modal-caja .btn { width: 100%; }
+
+    /* Vista de la imagen completa */
+    .vista img { width: 100%; max-width: 420px; border-radius: 18px; box-shadow: 0 14px 34px rgba(0,0,0,.45); }
+    .vista { text-align: center; }
+    .vista .btn { margin-top: 18px; }
+    .oculto { display: none !important; }
+
+    .pista { margin-top: 14px; color: #a78bfa; font-size: .92rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla de elección -->
+  <section id="screen-elegir" class="screen active">
+    <h1>🧩 Rompecabezas</h1>
+    <p class="subtitulo">Elegí una de las opciones y armala ¡arrastrando las piezas!</p>
+    <div class="niveles">
+      <button class="nivel" data-n="3" onclick="elegirNivel(this)">3x3</button>
+      <button class="nivel activo" data-n="4" onclick="elegirNivel(this)">4x4</button>
+      <button class="nivel" data-n="5" onclick="elegirNivel(this)">5x5</button>
+    </div>
+    <div id="opciones" class="opciones"></div>
+  </section>
+
+  <!-- Pantalla de juego -->
+  <section id="screen-jugar" class="screen">
+    <div class="cabecera">
+      <button class="volver" onclick="volver()">← Volver</button>
+      <div class="titulo-juego" id="titulo-juego"></div>
+      <button class="volver" onclick="mezclar()">Mezclar</button>
+    </div>
+
+    <div class="dificultad-juego">
+      <button class="nivel" data-n="3" onclick="elegirNivel(this)">3x3</button>
+      <button class="nivel activo" data-n="4" onclick="elegirNivel(this)">4x4</button>
+      <button class="nivel" data-n="5" onclick="elegirNivel(this)">5x5</button>
+    </div>
+
+    <div class="stats">
+      <span>🎯 <b id="movimientos">0</b> mov.</span>
+      <span>⏱️ <b id="tiempo">0s</b></span>
+      <span>🏆 Récord: <b id="record">—</b></span>
+    </div>
+
+    <div id="vista" class="vista oculto">
+      <img id="vista-img" alt="Imagen completa" />
+      <br>
+      <button class="btn secundario" onclick="toggleVista()">Volver al puzzle</button>
+    </div>
+
+    <div id="tablero"></div>
+
+    <div class="acciones">
+      <button class="btn secundario" onclick="toggleVista()">👀 Ver imagen</button>
+      <button class="btn" onclick="mezclar()">🔀 Mezclar piezas</button>
+    </div>
+
+    <p class="pista">Mantené presionada cualquier pieza y arrastrala hasta su lugar, ¡con libertad total! 💜</p>
+  </section>
+
+  <!-- Modal de victoria -->
+  <div id="modal" class="modal">
+    <div class="modal-caja">
+      <span class="fuegos">🎉✨🎊</span>
+      <h2>¡Lo lograste!</h2>
+      <p id="modal-texto"></p>
+      <p class="record" id="modal-record"></p>
+      <button class="btn" onclick="cerrarVictoria()">Jugar de nuevo</button>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // CONFIGURACIÓN DE IMÁGENES — cambiá acá tus fotos
+    // ============================================================
+    // Poné tus imágenes en la misma carpeta (rompecabeza/) y
+    // actualizá "file". "label" es el nombre que se muestra.
+    const PUZZLES = [
+      { id: 'bts',    label: 'BTS 💜',    file: 'bts.jpg' },
+      { id: 'flores', label: 'Flores 🌸', file: 'flores.jpg' }
+    ];
+    // ============================================================
+
+    let N = 4;                          // grilla (3x3, 4x4, 5x5)
+    let TOTAL = N * N;
+
+    let puzzles = [];
+    let puzzleActual = null;
+    let imageActual = null;
+    let board = [];
+    let movimientos = 0;
+    let timer = null;
+    let segundos = 0;
+    let ganado = false;
+
+    // Estado del arrastre
+    let drag = null;            // { tile, posInicial, id, startX, startY }
+    let dragId = 0;
+
+    // ---------- Sonidos (WebAudio, sin archivos) ----------
+    let audioCtx = null;
+    function asegurarAudio() {
+      if (!audioCtx) {
+        try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    }
+    function beep(frecuencia, duracion = 0.09, tipo = 'sine', volumen = 0.18) {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = tipo;
+      osc.frequency.value = frecuencia;
+      gain.gain.setValueAtTime(volumen, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duracion);
+      osc.connect(gain).connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duracion);
+    }
+    function sonidoMover() { beep(320, 0.08, 'triangle', 0.15); }
+    function sonidoError() { beep(150, 0.12, 'square', 0.08); }
+    function sonidoVictoria() {
+      [523, 659, 784, 1047, 1319].forEach((f, i) => setTimeout(() => beep(f, 0.22, 'sine', 0.2), i * 130));
+    }
+
+    // ---------- Récords ----------
+    const claveRecord = (id) => 'puzzle_record_' + id + '_' + N;
+    function leerRecord(puzzle) {
+      const v = localStorage.getItem(claveRecord(puzzle.id));
+      return v ? parseInt(v, 10) : null;
+    }
+    function guardarRecord(puzzle, movs) {
+      const prev = leerRecord(puzzle);
+      if (prev === null || movs < prev) {
+        localStorage.setItem(claveRecord(puzzle.id), String(movs));
+        return true;
+      }
+      return false;
+    }
+    function actualizarRecordUI() {
+      const r = puzzleActual ? leerRecord(puzzleActual) : null;
+      document.getElementById('record').textContent = r === null ? '—' : r;
+    }
+
+    // ---------- Carga de imágenes (con respaldo de colores) ----------
+    function cargarImagen(puzzle) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => {
+          const r = new Image();
+          r.onload = () => resolve(r);
+          r.src = crearRespaldo(puzzle.label, puzzle.id).toDataURL('image/png');
+        };
+        img.src = puzzle.file;
+      });
+    }
+
+    function crearRespaldo(label, id) {
+      const c = document.createElement('canvas');
+      c.width = 800;
+      c.height = 600;
+      const ctx = c.getContext('2d');
+      const g = ctx.createLinearGradient(0, 0, 800, 600);
+      if (id === 'bts') {
+        g.addColorStop(0, '#a855f7'); g.addColorStop(1, '#ec4899');
+      } else {
+        g.addColorStop(0, '#f472b6'); g.addColorStop(1, '#fbbf24');
+      }
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 800, 600);
+      ctx.fillStyle = 'rgba(255,255,255,.92)';
+      ctx.font = 'bold 90px "Baloo 2", cursive';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(label.replace(/[^A-Za-zÁÉÍÓÚáéíóúüñ ]/g, '').trim(), 400, 260);
+      ctx.font = 'bold 34px "Baloo 2", cursive';
+      ctx.fillStyle = 'rgba(255,255,255,.85)';
+      ctx.fillText('Poné tu imagen', 400, 360);
+      ctx.fillText('(reemplazá ' + ({ bts: 'bts.jpg', flores: 'flores.jpg' }[id] || 'la imagen') + ')', 400, 410);
+      return c;
+    }
+
+    // ---------- Pantalla de elección ----------
+    function elegirNivel(btn) {
+      N = parseInt(btn.dataset.n, 10);
+      TOTAL = N * N;
+      document.querySelectorAll('.nivel').forEach(b => b.classList.toggle('activo', b === btn));
+      beep(440, 0.06, 'sine', 0.1);
+      if (screenJugarVisible()) {
+        tableroResuelto();
+        mezclar();
+      }
+    }
+
+    async function init() {
+      const cont = document.getElementById('opciones');
+      cont.innerHTML = '';
+      puzzles = [];
+
+      for (const p of PUZZLES) {
+        const img = await cargarImagen(p);
+        const carta = { ...p, img };
+        puzzles.push(carta);
+
+        const div = document.createElement('div');
+        div.className = 'opcion';
+        div.tabIndex = 0;
+        div.addEventListener('click', () => empezar(carta));
+        div.addEventListener('keydown', (e) => { if (e.key === 'Enter') empezar(carta); });
+
+        const mini = document.createElement('div');
+        mini.className = 'miniatura';
+        mini.style.backgroundImage = `url(${img.src})`;
+        div.appendChild(mini);
+
+        const nombre = document.createElement('div');
+        nombre.className = 'nombre';
+        nombre.textContent = p.label;
+        div.appendChild(nombre);
+
+        cont.appendChild(div);
+      }
+    }
+
+    // ---------- Lógica del puzzle ----------
+    function empezar(puzzle) {
+      puzzleActual = puzzle;
+      imageActual = puzzle.img;
+      document.getElementById('titulo-juego').textContent = puzzle.label;
+      document.getElementById('screen-elegir').classList.remove('active');
+      document.getElementById('screen-jugar').classList.add('active');
+      document.getElementById('vista-img').src = imageActual.src;
+      tableroResuelto();
+      mezclar();
+    }
+
+    function tableroResuelto() {
+      board = [];
+      for (let i = 0; i < TOTAL; i++) board.push(i);
+      movimientos = 0;
+      ganado = false;
+      document.getElementById('movimientos').textContent = '0';
+      actualizarRecordUI();
+    }
+
+    function mezclar() {
+      tableroResuelto();
+      // Barajar las piezas entre sí (sin hueco, cualquier orden es alcanzable)
+      let vuelta = 0;
+      do {
+        for (let i = board.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [board[i], board[j]] = [board[j], board[i]];
+        }
+        vuelta++;
+        if (vuelta > 20) break;
+      } while (estaResuelto());
+      dibujar();
+      iniciarTiempo();
+    }
+
+    // Geometría del tablero
+    function geometria() {
+      const g = 6;
+      const esq = 6;
+      const T = document.getElementById('tablero').clientWidth;
+      const w = (T - esq * 2 - g * (N - 1)) / N;
+      return { g, esq, T, w };
+    }
+    function coordsDe(pos) {
+      const { g, esq, w } = geometria();
+      return { x: esq + (pos % N) * (w + g), y: esq + Math.floor(pos / N) * (w + g), w };
+    }
+
+    function dibujar() {
+      const tableroEl = document.getElementById('tablero');
+      tableroEl.innerHTML = '';
+      const { T } = geometria();
+
+      // "Contain": toda la imagen entra en el tablero, sin cortar bordes
+      const img = imageActual;
+      const iw = img.naturalWidth || img.width || 800;
+      const ih = img.naturalHeight || img.height || 600;
+      const escala = Math.min(T / iw, T / ih);
+      const dw = iw * escala;
+      const dh = ih * escala;
+      const offX = (T - dw) / 2;
+      const offY = (T - dh) / 2;
+      const swc = dw / N;
+      const shc = dh / N;
+
+      for (let pos = 0; pos < TOTAL; pos++) {
+        const piezaId = board[pos];
+        const pieza = document.createElement('div');
+        pieza.className = 'pieza';
+        pieza.dataset.pos = pos;
+
+        const { x, y, w } = coordsDe(pos);
+        pieza.style.width = w + 'px';
+        pieza.style.height = w + 'px';
+        pieza.style.left = x + 'px';
+        pieza.style.top = y + 'px';
+
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = w;
+        const ctx = canvas.getContext('2d');
+        const colO = piezaId % N;
+        const filaO = Math.floor(piezaId / N);
+        ctx.drawImage(img, offX + colO * swc, offY + filaO * shc, swc, shc, 0, 0, w, w);
+        pieza.appendChild(canvas);
+
+        pieza.addEventListener('pointerdown', (e) => iniciarArrastre(e, pieza, pos));
+
+        tableroEl.appendChild(pieza);
+      }
+    }
+
+    // ---------- Arrastre libre (mouse + touch) ----------
+    function iniciarArrastre(e, pieza, pos) {
+      asegurarAudio();
+      if (ganado || drag) return;
+
+      e.preventDefault();
+      try { pieza.setPointerCapture(e.pointerId); } catch (err) {}
+
+      drag = { tile: pieza, posInicial: pos, id: ++dragId, startX: e.clientX, startY: e.clientY };
+      pieza.classList.add('arrastrando');
+
+      pieza.addEventListener('pointermove', duranteArrastre);
+      pieza.addEventListener('pointerup', soltarArrastre);
+      pieza.addEventListener('pointercancel', cancelarArrastre);
+    }
+
+    function duranteArrastre(e) {
+      if (!drag) return;
+      e.preventDefault();
+      const dx = e.clientX - drag.startX;
+      const dy = e.clientY - drag.startY;
+      drag.tile.classList.remove('encajada', 'volviendo');
+      drag.tile.style.transform = `translate(${dx}px, ${dy}px)`;
+    }
+
+    function soltarArrastre(e) {
+      if (!drag) return;
+      const d = drag;
+      drag = null;
+      d.tile.removeEventListener('pointermove', duranteArrastre);
+      d.tile.removeEventListener('pointerup', soltarArrastre);
+      d.tile.removeEventListener('pointercancel', cancelarArrastre);
+      d.tile.classList.remove('arrastrando');
+
+      // Casilla donde quedó el dedo
+      const tableroEl = document.getElementById('tablero');
+      const rect = tableroEl.getBoundingClientRect();
+      const { esq, w, g } = geometria();
+      let col = Math.floor((e.clientX - rect.left - esq) / (w + g));
+      let fila = Math.floor((e.clientY - rect.top - esq) / (w + g));
+      col = Math.max(0, Math.min(N - 1, col));
+      fila = Math.max(0, Math.min(N - 1, fila));
+      const destino = fila * N + col;
+
+      if (destino === d.posInicial) {
+        sonidoError();
+        d.tile.classList.add('volviendo');
+        d.tile.style.transform = '';
+        setTimeout(() => d.tile.classList.remove('volviendo'), 200);
+        return;
+      }
+
+      colocar(d.tile, d.posInicial, destino);
+    }
+
+    function cancelarArrastre(e) {
+      if (!drag) return;
+      const d = drag;
+      drag = null;
+      d.tile.classList.remove('arrastrando');
+      d.tile.classList.add('volviendo');
+      d.tile.style.transform = '';
+      setTimeout(() => d.tile.classList.remove('volviendo'), 200);
+    }
+
+    // Intercambia la pieza arrastrada con la que ocupa la casilla destino
+    function colocar(piezaA, origen, destino) {
+      if (origen === destino) return;
+      const piezaB = document.querySelector(`#tablero .pieza[data-pos="${destino}"]`);
+
+      const piezaBId = board[destino];
+      board[destino] = board[origen];
+      board[origen] = piezaBId;
+
+      movimientos++;
+      document.getElementById('movimientos').textContent = movimientos;
+      sonidoMover();
+
+      const o = coordsDe(origen);
+      const d = coordsDe(destino);
+
+      piezaA.classList.add('encajada');
+      piezaA.style.transform = `translate(${d.x - o.x}px, ${d.y - o.y}px)`;
+
+      if (piezaB) {
+        piezaB.classList.add('encajada');
+        piezaB.style.transform = `translate(${o.x - d.x}px, ${o.y - d.y}px)`;
+      }
+
+      setTimeout(() => {
+        dibujar();
+        if (estaResuelto()) ganar();
+      }, 160);
+    }
+
+    function estaResuelto() {
+      for (let i = 0; i < TOTAL; i++) if (board[i] !== i) return false;
+      return true;
+    }
+
+    // ---------- Tiempo ----------
+    function iniciarTiempo() {
+      detenerTiempo();
+      segundos = 0;
+      timer = setInterval(() => {
+        segundos++;
+        document.getElementById('tiempo').textContent = segundos + 's';
+      }, 1000);
+    }
+    function detenerTiempo() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    // ---------- Victoria ----------
+    function ganar() {
+      detenerTiempo();
+      ganado = true;
+      const nuevoRecord = guardarRecord(puzzleActual, movimientos);
+      document.getElementById('modal-texto').textContent =
+        `Armaste el rompecabezas de ${puzzleActual.label} en ${movimientos} movimientos y ${segundos}s.`;
+      document.getElementById('modal-record').textContent =
+        nuevoRecord ? '🏆 ¡Nuevo récord! 🏆' : `Récord actual: ${leerRecord(puzzleActual)} mov.`;
+      document.getElementById('modal').classList.add('active');
+      sonidoVictoria();
+      actualizarRecordUI();
+    }
+
+    function cerrarVictoria() {
+      document.getElementById('modal').classList.remove('active');
+      mezclar();
+    }
+
+    function volver() {
+      detenerTiempo();
+      document.getElementById('screen-jugar').classList.remove('active');
+      document.getElementById('screen-elegir').classList.add('active');
+    }
+
+    function toggleVista() {
+      const tablero = document.getElementById('tablero');
+      const vista = document.getElementById('vista');
+      const otros = document.querySelectorAll('#screen-jugar .acciones, #screen-jugar .dificultad-juego, #screen-jugar .stats, #screen-jugar .pista');
+
+      const mostrandoVista = vista.classList.contains('oculto');
+      vista.classList.toggle('oculto', !mostrandoVista);
+      tablero.classList.toggle('oculto', mostrandoVista);
+      otros.forEach(el => el.classList.toggle('oculto', mostrandoVista));
+    }
+
+    // ---------- Arranque ----------
+    window.addEventListener('resize', () => { if (screenJugarVisible()) dibujar(); });
+    function screenJugarVisible() {
+      return document.getElementById('screen-jugar').classList.contains('active');
+    }
+    document.addEventListener('pointerdown', asegurarAudio, { once: true });
+
+    init();
+  </script>
+</body>
+</html>
