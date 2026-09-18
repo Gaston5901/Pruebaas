@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function revealIntroWhenReady() {
     if (!galaxyReady || !pageReady) return;
-    const MIN_LOADER_TIME = 1700;
+    const MIN_LOADER_TIME = 5000;
     const wait = Math.max(0, MIN_LOADER_TIME - (performance.now() - loadingStartedAt));
     setTimeout(function() {
       document.body.classList.remove('app-loading');
@@ -223,12 +223,12 @@ document.addEventListener('DOMContentLoaded', function() {
       const imageTextureCache = new Map();
       
       const phraseColors = [
-        ['#ffcc00', '#ffea80'],
-        ['#ffa600', '#ffdb99'],
-        ['#ffeb3b', '#fff9c4'],
-        ['#ffb300', '#ffe082'],
-        ['#ffc107', '#ffecb3'],
-        ['#ff9800', '#ffe0b2']
+        ['#ff6fb7', '#ffd6ea'],
+        ['#b388ff', '#e4d4ff'],
+        ['#6ec8ff', '#d6f1ff'],
+        ['#ff8ccb', '#ffe4f3'],
+        ['#8fdcff', '#e0f7ff'],
+        ['#e0a4ff', '#f7e6ff']
       ];
       
       function makeTextTexture(text, colorIndex=0){
@@ -486,17 +486,17 @@ document.addEventListener('DOMContentLoaded', function() {
       scene.add(textGroup);
       let titleMesh=null;
       const textLoader = new THREE.FontLoader(loadingManager);
-      textLoader.load('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/fonts/optimer_regular.typeface.json',function(font){
+      textLoader.load('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/fonts/gentilis_bold.typeface.json',function(font){
         const titleGeometry=new THREE.TextGeometry(CFG.title3d || 'Te amo',{
           font,
           size:isCompactDevice?5.2:6.2,
           height:1.35,
-          curveSegments:16,
+          curveSegments:24,
           bevelEnabled:true,
-          bevelThickness:.28,
-          bevelSize:.14,
+          bevelThickness:.34,
+          bevelSize:.2,
           bevelOffset:0,
-          bevelSegments:6
+          bevelSegments:10
         });
         titleGeometry.computeBoundingBox();
         const bounds=titleGeometry.boundingBox;
@@ -506,16 +506,16 @@ document.addEventListener('DOMContentLoaded', function() {
           -(bounds.max.z-bounds.min.z)/2-bounds.min.z
         );
         const titleFrontMaterial=new THREE.MeshPhongMaterial({
-          color:0xffe680,
-          emissive:0x8a6600,
-          shininess:150,
-          specular:0xffffff
+          color:0xffe68a,
+          emissive:0x9a6a00,
+          shininess:220,
+          specular:0xfff4cc
         });
         const titleSideMaterial=new THREE.MeshPhongMaterial({
-          color:0xcc9900,
-          emissive:0x332200,
-          shininess:95,
-          specular:0xffcc00
+          color:0xb8860b,
+          emissive:0x4a3200,
+          shininess:160,
+          specular:0xffd97a
         });
         titleMesh=new THREE.Mesh(titleGeometry,[titleFrontMaterial,titleSideMaterial]);
         titleMesh.position.set(0,isCompactDevice?24:22,2);
