@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function revealIntroWhenReady() {
     if (!galaxyReady || !pageReady) return;
-    const wait = Math.max(0, 450 - (performance.now() - loadingStartedAt));
+    const MIN_LOADER_TIME = 1700;
+    const wait = Math.max(0, MIN_LOADER_TIME - (performance.now() - loadingStartedAt));
     setTimeout(function() {
       document.body.classList.remove('app-loading');
       setTimeout(function() {
@@ -46,18 +47,18 @@ document.addEventListener('DOMContentLoaded', function() {
     fullscreenBtn.setAttribute('aria-label', isFullscreen ? 'Salir de pantalla completa' : 'Activar pantalla completa');
   }
 
-  fullscreenBtn.addEventListener('click', function() {
-    const page = document.documentElement;
-    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
-    try {
-      const action = isFullscreen
-        ? (document.exitFullscreen ? document.exitFullscreen() : document.webkitExitFullscreen())
-        : (page.requestFullscreen ? page.requestFullscreen() : page.webkitRequestFullscreen());
-      if (action && typeof action.catch === 'function') action.catch(function() {});
-    } catch (_) {}
-  });
-  document.addEventListener('fullscreenchange', updateFullscreenButton);
-  document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+  // fullscreenBtn.addEventListener('click', function() {
+  //   const page = document.documentElement;
+  //   const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+  //   try {
+  //     const action = isFullscreen
+  //       ? (document.exitFullscreen ? document.exitFullscreen() : document.webkitExitFullscreen())
+  //       : (page.requestFullscreen ? page.requestFullscreen() : page.webkitRequestFullscreen());
+  //     if (action && typeof action.catch === 'function') action.catch(function() {});
+  //   } catch (_) {}
+  // });
+  // document.addEventListener('fullscreenchange', updateFullscreenButton);
+  // document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
 
   btn.addEventListener('click', function() {
     btn.disabled = true;
@@ -151,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
       function setCam(){
         const w = window.innerWidth, h = window.innerHeight;
         const isMobile = w < 768 || w < h;
-        camera.fov = isMobile ? 90 : 75;
+        camera.fov = isMobile ? 96 : 75;
         camera.position.set(0, isMobile? 26 : 22, isMobile? 110 : 75);
         camera.updateProjectionMatrix(); controls.update();
       }
@@ -203,10 +204,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const CFG = window.GALAXIA_INFINITA_DATA || {};
       const phrases = (Array.isArray(CFG.phrases) && CFG.phrases.length)
         ? CFG.phrases
-        : ["Eres preciosa 🌼", "Te Amo ☀️", "Mi girasol 🌻", "Mi alegría 💛", "Luz de mi vida ✨", "Mi destino 💛", "Amor lindo 🌻", "Para siempre ✨", "Amor d emi vida 💛"];
+        : ["Eres preciosa 🌼", "Te Amo ☀️", "Mi girasol 🌻", "Mi alegría 💛", "Niña Bellaa ✨", "Mi destino 💛", "Saranghae 🌻", "Para siempre ✨", "Amor de mi vida 💛"];
       const phraseEmojis = [];
       const decoratedPhrases = phrases.map((phrase, index) => `${phrase.trim()} ${phraseEmojis[index % (phraseEmojis.length || 1)] || ''}`);
       const isCompactDevice = window.innerWidth < 700;
+      const rotSpeed = isCompactDevice ? 0.095 : 0.055;
       const arms = 5, radius = 82, maxH = 22;
       const imageProxy = (url) => url;
       
@@ -353,7 +355,7 @@ document.addEventListener('DOMContentLoaded', function() {
           const spr=new THREE.Sprite(new THREE.SpriteMaterial({ map:tex, transparent:true, opacity:1, depthWrite:false, depthTest:true }));
           spr.isPhrase=true;
           spr.renderOrder=10;
-          spr.position.set(x,y+2.2,z); spr.scale.set(isCompactDevice?30:36,isCompactDevice?5.625:6.75,1); galaxy.add(spr);
+          spr.position.set(x,y+2.2,z); spr.scale.set(isCompactDevice?38:36,isCompactDevice?7.1:6.75,1); galaxy.add(spr);
         }
       }
       
@@ -605,9 +607,9 @@ document.addEventListener('DOMContentLoaded', function() {
             cinematicState = null;
           }
         }
-        galaxy.rotation.y = t * 0.05;
+        galaxy.rotation.y = t * rotSpeed;
         core.rotation.y = t * 0.12;
-        photoOrbit.rotation.y = t * 0.05;
+        photoOrbit.rotation.y = t * rotSpeed;
         if(titleMesh){
           titleMesh.lookAt(camera.position);
           titleMesh.rotateY(Math.sin(t*.65)*.08);

@@ -46,18 +46,18 @@ document.addEventListener('DOMContentLoaded', function() {
     fullscreenBtn.setAttribute('aria-label', isFullscreen ? 'Salir de pantalla completa' : 'Activar pantalla completa');
   }
 
-  // fullscreenBtn.addEventListener('click', function() {
-  //   const page = document.documentElement;
-  //   const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
-  //   try {
-  //     const action = isFullscreen
-  //       ? (document.exitFullscreen ? document.exitFullscreen() : document.webkitExitFullscreen())
-  //       : (page.requestFullscreen ? page.requestFullscreen() : page.webkitRequestFullscreen());
-  //     if (action && typeof action.catch === 'function') action.catch(function() {});
-  //   } catch (_) {}
-  // });
-  // document.addEventListener('fullscreenchange', updateFullscreenButton);
-  // document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+  fullscreenBtn.addEventListener('click', function() {
+    const page = document.documentElement;
+    const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement;
+    try {
+      const action = isFullscreen
+        ? (document.exitFullscreen ? document.exitFullscreen() : document.webkitExitFullscreen())
+        : (page.requestFullscreen ? page.requestFullscreen() : page.webkitRequestFullscreen());
+      if (action && typeof action.catch === 'function') action.catch(function() {});
+    } catch (_) {}
+  });
+  document.addEventListener('fullscreenchange', updateFullscreenButton);
+  document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
 
   btn.addEventListener('click', function() {
     btn.disabled = true;
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const CFG = window.GALAXIA_INFINITA_DATA || {};
       const phrases = (Array.isArray(CFG.phrases) && CFG.phrases.length)
         ? CFG.phrases
-        : ["Eres preciosa 🌼", "Te Amo ☀️", "Mi girasol 🌻", "Mi alegría 💛", "Niña Bellaa ✨", "Mi destino 💛", "Sarangae 🌻", "Para siempre ✨", "Amor de mi vida 💛"];
+        : ["Eres preciosa 🌼", "Te Amo ☀️", "Mi girasol 🌻", "Mi alegría 💛", "Luz de mi vida ✨", "Mi destino 💛", "Amor lindo 🌻", "Para siempre ✨", "Amor d emi vida 💛"];
       const phraseEmojis = [];
       const decoratedPhrases = phrases.map((phrase, index) => `${phrase.trim()} ${phraseEmojis[index % (phraseEmojis.length || 1)] || ''}`);
       const isCompactDevice = window.innerWidth < 700;
