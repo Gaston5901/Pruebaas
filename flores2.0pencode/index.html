@@ -27,6 +27,7 @@ body{
   align-items:center;
   position:relative;
 }
+body.scroll-lock{overflow:hidden;}
 
 /* ===== Fondo Dinámico ===== */
 .hoja{
@@ -679,6 +680,9 @@ body{
   transition:transform .7s cubic-bezier(.34,1.25,.6,1), opacity .4s;
   max-height:72vh;
   overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
 }
 .sobre.abierto .carta-papel{
   transform:translateY(-22%) scale(1);
@@ -1142,12 +1146,20 @@ function iniciarSecuenciaFinal() {
 
 const sobre = document.getElementById("sobre");
 const cartaTexto = document.getElementById("carta-texto");
+const escenaCarta = document.getElementById("escena-carta");
 let cartaAbierta = false;
+
+escenaCarta.addEventListener("touchmove", (e) => {
+  if (cartaAbierta && !e.target.closest(".carta-papel")) {
+    e.preventDefault();
+  }
+}, {passive:false});
 
 sobre.addEventListener("click", (e) => {
   if (cartaAbierta || e.target.closest("#cerrar-carta")) return;
   cartaAbierta = true;
   sobre.classList.add("abierto");
+  document.body.classList.add("scroll-lock");
 
   setTimeout(() => {
     cartaTexto.innerHTML = "";
@@ -1170,6 +1182,7 @@ document.getElementById("cerrar-carta").addEventListener("click", (e) => {
   sobre.classList.remove("abierto");
   cartaTexto.innerHTML = "";
   cartaAbierta = false;
+  document.body.classList.remove("scroll-lock");
 });
 
 /* ===== BOTÓN INICIO ===== */
