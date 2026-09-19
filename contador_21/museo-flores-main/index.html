@@ -2,26 +2,38 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Museo Flore AlexDev</title>
-
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Museo Flore · AlexDev</title>
+    <meta name="theme-color" content="#2a0d3f">
 
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; user-select: none; background-color: #000; -webkit-tap-highlight-color: transparent;
-}
-        
-
-        *{
-              cursor: url('flor.png'), auto !important;
-
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; user-select: none; background-color: #0a0514;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior: none; touch-action: manipulation;
         }
+
+        * {
+            cursor: url('flor.png'), auto !important;
+        }
+
         .pantalla {
-            width: 100vw; height: 100vh; position: absolute; top: 0; left: 0;
-            background-size: cover; background-position: center; display: none;
+            position: absolute; inset: 0;
+            background-size: cover; background-position: center;
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transition: opacity .65s ease;
         }
-        .activa { display: block; }
-        
+        .pantalla.activa {
+            opacity: 1; visibility: visible; pointer-events: auto;
+            animation: zoomIn .7s ease;
+        }
+
+        .pantalla::after {
+            content: ""; position: absolute; inset: 0; pointer-events: none;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(10,5,20,.35));
+        }
+
         #pag1 { background-image: url('fondo1.gif'); }
         #pag2 { background-image: url('fondo2.gif'); }
         #pag3 { background-image: url('fondo3.gif'); }
@@ -32,20 +44,71 @@
         .boton-movible {
             position: absolute; cursor: grab; touch-action: none;
             background-size: contain; background-repeat: no-repeat; background-position: center;
-            background-color: transparent; border: none; 
+            background-color: transparent; border: none; padding: 0; margin: 0;
+            transform: translate(-50%, -50%);
+            transition: filter .25s ease;
         }
         .boton-movible:active { cursor: grabbing; }
-      
-        
-        #btn-seguir { top: 50%; left: 40%; width: 350px; height: 200px; background-image: url('seguir.png'); }
 
-        #btn1 { top: 40%; left: 21%; width: 350px; height: 150px; background-image: url('btn1.png'); }
-        #btn2 { top: 47%; left: 36%; width: 350px; height: 150px; background-image: url('btn2.png'); }
-        #btn3 { top: 36%; left: 48%; width: 350px; height: 150px; background-image: url('btn3.png'); }
-        #btn4 { top: 52%; left: 60%; width: 350px; height: 150px; background-image: url('btn4.png'); }
+        @media (hover: hover) {
+            .boton-movible:hover { filter: brightness(1.14); }
+        }
 
-        .btn-atras-img { top: 85%; left: 42%; width: 290px; height: 170px; background-image: url('atras.png'); }
+        #btn-seguir { background-image: url('seguir.png'); aspect-ratio: 7 / 4; animation: glowBtn 2.4s ease-in-out infinite; }
+        #btn1 { background-image: url('btn1.png'); aspect-ratio: 7 / 3; }
+        #btn2 { background-image: url('btn2.png'); aspect-ratio: 7 / 3; }
+        #btn3 { background-image: url('btn3.png'); aspect-ratio: 7 / 3; }
+        #btn4 { background-image: url('btn4.png'); aspect-ratio: 7 / 3; }
+        .btn-atras-img { background-image: url('atras.png'); aspect-ratio: 29 / 17; }
 
+        #pag2.activa .boton-movible { animation: popIn .55s ease both; }
+        #pag2.activa #btn1 { animation-delay: .08s; }
+        #pag2.activa #btn2 { animation-delay: .18s; }
+        #pag2.activa #btn3 { animation-delay: .28s; }
+        #pag2.activa #btn4 { animation-delay: .38s; }
+
+        @keyframes zoomIn { from { opacity: 0; transform: scale(1.06); } to { opacity: 1; transform: scale(1); } }
+        @keyframes popIn { from { opacity: 0; transform: translate(-50%, -50%) scale(.55); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        @keyframes glowBtn { 0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,205,0,.35)); } 50% { filter: brightness(1.12) drop-shadow(0 0 26px rgba(255,205,0,.75)); } }
+
+        #btn-seguir { top: 52%; left: 40%; width: min(350px, 34vw); }
+        #btn1 { top: 41%; left: 25%; width: min(330px, 32vw); }
+        #btn2 { top: 49%; left: 40%; width: min(330px, 32vw); }
+        #btn3 { top: 38%; left: 55%; width: min(330px, 32vw); }
+        #btn4 { top: 54%; left: 67%; width: min(330px, 32vw); }
+        .btn-atras-img { top: 85%; left: 50%; width: min(300px, 30vw); }
+
+        @media (max-width: 1100px) {
+            #btn-seguir { top: 53%; left: 50%; width: 62vw; }
+            #btn1 { top: 35%; left: 26%; width: 40vw; }
+            #btn2 { top: 55%; left: 26%; width: 40vw; }
+            #btn3 { top: 35%; left: 76%; width: 40vw; }
+            #btn4 { top: 55%; left: 76%; width: 40vw; }
+            .btn-atras-img { top: 86%; left: 50%; width: 44vw; }
+        }
+
+        @media (max-width: 700px) {
+            #btn-seguir { top: 52%; left: 50%; width: 64vw; }
+            #btn1 { top: 32%; left: 26%; width: 44vw; }
+            #btn2 { top: 54%; left: 26%; width: 44vw; }
+            #btn3 { top: 32%; left: 76%; width: 44vw; }
+            #btn4 { top: 54%; left: 76%; width: 44vw; }
+            .btn-atras-img { top: 85%; left: 50%; width: 48vw; }
+        }
+
+        @media (max-width: 900px) and (orientation: landscape) and (max-height: 520px) {
+            #btn-seguir { top: 54%; left: 50%; width: 36vh; }
+            #btn1 { top: 30%; left: 25%; width: 26vh; }
+            #btn2 { top: 70%; left: 25%; width: 26vh; }
+            #btn3 { top: 30%; left: 75%; width: 26vh; }
+            #btn4 { top: 70%; left: 75%; width: 26vh; }
+            .btn-atras-img { top: 86%; left: 50%; width: 30vh; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pantalla.activa, #pag2.activa .boton-movible, #btn-seguir { animation: none; }
+            .pantalla { transition: opacity .2s linear; }
+        }
     </style>
 </head>
 <body>
@@ -75,6 +138,8 @@
     </div>
 
     <script>
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+
         function cambiarPagina(idDestino) {
             document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
             document.getElementById(idDestino).classList.add('activa');
@@ -82,7 +147,7 @@
 
         function hacerMovibleYClickeable(elemento, accionClic) {
             let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            let movido = false; 
+            let movido = false;
 
             elemento.onmousedown = iniciarArrastre;
             elemento.ontouchstart = iniciarArrastreTouch;
@@ -129,7 +194,7 @@
                 document.onmousemove = null;
                 document.ontouchend = null;
                 document.ontouchmove = null;
-                
+
                 if (!movido) {
                     accionClic();
                 }
@@ -137,7 +202,7 @@
         }
 
         hacerMovibleYClickeable(document.getElementById('btn-seguir'), () => cambiarPagina('pag2'));
-        
+
         hacerMovibleYClickeable(document.getElementById('btn1'), () => cambiarPagina('pag3'));
         hacerMovibleYClickeable(document.getElementById('btn2'), () => cambiarPagina('pag4'));
         hacerMovibleYClickeable(document.getElementById('btn3'), () => cambiarPagina('pag5'));
