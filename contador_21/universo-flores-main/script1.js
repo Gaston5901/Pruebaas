@@ -478,6 +478,138 @@ document.addEventListener('DOMContentLoaded', function() {
       );
       core.renderOrder = 1;
       scene.add(core);
+
+      const heartWire = buildHeartWire(coreR * 1.05);
+      scene.add(heartWire);
+      core.visible = false;
+
+      function buildHeartWire(scale){
+        const group = new THREE.Group();
+        const N = 160;
+        const pts = [];
+        for(let i=0;i<=N;i++){
+          const tt = (i / N) * Math.PI * 2;
+          const hx = 16 * Math.pow(Math.sin(tt), 3);
+          const hy = 13*Math.cos(tt) - 5*Math.cos(2*tt) - 2*Math.cos(3*tt) - Math.cos(4*tt);
+          pts.push(new THREE.Vector3(hx, hy + 6, 0));
+        }
+        const k = scale / 17;
+        for(let i=0;i<pts.length;i++){ pts[i].x *= k; pts[i].y *= k; }
+        const depth = scale * 0.34;
+
+        const curve = new THREE.CatmullRomCurve3(pts);
+
+        const tubeCore = new THREE.Mesh(
+          new THREE.TubeGeometry(curve, 320, 0.28, 10, false),
+          new THREE.MeshBasicMaterial({ color: 0xffe6f3, transparent: true, opacity: .95, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })
+        );
+        tubeCore.renderOrder = 2;
+        group.add(tubeCore);
+
+        const tubeMed = new THREE.Mesh(
+          new THREE.TubeGeometry(curve, 320, 0.5, 10, false),
+          new THREE.MeshBasicMaterial({ color: 0xff6ba8, transparent: true, opacity: .7, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })
+        );
+        tubeMed.renderOrder = 2;
+        group.add(tubeMed);
+
+        const tubeOut = new THREE.Mesh(
+          new THREE.TubeGeometry(curve, 320, 0.78, 12, false),
+          new THREE.MeshBasicMaterial({ color: 0xc084fc, transparent: true, opacity: .38, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })
+        );
+        tubeOut.renderOrder = 2;
+        group.add(tubeOut);
+
+        const tubeGlow = new THREE.Mesh(
+          new THREE.TubeGeometry(curve, 320, 1.25, 12, false),
+          new THREE.MeshBasicMaterial({ color: 0xff5fa8, transparent: true, opacity: .12, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })
+        );
+        tubeGlow.renderOrder = 2;
+        group.add(tubeGlow);
+
+        const back = new THREE.LineLoop(
+          new THREE.BufferGeometry().setFromPoints(pts.map(function(p){ return new THREE.Vector3(p.x, p.y, -depth); })),
+          new THREE.LineBasicMaterial({ color: 0xff8fc2, transparent: true, opacity: .38, blending: THREE.AdditiveBlending, depthWrite: false })
+        );
+        back.renderOrder = 2;
+        group.add(back);
+
+        const front = new THREE.LineLoop(
+          new THREE.BufferGeometry().setFromPoints(pts.map(function(p){ return new THREE.Vector3(p.x, p.y, depth); })),
+          new THREE.LineBasicMaterial({ color: 0xffb3d6, transparent: true, opacity: .6, blending: THREE.AdditiveBlending, depthWrite: false })
+        );
+        front.renderOrder = 2;
+        group.add(front);
+
+        const radPts = [];
+        for(let i=0;i<14;i++){
+          const p = pts[Math.floor(i/14*N)];
+          radPts.push(new THREE.Vector3(p.x, p.y, -depth), new THREE.Vector3(p.x, p.y, depth));
+        }
+        const rad = new THREE.Line(
+          new THREE.BufferGeometry().setFromPoints(radPts),
+          new THREE.LineBasicMaterial({ color: 0xffd6eb, transparent: true, opacity: .22, blending: THREE.AdditiveBlending, depthWrite: false })
+        );
+        rad.renderOrder = 2;
+        group.add(rad);
+
+        const glow = [];
+        for(let i=0;i<26;i++){
+          const p = pts[Math.floor(i/26*N)];
+          glow.push(p.x, p.y + (Math.random()-.5)*1.3, (Math.random()-.5)*1.6);
+        }
+        const glowGeo = new THREE.BufferGeometry();
+        glowGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(glow), 3));
+        const glowMat = new THREE.PointsMaterial({
+          color: 0xffd6f0, size: .52, transparent: true, opacity: .95,
+          sizeAttenuation: true, depthWrite: false, blending: THREE.AdditiveBlending
+        });
+        const glowPoints = new THREE.Points(glowGeo, glowMat);
+        glowPoints.renderOrder = 3;
+        group.add(glowPoints);
+
+        const pxSprMat = new THREE.SpriteMaterial({ map: particleTexture, color: 0xff5fa8, transparent: true, opacity: .5, depthWrite: false, blending: THREE.AdditiveBlending });
+        const pxSpr = new THREE.Sprite(pxSprMat);
+        pxSpr.scale.set(95, 62, 1);
+        pxSpr.position.set(0, 2, -4);
+        pxSpr.renderOrder = -1;
+        group.add(pxSpr);
+
+        const pCount = 110;
+        const pArr = new Float32Array(pCount*3);
+        const pCol = new Float32Array(pCount*3);
+        const pBase = new Float32Array(pCount*3);
+        const pData = [];
+        const colA = new THREE.Color(0xffb3d6);
+        const colB = new THREE.Color(0xc084fc);
+        const colC = new THREE.Color(0xffffff);
+        for(let i=0;i<pCount;i++){
+          const pp = pts[Math.floor(i/pCount*N)];
+          pBase[i*3]=pp.x; pBase[i*3+1]=pp.y; pBase[i*3+2]=0;
+          pArr[i*3]=pp.x; pArr[i*3+1]=pp.y; pArr[i*3+2]=0;
+          const dx = pp.x + (Math.random()-.5)*3;
+          const dy = pp.y + (Math.random()-.5)*3;
+          const dz = (Math.random()-.5)*5;
+          const len = Math.sqrt(dx*dx+dy*dy+dz*dz)||1;
+          const r = Math.random();
+          const c = r <.5 ? colA : (r<.85 ? colB : colC);
+          pCol[i*3]=c.r; pCol[i*3+1]=c.g; pCol[i*3+2]=c.b;
+          pData.push({ dirX:dx/len, dirY:dy/len, dirZ:dz/len, speed:.22+Math.random()*.38, phase:Math.random(), r:c.r, g:c.g, b:c.b });
+        }
+        const pGeo = new THREE.BufferGeometry();
+        pGeo.setAttribute('position', new THREE.BufferAttribute(pArr, 3));
+        pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
+        const pMat = new THREE.PointsMaterial({
+          size: isCompactDevice ? .55 : .45, vertexColors: true, transparent: true,
+          sizeAttenuation: true, depthWrite: false, blending: THREE.AdditiveBlending
+        });
+        const parts = new THREE.Points(pGeo, pMat);
+        parts.renderOrder = 3;
+        group.add(parts);
+        group.userData.particles = { count:pCount, arr:pArr, col:pCol, base:pBase, data:pData, geo:pGeo, mat:pMat };
+
+        return group;
+      }
       
       const light = new THREE.PointLight(0xffcc00, 1.2, 200);
       light.position.set(0, 30, 60);
@@ -489,14 +621,14 @@ document.addEventListener('DOMContentLoaded', function() {
       textLoader.load('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/fonts/gentilis_bold.typeface.json',function(font){
         const titleGeometry=new THREE.TextGeometry(CFG.title3d || 'Te amo',{
           font,
-          size:isCompactDevice?5.2:6.2,
-          height:1.35,
-          curveSegments:24,
+          size:isCompactDevice?5.6:6.6,
+          height:1.5,
+          curveSegments:32,
           bevelEnabled:true,
-          bevelThickness:.34,
-          bevelSize:.2,
+          bevelThickness:.44,
+          bevelSize:.3,
           bevelOffset:0,
-          bevelSegments:10
+          bevelSegments:14
         });
         titleGeometry.computeBoundingBox();
         const bounds=titleGeometry.boundingBox;
@@ -506,16 +638,16 @@ document.addEventListener('DOMContentLoaded', function() {
           -(bounds.max.z-bounds.min.z)/2-bounds.min.z
         );
         const titleFrontMaterial=new THREE.MeshPhongMaterial({
-          color:0xffe68a,
-          emissive:0x9a6a00,
-          shininess:220,
-          specular:0xfff4cc
+          color:0xff9ecb,
+          emissive:0x8a2a6a,
+          shininess:260,
+          specular:0xfff2f7
         });
         const titleSideMaterial=new THREE.MeshPhongMaterial({
-          color:0xb8860b,
-          emissive:0x4a3200,
-          shininess:160,
-          specular:0xffd97a
+          color:0x7a2b9e,
+          emissive:0x3d0b52,
+          shininess:180,
+          specular:0xffc2e8
         });
         titleMesh=new THREE.Mesh(titleGeometry,[titleFrontMaterial,titleSideMaterial]);
         titleMesh.position.set(0,isCompactDevice?24:22,2);
@@ -523,7 +655,7 @@ document.addEventListener('DOMContentLoaded', function() {
         titleMesh.renderOrder=2;
         textGroup.add(titleMesh);
 
-        const titleLight=new THREE.PointLight(0xffd700,1.1,75);
+        const titleLight=new THREE.PointLight(0xff7fc0,1.35,85);
         titleLight.position.set(0,isCompactDevice?24:22,20);
         scene.add(titleLight);
       });
@@ -609,6 +741,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         galaxy.rotation.y = t * rotSpeed;
         core.rotation.y = t * 0.12;
+        if(heartWire){
+          heartWire.rotation.y = t * 0.12;
+          heartWire.scale.setScalar(1 + Math.sin(t * 2.6) * 0.03 + Math.sin(t * 5.2) * 0.014);
+          const P = heartWire.userData && heartWire.userData.particles;
+          if(P){
+            const arr=P.arr, col=P.col, base=P.base, data=P.data;
+            for(let i=0;i<P.count;i++){
+              const d=data[i];
+              const f=(t*d.speed + d.phase) % 1;
+              const dist=f*f*16;
+              arr[i*3]  = base[i*3]   + d.dirX*dist;
+              arr[i*3+1]= base[i*3+1] + d.dirY*dist + Math.sin(t*3+d.phase*9)*.8;
+              arr[i*3+2]= base[i*3+2] + d.dirZ*dist + Math.cos(t*2.2+d.phase*7)*.8;
+              if(f>.82){
+                const fade=(1-f)/.18;
+                col[i*3]=d.r*fade; col[i*3+1]=d.g*fade; col[i*3+2]=d.b*fade;
+              } else if(col[i*3]!==d.r){
+                col[i*3]=d.r; col[i*3+1]=d.g; col[i*3+2]=d.b;
+              }
+            }
+            P.geo.attributes.position.needsUpdate=true;
+            P.geo.attributes.color.needsUpdate=true;
+          }
+        }
         photoOrbit.rotation.y = t * rotSpeed;
         if(titleMesh){
           titleMesh.lookAt(camera.position);
