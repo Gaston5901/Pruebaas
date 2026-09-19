@@ -226,7 +226,7 @@ body.galaxy-started #galaxyUI .sound-btn, body.galaxy-started #galaxyUI .galaxy-
   .mobile-break { display: none; }
   .title em { margin-top: 11px; font-size: .78em; }
   .stage { width: 350px; height: 295px; margin: 0; }
-  .bear { top: 40px; width: 250px; }
+  .bear { position: absolute; bottom: -4px; width: 240px; }
   .stage-orbit { width: 280px; }
   .orbit-two { width: 320px; }
   #startBtn { top: -65px; gap: 10px; padding: 16px 34px; }
@@ -249,7 +249,7 @@ body.galaxy-started #galaxyUI .sound-btn, body.galaxy-started #galaxyUI .galaxy-
 }
 
 @media (max-width:700px) and (max-height:720px) {
-  .bear { width: 210px; }
+  .bear { width: 200px; }
 }
 
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; } }
@@ -276,10 +276,11 @@ body.galaxy-started #galaxyUI .sound-btn, body.galaxy-started #galaxyUI .galaxy-
     margin: 0 auto; 
   }
 .bear { 
-    top: 46px;
-    width: 170px;
-    max-width: 80%;
-    /* Ajustá este valor para bajarlo (top) o agrandarlo (width) */
+    position: absolute;
+    bottom: -4px;
+    width: 150px;
+    max-width: 78%;
+    /* Ajustá este valor para agrandarlo (width) o moverlo (bottom) */
   }
   .stage-orbit { width: 230px; height: 100px; }
   .orbit-two { width: 260px; height: 120px; }
@@ -311,7 +312,7 @@ body.galaxy-started #galaxyUI .sound-btn, body.galaxy-started #galaxyUI .galaxy-
   .intro { row-gap: 4px; padding: 10px 12px 20px; }
   .title { font-size: clamp(32px, 8vw, 42px); }
   .stage { width: 230px; height: 180px; }
-  .bear { top: 38px; width: 150px; }
+  .bear { bottom: -2px; width: 140px; }
   #startBtn { padding: 10px 22px; }
   .btn-copy { font-size: 12px; }
 }
