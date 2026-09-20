@@ -213,9 +213,12 @@ border: 1px solid rgba(0, 0, 0, 0.06);
                         </div>
                     </div>
 
-                    <div class="flex gap-2">
+                    <div class="flex gap-2 flex-wrap justify-center">
                         <button onclick="togglePeek()" class="px-4 py-2 rounded-xl bg-white/80 text-gold-700 border border-gold-400/50 hover:bg-white text-xs font-semibold transition-all">
                             <i class="fa-solid fa-eye mr-1"></i> Ver Original
+                        </button>
+                        <button onclick="helpMove()" class="px-4 py-2 rounded-xl bg-white/80 text-gold-700 border border-gold-400/50 hover:bg-white text-xs font-semibold transition-all">
+                            <i class="fa-solid fa-lightbulb mr-1"></i> Ayuda
                         </button>
                         <button onclick="initPuzzle()" class="back-btn px-4 py-2 rounded-xl text-xs transition-all">
                             <i class="fa-solid fa-rotate-right mr-1"></i> Reiniciar
@@ -237,9 +240,9 @@ border: 1px solid rgba(0, 0, 0, 0.06);
                 <div class="inline-block p-2 rounded-full bg-gold-500/15 text-gold-600 mb-2 animate-pulse">
                     <i class="fa-solid fa-heart text-xl"></i>
                 </div>
-                <h2 class="font-serif text-2xl md:text-3xl font-bold text-gold-700 mb-2">Dedicatorias y Mensajes</h2>
+                <h2 class="font-serif text-2xl md:text-3xl font-bold text-gold-700 mb-2">Dedicatoria para mi niñaa</h2>
                 <p class="text-gray-700 text-sm">
-                    Palabras sinceras para iluminar tus días tal como tú iluminas el mío. 💛
+                    Palabras sinceras para iluminar tus días tal como tú iluminas el mío corazon. 💛
                 </p>
             </div>
 
@@ -289,14 +292,14 @@ border: 1px solid rgba(0, 0, 0, 0.06);
                         </div>
                     </div>
                     <p class="text-gray-700 text-sm md:text-base leading-relaxed">
-                        "No necesito una fecha especial en el calendario para regalarte flores amarillas, porque cada día a tu lado es una celebración de la vida. Eres mi refugio, mi inspiración y mi más bonita coincidencia."
+                        "No necesito una fecha especial en el calendario para regalarte flores amarillas, porque cada día a tu lado es una celebración de la vida. Eres mi refugio, mi inspiración y mi más bonita coincidencia pachuchiss."
                     </p>
                 </div>
             </div>
 
             <!-- Caja interactiva -->
             <div class="glass-petal p-6 rounded-3xl text-center">
-                <h3 class="font-serif text-lg font-bold text-gold-700 mb-2">Envía una sonrisa</h3>
+                <h3 class="font-serif text-lg font-bold text-gold-700 mb-2">Para tuu</h3>
                 <p class="text-gray-600 text-xs mb-4">Haz clic abajo para recibir un abrazo virtual y energía positiva.</p>
                 <button onclick="triggerSurprise()" class="back-btn px-6 py-3 rounded-xl text-sm transition-all">
                     <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Recibir Abrazos Virtuales
@@ -410,6 +413,9 @@ border: 1px solid rgba(0, 0, 0, 0.06);
         let moves = 0;
         let currentImageSrc = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwygZ4KDlT_ZXQf6UFw6IUqZjfAwcj6K9rbtud2smutQ&s=10";
         let isPeeking = false;
+        let hintTileIdx = null;
+        let currentPlan = null;    // plan de movimientos (índices de piezas) hacia la solución
+        let planStateKey = null;   // estado del tablero con el que se calculó el plan actual
 
         function changeGridSize() {
             const select = document.getElementById('grid-size-select');
@@ -422,6 +428,9 @@ border: 1px solid rgba(0, 0, 0, 0.06);
             document.getElementById('move-count').innerText = moves;
             document.getElementById('puzzle-status').innerText = "En progreso...";
             document.getElementById('puzzle-status').className = "text-gold-600";
+            hintTileIdx = null;
+            currentPlan = null;
+            planStateKey = null;
 
             const totalTiles = gridSize * gridSize;
             winningBoard = Array.from({length: totalTiles}, (_, i) => i); // [0, 1, 2, ..., N-1] donde N-1 es el vacío
@@ -495,6 +504,14 @@ border: 1px solid rgba(0, 0, 0, 0.06);
 
                     tile.onclick = () => handleTileClick(idx);
                 }
+
+                if (hintTileIdx !== null && idx === hintTileIdx && val !== emptyVal) {
+                    tile.style.outline = '3px solid #c19a4b';
+                    tile.style.outlineOffset = '2px';
+                    tile.style.boxShadow = '0 0 14px rgba(201, 154, 75, 0.9)';
+                    tile.style.zIndex = '5';
+                }
+
                 boardContainer.appendChild(tile);
             });
         }
@@ -503,11 +520,29 @@ border: 1px solid rgba(0, 0, 0, 0.06);
             let emptyIdx = board.indexOf(gridSize * gridSize - 1);
             let validMoves = getValidMoves(emptyIdx);
 
-            if (validMoves.includes(idx)) {
+if (validMoves.includes(idx)) {
                 board[emptyIdx] = board[idx];
                 board[idx] = gridSize * gridSize - 1;
                 moves++;
                 document.getElementById('move-count').innerText = moves;
+                hintTileIdx = null;
+
+                // Si el jugador siguió la pista (movió la pieza que el plan indicaba),
+                // avanzar en el plan. Si se desvía, invalidar el plan: se recalcula
+                // desde el nuevo estado la próxima vez que pida ayuda.
+                if (Array.isArray(currentPlan)) {
+                    if (currentPlan[0] === idx) {
+                        currentPlan.shift();
+                        if (currentPlan.length === 0) {
+                            currentPlan = null;
+                            planStateKey = null;
+                        }
+                    } else {
+                        currentPlan = null;
+                        planStateKey = null;
+                    }
+                }
+
                 renderPuzzle();
 
                 if (checkWinCondition()) {
@@ -538,6 +573,429 @@ border: 1px solid rgba(0, 0, 0, 0.06);
         function togglePeek() {
             isPeeking = !isPeeking;
             renderPuzzle();
+        }
+
+        // ------ BOTÓN DE AYUDA: siguiente movimiento hacia la solución ------
+        // Solucionador estratégico por capas: arma filas desde arriba y desde
+        // abajo, luego las columnas del bloque central y finalmente el 2x2.
+        // Es determinístico, instantáneo y calcula SIEMPRE un movimiento que
+        // avanza hacia la solución partiendo del tablero ACTUAL (no deshace
+        // lo que el jugador ya hizo por su cuenta).
+
+        function clearHint() {
+            hintTileIdx = null;
+        }
+
+        // Recalcula el plan completo desde el estado actual del tablero.
+        // Devuelve un array de índices: cada elemento es la posición de la
+        // pieza que hay que deslizar en ese paso.
+        function computeSolvePlan() {
+            const total = gridSize * gridSize;
+            const emptyVal = total - 1;
+            const startBoard = board.slice();
+            const startEmpty = startBoard.indexOf(emptyVal);
+
+            // --- Clases auxiliares (port adaptado al tablero plano de este juego) ---
+
+            class SGrid {
+                constructor(tiles, emptyPos) {
+                    this.numRows = gridSize;
+                    this.numCols = gridSize;
+                    this.tiles = tiles.slice();
+                    this.emptyPos = emptyPos;
+                    // goals[tileValue] = índice actual donde está esa pieza
+                    this.goals = new Array(total);
+                    for (let i = 0; i < total; i++) this.goals[this.tiles[i]] = i;
+                    this.rowStart = 0;
+                    this.rowEnd = this.numRows;
+                    this.colStart = 0;
+                    this.colEnd = this.numCols;
+                }
+                getTileCol(ind) { return ind % this.numCols; }
+                getTileRow(ind) { return Math.floor(ind / this.numCols); }
+                getIndex(row, col) { return row * this.numCols + col; }
+                swap(p1, p2) {
+                    this.goals[this.tiles[p1]] = p2;
+                    this.goals[this.tiles[p2]] = p1;
+                    const tmp = this.tiles[p1];
+                    this.tiles[p1] = this.tiles[p2];
+                    this.tiles[p2] = tmp;
+                }
+                getMoveDelta(move) {
+                    const map = { r: 1, l: -1, u: -this.numCols, d: this.numCols };
+                    return map[move];
+                }
+                getMovedInd(move) { return this.emptyPos - this.getMoveDelta(move); }
+                applyMove(move) {
+                    const movedInd = this.getMovedInd(move);
+                    this.swap(this.emptyPos, movedInd);
+                    this.emptyPos = movedInd;
+                }
+            }
+
+            const grid = new SGrid(startBoard, startEmpty);
+            const moves = [];
+            let emptyRow = grid.getTileRow(grid.emptyPos);
+            let emptyCol = grid.getTileCol(grid.emptyPos);
+
+            // Aplica una pieza o varias (cada pieza es un movimiento de letra),
+            // registrando TODO en `moves` y manteniendo emptyRow/emptyCol.
+            function move(moveList) {
+                for (const mv of moveList) {
+                    moves.push(mv);
+                    grid.applyMove(mv);
+                    switch (mv) {
+                        case 'l': emptyCol++; break;
+                        case 'r': emptyCol--; break;
+                        case 'u': emptyRow++; break;
+                        case 'd': emptyRow--; break;
+                    }
+                }
+            }
+
+            // Mueve la pieza que está en `ind` hasta su lugar `goalInd` sin
+            // desarmar lo ya resuelto.
+            function moveTile(ind, goalInd) {
+                if (ind === goalInd) return;
+
+                [emptyRow, emptyCol] = [grid.getTileRow(grid.emptyPos), grid.getTileCol(grid.emptyPos)];
+
+                let [row, col] = [grid.getTileRow(ind), grid.getTileCol(ind)];
+                let [goalRow, goalCol] = [grid.getTileRow(goalInd), grid.getTileCol(goalInd)];
+
+                if (col < goalCol && emptyRow === goalRow) {
+                    emptyRow === grid.rowEnd - 1 ? move('d') : move('u');
+                }
+
+                while (col > goalCol) {
+                    if (row === emptyRow && emptyCol > col) {
+                        if (goalRow === grid.rowStart) {
+                            row === grid.rowEnd - 1 ? move('d') : move('u');
+                        } else if (goalRow === grid.rowEnd - 1) {
+                            row === grid.rowStart ? move('u') : move('d');
+                        }
+                    }
+                    while (emptyCol >= col) move('r');
+                    while (emptyCol < col - 1) move('l');
+                    while (emptyRow > row) move('d');
+                    while (emptyRow < row) move('u');
+                    move('l');
+                    col--;
+                }
+
+                while (col < goalCol) {
+                    if (row === emptyRow && emptyCol < col) {
+                        if (goalRow === grid.rowStart) {
+                            row === grid.rowEnd - 1 ? move('d') : move('u');
+                        } else if (goalRow === grid.rowEnd - 1) {
+                            row === grid.rowStart ? move('u') : move('d');
+                        }
+                    }
+                    while (emptyCol <= col) move('l');
+                    while (emptyCol > col + 1) move('r');
+                    while (emptyRow > row) move('d');
+                    while (emptyRow < row) move('u');
+                    move('r');
+                    col++;
+                }
+
+                // La pieza ya está en la columna correcta
+                while (row > goalRow) {
+                    if (col !== grid.colEnd - 1 || row - 2 > goalRow) {
+                        if (row - 1 === goalRow && emptyCol <= col && emptyRow >= row) {
+                            while (emptyRow <= row) move('u');
+                            while (emptyCol <= col) move('l');
+                        }
+                        if (emptyRow > row && emptyCol === col) {
+                            col === grid.colEnd - 1 ? move('r') : move('l');
+                        }
+                        while (emptyRow >= row) move('d');
+                        while (emptyRow < row - 1) move('u');
+                        while (emptyCol > col) move('r');
+                        while (emptyCol < col) move('l');
+                        move('u');
+                        row--;
+                    } else {
+                        if (row - 1 === goalRow) {
+                            if (emptyRow === goalRow) {
+                                move('u');
+                                return;
+                            } else {
+                                while (emptyRow <= row) move('u');
+                                while (emptyCol < col) move('l');
+                                move('d');
+                                row++;
+                            }
+                        }
+                        if (emptyRow > row && emptyCol === col) move('r');
+                        while (emptyRow > goalRow + 1) move('d');
+                        while (emptyCol < goalCol) move('l');
+                        while (emptyRow > goalRow) move('d');
+                        move('rulurddlu');
+                        row = goalRow;
+                    }
+                }
+
+                while (row < goalRow) {
+                    if (col !== grid.colEnd - 1 || row + 2 < goalRow) {
+                        if (row + 1 === goalRow && emptyCol <= col && emptyRow <= row) {
+                            while (emptyRow >= row) move('d');
+                            while (emptyCol <= col) move('l');
+                        }
+                        if (col === emptyCol && emptyRow < row) {
+                            col === grid.colEnd - 1 ? move('r') : move('l');
+                        }
+                        while (emptyRow <= row) move('u');
+                        while (emptyRow > row + 1) move('d');
+                        while (emptyCol > col) move('r');
+                        while (emptyCol < col) move('l');
+                        move('d');
+                        row++;
+                    } else {
+                        if (row + 1 === goalRow) {
+                            if (emptyRow === goalRow) {
+                                move('d');
+                                return;
+                            } else {
+                                while (emptyRow >= row) move('d');
+                                while (emptyCol < col) move('l');
+                                move('u');
+                                row--;
+                            }
+                        }
+                        if (emptyRow < row && emptyCol === col) move('r');
+                        while (emptyRow < goalRow - 1) move('u');
+                        while (emptyCol < goalCol) move('l');
+                        while (emptyRow < goalRow) move('u');
+                        move('rdldruuld');
+                        row = goalRow;
+                    }
+                }
+            }
+
+            // ---- Estrategia por capas ----
+            const emptyGoal = emptyVal;                       // la pieza del vacío va a la última celda
+            const emptyGoalRow = grid.getTileRow(emptyGoal);
+            const emptyGoalCol = grid.getTileCol(emptyGoal);
+
+            // Resuelve filas de arriba hacia abajo
+            for (let row = 0; row < Math.min(emptyGoalRow, grid.numRows - 2); row++) {
+                const start = grid.numCols * row;
+                for (let goal = start; goal < start + grid.numCols; goal++) {
+                    moveTile(grid.goals[goal], goal);
+                }
+                grid.rowStart++;
+            }
+
+            // Resuelve filas de abajo hacia arriba
+            for (let row = grid.numRows - 1; row > emptyGoalRow + 1; row--) {
+                const start = grid.numCols * row;
+                for (let goal = start + grid.numCols - 1; goal >= start; goal--) {
+                    moveTile(grid.goals[goal], goal);
+                }
+                grid.rowEnd--;
+            }
+
+            // Queda un bloque 2xN: resolver columnas desde la izquierda
+            const emptyColGoal = grid.getTileCol(grid.tiles[grid.emptyPos]);
+            for (let col = 0; col < Math.min(grid.numCols - 2, emptyColGoal); col++) {
+                const topGoal = grid.getIndex(grid.rowStart, grid.colStart);
+                const topInd = grid.goals[topGoal];
+                moveTile(topInd, topGoal);
+
+                const bottomGoal = topGoal + grid.numCols;
+                const bottomInd = grid.goals[bottomGoal];
+                if (bottomInd === bottomGoal) { grid.colStart++; continue; }
+
+                const bottomCol0 = grid.getTileCol(bottomInd);
+                const bottomRow0 = grid.getTileRow(bottomInd);
+                let bottomCol = bottomCol0;
+                let bottomRow = bottomRow0;
+
+                if (emptyCol === grid.colStart && grid.emptyPos + 1 === bottomInd) {
+                    move('l');
+                    grid.colStart++;
+                    continue;
+                }
+
+                while (bottomRow < grid.rowEnd - 1) {
+                    if (emptyRow === grid.rowStart) move('u');
+                    while (emptyCol > bottomCol) move('r');
+                    while (emptyCol < bottomCol) move('l');
+                    move('d');
+                    bottomRow++;
+                }
+
+                while (bottomCol > col + 2) {
+                    if (emptyRow === bottomRow && emptyCol > bottomCol) move('d');
+                    while (emptyCol >= bottomCol) move('r');
+                    if (emptyRow < bottomRow) move('u');
+                    while (emptyCol < bottomCol) move('l');
+                    bottomCol--;
+                }
+                while (bottomCol < col + 2) {
+                    if (emptyCol === bottomCol) move('l');
+                    if (emptyRow === grid.rowStart) move('u');
+                    while (emptyCol > bottomCol) move('r');
+                    bottomCol++;
+                }
+
+                if (emptyCol > bottomCol && emptyRow === bottomRow) move('d');
+                while (emptyCol >= bottomCol) move('r');
+                if (emptyRow === grid.rowStart) move('u');
+                while (emptyCol > grid.colStart) move('r');
+                move('dluldrrul');
+                grid.colStart++;
+            }
+
+            // Resolver columnas desde la derecha
+            for (let col = grid.numCols - 1; col > emptyColGoal + 1; col--) {
+                const topGoal = grid.getIndex(grid.rowStart, grid.colEnd - 1);
+                const topInd = grid.goals[topGoal];
+
+                let topCol = grid.getTileCol(topInd);
+                let topRow = grid.getTileRow(topInd);
+
+                if (topRow > grid.rowStart) {
+                    if (emptyRow === grid.rowEnd - 1) move('d');
+                    while (emptyCol < topCol) move('l');
+                    while (emptyCol > topCol) move('r');
+                    move('u');
+                    topRow--;
+                }
+                while (topCol < grid.colEnd - 1) {
+                    if (emptyCol < topCol && emptyRow === topRow) move('u');
+                    while (emptyCol <= topCol) move('l');
+                    while (emptyCol > topCol + 1) move('r');
+                    if (emptyRow > topRow) move('d');
+                    move('r');
+                    topCol++;
+                }
+
+                const bottomGoal2 = topGoal + grid.numCols;
+                const bottomInd2 = grid.goals[bottomGoal2];
+                if (bottomInd2 === bottomGoal2) { grid.colEnd--; continue; }
+
+                const bottomCol2 = grid.getTileCol(bottomInd2);
+                const bottomRow2 = grid.getTileRow(bottomInd2);
+                let bottomCol = bottomCol2;
+                let bottomRow = bottomRow2;
+
+                if (emptyCol === grid.colEnd - 1 && grid.emptyPos - 1 === bottomInd2) {
+                    move('r');
+                    grid.colEnd--;
+                    continue;
+                }
+
+                while (bottomRow < grid.rowEnd - 1) {
+                    if (emptyRow === grid.rowStart) move('u');
+                    while (emptyCol > bottomCol) move('r');
+                    while (emptyCol < bottomCol) move('l');
+                    move('d');
+                    bottomRow++;
+                }
+
+                while (bottomCol < col - 2) {
+                    if (emptyRow === bottomRow && emptyCol < bottomCol) move('d');
+                    while (emptyCol <= bottomCol) move('l');
+                    if (emptyRow < bottomRow) move('u');
+                    while (emptyCol > bottomCol) move('r');
+                    bottomCol++;
+                }
+                while (bottomCol > col - 2) {
+                    if (emptyCol === bottomCol) move('r');
+                    if (emptyRow === grid.rowStart) move('u');
+                    while (emptyCol < bottomCol) move('l');
+                    bottomCol--;
+                }
+
+                if (emptyCol < bottomCol && emptyRow === bottomRow) move('d');
+                while (emptyCol <= bottomCol) move('l');
+                if (emptyRow === grid.rowStart) move('u');
+                while (emptyCol < grid.colEnd - 1) move('l');
+                move('drurdllur');
+                grid.colEnd--;
+            }
+
+            // 2x2 final (dos piezas + vacío): se resuelve directamente
+            const topLeftGoal = grid.getIndex(grid.rowStart, grid.colStart);
+            if (topLeftGoal !== emptyGoal) {
+                moveTile(grid.goals[topLeftGoal], topLeftGoal);
+                if (emptyCol > emptyGoalCol) {
+                    if (emptyRow < emptyGoalRow) move('u');
+                    move('r');
+                }
+                if (emptyCol < emptyGoalCol) move('l');
+                if (emptyRow > emptyGoalRow) move('d');
+                if (emptyRow < emptyGoalRow) move('u');
+            }
+
+            const bottomLeftGoal = topLeftGoal + grid.numCols;
+            if (bottomLeftGoal !== emptyGoal) {
+                moveTile(grid.goals[bottomLeftGoal], bottomLeftGoal);
+                if (emptyCol > emptyGoalCol) {
+                    if (emptyRow > emptyGoalRow) move('d');
+                    move('r');
+                }
+                if (emptyCol < emptyGoalCol) move('l');
+                if (emptyRow > emptyGoalRow) move('d');
+                if (emptyRow < emptyGoalRow) move('u');
+            }
+
+            // Convertir la secuencia de letras en índices de pieza a deslizar
+            const plan = [];
+            let curBoard = startBoard.slice();
+            let curEmpty = startEmpty;
+            const deltaMap = { r: 1, l: -1, u: -gridSize, d: gridSize };
+            for (const mv of moves) {
+                const tileIdx = curEmpty - deltaMap[mv];
+                plan.push(tileIdx);
+                curBoard[curEmpty] = curBoard[tileIdx];
+                curBoard[tileIdx] = emptyVal;
+                curEmpty = tileIdx;
+            }
+            return plan;
+        }
+
+        function helpMove() {
+            clearHint();
+
+            if (checkWinCondition()) {
+                alertCustom("¡Ya está armado! La flor está completa. 💛");
+                return;
+            }
+
+            // Si el tablero cambió (el jugador se movió solo), recalcular el plan
+            const key = board.join(',');
+            if (!Array.isArray(currentPlan) || planStateKey !== key) {
+                currentPlan = computeSolvePlan();
+                planStateKey = key;
+            }
+
+            if (!Array.isArray(currentPlan) || currentPlan.length === 0) {
+                alertCustom("Uy, no encontré un movimiento sugerido. Probá reiniciar el puzzle. 🌻");
+                return;
+            }
+
+            const fromIdx = currentPlan[0];
+            const pieceVal = board[fromIdx];
+            const emptyIdx = board.indexOf(gridSize * gridSize - 1);
+            hintTileIdx = fromIdx;
+
+            const eRow = Math.floor(emptyIdx / gridSize);
+            const eCol = emptyIdx % gridSize;
+            const tRow = Math.floor(fromIdx / gridSize);
+            const tCol = fromIdx % gridSize;
+
+            let dir, arrow;
+            if (tRow < eRow)      { dir = "abajo";        arrow = "👇"; }
+            else if (tRow > eRow) { dir = "arriba";       arrow = "👆"; }
+            else if (tCol < eCol) { dir = "la derecha";   arrow = "👉"; }
+            else                  { dir = "la izquierda"; arrow = "👈"; }
+
+            renderPuzzle();
+
+            alertCustom(`💡 Deslizá la pieza ${pieceVal + 1} hacia ${dir} ${arrow}`);
         }
 
         // Gestión de Imágenes Personalizadas
