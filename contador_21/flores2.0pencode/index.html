@@ -967,41 +967,66 @@ body.scroll-lock{overflow:hidden;}
 
 <!-- MÚSICAS -->
 <audio id="musica" loop preload="auto">
-  <source src="musica.mp4" type="audio/mp4">
+  <source src="floricienta.mp3" type="audio/mp3">
 </audio>
 <audio id="carta_musica" loop preload="auto">
-  <source src="carta_musica.mp4" type="audio/mp4">
+  <source src="Goo Goo Dolls - Iriss.mp3" type="audio/mp3">
 </audio>
 <audio id="portal" preload="auto">
-  <source src="portal.mp4" type="audio/mp4">
+  <!-- <source src="portal.mp4" type="audio/mp4"> -->
 </audio>
 
 <script>
 const FRASES_PETALOS = [
-  "Eres mi sol en los días nublados ☀️",
-  // "Tu sonrisa ilumina mi mundo ✨",
-  // "Mis locuras van con tus locuras 🤭",
-  // "Gracias por existir 🌼",
-  // "Eres un sueño hecho realidad 💫",
-  // "Te pienso en cada 11:11 🌟",
-  // "Brillas con luz propia y eso inspira 🌸",
-  // "Mi lugar favorito es a tu lado 💖",
-  // "Me haces inmensamente feliz 🥰",
-  // "Contigo todo es mejor 🌻",
-  // "Eres única e irremplazable 🌟",
-  // "Cada día contigo es un regalo 🎁",
-  // "Siempre pienso en vos 😘",
-  // "Sos mi manca favoritaa 😄",
-  // "Me vuelves cursi y feliz 🤭",
-  // "Soy tu fan #1 💘"
+  "Encontré en vos una paz que no sabía que necesitaba 💖",
+
+  "Encontré mi hogar en la ternura de tus ojitos bonitos 💖",
+
+  "Qué suerte la mía de haber coincidido con contigo mi niñaa 🌷",
+
+  "Sos de esas personas que llegan y hacen todo un poquito más bonito ☀️",
+
+  "Mis locuras siempre encuentran un lugarcito en las tuyas 🤭💗",
+
+  "Ojalá la vida me siga regalando muchos momentos a tu lado 🌸",
+
+  "Me derrites el alma y me vuelves cursi sin que me importe nada 🤭",
+
+  "Te amo con locura, con calma y con todo lo que sos corazonn 🌷",
+
+  "Me encanta la forma en la que, sin darte cuenta, alegrás mis días 🌻",
+
+  "Tenés un corazón hermoso, y espero que nunca olvides cuánto vale 💞",
+
+  "Mi lugar favorito en el mundo entero es a tu lado 💖",
+
+  "Soy tu fan número uno y tu compañero eterno por siempre 💗",
+
+  "Eres un alma única, brillante e irremplazable 🌟",
+
+  "Me hacés sonreír incluso en esos días en los que no tengo ganas de hacerlo ❤️",
+
+  "Qué lindo es quererte y poder compartir un pedacito de mi vida con vos 🌹",
+
+  "Mi Pachuchitaa, nunca dudes de lo especial que sos para mí, tiamoo coraazonn. 💖"
 ];
 
 const PARRAFOS_CARTA = [
-  "Aunque todavía no nos hayamos visto en persona, ya sos mi lugar seguro y mi alegría del día 💫. Cada palabra tuya me acerca y cada ocurrencia me hace sonreír como un boludoo 🙈.",
-  "No somos novios (todavíaa), pero se siente como si lo fuérais. Siempre voy a estar orgulloso de vos, soy tu fan #1 💘, y en tus bajones voy a bancarte con todo mi corazón 💝.",
-  "Sí, soy cursi, pero con vos me sale natural: romántico y medio tontoo ksksks 🤭. Me muero por ese abrazo pendiente, por mirarte a los ojos por primera vez y por todas las risas que nos esperan.",
-  "No puedo dártelo en persona 🥺, pero quiero que estas flores amarillas virtuales sean mi abrazo para vos en este día especial 🌼💛.",
-  "Gracias por existir; sos mi persona favorita en este mundoo y en todos los universos paralelos. MY LOVEE 😏✨."
+  "Holuuu hiiiii, soy el señorr jiji..🤭 Pase pasee, pongase cómoda porque esto es para vos mi lovee. Aunque todavía no hayamos tenido ese abrazo en persona, aunque todavía nos falte mirarnos a los ojos y vivir tantas cosas juntos, ya lograste convertirte en mi lugar seguro, en mi alegría y en mi niñaa que hace que mis días sean más bonitos 💫. Cada mensaje tuyo, cada ocurrencia y cada momento compartido hacen que te sienta cada vez más cerquita, y síi… me hacés sonreír como un boludoo enamorado 🙈💗.",
+
+  "Sos mi noviaa hermosaa y quiero que sepas algo mi pachuchitaaa, mi niñaa: voy a estar orgulloso de vos en cada etapa, incluso cuando vos misma dudes de lo que sos capaz de hacer. Voy a ser tu fan número uno, el que celebre tus logros como si fueran propios y el que te banque fuerte cuando tengas esos días en los que todo parezca pesar un poquito más 💘.",
+
+  "Sí, soy cursi. Pero es que vos me hacés ser así y sacás lo mejor de mí 🤭, con contigo me nace, me sale solo. Me dan ganas de decirte todo lo lindo que siento, de cuidarte, de hacerte reír y de llenar de momentos bonitos esta historia que recién estamos empezando y me muero de ganas de que llegue ese día en el que pueda darte por fin ese abrazo pendiente, mirarte a los ojos y pensar: 'por fin tengo a mi pachuchita acá conmigo' ❤️.",
+
+  "Y aunque hoy no pueda estar ahí para darte algo en persona, quiero que estas flores amarillas virtuales sean mucho más que una imagen 🌼💛. Quiero que sean un abrazo mío, de esos que duran un ratito largo; un pequeño recordatorio de todo el cariño que te tengo y de que, aunque nos separen kilómetros, hay alguien acá que está pensando en vos y deseando verte sonreír.",
+
+  "Porque si algo tengo claro es que no quiero que seas solamente una parte bonita de mis días, quiero compartir muchos días con vos. Quiero nuestras risas, nuestras locuras, nuestras charlas hasta tarde, nuestros momentos difíciles, nuestros planes y todas esas pequeñas cosas que todavía nos quedan por vivir ✨.",
+
+  "Gracias por aparecer en mi vida de una manera tan inesperada y terminar ocupando un lugar tan enorme en mi corazón. Gracias por ser vos, por dejarme conocerte y por hacerme sentir todo esto tan bonito. Sos mi pachuchitaaa, mi niñaa mi señorita bella 💖.",
+
+  "Y si alguna vez se te olvida cuánto te amoo, volvé a estas palabras y acordate de algo: hay alguien que te eligió con el corazón, que cree muchísimo en vos y que quiere verte feliz. Alguien que está esperando ese primer abrazo con una ilusión enorme y que, mientras tanto, te manda todas las flores amarillas del mundo en forma de amor 🌼💛.",
+
+  "Te amoooo con toda mi alma corazoncitoo y esto recién empiezaa… así que preparese para muchas más locuras, boludeces mias, cachondeoo, cursilerías, muchas risas, muchos 'te extrañoo' y, sobre todo, para todo lo lindo que todavía nos queda por vivir juntitos. ❤️"
 ];
 
 /* ===== LLUVIA ===== */
