@@ -267,6 +267,99 @@ header{
   box-shadow: 0 12px 36px rgba(48,3,10,.5), 0 2px 8px rgba(212,175,55,.45);
 }
 
+/* Variante de la Rosa: rojo oscuro estilo cúpula de vidrio */
+.card[data-num="26"]{
+  background:
+    radial-gradient(240px 140px at 20% 6%, rgba(255, 120, 120, .22), transparent 65%),
+    linear-gradient(150deg, #4d0713, #2a030b 52%, #120106);
+  border-color: #ff8a80;
+  animation: rosa-glow 4s ease-in-out infinite;
+}
+
+.card[data-num="26"]::before{
+  background:
+    radial-gradient(4px 4px at 18% 24%, rgba(255,190,190,.85), transparent 60%),
+    radial-gradient(3px 3px at 74% 14%, rgba(255,190,190,.7), transparent 60%),
+    radial-gradient(3px 3px at 62% 46%, rgba(255,190,190,.6), transparent 60%),
+    radial-gradient(4px 4px at 30% 62%, rgba(255,190,190,.8), transparent 60%),
+    radial-gradient(3px 3px at 88% 60%, rgba(255,190,190,.7), transparent 60%),
+    radial-gradient(4px 4px at 46% 82%, rgba(255,190,190,.6), transparent 60%),
+    radial-gradient(300px 190px at 50% 92%, rgba(229,57,53,.45), transparent 66%);
+  opacity: .75;
+}
+
+/* Reflejo de vidrio que cruza la card */
+.card[data-num="26"]::after{
+  content: "";
+  position: absolute;
+  top: -40%;
+  width: 45%;
+  height: 180%;
+  left: -60%;
+  background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.14) 45%, rgba(255,255,255,.28) 50%, rgba(255,255,255,.14) 55%, transparent 70%);
+  transform: skewX(-20deg);
+  animation: vidrio-shine 5.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes rosa-glow {
+  0%, 100% {
+    box-shadow: 0 8px 32px rgba(30, 1, 8, .4), 0 2px 8px rgba(255,120,120,.35), inset 0 0 24px rgba(255,90,90,.08);
+  }
+  50% {
+    box-shadow: 0 8px 40px rgba(60, 1, 15, .55), 0 2px 14px rgba(255,120,120,.65), inset 0 0 34px rgba(255,90,90,.18);
+  }
+}
+
+@keyframes vidrio-shine {
+  0% { left: -60%; }
+  45% { left: 135%; }
+  100% { left: 135%; }
+}
+
+.card[data-num="26"] h2{
+  color: #ffb4c9;
+  text-shadow: 0 1px 8px rgba(255,120,120,.4);
+}
+
+.card[data-num="26"] .card-number{
+  background: linear-gradient(135deg, #ff8a80, #e53935);
+  color: #2a030b;
+  border-color: #ffb4c9;
+  box-shadow: 0 2px 8px rgba(255,120,120,.4);
+  animation: numero-late 3s ease-in-out infinite;
+}
+
+@keyframes numero-late {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.card[data-num="26"] .tag{
+  background: linear-gradient(90deg, #fff0f0, #ffe3eb);
+  border-color: #ff8a80;
+  color: #7a1f1f;
+}
+
+.card[data-num="26"] .arrow{
+  background: #fff0f0;
+  border-color: #ff8a80;
+  color: #c62828;
+  box-shadow: 0 2px 8px rgba(255,120,120,.4);
+}
+
+.card[data-num="26"]:hover{
+  border-color: #ffb4c9;
+  background:
+    radial-gradient(260px 150px at 20% 6%, rgba(255, 120, 120, .3), transparent 65%),
+    linear-gradient(150deg, #5c0917, #33030e 52%, #180207);
+  box-shadow: 0 12px 44px rgba(60, 1, 15, .6), 0 2px 12px rgba(255, 120, 120, .6), inset 0 0 34px rgba(255, 90, 90, .14);
+}
+
+.card[data-num="26"]:hover .card-number{
+  background: linear-gradient(135deg, #ffb4c9, #e53935);
+}
+
 footer{
   margin-top: 22px;
   color: #b48bbd;
@@ -472,6 +565,17 @@ footer{
           <span style="background:rgba(139, 121, 121, 0.8);padding:8px 18px;border-radius:999px;color:#000000;font-weight:600;font-size:1.1em;">Proximamente</span>
         </div>
       </a> -->
+
+                                                                        <!-- card 26 -->
+         <a class="card" data-num="26" href="rosa hermosaaa que anda/index.html">
+                                                                        <h2><span class="card-number"></span>Rosa hermosaaa</h2>
+        <div class="meta">
+                                                                          <span class="tag">Para mi pachuchititaa 🌹</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+
 
                                                                         <!-- card 25 -->
          <a class="card" data-num="25" href="cartaraspar/index.html">

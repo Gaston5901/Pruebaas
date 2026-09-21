@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const CFG = window.GALAXIA_INFINITA_DATA || {};
       const phrases = (Array.isArray(CFG.phrases) && CFG.phrases.length)
         ? CFG.phrases
-        : ["Eres preciosa 🌼", "Te Amo ☀️", "Mi girasol 🌻", "Mi alegría 💛", "Niña Bellaa ✨", "Mi destino 💛", "Saranghae 🌻", "Para siempre ✨", "Amor de mi vida 💛"];
+        : ["Sos preciosa 🌼", "Te Amooo ☀️", "Mi girasol 🌻", "Mi alegría 💛", "Niña Bellaa ✨", "Mi destino 💛", "Saranghae 🌹", "Para siempre ✨", "Amor de mi vida 💛", "Eres única 🌟", "Increíble", "Brillantee"];
       const phraseEmojis = [];
       const decoratedPhrases = phrases.map((phrase, index) => `${phrase.trim()} ${phraseEmojis[index % (phraseEmojis.length || 1)] || ''}`);
       const isCompactDevice = window.innerWidth < 700;
@@ -349,8 +349,8 @@ document.addEventListener('DOMContentLoaded', function() {
           });
           imgPointer++;
         } else {
-          const text = decoratedPhrases[i%decoratedPhrases.length];
-          const phraseIndex=i%decoratedPhrases.length;
+          const phraseIndex = Math.floor(Math.random() * decoratedPhrases.length);
+          const text = decoratedPhrases[phraseIndex];
           const tex=makeTextTexture(text,phraseIndex);
           const spr=new THREE.Sprite(new THREE.SpriteMaterial({ map:tex, transparent:true, opacity:1, depthWrite:false, depthTest:true }));
           spr.isPhrase=true;

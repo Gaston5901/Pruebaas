@@ -608,8 +608,11 @@
   const overlay = document.getElementById("overlay");
   const btnEnter = document.getElementById("btn-enter");
 
-  // FECHA REAL vs SIMULADA PARA PRUEBAS (En este caso 2 minutos para que cuente)
-  let testTime = 120; // 120 segundos = 2 minutos
+  // Cuenta regresiva real: 21 de septiembre del año actual a las 00:00.
+  // Al llegar a cero (o si la fecha ya pasó) se desbloquea el overlay.
+  function getTarget() {
+    return new Date(new Date().getFullYear(), 8, 21, 0, 0, 0, 0); // mes 8 = septiembre
+  }
 
   function unlock() {
     // 1. Frena la rotación de frases normales
@@ -640,7 +643,11 @@
 
   let timer;
   function tick() {
-    if (testTime <= 0) {
+    const target = getTarget();
+    const now = Date.now();
+    const diff = target.getTime() - now;
+
+    if (diff <= 0) {
       elD.textContent = "0";
       elH.textContent = "00";
       elM.textContent = "00";
@@ -653,21 +660,22 @@
       return;
     }
 
-    // Descuento segundo a segundo de prueba
-    const m = Math.floor(testTime / 60);
-    const s = testTime % 60;
+    const totalSeg = Math.floor(diff / 1000);
+    const d = Math.floor(totalSeg / 86400);
+    const h = Math.floor((totalSeg % 86400) / 3600);
+    const m = Math.floor((totalSeg % 3600) / 60);
+    const s = totalSeg % 60;
 
-    elD.textContent = "0";
-    elH.textContent = "00";
+    elD.textContent = d;
+    elH.textContent = h.toString().padStart(2, "0");
     elM.textContent = m.toString().padStart(2, "0");
     elS.textContent = s.toString().padStart(2, "0");
 
-    // Barra simulada
-    const percentage = Math.min(100, Math.max(5, ((120 - testTime) / 120) * 100));
-    progressFill.style.width = percentage.toFixed(1) + "%";
-    progressText.textContent = percentage.toFixed(1) + "%";
-
-    testTime--;
+    // Barra "Sorpresa cargada": % del año transcurrido hasta la fecha objetivo
+    const startYear = new Date(target.getFullYear(), 0, 1).getTime();
+    const pct = Math.min(99.9, Math.max(0, ((now - startYear) / (target.getTime() - startYear)) * 100));
+    progressFill.style.width = pct.toFixed(1) + "%";
+    progressText.textContent = pct.toFixed(1) + "%";
   }
 
   tick();

@@ -765,14 +765,23 @@ body.scroll-lock{overflow:hidden;}
   letter-spacing:2px;
 }
 
+.carta-barra{
+  position:sticky; top:10px; z-index:60;
+  display:flex; justify-content:flex-end;
+  margin-bottom:8px;
+}
 .boton-cerrar-carta{
-  position:absolute; top:10px; right:12px;
-  width:30px; height:30px; border-radius:50%;
+  width:32px; height:32px; border-radius:50%;
   background:linear-gradient(135deg,#e1bee7,#ab47bc);
   border:none;
-  font-size:0.9rem; font-weight:bold; color:#fff;
-  cursor:pointer; z-index:60;
+  font-size:0.95rem; font-weight:bold; color:#fff;
+  cursor:pointer;
   box-shadow:0 2px 6px rgba(74,26,109,.4);
+  flex:none;
+}
+@media (max-width:480px){
+  .carta-barra{ position:sticky; top:6px; margin-bottom:4px; }
+  .boton-cerrar-carta{ width:26px; height:26px; font-size:.75rem; }
 }
 
 #fx-layer{position:fixed; inset:0; pointer-events:none; z-index:1400;}
@@ -927,7 +936,7 @@ body.scroll-lock{overflow:hidden;}
 <div class="tarjeta" id="tarjeta">
   <div class="tarjeta-caja">
     <button class="cerrar-x" id="cerrar-frase">✕</button>
-    <div style="font-size: 2.2rem;">🌼</div>
+    <div style="font-size: 2.2rem;">🌻</div>
     <p class="tarjeta-frase" id="frase"></p>
     <button class="btn" id="btn-frase">Seguir</button>
     <div class="chips-letrero" id="letrero"></div>
@@ -939,7 +948,9 @@ body.scroll-lock{overflow:hidden;}
   <div class="sobre-wrap">
     <div class="sobre" id="sobre">
       <div class="carta-papel">
-        <button class="boton-cerrar-carta" id="cerrar-carta">✕</button>
+        <div class="carta-barra">
+          <button class="boton-cerrar-carta" id="cerrar-carta">✕</button>
+        </div>
         <div class="carta-encabezado">🌸 Para mi Señoritaa 🌸</div>
         <div class="carta-texto" id="carta-texto"></div>
         <div class="carta-footer-dedicatoria">De: Abelardo 💛</div>
@@ -984,7 +995,7 @@ const FRASES_PETALOS = [
 
   "Qué suerte la mía de haber coincidido con contigo mi niñaa 🌷",
 
-  "Sos de esas personas que llegan y hacen todo un poquito más bonito ☀️",
+  "Llegaste y de repente todo tiene más color, más calma y más sentido y más bonito ☀️",
 
   "Mis locuras siempre encuentran un lugarcito en las tuyas 🤭💗",
 
@@ -994,7 +1005,7 @@ const FRASES_PETALOS = [
 
   "Te amo con locura, con calma y con todo lo que sos corazonn 🌷",
 
-  "Me encanta la forma en la que, sin darte cuenta, alegrás mis días 🌻",
+  "Cada día que pasa me doy cuenta de que mi parte favorita de la rutina eres tu 💖",
 
   "Tenés un corazón hermoso, y espero que nunca olvides cuánto vale 💞",
 
@@ -1012,21 +1023,21 @@ const FRASES_PETALOS = [
 ];
 
 const PARRAFOS_CARTA = [
-  "Holuuu hiiiii, soy el señorr jiji..🤭 Pase pasee, pongase cómoda porque esto es para vos mi lovee. Aunque todavía no hayamos tenido ese abrazo en persona, aunque todavía nos falte mirarnos a los ojos y vivir tantas cosas juntos, ya lograste convertirte en mi lugar seguro, en mi alegría y en mi niñaa que hace que mis días sean más bonitos 💫. Cada mensaje tuyo, cada ocurrencia y cada momento compartido hacen que te sienta cada vez más cerquita, y síi… me hacés sonreír como un boludoo enamorado 🙈💗.",
+"Holuuu hiiiii, soy el señorr jiji..🤭 Pase pasee, pongase cómoda porque esto es para vos mi lovee. Aunque todavía no hayamos tenido ese abrazo en persona, aunque todavía nos falte mirarnos a los ojos y vivir tantas cosas juntos, ya lograste convertirte en mi lugar seguro, en mi alegría y en mi niñaa que hace que mis días sean más bonitos 💫. Cada mensaje tuyo, cada ocurrencia y cada momento compartido hacen que te sienta cada vez más cerquita, y síi… me hacés sonreír como un boludoo enamorado 🙈💗.",
 
-  "Sos mi noviaa hermosaa y quiero que sepas algo mi pachuchitaaa, mi niñaa: voy a estar orgulloso de vos en cada etapa, incluso cuando vos misma dudes de lo que sos capaz de hacer. Voy a ser tu fan número uno, el que celebre tus logros como si fueran propios y el que te banque fuerte cuando tengas esos días en los que todo parezca pesar un poquito más 💘.",
+"Sos mi noviaa hermosaa y quiero que sepas algo mi pachuchitaaa, mi niñaa: me encanta absolutamente todo de vos, sos tan bonita, tan bella y tan preciosa, y quiero que nunca dudes de eso. Voy a estar orgulloso de vos en cada etapa, incluso cuando vos misma dudes de lo que sos capaz de hacer. Voy a ser tu fan número uno, el que celebre tus logros como si fueran propios y el que te banque fuerte cuando tengas esos días en los que todo parezca pesar un poquito más 💘.",
 
-  "Sí, soy cursi. Pero es que vos me hacés ser así y sacás lo mejor de mí 🤭, con contigo me nace, me sale solo. Me dan ganas de decirte todo lo lindo que siento, de cuidarte, de hacerte reír y de llenar de momentos bonitos esta historia que recién estamos empezando y me muero de ganas de que llegue ese día en el que pueda darte por fin ese abrazo pendiente, mirarte a los ojos y pensar: 'por fin tengo a mi pachuchita acá conmigo' ❤️.",
+"Sí, soy cursi. Pero es que vos me hacés ser así y sacás lo mejor de mí 🤭, con contigo me nace, me sale solo. Es que me encanta cada parte de vos, cada detalle, de verdad sos preciosa y única. Me dan ganas de decirte todo lo lindo que siento, de cuidarte, de hacerte reír y de llenar de momentos bonitos esta historia que recién estamos empezando y me muero de ganas de que llegue ese día en el que pueda darte por fin ese abrazo pendiente, mirarte a los ojos y pensar: 'por fin tengo a mi pachuchita acá conmigo' ❤️.",
 
-  "Y aunque hoy no pueda estar ahí para darte algo en persona, quiero que estas flores amarillas virtuales sean mucho más que una imagen 🌼💛. Quiero que sean un abrazo mío, de esos que duran un ratito largo; un pequeño recordatorio de todo el cariño que te tengo y de que, aunque nos separen kilómetros, hay alguien acá que está pensando en vos y deseando verte sonreír.",
+"Y aunque hoy no pueda estar ahí para darte algo en persona, quiero que estas flores amarillas virtuales sean mucho más que una imagen 🌻💛. Quiero que sean un abrazo mío, de esos que duran un ratito largo; un pequeño recordatorio de todo el cariño que te tengo y de que, aunque nos separen kilómetros, hay alguien acá que está pensando en vos y deseando verte sonreír.",
 
-  "Porque si algo tengo claro es que no quiero que seas solamente una parte bonita de mis días, quiero compartir muchos días con vos. Quiero nuestras risas, nuestras locuras, nuestras charlas hasta tarde, nuestros momentos difíciles, nuestros planes y todas esas pequeñas cosas que todavía nos quedan por vivir ✨.",
+"Porque si algo tengo claro es que no quiero que seas solamente una parte bonita de mis días, quiero compartir muchos días con vos. Quiero nuestras risas, nuestras locuras, nuestras charlas hasta tarde, nuestros momentos difíciles, nuestros planes y todas esas pequeñas cosas que todavía nos quedan por vivir ✨.",
 
-  "Gracias por aparecer en mi vida de una manera tan inesperada y terminar ocupando un lugar tan enorme en mi corazón. Gracias por ser vos, por dejarme conocerte y por hacerme sentir todo esto tan bonito. Sos mi pachuchitaaa, mi niñaa mi señorita bella 💖.",
+"Gracias por aparecer en mi vida de una manera tan inesperada y terminar ocupando un lugar tan enorme en mi corazón. Gracias por ser vos, por dejarme conocerte, por ser esa mujer tan hermosa y bella que me vuelve loco y por hacerme sentir todo esto tan bonito. Sos mi pachuchitaaa, mi niñaa mi señorita bella 💖.",
 
-  "Y si alguna vez se te olvida cuánto te amoo, volvé a estas palabras y acordate de algo: hay alguien que te eligió con el corazón, que cree muchísimo en vos y que quiere verte feliz. Alguien que está esperando ese primer abrazo con una ilusión enorme y que, mientras tanto, te manda todas las flores amarillas del mundo en forma de amor 🌼💛.",
+"Y si alguna vez se te olvida cuánto te amoo, volvé a estas palabras y acordate de algo: hay alguien que te eligió con el corazón, que cree muchísimo en vos, que sabe que sos lo más bonito y perfecto que hay y que quiere verte feliz. Alguien que está esperando ese primer abrazo con una ilusión enorme y que, mientras tanto, te manda todas las flores amarillas del mundo en forma de amor 🌻💛.",
 
-  "Te amoooo con toda mi alma corazoncitoo y esto recién empiezaa… así que preparese para muchas más locuras, boludeces mias, cachondeoo, cursilerías, muchas risas, muchos 'te extrañoo' y, sobre todo, para todo lo lindo que todavía nos queda por vivir juntitos. ❤️"
+"Te amoooo con toda mi alma corazoncitoo y esto recién empiezaa… así que preparese para muchas más locuras, boludeces mias, cachondeoo, cursilerías, muchas risas, muchos 'te extrañoo' y, sobre todo, para todo lo lindo que todavía nos queda por vivir juntitos.🌹❤️"
 ];
 
 /* ===== LLUVIA ===== */
@@ -1063,7 +1074,7 @@ for (let i = 0; i < 16; i++) {
 }
 
 /* ===== TÍTULO INICIO ===== */
-const TITULO = "Bienvenida a tu sorpresa, Señouritaa ";
+const TITULO = "Bienvenida a tu sorpresa Señouritaa💘 ";
 const tituloEl = document.getElementById("titulo");
 TITULO.split("").forEach(c => {
   const s = document.createElement("span");
@@ -1140,7 +1151,7 @@ function mostrarTarjeta(frase, esUltimoFlag) {
   fraseEl.textContent = frase;
   letrero.textContent = esUltimo
     ? "Tocaste todos los pétalos... toca seguir 💛"
-    : (N_PETALOS - removidos) + " pétalos restantes 🌼";
+    : (N_PETALOS - removidos) + " pétalos restantes 🌻";
   btnFrase.style.display = esUltimo ? "inline-flex" : "none";
   tarjeta.classList.add("ver");
 }

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Guadiss</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="back-button" href="../index.html" title="Volver"><span class="back-arrow">←</span></a>
+    <div class="rosa-container" id="rosa-container">
+        <div class="glass" onclick="showEnvelope()">
+            <div class="glass-glow-base"></div>
+            <div class="flower">
+                <div class="petal p1"></div>
+                <div class="petal p2"></div>
+                <div class="petal p3"></div>
+                <div class="petal p4"></div>
+                <div class="petal p5"></div>
+                <div class="petal p6"></div>
+                <div class="petal p7"></div>
+                <div class="petal p8"></div>
+                <div class="petal inner i1"></div>
+                <div class="petal inner i2"></div>
+                <div class="petal inner i3"></div>
+                <div class="bud"></div>
+                <div class="stem">
+                    <div class="leaf l1"></div>
+                    <div class="leaf l2"></div>
+                </div>
+            </div>
+
+            <!-- Pétalos caídos en el suelo del domo -->
+            <div class="fallen-petal fp1"></div>
+            <div class="fallen-petal fp2"></div>
+            <div class="fallen-petal fp3"></div>
+            
+            <!-- Pétalo que cae animado -->
+            <div class="falling-petal"></div>
+
+            <!-- Contador dentro del vidrio -->
+            <div class="counter">
+                <div class="counter-label">Desde que empezamos a hablar,<br>mi pachuchititaa 💗</div>
+                <div class="counter-blocks">
+                    <div class="counter-block" id="c-anios-wrap">
+                        <span class="value" id="c-anios">0</span>
+                        <span class="label" id="c-anios-label">años</span>
+                    </div>
+                    <div class="counter-block">
+                        <span class="value" id="c-dias">0</span>
+                        <span class="label">días</span>
+                    </div>
+                    <div class="counter-block">
+                        <span class="value" id="c-horas">0</span>
+                        <span class="label">horas</span>
+                    </div>
+                    <div class="counter-block">
+                        <span class="value" id="c-min">0</span>
+                        <span class="label">min</span>
+                    </div>
+                    <div class="counter-block">
+                        <span class="value" id="c-seg">0</span>
+                        <span class="label">seg</span>
+                    </div>
+                </div>
+                <div class="counter-footer">y esto es todo el tiempo que te llevo amando 💝</div>
+            </div>
+
+            <!-- Lucecitas flotando dentro del domo -->
+            <div class="bokeh b1"></div>
+            <div class="bokeh b2"></div>
+            <div class="bokeh b3"></div>
+            <div class="bokeh b4"></div>
+            <div class="bokeh b5"></div>
+            <div class="bokeh b6"></div>
+            <div class="bokeh b7"></div>
+            <div class="bokeh b8"></div>
+        </div>
+
+        <div class="go-to-envelope" onclick="showEnvelope()"><span class="btn-text">Abrir la cartita</span> 💌</div>
+    </div>
+
+    <div class="envelope-container hidden" id="envelope-container" onclick="openEnvelope()">
+        <div class="message-overlay">Toca para abrir 💌</div>
+        <div class="flap"></div>
+        <div class="band"></div>
+        <div class="envelope"></div>
+        <div class="heart-seal"></div>
+    </div>
+
+    <div class="full-screen-letter" id="full-letter">
+        <button class="return-button" onclick="returnToRosa()">Volver a la Rosa</button>
+        <div class="letter-card">
+            <div class="sparkle sp1">✨</div>
+            <div class="sparkle sp2">✨</div>
+            <div class="letter-heart">💝</div>
+            <p>
+                A mi persona favorita, mi pachuchititaa...<br><br>
+                Cada día que pasa desde que empezamos a hablar, siento que el universo se puso de mi lado. Llegaste sin avisar y le diste color a mis días grises. Con vos todo es más lindo: las risas, los juegos, las charlas hasta tarde, incluso las broncas compartidas que después se vuelven risas.<br><br>
+                Quiero que sepas que no estás sola, nunca. Acá estoy para abrazarte en los días feos, secarte las lágrimas y festejar cada logro tuyo como si fuera mío. Sos mi lugar favorito en el mundo, mi casa, mi paz.<br><br>
+                No cambio nada de nuestro tiempo juntos por nada de este mundo. Gracias por existir y por cruzarte en mi camino.<br><br>
+                Te quiero muchísimo, muchísimo, muchísimo. 💗
+            </p>
+            <div class="letter-signature">Con todo mi amor</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
