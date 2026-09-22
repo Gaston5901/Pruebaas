@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Señoritaa Iriss</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+            overflow-x: hidden;
+            margin: 0;
+            height: 100vh;
+        }
+        .romantic-font {
+            font-family: 'Dancing Script', cursive;
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 182, 193, 0.8), 0 0 20px rgba(255, 105, 180, 0.6), 0 0 30px rgba(255, 20, 147, 0.4);
+        }
+        .glow-box {
+            box-shadow: 0 0 25px rgba(255, 105, 180, 0.3), inset 0 0 15px rgba(255, 192, 203, 0.2);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-10px) scale(1.02); }
+        }
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        .pulse-heart {
+            animation: pulse-slow 2s infinite;
+        }
+    </style>
+</head>
+<body class="relative flex flex-col items-center justify-between min-h-screen p-4 text-white select-none">
+
+    <canvas id="starrySky" class="absolute inset-0 z-0 pointer-events-none"></canvas>
+
+    <header class="z-10 mt-6 sm:mt-10 text-center">
+        <h1 class="romantic-font text-5xl sm:text-7xl lg:text-8xl text-pink-200 glow-text tracking-wider">
+            Señoritaa Iriss
+        </h1>
+        <p class="text-xs sm:text-sm text-pink-300/80 tracking-widest uppercase mt-1">Bajo el mismo cielo estrellado</p>
+    </header>
+
+    <main class="relative z-10 flex flex-col items-center justify-center my-auto w-full max-w-md">
+        <div class="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center">
+            <!-- Canvas for connecting heart constellation -->
+            <canvas id="heartCanvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+            
+            <!-- Interactive Center Button -->
+            <div id="touchContainer" class="absolute z-20 flex flex-col items-center justify-center opacity-0 transition-opacity duration-1000">
+                <button id="touchBtn" class="floating px-8 py-4 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-semibold rounded-full glow-box border border-pink-300/40 text-lg sm:text-xl transition-all duration-300 transform hover:scale-110 active:scale-95 cursor-pointer">
+                    ✨ Tocar ✨
+                </button>
+                <span class="text-xs text-pink-200/70 mt-3 animate-pulse">Haz clic para descubrir un secreto</span>
+            </div>
+        </div>
+    </main>
+
+    <div id="messageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-500 p-4">
+        <div class="bg-gradient-to-b from-slate-900/90 to-purple-950/90 border border-pink-500/50 rounded-3xl p-6 sm:p-8 max-w-md w-full text-center glow-box transform scale-95 transition-transform duration-500" id="modalContent">
+            <div class="text-4xl sm:text-5xl mb-3">💖</div>
+            <h2 class="romantic-font text-3xl sm:text-4xl text-pink-300 mb-4 glow-text">Para ti, Iriss</h2>
+            <p class="text-sm sm:text-base text-gray-200 leading-relaxed mb-6 font-light">
+                Cada estrella en este cielo brilla con la misma intensidad que tu sonrisa. Gracias por iluminar mis días de una forma tan mágica y especial. ¡Eres increíble! ✨
+            </p>
+            <button id="closeModalBtn" class="px-6 py-2.5 bg-pink-600 hover:bg-pink-500 text-white text-sm font-medium rounded-full transition-all shadow-lg cursor-pointer">
+                Cerrar con amor
+            </button>
+        </div>
+    </div>
+
+    <footer class="z-10 mb-4 text-center text-xs text-gray-400/60">
+        Hecho con todo el ♥ para una persona muy especial
+    </footer>
+
+    <script>
+        // --- STARFIELD BACKGROUND ---
+        const skyCanvas = document.getElementById('starrySky');
+        const skyCtx = skyCanvas.getContext('2d');
+
+        let width, height;
+        let stars = [];
+        let shootingStars = [];
+
+        function resizeSky() {
+            width = skyCanvas.width = window.innerWidth;
+            height = skyCanvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeSky);
+        resizeSky();
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 1.8 + 0.2;
+                this.baseAlpha = Math.random() * 0.7 + 0.3;
+                this.alpha = this.baseAlpha;
+                this.alphaSpeed = Math.random() * 0.02 + 0.005;
+                this.increasing = Math.random() > 0.5;
+            }
+            draw() {
+                skyCtx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                skyCtx.beginPath();
+                skyCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                skyCtx.fill();
+            }
+            update() {
+                if (this.increasing) {
+                    this.alpha += this.alphaSpeed;
+                    if (this.alpha >= 1) this.increasing = false;
+                } else {
+                    this.alpha -= this.alphaSpeed;
+                    if (this.alpha <= 0.2) this.increasing = true;
+                }
+            }
+        }
+
+        class ShootingStar {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * (height / 2);
+                this.len = Math.random() * 80 + 40;
+                this.speed = Math.random() * 8 + 6;
+                this.size = Math.random() * 1 + 0.5;
+                this.active = false;
+                this.timer = Math.random() * 300 + 100;
+            }
+            update() {
+                if (!this.active) {
+                    this.timer--;
+                    if (this.timer <= 0) {
+                        this.active = true;
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * (height / 3);
+                    }
+                    return;
+                }
+                this.x -= this.speed;
+                this.y += this.speed;
+                if (this.x < 0 || this.y > height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                if (!this.active) return;
+                skyCtx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                skyCtx.lineWidth = this.size;
+                skyCtx.beginPath();
+                skyCtx.moveTo(this.x, this.y);
+                skyCtx.lineTo(this.x + this.len, this.y - this.len);
+                skyCtx.stroke();
+            }
+        }
+
+        // Initialize stars
+        for (let i = 0; i < 150; i++) stars.push(new Star());
+        for (let i = 0; i < 3; i++) shootingStars.push(new ShootingStar());
+
+        // --- HEART CONSTELLATION ANIMATION ---
+        const heartCanvas = document.getElementById('heartCanvas');
+        const heartCtx = heartCanvas.getContext('2d');
+        
+        let heartSize = Math.min(window.innerWidth, window.innerHeight) * 0.22;
+        if (heartSize > 130) heartSize = 130;
+        
+        heartCanvas.width = 320;
+        heartCanvas.height = 320;
+        const cx = 160;
+        const cy = 160;
+
+        // Generate heart points using parametric equations
+        const totalPoints = 60;
+        const heartPoints = [];
+        for (let i = 0; i < totalPoints; i++) {
+            const t = (i / totalPoints) * Math.PI * 2;
+            // Standard heart formula
+            const hx = 16 * Math.pow(Math.sin(t), 3);
+            const hy = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+            
+            heartPoints.push({
+                x: cx + hx * (heartSize / 16),
+                y: cy + hy * (heartSize / 16)
+            });
+        }
+
+        let currentPointIndex = 0;
+        let animationProgress = 0;
+        const touchContainer = document.getElementById('touchContainer');
+
+        function animateHeart() {
+            heartCtx.clearRect(0, 0, heartCanvas.width, heartCanvas.height);
+
+            // Draw connected lines up to current progress
+            if (currentPointIndex > 0) {
+                heartCtx.strokeStyle = 'rgba(255, 105, 180, 0.7)';
+                heartCtx.lineWidth = 2;
+                heartCtx.shadowBlur = 10;
+                heartCtx.shadowColor = '#ff69b4';
+                
+                heartCtx.beginPath();
+                heartCtx.moveTo(heartPoints[0].x, heartPoints[0].y);
+                for (let i = 1; i <= currentPointIndex; i++) {
+                    heartCtx.lineTo(heartPoints[i].x, heartPoints[i].y);
+                }
+                heartCtx.stroke();
+                heartCtx.shadowBlur = 0; // reset
+            }
+
+            // Draw nodes/stars
+            for (let i = 0; i <= currentPointIndex && i < heartPoints.length; i++) {
+                heartCtx.fillStyle = '#fff';
+                heartCtx.shadowBlur = 8;
+                heartCtx.shadowColor = '#fff';
+                heartCtx.beginPath();
+                heartCtx.arc(heartPoints[i].x, heartPoints[i].y, 3, 0, Math.PI * 2);
+                heartCtx.fill();
+                heartCtx.shadowBlur = 0;
+            }
+
+            // Progress logic
+            if (currentPointIndex < heartPoints.length - 1) {
+                animationProgress++;
+                if (animationProgress % 2 === 0) {
+                    currentPointIndex++;
+                }
+                requestAnimationFrame(animateHeart);
+            } else {
+                // Heart completed! Show touch button smoothly
+                touchContainer.classList.remove('opacity-0');
+                touchContainer.classList.add('opacity-100', 'pulse-heart');
+            }
+        }
+
+        // --- MAIN RENDER LOOP FOR BACKGROUND ---
+        function mainLoop() {
+            skyCtx.clearRect(0, 0, width, height);
+            
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            shootingStars.forEach(ss => {
+                ss.update();
+                ss.draw();
+            });
+
+            requestAnimationFrame(mainLoop);
+        }
+
+        // Start loops when loaded
+        window.onload = () => {
+            mainLoop();
+            setTimeout(animateHeart, 600);
+        };
+
+        // --- INTERACTION & CONFETTI ---
+        const touchBtn = document.getElementById('touchBtn');
+        const messageModal = document.getElementById('messageModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        touchBtn.addEventListener('click', () => {
+            // Trigger glorious confetti celebration
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#ff69b4', '#ff1493', '#ffc0cb', '#ffffff', '#da70d6']
+            });
+
+            // Show modal
+            messageModal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            messageModal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+        });
+    </script>
+</body>
+</html>

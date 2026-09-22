@@ -211,6 +211,53 @@ body {
 }
 
 /* ==========================================================
+   BOTÓN DE NAVEGACIÓN FLOTANTE (ARRIBA A LA DERECHA)
+========================================================== */
+.nav-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.35),
+    0 0 14px rgba(236, 72, 153, 0.35);
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-btn:hover {
+  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(236, 72, 153, 0.6);
+}
+
+.nav-btn:active {
+  transform: scale(0.92);
+}
+
+@media (max-width: 480px) {
+  .nav-btn {
+    width: 40px;
+    height: 40px;
+    top: 12px;
+    left: 12px;
+  }
+}
+
+/* ==========================================================
    GRILLA DE SORPRESAS OPTIMIZADA (MOBILE FIRST / COMPACTA)
 ========================================================== */
 

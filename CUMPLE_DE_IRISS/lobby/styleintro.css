@@ -306,3 +306,51 @@
     font-size: 0.8rem;
   }
 }
+
+/* ==========================================================
+   BOTÓN DE NAVEGACIÓN FLOTANTE (ARRIBA A LA DERECHA)
+   Estilo del jardín: vidrio verde con aura rosa
+========================================================== */
+.nav-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 10050;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(46, 213, 115, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(46, 213, 115, 0.45);
+  color: #ffffff;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.35),
+    0 0 16px rgba(46, 213, 115, 0.35);
+  text-decoration: none;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-btn:hover {
+  transform: scale(1.1);
+  background: rgba(46, 213, 115, 0.3);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(255, 120, 196, 0.6);
+}
+
+.nav-btn:active {
+  transform: scale(0.92);
+}
+
+@media (max-width: 520px) {
+  .nav-btn {
+    width: 40px;
+    height: 40px;
+    top: 12px;
+    left: 12px;
+  }
+}

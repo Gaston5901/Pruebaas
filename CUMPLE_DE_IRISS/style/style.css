@@ -38,11 +38,11 @@ html, body {
 }
 
 /* ==========================================================
-   REGALO 3D FLUIDO Y REALISTA (OPTIMIZADO PARA MOVIL)
+   REGALO ENVUELTO REAL (ILUSTRACIÓN PROFESIONAL)
 ========================================================== */
 .gift-container {
   position: absolute;
-  top: 48%;
+  top: 46%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
   z-index: 10;
@@ -61,138 +61,105 @@ html, body {
   transform: translate3d(-50%, -48%, 0) scale(0.95);
 }
 
+.gift-scene {
+  position: relative;
+  width: 240px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* IMAGEN DEL REGALO (PNG CON FONDO TRANSPARENTE) */
 .gift3d {
   position: relative;
-  width: 130px;
-  height: 130px;
-  animation: floatGift 3.2s infinite ease-in-out;
+  width: 200px;
+  height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: floatGift 5.6s infinite ease-in-out;
   will-change: transform;
 }
 
-/* TAPA DEL REGALO */
-.gift-lid {
-  position: absolute;
-  top: 0;
-  left: -7px;
-  width: 144px;
-  height: 34px;
-  background: linear-gradient(135deg, #ff2a85 0%, #d8005f 50%, #99003d 100%);
-  border-radius: 7px;
-  box-shadow: 
-    0 5px 12px rgba(0, 0, 0, 0.5),
-    inset 0 2px 3px rgba(255, 255, 255, 0.6),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.4);
-  z-index: 3;
+.gift-img {
+  width: 200px;
+  height: auto;
+  filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.5));
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
 }
 
-/* CUERPO DEL REGALO */
-.gift-body {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 130px;
-  height: 102px;
-  background: linear-gradient(135deg, #e60067 0%, #b3004b 50%, #73002f 100%);
-  border-radius: 0 0 12px 12px;
-  box-shadow: 
-    0 18px 38px rgba(0, 0, 0, 0.65),
-    inset 0 2px 5px rgba(255, 255, 255, 0.35),
-    inset 0 -5px 10px rgba(0, 0, 0, 0.5);
-  z-index: 1;
-}
-
-/* CINTAS DORADAS TEXTURIZADAS */
-.ribbon-v {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 28px;
-  height: 100%;
-  background: linear-gradient(90deg, #b8860b 0%, #ffd700 30%, #fff8dc 50%, #ffd700 70%, #b8860b 100%);
-  box-shadow: 0 0 8px rgba(0,0,0,0.3);
-}
-
-.ribbon-h {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-  height: 28px;
-  background: linear-gradient(180deg, #b8860b 0%, #ffd700 30%, #fff8dc 50%, #ffd700 70%, #b8860b 100%);
-  box-shadow: 0 0 8px rgba(0,0,0,0.3);
-}
-
-/* MOÑO SUPERIOR 3D */
-.bow {
-  position: absolute;
-  top: -32px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 76px;
-  height: 38px;
-  z-index: 4;
-}
-
-.bow::before, .bow::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 38px;
-  height: 32px;
-  border-radius: 50% 50% 0 50%;
-  background: linear-gradient(135deg, #ffe066 0%, #ffd700 50%, #b8860b 100%);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.85);
-}
-
-.bow::before {
-  left: 0;
-  transform: rotate(-22deg);
-}
-
-.bow::after {
-  right: 0;
-  transform: rotate(22deg) scaleX(-1);
-}
-
-/* SOMBRA INTERACTIVA EN PISO */
+/* ===================== SOMBRA EN PISO ===================== */
 .gift-shadow {
   position: absolute;
-  bottom: -24px;
   left: 50%;
+  bottom: 6px;
   transform: translate3d(-50%, 0, 0);
-  width: 120px;
-  height: 20px;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 75%);
-  z-index: 0;
-  animation: shadowScale 3.2s infinite ease-in-out;
+  width: 168px;
+  height: 26px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.3) 45%, rgba(0, 0, 0, 0) 75%);
+  z-index: -1;
+  animation: shadowScale 5.6s infinite ease-in-out;
   will-change: transform, opacity;
 }
 
 @keyframes floatGift {
-  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-  50% { transform: translate3d(0, -10px, 0) rotate(1deg); }
+  0%, 100% {
+    transform: translate3d(0, 7px, 0) rotate(-0.5deg);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0) rotate(0.6deg);
+  }
 }
 
 @keyframes shadowScale {
-  0%, 100% { transform: translate3d(-50%, 0, 0) scale(1); opacity: 0.8; }
+  0%, 100% { transform: translate3d(-50%, 0, 0) scale(1); opacity: 0.85; }
   50% { transform: translate3d(-50%, 0, 0) scale(0.82); opacity: 0.45; }
 }
 
-/* TEXTO "TOCA PARA COMANZAR" */
+/* ===================== TEXTO ===================== */
 .gift-text {
-  margin-top: 32px;
+  text-align: center;
+  width: max-content;
+  margin: 26px auto 0;
   color: #ffe89e;
-  font-size: 0.92rem;
-  font-weight: 800;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  text-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
-  animation: textPulse 2s infinite ease-in-out;
+  font-family: 'Caveat', 'Segoe Script', cursive;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+  text-shadow: 0 0 14px rgba(255, 215, 0, 0.7), 0 0 40px rgba(255, 150, 90, 0.35);
+  animation: textPulse 2.2s infinite ease-in-out;
 }
 
 @keyframes textPulse {
   0%, 100% { opacity: 0.45; transform: scale(0.98); }
-  50% { opacity: 1; transform: scale(1.03); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+/* ==========================================================
+   HALO DE LUZ DETRÁS DEL REGALO
+========================================================== */
+.gift-aura {
+  position: absolute;
+  left: 50%;
+  top: 49%;
+  width: 280px;
+  height: 280px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(255, 170, 220, 0.32) 0%, rgba(255, 130, 190, 0.14) 38%, rgba(255, 200, 90, 0.05) 55%, transparent 72%);
+  filter: blur(3px);
+  animation: auraPulse 3.4s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes auraPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.75; }
+  50% { transform: translate(-50%, -50%) scale(1.14); opacity: 1; }
 }
 
 /* ==========================================================
@@ -289,13 +256,19 @@ html, body {
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
   z-index: 3;
-  color: #ffe89e;
-  font-size: 0.85rem;
-  font-weight: 900;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 215, 120, 0.5);
+  color: #fff3c4;
+  font-family: 'Caveat', 'Segoe Script', cursive;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.85), 0 0 18px rgba(255, 215, 120, 0.55);
   white-space: nowrap;
+  animation: badgePulse 1.6s infinite ease-in-out;
+}
+
+@keyframes badgePulse {
+  0%, 100% { opacity: 0.92; transform: translate3d(-50%, -50%, 0) scale(1); }
+  50% { opacity: 1; transform: translate3d(-50%, -50%, 0) scale(1.07); }
 }
 
 .btn-surprise img {
@@ -363,43 +336,183 @@ html, body {
 
 /* MEDIA QUERIES ESPECÍFICAS PARA MÓVIL */
 @media (max-width: 600px) {
-  .gift3d {
-    width: 115px;
-    height: 115px;
-  }
-
-  .gift-lid {
-    width: 128px;
-    height: 30px;
-    left: -6px;
-  }
-
-  .gift-body {
-    width: 115px;
-    height: 90px;
-  }
-
-  .ribbon-v { width: 24px; }
-  .ribbon-h { height: 24px; }
-
-  .bow {
-    top: -28px;
-    width: 66px;
-    height: 32px;
-  }
-
-  .bow::before, .bow::after {
-    width: 33px;
-    height: 28px;
+  .gift-scene {
+    transform: scale(0.82);
   }
 
   .gift-text {
-    font-size: 0.8rem;
-    letter-spacing: 3px;
-    margin-left: 45px;
+    font-size: 1.6rem;
+    letter-spacing: 0.5px;
   }
 
   .surprise-overlay {
     bottom: 14%;
+  }
+}
+
+/* ==========================================================
+   CARTEL "FELIZ CUMPLE IRISS"
+========================================================== */
+.cumple-titulo {
+  position: absolute;
+  top: 6%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  text-align: center;
+  z-index: 15;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.6rem, 5.5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background: linear-gradient(115deg, #ffd700 0%, #fff3b0 20%, #ff7ac3 42%, #ffd700 60%, #fff3b0 80%, #ffd700 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 18px rgba(255, 190, 90, 0.45));
+  animation: shimmerCartel 3.2s linear infinite;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+@keyframes shimmerCartel {
+  to { background-position: 200% center; }
+}
+
+.titulo-letra {
+  display: inline-block;
+  opacity: 0;
+  animation: popLetra 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards;
+  animation-delay: calc(var(--i) * 55ms);
+}
+
+.titulo-letra.espacio {
+  width: 0.55em;
+}
+
+@keyframes popLetra {
+  0% { opacity: 0; transform: translateY(30px) scale(0.4) rotate(8deg); }
+  55% { opacity: 1; transform: translateY(-6px) scale(1.1) rotate(-2deg); }
+  75% { transform: translateY(2px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+}
+
+/* ==========================================================
+   GLOBOS QUE SUBEN
+========================================================== */
+.globos {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+.globo {
+  position: absolute;
+  bottom: -160px;
+  width: var(--size);
+  height: calc(var(--size) * 1.18);
+  border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
+  background:
+    radial-gradient(circle at 32% 26%,
+      rgba(255, 255, 255, 0.85) 0%,
+      rgba(255, 255, 255, 0.12) 22%,
+      transparent 40%),
+    radial-gradient(circle at 50% 60%, var(--color) 0%, color-mix(in srgb, var(--color) 40%, #000) 100%);
+  box-shadow: inset -6px -8px 14px rgba(0, 0, 0, 0.25), 0 10px 22px -8px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  animation: subirGlobo linear infinite;
+  animation-duration: var(--dur);
+  animation-delay: var(--delay);
+  will-change: transform;
+}
+
+.globo::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  background: var(--color);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%, 12% 82%, 50% 55%, 88% 82%);
+  transform: translateY(4px) rotate(180deg);
+}
+
+.globo::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 1.6px;
+  height: 58px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.08));
+}
+
+/* Globo hecho con una foto (recortada en forma de globo con cuerda) */
+.globo-foto {
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.35);
+  border: 3px solid rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.28), 0 10px 22px -8px rgba(0, 0, 0, 0.4);
+}
+
+.globo-foto img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.globo-foto::before {
+  content: '';
+  position: absolute;
+  left: 10%;
+  top: 7%;
+  width: 42%;
+  height: 55%;
+  z-index: 2;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+  border-top-left-radius: 50%;
+  transform: rotate(-35deg);
+  filter: blur(0.6px);
+  will-change: transform;
+  pointer-events: none;
+}
+
+@keyframes subirGlobo {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  6% { opacity: 0.95; }
+  25% { transform: translate3d(-20px, -30vh, 0); }
+  50% { transform: translate3d(16px, -62vh, 0); }
+  75% { transform: translate3d(-14px, -94vh, 0); }
+  92% { opacity: 0.95; }
+  100% { transform: translate3d(10px, -125vh, 0); opacity: 0; }
+}
+
+/* Cuando se toca el regalo, el cartel y los globos se desvanecen */
+body.abriendo .cumple-titulo,
+body.abriendo .globos {
+  opacity: 0;
+}
+
+@media (max-width: 600px) {
+  .cumple-titulo {
+    top: 3%;
+  }
+
+  .btn-surprise .touch-badge {
+    font-size: 1.5rem;
   }
 }

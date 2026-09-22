@@ -1,0 +1,177 @@
+/* ==========================================================
+   BIENVENIDA: ESCENA ESPACIAL + CORAZÓN DE ESTRELLAS
+========================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #ffffff;
+  background:
+    radial-gradient(circle at 25% 20%, rgba(139, 92, 246, 0.18), transparent 35%),
+    radial-gradient(circle at 78% 30%, rgba(236, 72, 153, 0.15), transparent 30%),
+    radial-gradient(circle at 55% 90%, rgba(186, 85, 211, 0.12), transparent 45%),
+    linear-gradient(180deg, #03010c 0%, #0b0620 60%, #130a2f 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Lienzo de la escena */
+#escena {
+  position: fixed;
+  inset: 0;
+  display: block;
+  z-index: 0;
+}
+
+/* ==========================================================
+   TÍTULO "FELIZ CUMPLE · IRISS" (CON ESTRELLAS)
+========================================================== */
+.titulos {
+  position: fixed;
+  top: 7%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.saludo {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.7rem;
+  letter-spacing: 6px;
+  color: rgba(255, 214, 235, 0.9);
+  opacity: 0;
+  animation: saludoEntra 0.9s ease forwards 0.2s;
+  margin-bottom: 2px;
+}
+
+@keyframes saludoEntra {
+  0% { opacity: 0; transform: translateY(-14px); letter-spacing: 14px; }
+  100% { opacity: 1; transform: translateY(0); letter-spacing: 6px; }
+}
+
+.iriss {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(3.2rem, 12vw, 6rem);
+  line-height: 1.05;
+  letter-spacing: 0.3em;
+  margin-right: -0.3em; /* compensa el espaciado para que quede centrado */
+  display: flex;
+  justify-content: center;
+}
+
+.iriss span {
+  display: inline-block;
+  opacity: 0;
+  transform: scale(0.3) rotate(-8deg);
+  animation: letraEstrella 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: calc(0.5s + var(--i) * 0.16s);
+}
+
+@keyframes letraEstrella {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-8deg);
+    text-shadow: 0 0 0 rgba(255, 220, 255, 0);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.18) rotate(2deg);
+    text-shadow: 0 0 26px rgba(255, 200, 255, 0.95), 0 0 60px rgba(192, 132, 252, 0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+    text-shadow: 0 0 20px rgba(255, 190, 245, 0.75), 0 0 50px rgba(168, 85, 247, 0.6);
+  }
+}
+
+/* ==========================================================
+   BOTÓN "ENTRÁ A TUS REGALOS" (EN EL CENTRO DEL CORAZÓN)
+========================================================== */
+.btn-entrar {
+  position: fixed;
+  top: 58%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff2a85, #9333ea);
+  background-size: 180% 180%;
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  box-shadow:
+    0 0 30px rgba(255, 42, 133, 0.65),
+    0 0 60px rgba(147, 51, 234, 0.4),
+    0 10px 24px rgba(0, 0, 0, 0.55);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+
+.btn-entrar.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.btn-entrar:hover {
+  box-shadow:
+    0 0 44px rgba(255, 42, 133, 0.95),
+    0 0 80px rgba(147, 51, 234, 0.55),
+    0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+.btn-entrar:active {
+  transform: translate(-50%, -50%) scale(0.94);
+}
+
+.btn-emoji {
+  font-size: 1.2rem;
+}
+
+@media (max-width: 520px) {
+  .btn-entrar {
+    top: 58%;
+    padding: 14px 28px;
+    font-size: 0.95rem;
+    gap: 8px;
+  }
+}
+
+/* ==========================================================
+   MÓVIL: TÍTULO
+========================================================== */
+@media (max-width: 520px) {
+  .saludo {
+    font-size: 1.35rem;
+    letter-spacing: 4px;
+  }
+
+  .iriss {
+    letter-spacing: 0.24em;
+    margin-right: -0.24em;
+  }
+}

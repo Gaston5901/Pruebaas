@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Si estamos en la vista del Lobby
   if (document.getElementById('mainLobby')) {
-    checkIfFromCandles();
+    initWelcomeModal();
     initLobbyAnimations();
   }
 });
@@ -190,33 +190,30 @@ function revealLobby() {
 }
 
 /* ==========================================================
-   4. CONTROL DEL MODAL (SOLO MUESTRA SI VIENE DE LAS VELAS)
+   4. CONTROL DEL MODAL DE BIENVENIDA (SE MUESTRA 1 SOLA VEZ)
 ========================================================== */
-function checkIfFromCandles() {
+function initWelcomeModal() {
   const modal = document.getElementById('welcomeModal');
   const closeBtn = document.getElementById('closeModalBtn');
 
   if (!modal || !closeBtn) return;
 
-  // Verificamos si en la URL está el parámetro "?from=candles"
-  const urlParams = new URLSearchParams(window.location.search);
-  const cameFromCandles = urlParams.get('from') === 'candles';
+  // Solo se muestra cuando se llega EXACTAMENTE desde el corazón (botón "Tocar").
+  // Volver desde una sorpresa dentro del lobby NO vuelve a mostrarlo.
+  const params = new URLSearchParams(window.location.search);
+  const fromHeart = params.get('from') === 'heart';
 
-  if (cameFromCandles) {
-    // Se muestra el modal
-    modal.classList.remove('hidden-modal');
-
-    // Limpiamos la URL para que no reaparezca si refresca o toca "Atrás"
-    window.history.replaceState({}, document.title, window.location.pathname);
-
-    closeBtn.addEventListener('click', () => {
-      modal.classList.add('hidden-modal');
-      setTimeout(() => modal.remove(), 350);
-    });
-  } else {
-    // Si no viene de las velas (ej. vuelve de una sorpresa), elimina el modal directo
+  if (!fromHeart) {
     modal.remove();
+    return;
   }
+
+  modal.classList.remove('hidden-modal');
+
+  closeBtn.addEventListener('click', () => {
+    modal.classList.add('hidden-modal');
+    setTimeout(() => modal.remove(), 350);
+  });
 }
 
 /* ==========================================================

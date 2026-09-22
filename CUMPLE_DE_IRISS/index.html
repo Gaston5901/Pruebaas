@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Una experiencia inmersiva</title>
+  <title>Cumple Iriss</title>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./style/style.css">
   
   <style>
@@ -15,24 +16,22 @@
 
   <div class="background" id="bg"></div>
 
-  <div class="gift-container" id="giftBtn">
-    <div class="gift3d">
-      <div class="gift-lid">
-        <span class="ribbon-v"></span>
-        <span class="ribbon-h"></span>
-        <span class="bow"></span>
-      </div>
+  <div class="globos" id="globos" aria-hidden="true"></div>
 
-      <div class="gift-body">
-        <span class="ribbon-v"></span>
+  <h1 class="cumple-titulo" id="cumpleTitulo" data-text="FELIZ CUMPLE IRISS"></h1>
+
+  <div class="gift-container" id="giftBtn">
+    <div class="gift-scene">
+      <div class="gift-aura"></div>
+
+      <div class="gift3d">
+        <img src="./style/image copy 2.png" alt="Regalo de cumpleaños" class="gift-img" draggable="false">
       </div>
 
       <div class="gift-shadow"></div>
     </div>
 
-    <div class="gift-text">
-      Toca para comenzar
-    </div>
+    <div class="gift-text" data-text="Tocar Regalo">Tocar Regalo</div>
   </div>
 
   <div class="video-container" id="videoContainer">
@@ -47,7 +46,7 @@
   </div>
 
   <div class="surprise-overlay" id="surpriseOverlay">
-    <a href="../CUMPLE_DE_IRISS/lobby/index.html" class="btn-surprise" id="surpriseBtn">
+    <a href="./heart/index.html" class="btn-surprise" id="surpriseBtn">
       <img
         src="data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20600%20220'%20role='img'%20aria-label='Mo%C3%B1o%20rojo'%3E%3Cdefs%3E%3ClinearGradient%20id='gold'%20x1='0'%20y1='0'%20x2='0'%20y2='1'%3E%3Cstop%20offset='0%25'%20stop-color='%23ffd98c'/%3E%3Cstop%20offset='50%25'%20stop-color='%23b57a22'/%3E%3Cstop%20offset='100%25'%20stop-color='%23ffd98c'/%3E%3C/linearGradient%3E%3ClinearGradient%20id='red'%20x1='0'%20y1='0'%20x2='1'%20y2='0'%3E%3Cstop%20offset='0%25'%20stop-color='%23ab0000'/%3E%3Cstop%20offset='20%25'%20stop-color='%23ff4444'/%3E%3Cstop%20offset='48%25'%20stop-color='%23b80000'/%3E%3Cstop%20offset='78%25'%20stop-color='%23ff4a4a'/%3E%3Cstop%20offset='100%25'%20stop-color='%236b0000'/%3E%3C/linearGradient%3E%3Cfilter%20id='shadow'%20x='-20%25'%20y='-20%25'%20width='140%25'%20height='160%25'%3E%3CfeDropShadow%20dx='0'%20dy='8'%20stdDeviation='8'%20flood-color='%23000000'%20flood-opacity='.35'/%3E%3CfeDropShadow%20dx='0'%20dy='0'%20stdDeviation='5'%20flood-color='%23ffcc66'%20flood-opacity='.18'/%3E%3C/filter%3E%3C/defs%3E%3Cg%20filter='url(%23shadow)'%3E%3Cpath%20d='M20%20105%20C55%2076%2095%2074%20135%2090%20L165%20102%20C205%20111%20235%20108%20278%2097%20C329%2082%20369%2077%20410%2087%20L455%2099%20C498%20110%20545%20108%20580%2093%20L580%20156%20C544%20171%20503%20167%20458%20155%20L415%20142%20C371%20131%20331%20134%20282%20148%20C236%20161%20203%20164%20160%20154%20L126%20142%20C89%20131%2055%20133%2020%20158%20Z'%20fill='url(%23red)'%20stroke='url(%23gold)'%20stroke-width='8'/%3E%3Cpath%20d='M18%20106%20L2%2098%20L18%2091%20L39%2097%20L18%20106%20Z'%20fill='url(%23red)'%20stroke='url(%23gold)'%20stroke-width='6'/%3E%3Cpath%20d='M582%2094%20L598%2086%20L582%2080%20L561%2087%20L582%2094%20Z'%20fill='url(%23red)'%20stroke='url(%23gold)'%20stroke-width='6'/%3E%3Cpath%20d='M155%2097%20C140%2056%20124%2038%2092%2018%20L52%2050%20C86%2067%20103%2080%20112%20113%20Z'%20fill='url(%23red)'%20stroke='url(%23gold)'%20stroke-width='8'/%3E%3Cpath%20d='M447%2099%20C460%2058%20483%2037%20515%2019%20L554%2052%20C519%2069%20502%2083%20492%20116%20Z'%20fill='url(%23red)'%20stroke='url(%23gold)'%20stroke-width='8'/%3E%3Cpath%20d='M147%20103%20C161%20172%20163%20189%20152%20212%20L194%20182%20C207%20165%20205%20148%20189%20103%20Z'%20fill='url(%23red)'%20stroke='url(%23gold)'%20stroke-width='8'/%3E%3Cpath%20d='M455%20100%20C443%20169%20440%20188%20452%20210%20L408%20179%20C396%20161%20398%20146%20411%20101%20Z'%20fill='url(%23red)'%20stroke='url(%23gold)'%20stroke-width='8'/%3E%3Cpath%20d='M87%2060%20C128%2046%20151%2067%20163%2099%20C141%2091%20118%2091%2096%2098%20C84%2080%2078%2069%2087%2060Z'%20fill='%23b80000'%20opacity='.8'/%3E%3Cpath%20d='M512%2060%20C472%2047%20449%2067%20436%2099%20C460%2090%20482%2091%20504%2098%20C516%2080%20521%2068%20512%2060Z'%20fill='%23b80000'%20opacity='.8'/%3E%3C/g%3E%3C/svg%3E"
         alt="Moño rojo"
@@ -59,9 +58,11 @@
   </div>
 
   <script>
-    // Generador de destellos de fondo
+    // Generador de destellos de fondo (menos en mobile para que vaya fluido)
+    const esMobile = window.innerWidth <= 600;
+    const totalSpark = esMobile ? 14 : 30;
     const bg = document.getElementById('bg');
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < totalSpark; i++) {
       const sparkle = document.createElement('div');
       sparkle.className = 'sparkle';
       sparkle.style.top = Math.random() * 100 + '%';
@@ -70,6 +71,57 @@
       sparkle.style.setProperty('--delay', (Math.random() * 2) + 's');
       bg.appendChild(sparkle);
     }
+
+    // Cartel "FELIZ CUMPLE IRISS" letra por letra
+    const titulo = document.getElementById('cumpleTitulo');
+    const textoTitulo = titulo.dataset.text;
+    titulo.innerHTML = '';
+    for (let i = 0; i < textoTitulo.length; i++) {
+      const span = document.createElement('span');
+      span.className = 'titulo-letra' + (textoTitulo[i] === ' ' ? ' espacio' : '');
+      if (textoTitulo[i] !== ' ') span.textContent = textoTitulo[i];
+      span.style.setProperty('--i', i);
+      titulo.appendChild(span);
+    }
+
+    // Globos que suben (menos en mobile para que vaya fluido).
+    // Las fotos van en style/globos/1.png, 2.png, ... y se recortan en forma de globo.
+    const globos = document.getElementById('globos');
+    const coloresGlobos = ['#ff6bb0', '#ffd700', '#ff8a8a', '#7fc8ff', '#c9a4ff', '#ffffff'];
+    const totalGlobos = esMobile ? 5 : 9;
+
+    (async () => {
+      const candidatos = [];
+      for (let i = 1; i <= 14; i++) candidatos.push('./style/globos/' + i + '.png');
+      const disponibles = await Promise.all(candidatos.map(r => new Promise(res => {
+        const img = new Image();
+        img.onload = () => res(r);
+        img.onerror = () => res(null);
+        img.src = r;
+      })));
+      const fotos = disponibles.filter(Boolean).slice(0, totalGlobos);
+
+      for (let i = 0; i < totalGlobos; i++) {
+        const globo = document.createElement('span');
+        const color = coloresGlobos[i % coloresGlobos.length];
+        if (fotos[i]) {
+          globo.className = 'globo globo-foto';
+          const foto = document.createElement('img');
+          foto.src = fotos[i];
+          foto.alt = '';
+          foto.draggable = false;
+          globo.appendChild(foto);
+        } else {
+          globo.className = 'globo';
+          globo.style.setProperty('--color', color);
+        }
+        globo.style.left = (4 + Math.random() * 88) + '%';
+        globo.style.setProperty('--dur', (13 + Math.random() * 12) + 's');
+        globo.style.setProperty('--delay', (-Math.random() * 22) + 's');
+        globo.style.setProperty('--size', (38 + Math.random() * 30) + 'px');
+        globos.appendChild(globo);
+      }
+    })();
 
     const giftBtn = document.getElementById('giftBtn');
     const videoContainer = document.getElementById('videoContainer');
@@ -83,6 +135,8 @@
     let yaMostroBoton = false;
 
     giftBtn.addEventListener('click', () => {
+      document.body.classList.add('abriendo');
+
       giftBtn.style.opacity = '0';
       setTimeout(() => giftBtn.style.display = 'none', 500);
 

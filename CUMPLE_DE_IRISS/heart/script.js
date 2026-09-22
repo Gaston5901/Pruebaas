@@ -9,14 +9,17 @@ let scene, camera, renderer, particles, composer, controls;
 let time = 0;
 let isAnimationEnabled = true;
 let currentTheme = 'molten';
-let morphTarget = 0;
-let morphProgress = 0;
+let morphTarget = 1;
+let morphProgress = 1;
 
-const particleCount = 10000;
+const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+// Menos partículas en celular para que vaya fluido
+const particleCount = isMobile ? 4200 : 10000;
 
 const themes = {
   molten: {
-    name: 'Molten',
+    name: 'Fuego',
     colors: [
       new THREE.Color(0xff4800),
       new THREE.Color(0xff8c00),
@@ -27,7 +30,7 @@ const themes = {
     bloom: { strength: 0.35, radius: 0.45, threshold: 0.7 }
   },
   cosmic: {
-    name: 'Cosmic',
+    name: 'Cósmico',
     colors: [
       new THREE.Color(0x6a0dad),
       new THREE.Color(0x9370db),
@@ -38,7 +41,7 @@ const themes = {
     bloom: { strength: 0.4, radius: 0.5, threshold: 0.65 }
   },
   emerald: {
-    name: 'Emerald',
+    name: 'Esmeralda',
     colors: [
       new THREE.Color(0x00ff7f),
       new THREE.Color(0x3cb371),
@@ -111,16 +114,17 @@ function init() {
   scene = new THREE.Scene();
 
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1500);
-  camera.position.z = 90;
+  camera.position.z = isMobile ? 130 : 90;
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
   document.getElementById('container').appendChild(renderer.domElement);
 
   createUI();
 
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableZoom = !isMobile;
   controls.enableDamping = true;
   controls.dampingFactor = 0.04;
   controls.rotateSpeed = 0.3;
@@ -132,7 +136,12 @@ function init() {
 
   composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
-  const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+  const bloomPass = new UnrealBloomPass(
+  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  isMobile ? 1.0 : 1.5,
+  0.4,
+  0.85
+);
   composer.addPass(bloomPass);
   composer.addPass(new OutputPass());
   scene.userData.bloomPass = bloomPass;
@@ -153,62 +162,16 @@ function createUI() {
   themeSelector.id = 'theme-selector';
   Object.keys(themes).forEach((themeKey) => {
     const button = document.createElement('button');
-    button.className = 'theme-btn';
+    button.className = 'theme-dot';
     button.dataset.theme = themeKey;
-    button.textContent = themes[themeKey].name;
+    button.title = themes[themeKey].name;
+    const theme = themes[themeKey];
+    button.style.background = 'linear-gradient(135deg, ' +
+      theme.colors.map((c) => '#' + c.getHexString()).join(', ') + ')';
     button.addEventListener('click', () => setTheme(themeKey));
     themeSelector.appendChild(button);
   });
   controlsDiv.appendChild(themeSelector);
-
-  const separator1 = document.createElement('div');
-  separator1.className = 'separator';
-  controlsDiv.appendChild(separator1);
-
-  const actionSelector = document.createElement('div');
-  actionSelector.id = 'action-selector';
-
-  const morphBtn = document.createElement('button');
-  morphBtn.className = 'action-btn';
-  morphBtn.textContent = 'Morph';
-  morphBtn.addEventListener('click', () => {
-    morphBtn.classList.toggle('active');
-    morphTarget = morphTarget === 0 ? 1 : 0;
-  });
-  actionSelector.appendChild(morphBtn);
-  controlsDiv.appendChild(actionSelector);
-
-  const separator2 = document.createElement('div');
-  separator2.className = 'separator';
-  controlsDiv.appendChild(separator2);
-
-  const toggleOption = document.createElement('div');
-  toggleOption.className = 'toggle-option';
-
-  const toggleLabel = document.createElement('label');
-  toggleLabel.className = 'toggle-switch';
-
-  const toggleInput = document.createElement('input');
-  toggleInput.type = 'checkbox';
-  toggleInput.id = 'animateToggle';
-  toggleInput.checked = true;
-  toggleInput.addEventListener('change', (e) => {
-    isAnimationEnabled = e.target.checked;
-  });
-
-  const toggleSlider = document.createElement('span');
-  toggleSlider.className = 'toggle-slider';
-
-  toggleLabel.appendChild(toggleInput);
-  toggleLabel.appendChild(toggleSlider);
-
-  const labelForToggle = document.createElement('label');
-  labelForToggle.htmlFor = 'animateToggle';
-  labelForToggle.textContent = 'Animate';
-
-  toggleOption.appendChild(toggleLabel);
-  toggleOption.appendChild(labelForToggle);
-  controlsDiv.appendChild(toggleOption);
 }
 
 function createParticleSystem() {
@@ -424,7 +387,7 @@ function setTheme(themeName) {
   currentTheme = themeName;
 
   document.body.className = `theme-${currentTheme}`;
-  document.querySelectorAll('.theme-btn').forEach((btn) => {
+  document.querySelectorAll('.theme-dot').forEach((btn) => {
     btn.classList.toggle('active', btn.dataset.theme === themeName);
   });
 

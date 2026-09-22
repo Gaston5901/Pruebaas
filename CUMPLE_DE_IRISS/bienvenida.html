@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Feliz Cumple, Iriss 💖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style/bienvenida.css">
+</head>
+<body>
+
+  <canvas id="escena"></canvas>
+
+  <!-- Título formado con estrellas -->
+  <div class="titulos" id="titulos">
+    <p class="saludo">Señorita</p>
+    <h1 class="iriss" aria-label="Iriss">
+      <span style="--i:0">I</span><span style="--i:1">r</span><span style="--i:2">i</span><span style="--i:3">s</span><span style="--i:4">s</span>
+    </h1>
+  </div>
+
+  <!-- Botón que aparece al completarse el corazón -->
+  <a class="btn-entrar" id="btnEntrar" href="./lobby/lobby.html">Entrá a tus regalos ♥</a>
+
+  <script>
+    const cvs = document.getElementById('escena');
+    const ctx = cvs.getContext('2d');
+    const btnEntrar = document.getElementById('btnEntrar');
+
+    let W = 0, H = 0, dpr = 1;
+    let estrellas = [];
+    let sparkleTitulo = [];
+    const N = 72;                 // cantidad de puntos del corazón
+    const pts = [];               // puntos del corazón (px)
+    let heartCX = 0, heartCY = 0;
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      cvs.width = W * dpr;
+      cvs.height = H * dpr;
+      cvs.style.width = W + 'px';
+      cvs.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      estrellas = Array.from({ length: Math.floor(W * H / 9000) }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.4 + 0.4,
+        ph: Math.random() * Math.PI * 2,
+        sp: 0.6 + Math.random() * 1.6
+      }));
+
+      // Puntos del corazón (curva paramétrica clásica)
+      heartCX = W / 2;
+      heartCY = H * 0.58;
+      const scale = Math.min(W, H) * 0.22 + 34;
+      pts.length = 0;
+      for (let i = 0; i <= N; i++) {
+        const t = (i / N) * Math.PI * 2;
+        const px = 16 * Math.pow(Math.sin(t), 3);
+        const py = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+        pts.push({
+          x: heartCX + px * scale,
+          y: heartCY - py * scale * 0.92
+        });
+      }
+
+      // Brillos que rodean el título
+      sparkleTitulo = [];
+      for (let i = 0; i < 10; i++) {
+        sparkleTitulo.push({
+          x: W / 2 + (Math.random() - 0.5) * Math.min(W * 0.6, 420),
+          y: H * 0.1 + (Math.random() - 0.5) * 100,
+          r: Math.random() * 2.4 + 1.4,
+          tl: 0.5 + i * 0.16,
+          ph: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    let init = performance.now();
+    const RETARDO_CORAZON = 1.3;   // segundos hasta empezar a dibujar el corazón
+    const DURACION = 4.2;          // duración del dibujo
+    let done = false;
+    let pulsoT = 0;
+    let comenzo = false;
+
+    function heartPoint(i, sub) {
+      // Interpola entre el punto i y el i+1
+      const a = pts[i], b = pts[i + 1];
+      return { x: a.x + (b.x - a.x) * sub, y: a.y + (b.y - a.y) * sub };
+    }
+
+    function draw(t) {
+      const now = performance.now();
+      const el = (now - init) / 1000;
+
+      // Fondo: estrellas que titilan
+      ctx.clearRect(0, 0, W, H);
+      for (const s of estrellas) {
+        const a = 0.25 + 0.55 * (0.5 + 0.5 * Math.sin(el * s.sp + s.ph));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,' + a.toFixed(3) + ')';
+        ctx.fill();
+      }
+
+      // Estrellas cerca del título (aparecen con cada letra)
+      for (const st of sparkleTitulo) {
+        if (el < st.tl) continue;
+        const a = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(el * 2 + st.ph));
+        ctx.beginPath();
+        ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,214,160,' + (a * 0.9).toFixed(3) + ')';
+        ctx.shadowColor = 'rgba(255,190,120,0.9)';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      // Corazón
+      const progTotal = Math.max(0, el - RETARDO_CORAZON) / DURACION;
+      const prog = Math.min(1, progTotal);
+      if (prog > 0 && !comenzo) comenzo = true;
+
+      const segs = prog * N;
+      const segCount = Math.floor(segs);
+      const sub = segs - segCount;
+
+      if (!done && prog >= 1) {
+        done = true;
+        btnEntrar.classList.add('visible');
+      }
+
+      if (done) pulsoT += 0.016;
+
+      const pulse = done ? 1 + 0.035 * Math.sin(pulsoT * 4) : 1;
+
+      // Trazo degradado rosa → violeta
+      const grad = ctx.createLinearGradient(heartCX, heartCY - 150, heartCX, heartCY + 150);
+      grad.addColorStop(0, '#ff9ad0');
+      grad.addColorStop(0.5, '#ff5fae');
+      grad.addColorStop(1, '#a78bfa');
+
+      ctx.lineWidth = 4;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      if (prog > 0) {
+        ctx.save();
+        if (done) {
+          ctx.translate(heartCX, heartCY);
+          ctx.scale(pulse, pulse);
+          ctx.translate(-heartCX, -heartCY);
+        }
+
+        // Relleno suave interior (se nota el corazón cuando está completo)
+        if (done) {
+          ctx.beginPath();
+          ctx.moveTo(pts[0].x, pts[0].y);
+          for (let k = 1; k <= N; k++) ctx.lineTo(pts[k].x, pts[k].y);
+          ctx.closePath();
+          const fillGrad = ctx.createRadialGradient(heartCX, heartCY, 0, heartCX, heartCY, Math.min(W, H) * 0.16);
+          fillGrad.addColorStop(0, 'rgba(255,120,195,0.30)');
+          fillGrad.addColorStop(1, 'rgba(255,120,195,0)');
+          ctx.fillStyle = fillGrad;
+          ctx.fill();
+        }
+
+        ctx.strokeStyle = grad;
+        ctx.shadowColor = 'rgba(255,110,190,1)';
+        ctx.shadowBlur = 22;
+
+        ctx.beginPath();
+        for (let k = 1; k <= segCount; k++) {
+          ctx.lineTo(pts[k].x, pts[k].y);
+        }
+        if (sub > 0 && segCount <= N) {
+          const p = heartPoint(segCount, sub);
+          ctx.lineTo(p.x, p.y);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Puntos-estrellas sobre el trazo
+        ctx.fillStyle = 'rgba(255,255,255,1)';
+        ctx.shadowColor = 'rgba(255,160,210,0.9)';
+        ctx.shadowBlur = 8;
+        for (let k = 1; k <= segCount; k++) {
+          ctx.beginPath();
+          ctx.arc(pts[k].x, pts[k].y, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+
+        // Punto activo (la "punta" brillante)
+        if (segCount < N) {
+          const p = heartPoint(segCount, sub > 0 ? sub : 0);
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowColor = '#ffa2d5';
+          ctx.shadowBlur = 26;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+        ctx.restore();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    requestAnimationFrame(draw);
+  </script>
+</body>
+</html>
