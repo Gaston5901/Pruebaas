@@ -1,0 +1,953 @@
+/* Importa las fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Dancing+Script:wght@400;500;700&family=Great+Vibes&family=Parisienne&family=Pinyon+Script&display=swap');
+
+/* ==============================================
+   PALETA (misma que la Rosa)
+   ============================================== */
+:root {
+    --noche: #0c0f1e;
+    --vino: #2a0a18;
+    --rojo: #c62828;
+    --rojo-claro: #ef5350;
+    --rosa: #ffcdd2;
+    --oro: #ffd27f;
+    --oro-claro: #ffe9a8;
+    --papel: #fdf0dc;
+    --tinta: #6d1a2a;
+    /* Color de los renglones del papel y de la sombra del texto:
+       se re-declaran en .papel[data-texto="claro"] para fondos oscuros */
+    --renglon: rgba(122, 31, 31, .09);
+    --sombra-texto: 0 1px 0 rgba(255, 255, 255, .75);
+    --ancho-sobre: 176px;
+    --alto-sobre: 120px;
+    --paso: 46px;
+    --giro: 2.6deg;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Dancing Script', cursive;
+    color: var(--rosa);
+    background:
+        radial-gradient(700px 420px at 50% 108%, rgba(229, 57, 53, .30), transparent 70%),
+        radial-gradient(500px 320px at 12% 8%, rgba(120, 30, 80, .35), transparent 72%),
+        linear-gradient(180deg, #10132a 0%, #1a0a1c 52%, #2a0a18 100%);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ==============================================
+   BOTONES DE NAVEGACIÓN
+   ============================================== */
+.back-button {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 50;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1.3em;
+    color: var(--rosa);
+    background: rgba(120, 8, 8, .45);
+    border: 2px solid rgba(255, 120, 120, .6);
+    border-radius: 50%;
+    box-shadow: 0 0 14px rgba(229, 57, 53, .3);
+    backdrop-filter: blur(4px);
+    transition: background .3s ease, border-color .3s ease, box-shadow .3s ease, transform .3s ease, opacity .3s ease;
+    user-select: none;
+}
+
+.back-button:hover {
+    background: rgba(229, 57, 53, .35);
+    border-color: var(--rojo-claro);
+    box-shadow: 0 0 22px rgba(255, 100, 100, .5);
+    transform: scale(1.1) rotate(-8deg);
+}
+
+/* ==============================================
+   PÉTALOS FLOTANTES
+   ============================================== */
+.petalos {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.petalo {
+    position: absolute;
+    top: -8%;
+    width: 18px;
+    height: 14px;
+    background: radial-gradient(circle at 35% 35%, #ef9a9a, #c62828);
+    border-radius: 50% 30% 60% 40% / 40% 60% 40% 60%;
+    box-shadow: 0 0 10px rgba(229, 57, 53, .55);
+    opacity: 0;
+    animation: caer linear infinite;
+}
+
+@keyframes caer {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+    10% { opacity: .85; }
+    50% { transform: translate3d(38px, 52vh, 0) rotate(190deg); opacity: .7; }
+    90% { opacity: .8; }
+    100% { transform: translate3d(-30px, 108vh, 0) rotate(360deg); opacity: 0; }
+}
+
+/* ==============================================
+   ESCENA
+   ============================================== */
+.escena {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 22px 16px 4vh;
+}
+
+.cabecera {
+    text-align: center;
+    max-width: 30ch;
+}
+
+.cabecera h1 {
+    margin: 0;
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(1.9rem, 6vw, 3rem);
+    font-weight: 400;
+    color: var(--oro-claro);
+    text-shadow: 0 0 18px rgba(255, 180, 140, .55), 0 2px 6px rgba(0, 0, 0, .6);
+}
+
+.contador {
+    margin: 10px 0 0;
+    display: inline-block;
+    padding: 6px 18px;
+    font-size: 1.05em;
+    color: var(--oro);
+    background: rgba(255, 210, 127, .1);
+    border: 1.5px solid rgba(255, 210, 127, .4);
+    border-radius: 999px;
+    text-shadow: 0 0 10px rgba(255, 180, 90, .5);
+}
+
+.hint {
+    margin: 12px 0 0;
+    font-size: 1.15em;
+    color: rgba(255, 225, 225, .92);
+    text-shadow: 0 0 12px rgba(229, 57, 53, .7);
+    animation: latir 1.7s infinite ease-in-out;
+}
+
+.hint.listo {
+    color: var(--oro-claro);
+    animation: none;
+}
+
+@keyframes latir {
+    0%, 100% { transform: scale(1); opacity: .95; }
+    50% { transform: scale(1.06); opacity: 1; }
+}
+
+/* ==============================================
+   PEDESTAL DE VIDRIO
+   ============================================== */
+.pedestal {
+    position: relative;
+    flex: 1 1 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.pedestal-base {
+    width: min(72vw, 320px);
+    height: min(26vh, 190px);
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 45%, rgba(255, 120, 110, .40), rgba(255, 90, 90, .10) 55%, transparent 72%);
+    filter: blur(14px);
+    animation: pulso-base 3.6s infinite alternate ease-in-out;
+}
+
+.pedestal-borde {
+    position: absolute;
+    bottom: 2%;
+    width: min(78vw, 340px);
+    height: min(30vh, 220px);
+    border: 1.5px solid rgba(255, 140, 140, .22);
+    border-radius: 170px 170px 18px 18px;
+    box-shadow: 0 0 30px rgba(255, 70, 70, .14) inset;
+    animation: brillo-vidrio 8s infinite ease-in-out;
+}
+
+@keyframes pulso-base {
+    from { transform: scale(1); opacity: .75; }
+    to { transform: scale(1.14); opacity: 1; }
+}
+
+@keyframes brillo-vidrio {
+    0%, 100% { border-color: rgba(255, 120, 120, .22); box-shadow: 0 0 30px rgba(255, 70, 70, .14) inset; }
+    50% { border-color: rgba(255, 255, 255, .45); box-shadow: 0 0 45px rgba(255, 110, 110, .3) inset; }
+}
+
+/* ==============================================
+   ABANICO DE SOBRES
+   ============================================== */
+.abanico {
+    position: relative;
+    width: 100%;
+    height: calc(var(--alto-sobre) + 46px);
+    flex: 0 0 auto;
+}
+
+.sobre {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    width: var(--ancho-sobre);
+    height: var(--alto-sobre);
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    touch-action: manipulation;
+    /* Origen en el centro: si el origen estuviera debajo, el scale del
+       vuelo empujaría el sobre hacia arriba y no caería al centro exacto */
+    transform-origin: 50% 50%;
+    transform: translateX(calc(-50% + var(--dx, 0px))) rotate(var(--a, 0deg)) translateY(var(--y, 0px));
+    transition: transform .5s cubic-bezier(.34, 1.35, .5, 1), filter .3s ease, opacity .3s ease;
+    z-index: var(--z, 1);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.sobre:hover,
+.sobre:focus-visible {
+    transform: translateX(calc(-50% + var(--dx, 0px))) rotate(0deg) translateY(-24px) scale(1.07);
+    z-index: 60;
+    outline: none;
+    filter: drop-shadow(0 16px 26px rgba(255, 90, 90, .45));
+}
+
+.sobre:active {
+    transform: translateX(calc(-50% + var(--dx, 0px))) rotate(0deg) translateY(-8px) scale(.99);
+}
+
+.sobre .sombra {
+    position: absolute;
+    left: 6%;
+    right: 6%;
+    bottom: -14px;
+    height: 26px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, .55), transparent 70%);
+    filter: blur(4px);
+}
+
+/* Cuerpo del sobre */
+.sobre .cuerpo {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background:
+        radial-gradient(120px 70px at 18% 14%, rgba(255, 150, 150, .30), transparent 68%),
+        radial-gradient(140px 90px at 84% 96%, rgba(120, 20, 40, .55), transparent 70%),
+        linear-gradient(160deg, #8c1024 0%, #6b0d1c 45%, #45060f 100%);
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 210, 127, .35),
+        inset 0 2px 14px rgba(255, 200, 200, .18),
+        inset 0 -16px 30px rgba(40, 0, 10, .55),
+        0 12px 26px rgba(20, 0, 8, .55);
+    overflow: hidden;
+}
+
+/* Marco punteado dorado */
+.sobre .marco {
+    position: absolute;
+    inset: 9px;
+    border: 1.5px dashed rgba(255, 210, 127, .55);
+    border-radius: 9px;
+    pointer-events: none;
+}
+
+/* Lacre de cera con el número: va en el borde izquierdo, que es la parte
+   de cada sobre que queda descubierta porque el de al lado lo tapa */
+.sobre .lacre {
+    position: absolute;
+    left: 7px;
+    top: 54%;
+    width: 32px;
+    height: 32px;
+    margin-top: -16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: radial-gradient(circle at 34% 30%, #ffe9a8, #e0a53c 55%, #a8711a);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .45), inset 0 -3px 8px rgba(120, 70, 0, .5), inset 0 2px 6px rgba(255, 255, 255, .55);
+    transition: opacity .35s ease, transform .45s ease;
+    z-index: 5;
+}
+
+.sobre .numero {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.25em;
+    color: #6b3a05;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .45);
+}
+
+/* Solapa */
+.sobre .solapa {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 54%;
+    background: linear-gradient(180deg, #a0142b 0%, #7d0f22 60%, #5c0a18 100%);
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top;
+    transition: transform .7s ease;
+    box-shadow: inset 0 2px 12px rgba(255, 190, 190, .22);
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* Borde dorado del filo de la solapa */
+.sobre .solapa::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 6%, rgba(255, 210, 127, .85) 30%, rgba(255, 210, 127, .85) 70%, transparent 94%);
+}
+
+/* Brillo que barre el sobre */
+.sobre .brillo {
+    position: absolute;
+    top: -40%;
+    left: -70%;
+    width: 40%;
+    height: 180%;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, .14) 45%, rgba(255, 255, 255, .26) 50%, rgba(255, 255, 255, .14) 55%, transparent 70%);
+    transform: skewX(-20deg);
+    animation: barrer 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 4;
+    border-radius: 14px;
+}
+
+@keyframes barrer {
+    0% { left: -70%; }
+    40%, 100% { left: 135%; }
+}
+
+/* Papelo que asoma cuando se abre */
+.sobre .papel-saliente {
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    top: 26%;
+    height: 68%;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #fffaf0, var(--papel));
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, .3);
+    transform: translateY(38%) scale(.9);
+    opacity: 0;
+    transition: transform .6s ease .25s, opacity .4s ease .25s;
+    z-index: 2;
+    pointer-events: none;
+}
+
+/* Chispa de "ya leída": va en la franja izquierda, que es la parte
+   de cada sobre que no tapa el de al lado */
+.sobre .visto {
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .95em;
+    color: var(--oro-claro);
+    text-shadow: 0 0 10px #ffd980, 0 0 24px #fff0c0;
+    opacity: 0;
+    transform: scale(.4);
+    transition: opacity .35s ease, transform .45s cubic-bezier(.34, 1.6, .5, 1);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.sobre.leida .visto {
+    opacity: 1;
+    transform: scale(1);
+    animation: titilar 2.4s infinite ease-in-out;
+}
+
+/* El lacre se apaga un poquito cuando la carta ya se leyó */
+.sobre.leida .lacre {
+    filter: saturate(.5) brightness(.92);
+}
+
+@keyframes titilar {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: .75; }
+    50% { transform: scale(1.22) rotate(18deg); opacity: 1; }
+}
+
+/* ==============================================
+   SOBRE ELEGIDO (vuela al centro y se abre)
+   ============================================== */
+.sobre.elegido {
+    z-index: 70;
+    animation: none;
+    pointer-events: none;
+    transform: translateX(calc(-50% + var(--dx, 0px) + var(--fx, 0px))) rotate(0deg) translateY(calc(var(--y, 0px) + var(--fy, 0px))) scale(1.22);
+    filter: drop-shadow(0 26px 40px rgba(255, 90, 90, .45));
+}
+
+.sobre.elegido .solapa {
+    transform: rotateX(180deg);
+}
+
+.sobre.elegido .papel-saliente {
+    transform: translateY(-16%) scale(1.04);
+    opacity: 1;
+}
+
+/* El lacre se cae al abrir el sobre */
+.sobre.elegido .lacre {
+    opacity: 0;
+    transform: scale(.5) translateY(14px);
+}
+
+/* Cuando se abre uno, el resto se aparta */
+.abanico.abriendo .sobre:not(.elegido) {
+    opacity: .18;
+    filter: blur(2px) saturate(.6);
+    pointer-events: none;
+}
+
+/* Estado neutro: solo lo usa script.js para medir dónde está el sobre
+   en el abanico, sin que lo mueva el hover ni la transición */
+.sobre.midiendo {
+    transition: none !important;
+    transform: translateX(calc(-50% + var(--dx, 0px))) rotate(var(--a, 0deg)) translateY(var(--y, 0px)) !important;
+}
+
+/* Mientras se arma el abanico no hay transición: si la hubiera, el navegador
+   partiría del valor inicial y los sobres quedarían todos apilados */
+.abanico.armando .sobre {
+    transition: none !important;
+}
+
+/* ==============================================
+   LECTOR
+   ============================================== */
+.lector {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 26px 16px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease, visibility .5s ease;
+}
+
+.lector.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lector-fondo {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 4, 14, .74);
+    backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
+}
+
+/* Papel de la carta */
+.papel {
+    position: relative;
+    width: min(94vw, 520px);
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 42px 30px 34px;
+    border-radius: 8px;
+    /* Cada carta puede tener su propio papel: data-tema o data-fondo
+       (script.js los copia del <article class="carta"> al abrirla) */
+    --tam: clamp(1.14rem, 3.7vw, 1.32rem);
+    --alto: calc(var(--tam) * 1.8);
+    --renglones: repeating-linear-gradient(180deg, transparent 0 calc(var(--alto) - 1px), var(--renglon) calc(var(--alto) - 1px) var(--alto));
+    --papel: radial-gradient(120% 80% at 20% 0%, #fffaf0, #fdf0dc 58%, #f4e0c4);
+    --velo: transparent;
+    /* Ornamento que separa las estrofas de un poema:
+       dos líneas curvas con un corazón en el medio */
+    --separador: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130 16'%3E%3Cpath d='M3 11 Q 25 3 48 10' fill='none' stroke='%23c62828' stroke-opacity='.5' stroke-width='1.3' stroke-linecap='round'/%3E%3Cpath d='M82 10 Q 105 3 127 11' fill='none' stroke='%23c62828' stroke-opacity='.5' stroke-width='1.3' stroke-linecap='round'/%3E%3Cpath d='M65 13.6 C 65 13.6 57 8.6 57 5.3 C 57 2.3 60.8 1.1 65 4.3 C 69.2 1.1 73 2.3 73 5.3 C 73 8.6 65 13.6 65 13.6 Z' fill='%23c62828'/%3E%3C/svg%3E");
+    background-color: #fdf0dc;
+    background-image: var(--velo), var(--papel);
+    background-size: cover, auto;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    border: 2px solid rgba(255, 210, 127, .75);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, .6), inset 0 0 40px rgba(190, 140, 80, .18);
+    transform: scale(.86) rotate(-.6deg);
+    opacity: 0;
+    transition: transform .6s cubic-bezier(.2, 1.3, .4, 1), opacity .45s ease;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(198, 40, 40, .5) transparent;
+}
+
+/* Papeles con otro color */
+.papel[data-tema="rosa"] {
+    --papel: radial-gradient(120% 80% at 20% 0%, #fff7fa, #ffe6ef 58%, #f7d2e1);
+    background-color: #ffe6ef;
+    border-color: rgba(244, 143, 177, .8);
+}
+
+.papel[data-tema="dorado"] {
+    --papel: radial-gradient(120% 80% at 20% 0%, #fffdf3, #fff2d4 58%, #f4dfae);
+    background-color: #fff2d4;
+    border-color: rgba(212, 175, 55, .85);
+}
+
+.papel[data-tema="vino"] {
+    --papel: radial-gradient(120% 80% at 20% 0%, #fff7f3, #f9dfd6 58%, #eec3b9);
+    --renglones: repeating-linear-gradient(180deg, transparent 0 calc(var(--alto) - 1px), rgba(140, 30, 40, .1) calc(var(--alto) - 1px) var(--alto));
+    background-color: #f9dfd6;
+    border-color: rgba(198, 40, 40, .55);
+}
+
+/* Carta con imagen propia: la imagen va de fondo con un velo suave
+   arriba para que el texto se lea bien.
+   Si querés ver la imagen ENTERA, cambiá cover por contain. */
+.papel[data-fondo] {
+    --velo: linear-gradient(rgba(255, 250, 240, .68), rgba(255, 250, 240, .78));
+    --papel: var(--fondo);
+    /* rojo un toque más profundo: sobre fotos claras el título
+       necesitan más contraste para que no se vea lavado */
+    --rojo: #a11d1d;
+    --renglones: none;
+    background-size: cover, cover;
+    border-color: rgba(255, 210, 127, .9);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, .6), inset 0 0 50px rgba(120, 80, 40, .25);
+}
+
+/* Imagen oscura (data-texto="claro"): la X se lee al revés,
+   texto claro con sombra oscura y viñeta suave para que se lea */
+.papel[data-texto="claro"] {
+    --velo: radial-gradient(125% 95% at 50% 38%, rgba(8, 5, 10, .12), rgba(8, 5, 10, .55));
+    --rojo: #f4dca6;
+    --tinta: #f4ece0;
+    --renglon: rgba(255, 238, 205, .15);
+    --sombra-texto: 0 2px 7px rgba(0, 0, 0, .85);
+    /* el mismo separador, pero en dorado para que se vea sobre la foto */
+    --separador: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 130 16'%3E%3Cpath d='M3 11 Q 25 3 48 10' fill='none' stroke='%23f4dca6' stroke-opacity='.5' stroke-width='1.3' stroke-linecap='round'/%3E%3Cpath d='M82 10 Q 105 3 127 11' fill='none' stroke='%23f4dca6' stroke-opacity='.5' stroke-width='1.3' stroke-linecap='round'/%3E%3Cpath d='M65 13.6 C 65 13.6 57 8.6 57 5.3 C 57 2.3 60.8 1.1 65 4.3 C 69.2 1.1 73 2.3 73 5.3 C 73 8.6 65 13.6 65 13.6 Z' fill='%23f4dca6'/%3E%3C/svg%3E");
+    --renglones: repeating-linear-gradient(180deg, transparent 0 calc(var(--alto) - 1px), var(--renglon) calc(var(--alto) - 1px) var(--alto));
+    border-color: rgba(255, 210, 127, .75);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, .7), inset 0 0 60px rgba(0, 0, 0, .55);
+}
+
+/* Qué tan fuerte es el velo sobre la imagen de fondo.
+   Tiene que ir DESPUÉS de [data-fondo] y [data-texto] para poder pisarlos. */
+.papel[data-velo="fuerte"] {
+    --velo: linear-gradient(rgba(8, 5, 10, .5), rgba(8, 5, 10, .62));
+}
+
+.papel[data-velo="medio"] {
+    --velo: linear-gradient(rgba(255, 250, 240, .48), rgba(255, 250, 240, .58));
+}
+
+.papel[data-velo="suave"] {
+    --velo: linear-gradient(rgba(255, 250, 240, .28), rgba(255, 250, 240, .38));
+}
+
+.lector.visible .papel {
+    transform: scale(1) rotate(-.6deg);
+    opacity: 1;
+}
+
+.sello-oro {
+    text-align: center;
+    font-size: 2.4em;
+    line-height: 1;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 4px 8px rgba(198, 40, 40, .35));
+    animation: flotar 2.6s infinite ease-in-out;
+}
+
+@keyframes flotar {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-7px) scale(1.09); }
+}
+
+/* ==============================================
+   TEXTO DE LA CARTA
+   ============================================== */
+.letra-saludo,
+.letra-titulo,
+.letra-cuerpo,
+.letra-firma {
+    opacity: 0;
+    transform: translateY(14px);
+}
+
+.lector.visible .letra-saludo,
+.lector.visible .letra-titulo,
+.lector.visible .letra-cuerpo,
+.lector.visible .letra-firma {
+    opacity: 1;
+    transform: none;
+    transition: opacity .6s ease, transform .6s ease;
+}
+
+.lector.visible .letra-titulo { transition-delay: .1s; }
+.lector.visible .letra-saludo { transition-delay: .2s; }
+.lector.visible .letra-cuerpo { transition-delay: .3s; }
+.lector.visible .letra-firma {
+    transition-delay: .44s;
+    transform: rotate(-2.2deg);
+}
+
+.letra-titulo {
+    margin: 0;
+    font-family: 'Pinyon Script', 'Great Vibes', cursive;
+    font-weight: 400;
+    font-size: clamp(2.1rem, 7.4vw, 3rem);
+    line-height: 1.06;
+    letter-spacing: .01em;
+    color: var(--rojo);
+    text-align: center;
+    text-shadow: var(--sombra-texto);
+}
+
+/* Ornamento con una línea debajo del título */
+.letra-titulo::after {
+    content: '\2014  \2726  \2014';
+    display: block;
+    margin-top: 8px;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: .42em;
+    line-height: 1;
+    letter-spacing: .12em;
+    color: var(--oro);
+    opacity: .85;
+    text-shadow: 0 0 10px rgba(255, 217, 128, .9);
+}
+
+.letra-saludo {
+    margin: 20px 0 12px;
+    font-family: 'Parisienne', 'Great Vibes', cursive;
+    font-size: clamp(1.6rem, 5.6vw, 2.1rem);
+    line-height: 1.2;
+    color: var(--rojo);
+    text-shadow: var(--sombra-texto);
+}
+
+.letra-saludo:empty {
+    display: none;
+}
+
+.letra-cuerpo {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    font-size: var(--tam);
+}
+
+.letra-cuerpo p {
+    /* Un renglón en blanco entre párrafos, como en una hoja escrita a mano */
+    margin: 0 0 var(--alto);
+    font-weight: 500;
+    line-height: 1.8;
+    color: var(--tinta);
+    text-shadow: var(--sombra-texto);
+    /* Los renglones del papel se dibujan en cada párrafo, no en el
+       contenedor, para que caigan justo debajo de cada línea de texto
+       y cada estrofa pueda llevar su propio ritmo */
+    background-image: var(--renglones);
+    background-repeat: repeat;
+    background-position: 0 0;
+    /* Las palabras NO se parten nunca */
+    hyphens: none;
+    -webkit-hyphens: none;
+    overflow-wrap: normal;
+    word-break: keep-all;
+}
+
+.letra-cuerpo p:last-child {
+    margin-bottom: 0;
+}
+
+/* Los párrafos siguientes entran con sangría, como en una carta */
+.letra-cuerpo p + p {
+    text-indent: 1.5em;
+}
+
+/* Letra capitular en el primer párrafo */
+.letra-cuerpo p:first-of-type::first-letter {
+    float: left;
+    margin: .06em .1em 0 0;
+    font-family: 'Pinyon Script', 'Great Vibes', cursive;
+    font-size: 3.4em;
+    line-height: .74;
+    color: var(--rojo);
+    text-shadow: var(--sombra-texto);
+}
+
+/* Para remarcar una palabra: <em>mi pachuchitaa</em> */
+.letra-cuerpo em {
+    font-family: 'Parisienne', 'Great Vibes', cursive;
+    font-style: normal;
+    font-size: 1.3em;
+    line-height: 0;
+    color: var(--rojo);
+}
+
+.letra-firma {
+    margin: 26px 0 0;
+    font-family: 'Allura', 'Great Vibes', cursive;
+    font-size: clamp(1.8rem, 6vw, 2.4rem);
+    line-height: 1.1;
+    color: var(--rojo);
+    text-align: right;
+    text-shadow: var(--sombra-texto);
+}
+
+.letra-firma::before {
+    content: '\2665';
+    display: block;
+    margin-bottom: 4px;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: .85rem;
+    color: var(--rojo-claro);
+    opacity: .5;
+    text-align: center;
+    text-shadow: none;
+}
+
+/* Rúbrica: la línea debajo de la firma */
+.letra-firma::after {
+    content: '';
+    display: block;
+    width: 48%;
+    height: 2px;
+    margin: 7px 4px 0 auto;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, rgba(198, 40, 40, .45));
+}
+
+/* ==============================================
+   CARTAS QUE SON UN POEMA
+   data-formato="verso" en la carta -> todos los <p> son estrofas
+   data-estilo="verso" en un <p>    -> solo ese párrafo es estrofa
+   Sin capitular, sin sangría, sin justificar,
+   y un cuerpo un poco más chico para que
+   los versos entren mejor en el papel.
+   ============================================== */
+.letra-cuerpo p.verso {
+    --tam-verso: clamp(1.02rem, 3.1vw, 1.15rem);
+    --alto-verso: calc(var(--tam-verso) * 1.75);
+    position: relative;
+    margin: 0 0 var(--alto-verso);
+    font-size: var(--tam-verso);
+    line-height: 1.75;
+    text-indent: 0;
+    text-align: left;
+    background-image: repeating-linear-gradient(180deg, transparent 0 calc(var(--alto-verso) - 1px), var(--renglon) calc(var(--alto-verso) - 1px) var(--alto-verso));
+}
+
+.letra-cuerpo p.verso:last-child {
+    margin-bottom: 0;
+}
+
+.letra-cuerpo p.verso::first-letter {
+    float: none;
+    margin: 0;
+    font: inherit;
+    color: inherit;
+    text-shadow: inherit;
+}
+
+/* Entre estrofas, en el renglón en blanco: dos líneas curvas
+   con un corazón en el medio. Va absoluto para no correr
+   la altura de la estrofa ni desalinear los renglones. */
+.letra-cuerpo p.verso:not(:first-child)::before {
+    content: '';
+    position: absolute;
+    top: -21px;
+    left: 0;
+    right: 0;
+    height: 16px;
+    background: var(--separador) no-repeat center / 132px 16px;
+}
+
+.chispa {
+    position: absolute;
+    font-size: 1.2em;
+    color: var(--oro);
+    text-shadow: 0 0 10px #ffd980, 0 0 22px #fff0c0;
+    animation: titilar 2.4s infinite ease-in-out;
+    pointer-events: none;
+}
+
+.cp1 { top: 12px; left: 16px; }
+.cp2 { bottom: 12px; right: 18px; animation-delay: 1.1s; }
+
+@media (min-width: 480px) {
+    /* En pantallas anchas el texto queda justificado, como una carta de verdad */
+    .letra-cuerpo p {
+        text-align: justify;
+        text-justify: inter-word;
+    }
+}
+
+/* Botón para cerrar la carta */
+.cerrar {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 90;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.7em;
+    line-height: 1;
+    color: #7a1f1f;
+    background: rgba(255, 253, 243, .94);
+    border: 2px solid var(--oro);
+    border-radius: 50%;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .5);
+    cursor: pointer;
+    /* Ojo: sin "all", porque también transicionaría visibility y la X
+       aparecería recién 300ms después de abrirse la carta */
+    transition: background .3s ease, color .3s ease, transform .3s ease, box-shadow .3s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.cerrar:hover {
+    background: var(--oro-claro);
+    color: #4c0714;
+    transform: scale(1.08) rotate(90deg);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, .6);
+}
+
+.cerrar:active {
+    transform: scale(.94);
+}
+
+/* Mientras se lee una carta se esconde el botón de navegación */
+body.leyendo .back-button {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(.5);
+}
+
+/* ==============================================
+   CELULAR
+   ============================================== */
+@media (max-width: 600px) {
+    :root {
+        --ancho-sobre: 132px;
+        --alto-sobre: 92px;
+        --paso: 36px;
+    }
+
+    .escena {
+        padding: 16px 12px 3vh;
+    }
+
+    .cabecera h1 {
+        font-size: 1.85rem;
+    }
+
+    .hint {
+        font-size: 1.05em;
+    }
+
+    .contador {
+        padding: 5px 15px;
+        font-size: .98em;
+    }
+
+    .pedestal-base {
+        width: 84vw;
+        height: 20vh;
+    }
+
+    .pedestal-borde {
+        width: 88vw;
+        height: 24vh;
+    }
+
+    .papel {
+        padding: 34px 20px 28px;
+    }
+
+    .cerrar {
+        top: 12px;
+        right: 12px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.5em;
+    }
+
+    /* Lacre más chico para que entre justo en la franja visible */
+    .sobre .lacre {
+        left: 4px;
+        width: 28px;
+        height: 28px;
+        margin-top: -14px;
+    }
+
+    .sobre .numero {
+        font-size: 1.1em;
+    }
+
+    .sobre .visto {
+        top: 6px;
+        left: 6px;
+        width: 20px;
+        height: 20px;
+        font-size: .8em;
+    }
+
+    .back-button {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* Respeta menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition-duration: .01ms !important;
+    }
+}

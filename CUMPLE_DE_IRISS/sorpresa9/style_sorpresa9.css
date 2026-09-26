@@ -1,0 +1,172 @@
+/* ==========================================================
+   SORPRESA 9 - PLANTILLA BASE (modal + fondo cálido)
+========================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
+}
+
+body {
+  background: #fdf6f0;
+  color: #2c1820;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 20px 12px 40px;
+  padding-top: 68px;
+  overflow-x: hidden;
+}
+
+.warm-bg {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255, 182, 193, 0.35) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 218, 185, 0.4) 0%, transparent 40%);
+  z-index: -1;
+}
+
+/* Botón Volver */
+.top-bar {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  padding: 0 12px;
+  z-index: 100;
+}
+
+.btn-back {
+  display: inline-block;
+  color: #c84b7a;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #f4b4c6;
+  box-shadow: 0 4px 12px rgba(200, 75, 122, 0.1);
+  transition: all 0.3s ease;
+}
+
+.btn-back:active {
+  transform: scale(0.95);
+}
+
+/* Contenido placeholder */
+.contenido {
+  text-align: center;
+  max-width: 480px;
+}
+
+.contenido h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.4rem;
+  color: #4a1c2b;
+  margin-bottom: 10px;
+}
+
+.contenido p {
+  color: #8c5b6e;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* ==========================================================
+   MODAL DE BIENVENIDA (igual al resto de las sorpresas)
+========================================================= */
+
+.surprise-intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(12, 4, 16, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.surprise-intro-overlay.hidden {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.surprise-intro-card {
+  background: linear-gradient(145deg, #2b0a1a, #14040e);
+  border: 2px solid #ff2a85;
+  border-radius: 28px;
+  padding: 35px 24px;
+  max-width: 380px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 42, 133, 0.5);
+}
+
+.surprise-tag {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 20px;
+  background: rgba(255, 42, 133, 0.2);
+  border: 1px solid rgba(255, 42, 133, 0.5);
+  color: #ff66b2;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.surprise-title {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 10px;
+  line-height: 1.25;
+}
+
+.highlight-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 2.2rem;
+  color: #ff66b2;
+  text-shadow: 0 0 16px rgba(255, 42, 133, 0.8);
+}
+
+.surprise-desc {
+  color: #ffe6f2;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.btn-enter-surprise {
+  width: 100%;
+  padding: 13px;
+  border-radius: 22px;
+  border: none;
+  background: linear-gradient(135deg, #ff2a85, #9333ea);
+  color: white;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255, 42, 133, 0.7);
+}
+
+@media (max-width: 480px) {
+  .surprise-title { font-size: 1.5rem; }
+  .contenido h1 { font-size: 2rem; }
+}

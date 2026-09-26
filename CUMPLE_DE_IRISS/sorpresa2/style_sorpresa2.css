@@ -1,63 +1,63 @@
-/* ==========================================================
-   ESTILOS GENERALES Y FONDO CÁLIDO
-========================================================== */
+/* ======================================================================
+   ÁLBUM LIBRO - PORTADA ESTILO MINECRAFT
+   Sorpresa 2 - Nuestros Momentos
+====================================================================== */
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Outfit', sans-serif;
+}
+
+:root {
+  --papel: #f6e7c4;
+  --papel-dark: #e8d4a4;
+  --papel-line: #cbb27d;
+  --cuero: #7a4a2b;
+  --cuero-dark: #4a2a12;
+  --cuero-darker: #2f1a09;
+  --cuero-light: #a2663a;
+  --dorado: #e4c36a;
+  --negative: 1;
+}
+
+html, body {
+  min-height: 100%;
 }
 
 body {
   background: #fdf6f0;
   color: #2c1820;
   min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 12px 40px 12px;
-  overflow-x: hidden;
+  justify-content: center;
+  gap: calc(2px + 0.9vh);
+  padding: 2.5vh 12px;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
+/* ======================================================================
+   FONDO CÁLIDO DE AMBIENTE
+====================================================================== */
 .warm-bg {
   position: fixed;
   inset: 0;
-  background: 
+  background:
     radial-gradient(circle at 10% 20%, rgba(255, 182, 193, 0.35) 0%, transparent 40%),
     radial-gradient(circle at 90% 80%, rgba(255, 218, 185, 0.4) 0%, transparent 40%);
   z-index: -1;
 }
 
-/* NAVEGACIÓN */
-.top-bar {
-  width: 100%;
-  max-width: 650px;
-  margin-bottom: 15px;
-}
-
-.btn-back {
-  display: inline-block;
-  color: #c84b7a;
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 8px 16px;
-  border-radius: 20px;
-  background: #ffffff;
-  border: 1px solid #f4b4c6;
-  box-shadow: 0 4px 12px rgba(200, 75, 122, 0.1);
-  transition: all 0.3s ease;
-}
-
-.btn-back:active {
-  transform: scale(0.95);
-}
-
-/* ==========================================================
-   MODAL DE BIENVENIDA (IDÉNTICO AL DE LA SORPRESA 1)
-========================================================== */
-
+/* ======================================================================
+   MODAL DE PRESENTACIÓN (igual al de la Sorpresa 1)
+====================================================================== */
 .surprise-intro-overlay {
   position: fixed;
   inset: 0;
@@ -87,6 +87,7 @@ body {
   width: 100%;
   text-align: center;
   box-shadow: 0 15px 45px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 42, 133, 0.5);
+  font-family: 'Outfit', sans-serif;
 }
 
 .surprise-tag {
@@ -139,133 +140,610 @@ body {
   box-shadow: 0 0 20px rgba(255, 42, 133, 0.7);
 }
 
-/* ==========================================================
-   ÁLBUM DE RECUERDOS (TARJETAS POLAROID / FOTOS)
-========================================================== */
-
-.album-container {
+/* ======================================================================
+   NAVEGACIÓN SUPERIOR (botón volver original)
+====================================================================== */
+.top-bar {
   width: 100%;
-  max-width: 650px;
+  max-width: var(--book-w, 640px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 0 4px;
 }
 
-.album-header {
-  text-align: center;
-  margin-bottom: 25px;
+.btn-back {
+  display: inline-block;
+  color: #c84b7a;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #f4b4c6;
+  box-shadow: 0 4px 12px rgba(200, 75, 122, 0.1);
+  transition: all 0.3s ease;
 }
 
-.album-badge {
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 2px;
+.btn-back:active {
+  transform: scale(0.95);
+}
+
+.contador {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
   color: #d85282;
   text-transform: uppercase;
   background: #fff0f5;
   padding: 4px 14px;
   border-radius: 12px;
   border: 1px solid #f7c5d8;
+  font-family: 'Outfit', sans-serif;
 }
 
-.album-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: #4a1c2b;
-  margin-top: 8px;
+/* ======================================================================
+   EL LIBRO - CONTENEDOR (tamaño calculado por JS)
+====================================================================== */
+.libro-wrap {
+  position: relative;
+  width: min(92vw, 400px);
+  aspect-ratio: 3 / 4.1;
+  flex: 0 0 auto;
+  perspective: 1800px;
+  perspective-origin: 40% 50%;
 }
 
-.album-subtitle {
-  font-size: 0.85rem;
-  color: #8c5b6e;
-  margin-top: 2px;
-}
-
-.memory-grid {
+/* ======================================================================
+   PORTADA ESTILO MINECRAFT
+====================================================================== */
+.tapa {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  padding: 4%;
+  background:
+    /* textura pixel del cuero */
+    repeating-conic-gradient(
+      rgba(0, 0, 0, 0.08) 0% 25%,
+      transparent 0% 50%
+    ) 0 0 / 6px 6px,
+    linear-gradient(135deg, var(--cuero) 0%, var(--cuero-dark) 60%, #3a1d0a 100%);
+  border: 4px solid #160a03;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 0 0 3px #241206,
+    inset 0 0 0 5px rgba(0, 0, 0, 0.35),
+    0 18px 38px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition:
+    transform 0.9s cubic-bezier(0.6, 0.05, 0.3, 1),
+    opacity 0.6s ease;
 }
 
-/* Tarjeta de Recuerdo */
-.memory-card {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 20px;
-  border: 1px solid #f8e1eb;
-  box-shadow: 
-    0 12px 28px rgba(180, 120, 140, 0.12),
-    0 2px 8px rgba(0, 0, 0, 0.03);
+/* animación de apertura de la portada */
+.tapa.abriendo {
+  transform: rotateY(-160deg) translateZ(-40px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* cierre de la portada (vuelve a tapar la hoja 1) */
+.tapa.volviendo {
+  transform: rotateY(0deg) translateZ(0);
+  opacity: 1;
+}
+
+.libro-wrap.abierto .tapa {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* canto del lomo (estilo hoja de costura) a la izquierda */
+.tapa::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 5%;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 7px,
+    rgba(0, 0, 0, 0.5) 7px 9px
+  );
+  opacity: 0.5;
+}
+
+.tapa-borde {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--dorado);
+  outline: 2px solid #160a03;
+  outline-offset: -5px;
+  background:
+    repeating-conic-gradient(
+      rgba(255, 255, 255, 0.05) 0% 25%,
+      transparent 0% 50%
+    ) 0 0 / 5px 5px,
+    linear-gradient(145deg, #3a1f0e, #241106);
+  border-radius: 5px;
+  padding: 6%;
+  text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  gap: 16px;
+  justify-content: center;
 }
 
-/* Marco estilo Foto Instantánea */
-.photo-frame {
-  position: relative;
+/* marco interno tipo encuadernación */
+.tapa-marco {
   width: 100%;
-  max-width: 280px;
-  aspect-ratio: 4 / 3;
-  background: #fafafa;
-  padding: 10px;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-  border: 1px solid #eee;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(0.8vh + 4px);
 }
 
-.photo-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-/* Cinta adhesiva decorativa */
-.photo-tape {
-  position: absolute;
-  top: -8px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 18px;
-  background: rgba(255, 182, 193, 0.5);
-  border: 1px dashed rgba(200, 75, 122, 0.4);
+.tapa-emblema {
+  width: clamp(58px, 22%, 120px);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #5a3318, #351a09);
+  border: 3px solid var(--dorado);
+  box-shadow:
+    inset 0 0 0 3px #160a03,
+    0 4px 0 #160a03,
+    0 0 18px rgba(228, 195, 106, 0.5);
   border-radius: 3px;
+  image-rendering: pixelated;
 }
 
-.memory-info {
-  width: 100%;
+/* cabeza de creeper pixelada (contenedor y marco) */
+.creeper-head {
+  position: relative;
+  width: clamp(64px, 24%, 130px);
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(135deg, #76c86e, #3f7d3a);
+  border: 4px solid #160a03;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 0 0 4px #2a5e2a,
+    0 4px 0 #160a03,
+    0 0 16px rgba(120, 200, 110, 0.5);
+  image-rendering: pixelated;
 }
 
-.memory-date {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #c84b7a;
+/* cara del creeper: ojos + boca pixelados */
+.creeper-face {
+  position: absolute;
+  inset: 16% 10%;
+}
+
+/* cada span es un ojo negro pixelado (2x2) */
+.creeper-face span {
+  position: absolute;
+  top: 0;
+  width: 26%;
+  height: 26%;
+  background: #2a2029;
+  image-rendering: pixelated;
+}
+.creeper-face span:nth-child(1) { left: 11%; }
+.creeper-face span:nth-child(2) { left: 63%; }
+
+/* boca clásica del creeper: banda negra con dos dientes verdes */
+.creeper-face::before {
+  content: '';
+  position: absolute;
+  left: 6%;
+  top: 40%;
+  width: 88%;
+  height: 48%;
+  background: #2a2029;
+  box-shadow: inset 0 6px 0 rgba(255,255,255,0.08);
+}
+
+/* muescas verdes (dientes) de la boca */
+.creeper-face::after {
+  content: '';
+  position: absolute;
+  left: 6%;
+  top: 40%;
+  width: 88%;
+  height: 48%;
+  background:
+    linear-gradient(90deg, #3f7d3a 0 3%, transparent 3% 97%, #3f7d3a 97%) top   / 100% 34% no-repeat,
+    linear-gradient(#3f7d3a 0 100%) 12% 34% / 8% 66% no-repeat,
+    linear-gradient(#3f7d3a 0 100%) 78% 34% / 8% 66% no-repeat;
+}
+
+/* texto romántico arriba de la portada */
+.tapa-amor {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.9rem, 3.4vh, 1.6rem);
+  color: #ffd9e0;
   text-transform: uppercase;
+  text-shadow:
+    3px 3px 0 #160a03,
+    0 0 14px rgba(255, 77, 109, 0.75);
+  letter-spacing: 2px;
+  line-height: 1.6;
+}
+
+/* corazón "pixelado" (quieto) */
+.tapa-emblema span {
+  display: block;
+  width: 44%;
+  height: 40%;
+  background: #ff4d6d;
+  border: 3px solid #ffd9e0;
+  box-shadow:
+    inset 0 0 0 2px #160a03,
+    0 0 0 2px rgba(255, 77, 109, 0.6),
+    0 0 14px #ff4d6d;
+  transform: rotate(45deg);
+}
+
+.tapa-titulo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(1rem, 4.2vh, 1.9rem);
+  line-height: 1.7;
+  color: var(--dorado);
+  text-shadow:
+    3px 3px 0 #160a03,
+    0 0 16px rgba(228, 195, 106, 0.45);
   letter-spacing: 1px;
 }
 
-.memory-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.5rem;
-  color: #3b202c;
-  margin: 4px 0 8px 0;
+.tapa-sub {
+  font-family: 'VT323', monospace;
+  font-size: clamp(1.05rem, 3.6vh, 1.7rem);
+  color: #f3e3bd;
+  letter-spacing: 1px;
 }
 
-.memory-text {
-  font-size: 0.9rem;
+.tapa-level {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.5rem, 1.8vh, 0.8rem);
+  color: #fff;
+  background: #2a5e2a;
+  border: 2px solid #160a03;
+  padding: 7px 10px;
+  box-shadow:
+    inset 2px 2px 0 #5ea85e,
+    inset -2px -2px 0 #173a17,
+    3px 3px 0 #160a03;
+  margin-top: 4px;
+  text-shadow: 1px 1px 0 #000;
+}
+
+/* botón inferior de la portada */
+.tapa-pista {
+  margin-top: 3.2%;
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.48rem, 1.7vh, 0.72rem);
+  color: #fff;
+  background: var(--btn-gray, #8a8a8a);
+  display: inline-block;
+  border: 2px solid #160a03;
+  padding: 9px 12px;
+  box-shadow:
+    inset 3px 3px 0 #c6c6c6,
+    inset -3px -3px 0 #3a3a3a,
+    3px 3px 0 #160a03;
+  letter-spacing: 1px;
+  align-self: center;
+  user-select: none;
+}
+
+.tapa-pista:active {
+  transform: translateY(2px);
+  box-shadow:
+    inset 3px 3px 0 #c6c6c6,
+    inset -3px -3px 0 #3a3a3a;
+}
+
+/* ======================================================================
+   INTERIOR DEL LIBRO
+====================================================================== */
+.libro-interior {
+  position: absolute;
+  inset: 0;
+  background: var(--papel);
+  border: 4px solid var(--cuero-dark);
+  box-shadow:
+    inset 0 0 0 3px #241206,
+    inset 0 0 55px rgba(90, 60, 30, 0.3),
+    0 16px 38px rgba(0, 0, 0, 0.55);
+  border-radius: 8px;
+  perspective: 1800px;
+  overflow: hidden;
+}
+
+/* ---- HOJAS ---- */
+.hoja {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(0.45, 0.05, 0.2, 1);
+  will-change: transform;
+}
+
+.hoja.volteada {
+  transform: rotateY(-180deg);
+}
+
+.cara {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5% 7% 6%;
+  background: linear-gradient(145deg, var(--papel), var(--papel-dark));
+  color: #3a2c17;
+  overflow: hidden;
+  /* esquinas redondeadas irregulares, como papel real */
+  border-radius: 5px 10px 8px 6px;
+}
+
+/* marco interior tipo costura / línea punteada */
+.cara::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1px dashed rgba(170, 130, 80, 0.35);
+  border-radius: 4px 8px 6px 5px;
+  pointer-events: none;
+}
+
+.cara::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    /* cinta en el margen superior e inferior */
+    linear-gradient(
+      90deg,
+      transparent 6%,
+      rgba(200, 120, 60, 0.14),
+      transparent 94%
+    ) 0 4% / 100% 2px,
+    linear-gradient(
+      90deg,
+      transparent 6%,
+      rgba(200, 120, 60, 0.14),
+      transparent 94%
+    ) 0 96% / 100% 2px,
+    /* sombreado suave de la hoja (lomo) */
+    linear-gradient(
+      90deg,
+      rgba(90, 60, 30, 0.2) 0%,
+      rgba(90, 60, 30, 0.08) 7%,
+      transparent 16%
+    );
+  pointer-events: none;
+}
+
+/* ---- CARA FRONTAL ---- */
+.hoja-fecha {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.55rem, 1.9vh, 0.85rem);
+  letter-spacing: 1px;
+  color: #b17a3e;
+  margin-bottom: 2.4%;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.foto {
+  position: relative;
+  width: 70%;
+  background: #fff;
+  padding: 2.4% 2.4% 6%;
+  border: 1px solid var(--papel-line);
+  box-shadow: 0 5px 12px rgba(60, 40, 15, 0.35);
+  transform: rotate(-1.5deg);
+  margin-bottom: 2.8%;
+  flex: 0 0 auto;
+}
+
+.foto img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+}
+
+.foto::after {
+  content: '♥';
+  position: absolute;
+  bottom: 1.6%;
+  right: 6%;
+  font-size: clamp(0.7rem, 2.4vh, 1.1rem);
+  color: rgba(200, 70, 90, 0.55);
+}
+
+.titulo-hoja {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.6rem, 2.2vh, 0.95rem);
   line-height: 1.6;
-  color: #5c3846;
+  color: #3f4a24;
+  text-align: center;
+  margin-bottom: 2.2%;
 }
 
-/* ADAPTACIÓN CELULAR */
-@media (max-width: 480px) {
-  .album-title {
-    font-size: 1.8rem;
+.detalle {
+  font-family: 'VT323', monospace;
+  font-size: clamp(1rem, 3.4vh, 1.5rem);
+  line-height: 1.25;
+  color: #4a3a20;
+  text-align: center;
+  max-width: 94%;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hoja-num {
+  position: absolute;
+  bottom: 2%;
+  right: 5%;
+  font-family: 'VT323', monospace;
+  font-size: clamp(0.8rem, 2.4vh, 1.1rem);
+  color: rgba(90, 60, 30, 0.5);
+}
+
+/* ---- CARA TRASERA ---- */
+.back {
+  transform: rotateY(180deg);
+  justify-content: center;
+  background: linear-gradient(145deg, var(--papel-dark), var(--papel));
+}
+
+.dorso {
+  font-size: clamp(1.4rem, 5vh, 2.4rem);
+  color: rgba(90, 60, 30, 0.45);
+}
+
+/* ======================================================================
+   NAVEGACIÓN DEL ÁLBUM (botones estilo Minecraft del libro)
+====================================================================== */
+.navegacion {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: min(92vw, 400px);
+  flex: 0 0 auto;
+  min-height: 40px;
+  gap: 8px;
+}
+
+.mc-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.44rem, 1.6vh, 0.58rem);
+  letter-spacing: 1px;
+  color: #fff;
+  background: #8a8a8a;
+  border: 2px solid #160a03;
+  box-shadow:
+    inset 3px 3px 0 #c6c6c6,
+    inset -3px -3px 0 #3a3a3a,
+    3px 3px 0 rgba(0,0,0,0.45);
+  padding: 10px 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.08s ease, filter 0.15s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mc-btn:active {
+  transform: translateY(3px);
+  box-shadow:
+    inset 3px 3px 0 #c6c6c6,
+    inset -3px -3px 0 #3a3a3a;
+}
+
+.btn-volver {
+  background: #a05a2f;
+  box-shadow:
+    inset 3px 3px 0 #d0854f,
+    inset -3px -3px 0 #5a2c10,
+    3px 3px 0 rgba(0,0,0,0.45);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.3s ease, visibility 0.3s, transform 0.3s ease;
+}
+
+.btn-volver.visible {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.btn-siguiente {
+  background: #4f9b4f;
+  box-shadow:
+    inset 3px 3px 0 #8ed08e,
+    inset -3px -3px 0 #2a5e2a,
+    3px 3px 0 rgba(0,0,0,0.45);
+  margin-left: auto;
+}
+
+.btn-siguiente:hover,
+.btn-volver:hover {
+  filter: brightness(1.12);
+}
+
+.navegacion.sin-siguiente .btn-siguiente,
+.btn-siguiente.oculto {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ======================================================================
+   RESPONSIVE: CELULAR ANGOSTO Y PANTALLA BAJA
+====================================================================== */
+@media (max-height: 640px) and (orientation: landscape) {
+  body {
+    padding: 1.2vh 12px;
+    gap: 3px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
   }
-  
-  .memory-card {
-    padding: 16px;
+
+  .top-bar,
+  .navegacion {
+    flex: 0 0 auto;
+  }
+
+  .libro-wrap {
+    width: min(34vh, 40vw);
+    height: auto;
+    aspect-ratio: 3 / 4.1;
+    flex: 0 0 auto;
+    margin: 0 8px;
+  }
+
+  .top-bar {
+    order: 0;
+  }
+
+  .navegacion {
+    order: 2;
+    width: auto;
+    max-width: none;
+    margin-left: 10px;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 0;
+  }
+
+  .btn-siguiente {
+    margin-left: 0;
   }
 }

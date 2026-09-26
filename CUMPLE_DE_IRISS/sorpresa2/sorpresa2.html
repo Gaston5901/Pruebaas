@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sorpresa 2 - Nuestros Momentos</title>
+  <title>Sorpresa 2 - Nuestros Momentos 📖</title>
 
-  <!-- FUENTES Y LIBRERÍAS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;1,600;1,700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;1,600;1,700&family=Outfit:wght@400;600;700;800&family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <link rel="stylesheet" href="style_sorpresa2.css">
 </head>
 
 <body>
+
+  <!-- FONDO CÁLIDO DE AMBIENTE -->
+  <div class="warm-bg"></div>
 
   <!-- MODAL DE PRESENTACIÓN UNIFORME -->
   <div class="surprise-intro-overlay" id="surpriseOverlay">
@@ -31,73 +33,125 @@
     </div>
   </div>
 
-  <!-- FONDO Y NAVEGACIÓN -->
-  <div class="warm-bg"></div>
-
-  <div class="top-bar">
+  <!-- NAVEGACIÓN SUPERIOR -->
+  <header class="top-bar">
     <a href="../lobby/lobby.html" class="btn-back">←</a>
-  </div>
+    <span class="contador" id="contador">1/6</span>
+  </header>
 
-  <!-- ÁLBUM DE RECUERDOS -->
-  <main class="album-container">
+  <!-- EL LIBRO -->
+  <main class="libro-wrap" id="libroWrap">
 
-    <header class="album-header">
-      <span class="album-badge">✨ ÁLBUM DE FOTOS</span>
-      <h1 class="album-title">Momentos Inolvidables</h1>
-      <p class="album-subtitle">Deslizá cada tarjeta para ver la foto y leer la anécdota 💖</p>
-    </header>
+    <!-- TAPA -->
+    <div class="tapa" id="tapa">
+      <div class="tapa-borde">
+        <div class="tapa-marco">
+          <div class="tapa-amor">tii amooouuu</div>
+          <div class="tapa-emblema"><span>♥</span></div>
+          <h2 class="tapa-titulo">NUESTROS<br>MOMENTOS</h2>
+          <p class="tapa-sub">Pachuchitaa ♥</p>
+          <span class="tapa-level">❤ Amor · Nivel ∞</span>
+        </div>
+        <p class="tapa-pista">▸ tocar para abrir ◂</p>
+      </div>
+    </div>
 
-    <!-- CONTENEDOR DE TARJETAS TIPO GALERÍA -->
-    <div class="memory-grid">
+    <!-- INTERIOR CON HOJAS -->
+    <div class="libro-interior" id="libroInterior">
 
-      <!-- Tarjeta 1 -->
-      <article class="memory-card">
-        <div class="photo-frame">
-          <img src="img/icono_recuerdos.png" alt="Recuerdo 1">
-          <span class="photo-tape"></span>
+      <!-- HOJA 1 -->
+      <section class="hoja">
+        <div class="cara front">
+          <span class="hoja-fecha">✦ el comienzo ✦</span>
+          <div class="foto"><img src="../img/detalle.png" alt="Recuerdo 1"></div>
+          <h3 class="titulo-hoja">Cómo nos conocimos</h3>
+          <p class="detalle">Acá va la historia de ese primer momento, del día en que todo empezó. De lo que sentí y de cómo no podía dejar de pensar en vos.</p>
+          <span class="hoja-num">1</span>
         </div>
-        <div class="memory-info">
-          <span class="memory-date">🗓️ Un día especial</span>
-          <h3 class="memory-title">Ese momento único</h3>
-          <p class="memory-text">
-            Acá podés contar la historia de esta foto. Recordar de qué se reían ese día, dónde estaban o lo lindo que la pasaron juntos.
-          </p>
+        <div class="cara back">
+          <p class="dorso">✦</p>
         </div>
-      </article>
+      </section>
 
-      <!-- Tarjeta 2 -->
-      <article class="memory-card">
-        <div class="photo-frame">
-          <img src="img/icono_fotos.png" alt="Recuerdo 2">
-          <span class="photo-tape"></span>
+      <!-- HOJA 2 -->
+      <section class="hoja">
+        <div class="cara front">
+          <span class="hoja-fecha">✦ nuestros sueños ✦</span>
+          <div class="foto"><img src="../img/deseo.png" alt="Recuerdo 2"></div>
+          <h3 class="titulo-hoja">Nuestros deseos</h3>
+          <p class="detalle">Las cosas que soñamos juntos, los planes que fuimos armando y cada deseo que se me ocurrió con tal de verte feliz.</p>
+          <span class="hoja-num">2</span>
         </div>
-        <div class="memory-info">
-          <span class="memory-date">🗓️ Otra salida</span>
-          <h3 class="memory-title">Risas y charlas</h3>
-          <p class="memory-text">
-            Acá va otra anécdota especial. Podés sumar todos los detalles y recuerdos divertidos que compartieron.
-          </p>
+        <div class="cara back">
+          <p class="dorso">✦</p>
         </div>
-      </article>
+      </section>
 
-      <!-- Tarjeta 3 -->
-      <article class="memory-card">
-        <div class="photo-frame">
-          <img src="img/icono_corazon.png" alt="Recuerdo 3">
-          <span class="photo-tape"></span>
+      <!-- HOJA 3 -->
+      <section class="hoja">
+        <div class="cara front">
+          <span class="hoja-fecha">✦ lo que guardo ✦</span>
+          <div class="foto"><img src="../img/memorias.png" alt="Recuerdo 3"></div>
+          <h3 class="titulo-hoja">Memorias que guardo</h3>
+          <p class="detalle">Cada charla, cada risa y cada momento simple que se volvió un recuerdo enorme. De esto quiero llenar el libro entero.</p>
+          <span class="hoja-num">3</span>
         </div>
-        <div class="memory-info">
-          <span class="memory-date">🗓️ Inolvidable</span>
-          <h3 class="memory-title">Un detalle para recordar</h3>
-          <p class="memory-text">
-            Escribí sobre esta tercera foto. Podés seguir duplicando estas tarjetas si tenés más fotos que quieras incluir.
-          </p>
+        <div class="cara back">
+          <p class="dorso">✦</p>
         </div>
-      </article>
+      </section>
+
+      <!-- HOJA 4 -->
+      <section class="hoja">
+        <div class="cara front">
+          <span class="hoja-fecha">✦ nuestro rincón ✦</span>
+          <div class="foto"><img src="../img/jardin.png" alt="Recuerdo 4"></div>
+          <h3 class="titulo-hoja">Nuestro jardín</h3>
+          <p class="detalle">El rincón que es solo nuestro, donde crecen las flores y las cosas lindas que sembramos sin darnos cuenta.</p>
+          <span class="hoja-num">4</span>
+        </div>
+        <div class="cara back">
+          <p class="dorso">✦</p>
+        </div>
+      </section>
+
+      <!-- HOJA 5 -->
+      <section class="hoja">
+        <div class="cara front">
+          <span class="hoja-fecha">✦ palabras mías ✦</span>
+          <div class="foto"><img src="../img/carta2.png" alt="Recuerdo 5"></div>
+          <h3 class="titulo-hoja">Lo que no te dije</h3>
+          <p class="detalle">Palabras que a veces no salen pero pienso siempre. Esta página es como una carta que por fin te pude escribir.</p>
+          <span class="hoja-num">5</span>
+        </div>
+        <div class="cara back">
+          <p class="dorso">✦</p>
+        </div>
+      </section>
+
+      <!-- HOJA 6 -->
+      <section class="hoja">
+        <div class="cara front">
+          <span class="hoja-fecha">✦ nuestra banda sonora ✦</span>
+          <div class="foto"><img src="../img/bts.png" alt="Recuerdo 6"></div>
+          <h3 class="titulo-hoja">Nuestra música</h3>
+          <p class="detalle">Las canciones que nos representan y que, cada vez que suenan, me hacen acordar a vos y a todo lo que compartimos.</p>
+          <span class="hoja-num">6</span>
+        </div>
+        <div class="cara back">
+          <p class="dorso">✦</p>
+        </div>
+      </section>
 
     </div>
 
   </main>
+
+  <!-- BOTONES DE PASAR / VOLVER -->
+  <footer class="navegacion">
+    <button class="mc-btn btn-volver" id="btnVolver" aria-label="Volver">◀ VOLVER</button>
+    <button class="mc-btn btn-siguiente" id="btnSiguiente" aria-label="Siguiente">SIGUIENTE ▶</button>
+  </footer>
 
   <script src="sorpresa2.js"></script>
 

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seis cartitas para Iriss </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="back-button" href="../rosa hermosaaa que anda/index.html" title="Volver a la Rosa"><span class="back-arrow">←</span></a>
+
+    <!-- Pétalos flotantes (los agrega script.js) -->
+    <div class="petalos" id="petalos" aria-hidden="true"></div>
+
+    <div class="escena">
+        <header class="cabecera">
+            <h1>Seis cartitas para Iriss</h1>
+            <p class="contador" id="contador">0 de 6 leídas</p>
+            <p class="hint" id="hint">Tocá un sobre para abrirlo 💌</p>
+        </header>
+
+        <!-- Pedestal de vidrio donde vuela el sobre elegido -->
+        <div class="pedestal" aria-hidden="true">
+            <div class="pedestal-base"></div>
+            <div class="pedestal-borde"></div>
+        </div>
+
+        <!-- Abanico de sobres: se arman en script.js -->
+        <div class="abanico" id="abanico"></div>
+    </div>
+
+    <!-- Lector de cartas -->
+    <div class="lector" id="lector" aria-hidden="true">
+        <div class="lector-fondo" id="lector-fondo"></div>
+        <article class="papel" id="papel">
+            <span class="chispa cp1">✦</span>
+            <span class="chispa cp2">✦</span>
+            <div class="sello-oro" aria-hidden="true">💗</div>
+            <h2 class="letra-titulo" id="letra-titulo"></h2>
+            <p class="letra-saludo" id="letra-saludo"></p>
+            <div class="letra-cuerpo" id="letra-cuerpo"></div>
+            <p class="letra-firma" id="letra-firma"></p>
+        </article>
+        <button class="cerrar" id="cerrar" type="button" aria-label="Cerrar la carta">✕</button>
+    </div>
+
+    <!-- ====== LAS 6 CARTAS: editá el texto acá ======
+         Cada <article class="carta"> puede llevar:
+           data-titulo="..."   el título
+           data-saludo="..."   la dedicatoria (opcional)
+           data-firma="..."    la firma
+           data-tema="rosa"    el color del papel (rosa | dorado | vino)
+           data-fondo="ruta/imagen.png"   un papel con foto propia
+            data-texto="claro"  para imágenes oscuras: letras claras
+            data-velo="fuerte"  cómo de tapada queda la foto (fuerte | medio | suave)
+            data-formato="verso"   si el texto es un poema (una estrofa por <p>)
+          Un solo <p> puede ser estrofa con data-estilo="verso", para cartas
+          que mezclan prosa y poema.
+          Si tiene data-tema y data-fondo, gana la imagen. -->
+
+    <template id="plantilla-sobre">
+        <button class="sobre" type="button">
+            <span class="sombra"></span>
+            <span class="cuerpo">
+                <span class="marco"></span>
+            </span>
+            <span class="solapa"></span>
+            <span class="lacre"><span class="numero"></span></span>
+            <span class="brillo"></span>
+            <span class="papel-saliente"></span>
+            <span class="visto">✦</span>
+        </button>
+    </template>
+
+    <div class="cartas" hidden>
+        <article class="carta" data-titulo="Cómo empezó todo" data-saludo="Mi pachuchitaa," data-firma="Con todo mi amor" data-fondo="../rosa hermosaaa que anda/image.png">
+            <p>A <em>mi persona favorita</em>, mi pachuchitaa... Cada día que pasa desde que empezamos a hablar, siento que el universo se puso de mi lado. Llegaste sin avisar y le diste color a mis días grises.</p>
+            <p>Con vos todo es más lindo: las risas, los juegos, las charlas hasta tarde, incluso las broncas compartidas que después se vuelven risas. Quiero que sepas que no estás sola, nunca. Acá estoy para abrazarte en los días feos, secarte las lágrimas y festejar cada logro tuyo como si fuera mío.</p>
+            <p>Sos mi lugar favorito en el mundo, mi casa, mi paz. No cambio nada de nuestro tiempo juntos por nada de este mundo. Gracias por existir y por cruzarte en mi camino.</p>
+        </article>
+
+        <article class="carta" data-titulo="Mi más hermosa locura" data-firma="Pachuuuu" data-fondo="../rosa hermosaaa que anda/carta2.png" data-texto="claro" data-formato="verso">
+            <p>Te quiero así, mi pachucha hermosa, a pesar de los kilómetros que nos separan,<br>abrazando tus días grises, tus silencios y esas vueltas en las que el mundo te pesa y te cansa.<br>Aunque hoy nos toque estirar los brazos a través de una pantalla,<br>no hay distancia en este mundo que a mi corazón de amarte le aplace o le calle.</p>
+            <p>No importa si hoy estás cruzada, si el mal humor te gana o si te sientes cansada,<br>yo te elijo a vos todos los días, y te mando un abrazo gigante que cruce la pantalla.<br>Porque tus ojos tienen esa magia rara que desarma cualquier tormenta,<br>y tu risa, aunque sea a lo lejos, es la paz que mi alma inventa.</p>
+            <p>Déjame ser el refugio al que corras cuando la distancia duela un poquito,<br>el que te haga reír por videollamada y te mime despacito.<br>Prometo estar firme en tus días claros y sostenerte fuerte en los nublados,<br>sabiendo que falta menos para vernos y quedar, por fin, entrelazados.</p>
+            <p>Eres la dueña absoluta de este amor tan bonito que por vos siento,<br>la que me roba suspiros con solo mandarme un mensaje en cualquier momento.<br>Y te quiero así, tal cual sos, con tus dudas, tus miedos y tu dulzura,<br>porque sin temor a equivocarme, amarte a vos a la distancia... ha sido mi más hermosa locura.</p>
+        </article>
+
+        <article class="carta" data-titulo="La tinta de este amor" data-firma="Ti Amouuuu" data-fondo="../rosa hermosaaa que anda/carta3.jpg" data-texto="claro" data-velo="fuerte">
+            <p>Con la tinta de este amor que te tengo, mi pachuchita, te escribo lo que siento, y con el fuego de mi corazón te lo hago verdadero.</p>
+            <p>Porque no es solo una frase, es todo lo que late por vos en cada segundo, abrazando cada una de tus vueltas, tus días grises y tus ratitos de mal humor.</p>
+            <p>Es la promesa de que, sin importar el peso del mundo o lo que nos toque atravesar, siempre encontrarás en mí un refugio, un motivo para sonreír y un lugar donde sos profundamente amada.</p>
+            <p>No importa si hoy estás cruzada o cansada, mi corazón te elige todos los días tal cual sos, para cuidarte, hacerte mimos y recordarte siempre lo hermosa que sos.</p>
+        </article>
+
+        <article class="carta" data-titulo="Solo para vos, mi pachucha Iriss" data-firma="Corazoncitoo" data-fondo="../rosa hermosaaa que anda/carta4.jpg" data-texto="claro" data-velo="fuerte" data-formato="verso">
+            <p>No existió un ayer que borrara tu nombre de mi mente, ni existirá un mañana que cambie lo que siento por vos, mi pachucha hermosa.<br>No quiero otra mirada, porque en tus ojos encontré mi universo entero.</p>
+            <p>No me interesa otro abrazo, si el único que calma mi alma —incluso con tus días grises y tus vueltas— es el tuyo.<br>No necesito buscar otro camino, porque mi destino siempre termina en vos, Iriss.</p>
+            <p>No cambiaría tu amor por ninguna promesa, ni le dedicaría mi tiempo a nadie más.<br>Mis pensamientos llevan tu nombre a cada segundo, y mis sueños siempre te tienen de dueña absoluta.</p>
+            <p>Si algún día me preguntas cuánto te amo, no busques la respuesta solo en las palabras; mírala en cómo abrazo tus miedos, cómo te cuido cuando estás pachuca y en cómo elijo quedarme a tu lado todos los días.</p>
+            <p>Porque para mí no existe otra, no quiero otra, no amaré a otra.<br>Mi corazón hizo su elección desde el primer día en que te conoció...<br>y esa elección siempre vas a ser vos, mi Iriss.</p>
+        </article>
+
+        <article class="carta" data-titulo="Buenos días, mi amor" data-firma="Desde el primer día" data-fondo="../rosa hermosaaa que anda/carta5.jpg" data-texto="claro" data-velo="fuerte">
+            <p>Qué bonito es despertar y comenzar mi día pensando en ti, mi pachucha Iriss. Mi corazón se pone súper contento al saber que sos mi princesa bella.</p>
+            <p>Te dejo este mensaje para decirte lo mucho que te amo y darte los buenos días, mi amor. Lo que tú tienes, cualquiera puede tenerlo, pero lo que tú eres, nadie puede serlo.</p>
+            <p>Por eso, cuando sientas que estás pachucha, cuando tus días se pongan grises o tu mundo se derrumbe, recuerda que puedes venir al mío, porque yo siempre voy a estar para ti, abrazando cada una de tus vueltas y cuidándote cerquita.</p>
+            <p>Si algún día me preguntas cuánto te amo, no busques la respuesta en las palabras; mírala en mis acciones, en mi lealtad y en la forma en que elijo quedarme a tu lado. Porque mi corazón hizo su elección desde el primer día en que te conoció, y esa elección siempre vas a ser tú.</p>
+        </article>
+
+        <article class="carta" data-titulo="Y de repente tú" data-firma="Mi todo, mi pilar" data-fondo="../rosa hermosaaa que anda/carta6.jpg" data-texto="claro" data-velo="fuerte">
+            <p>Sabes qué admiro de ti, mi pachucha Iriss: tu fuerza, tu capacidad de no renunciar aun cuando el mundo se colapsa ante tus pies. Tu valentía, la forma en que brilla tu sonrisa, tu carita hermosa y ese gran corazón que posees. Admiro cómo sigues adelante, cómo encuentras luz en medio de la oscuridad, y cómo mantienes intacta tu esencia a pesar de todo.</p>
+            <p>Es inspirador ver cómo, incluso en los momentos más difíciles y cuando estás pachucha, nunca pierdes la ternura ni dejas de creer en lo bueno. Eres un alma fuerte, llena de amor, y quiero que sepas que vales muchísimo, muchísimo más de lo que imaginás.</p>
+            <p>Para mí sos mi todo, mi pilar, la persona que sostiene mi mundo y la única que elijo todos los días. Eres una persona maravillosa, y mi corazón te ama exactamente tal cual sos</p>
+            <p data-estilo="verso">Y de repente tú, mi Iriss...<br>Como si el mundo supiera exactamente lo que me faltaba, como si algo en mi alma, sin conocerte, ya te esperaba.</p>
+            <p data-estilo="verso">Porque desde que llegaste, hasta mis días tienen otro color, y hasta en tus momentos de pachucha, la vida me habla de amor.</p>
+            <p data-estilo="verso">Y qué bonito coincidir contigo, entre tanta historia y tanto ruido, venir a encontrarte justo cuando mi corazón más te necesitaba.</p>
+            <p data-estilo="verso">Porque contigo todo se siente distinto, hasta la distancia pierde fuerza y el silencio tiene calor, como si el corazón entendiera que esto sí se parece al amor verdadero.</p>
+            <p data-estilo="verso">No sé cuánto dure la vida, ni cuánto dure el tiempo, pero si amarte a vos se siente así...<br>qué bonito haber llegado a este momento y tenerte como mi princesa y mi pilar.</p>
+        </article>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

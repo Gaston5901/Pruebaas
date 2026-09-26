@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sorpresa 6 - Un Deseo</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;1,600;1,700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style_sorpresa6.css">
+</head>
+
+<body>
+
+  <!-- MODAL DE PRESENTACIÓN INICIAL -->
+  <div class="surprise-intro-overlay" id="surpriseOverlay">
+    <div class="surprise-intro-card">
+      <span class="surprise-tag">Sorpresa N°6 ✨</span>
+      <h1 class="surprise-title">
+        Te preparé<br>
+        <span class="highlight-title">un deseo</span>
+      </h1>
+      <p class="surprise-desc">
+        Acá adentro hay una pequeña sorpresa que pensé para vos. Entrale con el corazón abierto.
+      </p>
+      <button class="btn-enter-surprise" id="btnOpenSorpresa">Descubrir 🌹</button>
+    </div>
+  </div>
+
+  <!-- NAVEGACIÓN -->
+  <div class="top-bar">
+    <a href="../lobby/lobby.html" class="btn-back">←</a>
+  </div>
+
+  <!-- ESCENARIO DONDE SE DIBUJA LA ROSA -->
+  <div class="stage">
+    <canvas id="roseCanvas"></canvas>
+    <div class="stage-note" id="stageNote">Se está dibujando algo para vos…</div>
+  </div>
+
+  <script src="sorpresa6.js"></script>
+
+</body>
+</html>

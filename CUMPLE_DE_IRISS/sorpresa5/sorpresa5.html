@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Sorpresa 5 - Una Carta para Vos</title>
+
+  <!-- FUENTES -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;1,600;1,700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style_sorpresa5.css">
+</head>
+
+<body>
+
+  <!-- MODAL DE PRESENTACIÓN INICIAL -->
+  <div class="surprise-intro-overlay" id="surpriseOverlay">
+    <div class="surprise-intro-card">
+      <span class="surprise-tag">Sorpresa N°5 💌</span>
+      <h1 class="surprise-title">
+        Te quiero<br>
+        <span class="highlight-title">escribir algo profundo</span>
+      </h1>
+      <p class="surprise-desc">
+        No es cualquier carta. Es lo que guardo adentro y casi nunca sé poner en palabras. Quedate un rato y leela con el corazón.
+      </p>
+      <button class="btn-enter-surprise" id="btnOpenLetter">Abrir la carta 💌</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE LA CARTA (con scroll) -->
+  <div class="letter-modal" id="letterModal">
+    <div class="letter-scroll">
+      <a href="../lobby/lobby.html" class="btn-volver-lobby" aria-label="Volver al lobby">←</a>
+      <button class="letter-close" id="btnCloseLetter" aria-label="Cerrar">✕</button>
+
+      <!-- ESPARCIDO MÁGICO -->
+      <div class="magic-sparkles">
+        <span style="--x:8%;--y:12%;--d:0s">✦</span>
+        <span style="--x:78%;--y:6%;--d:.6s">✧</span>
+        <span style="--x:90%;--y:30%;--d:1.2s">✦</span>
+        <span style="--x:12%;--y:42%;--d:.3s">✧</span>
+        <span style="--x:84%;--y:58%;--d:1.6s">✦</span>
+        <span style="--x:6%;--y:68%;--d:.9s">✦</span>
+        <span style="--x:70%;--y:82%;--d:.4s">✧</span>
+        <span style="--x:20%;--y:90%;--d:1.9s">✦</span>
+      </div>
+
+      <div class="letter-paper">
+
+        <span class="corner-heart top-left">💖</span>
+        <span class="corner-heart top-right">🌸</span>
+        <span class="corner-heart bottom-left">🌸</span>
+        <span class="corner-heart bottom-right">💖</span>
+
+        <!-- ENCABEZADO -->
+        <header class="paper-header">
+          <div class="wax-seal" aria-hidden="true"></div>
+          <div class="stamp-date">Para vos, siempre</div>
+          <h1 class="paper-title">Mi Señorita</h1>
+          <p class="paper-subtitle">Unas palabras que salen de lo más hondo</p>
+        </header>
+
+        <div class="paper-divider"></div>
+
+        <!-- CUERPO DE LA CARTA -->
+        <article class="paper-body">
+          <p class="greeting">Querida mía...</p>
+
+          <p>
+            A veces las cosas más importantes son las más difíciles de decir, así que preferí escribírtelas. Porque lo que siento por vos no entra en una conversación casual: necesita su espacio, su calma y su tiempo, como esta carta.
+          </p>
+
+          <p>
+            Desde que llegaste se me acomodó algo adentro. Las mañanas dejaron de ser solo mañanas, los días comunes empezaron a tener sabor a poco, y cada vez que me escribís o me hablás, siento que el mundo entero se pone en pausa. Es simple eso que te escribo, pero se siente enorme.
+          </p>
+
+          <p>
+            Gracias por cada risa, por cada mensaje recién despierta, por bancarme en mis silencios y por entender cuando ni yo me entiendo. Gracias por ser tan vos, tan especial, tan imposible de explicar.
+          </p>
+
+          <p>
+            Hoy es tu día, pero lo que te quiero decir va mucho más allá del festejo. Quiero que sepas que siempre voy a estar acá: en tus buenos momentos para celebrarte, en los difíciles para abrazarte, y en los comunes, que con vos nunca son comunes, solo para estar.
+          </p>
+
+          <p>
+            Podés leer esta carta las veces que quieras, que el fondo es siempre el mismo: te amo, te valoro y te elijo todos los días, sin condiciones y sin fecha de vencimiento.
+          </p>
+
+          <!-- FIRMA -->
+          <div class="handwritten-signature">
+            <p>Con todo mi amor,</p>
+            <span>Siempre para vos ♥</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FONDO CÁLIDO DE AMBIENTE -->
+  <div class="warm-bg"></div>
+
+  <!-- NAVEGACIÓN -->
+  <div class="top-bar">
+    <a href="../lobby/lobby.html" class="btn-back">←</a>
+  </div>
+
+  <script src="sorpresa5.js"></script>
+
+</body>
+</html>

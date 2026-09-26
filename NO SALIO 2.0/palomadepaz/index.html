@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>En memoria y con amor 🕊️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cripto:#8a5e2a;
+  --dorado:#d4a24e;
+  --dorado-claro:#caa04e;
+  --texto:#5b4038;
+  --blanco:#ffffff;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  font-family:"Poppins",sans-serif;
+  color:var(--texto);
+  overflow-x:hidden;
+  background:
+    radial-gradient(900px 420px at 50% 92%, rgba(255,216,150,.75), transparent 65%),
+    radial-gradient(700px 360px at 12% 6%, rgba(255,255,255,.5), transparent 60%),
+    linear-gradient(180deg, #b6d3f2 0%, #efd5e2 38%, #ffe8cb 70%, #fdf1d9 100%);
+  min-height:100dvh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+}
+body.scroll-lock{overflow:hidden;}
+
+/* ===== Estrellas suaves ===== */
+.estrella{
+  position:fixed;
+  width:4px;height:4px;
+  border-radius:50%;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 0 8px 2px rgba(255,255,255,.6);
+  animation:brillar 3.5s ease-in-out infinite alternate;
+  opacity:.4;
+  pointer-events:none;
+  z-index:1;
+}
+@keyframes brillar{
+  0%{opacity:.25; transform:scale(.8);}
+  100%{opacity:.95; transform:scale(1.15);}
+}
+
+/* ===== Nubes ===== */
+.nube{
+  position:fixed;
+  width:180px;height:56px;
+  background:linear-gradient(0deg, rgba(255,255,255,.72), rgba(255,255,255,.95));
+  border-radius:999px;
+  opacity:.55;
+  pointer-events:none;
+  z-index:1;
+  animation:viajar linear infinite;
+}
+.nube::before,.nube::after{
+  content:"";
+  position:absolute;
+  background:inherit;
+  border-radius:50%;
+}
+.nube::before{width:88px;height:88px;bottom:-16px;left:20px;}
+.nube::after{width:64px;height:64px;bottom:-8px;right:26px;}
+@keyframes viajar{
+  from{transform:translateX(-220px);}
+  to{transform:translateX(calc(100vw + 220px));}
+}
+
+/* ===== Palomas ===== */
+.paloma{
+  position:fixed;
+  font-size:clamp(1.4rem, 3vw, 2rem);
+  filter:drop-shadow(0 4px 8px rgba(90,60,60,.18));
+  opacity:.85;
+  pointer-events:none;
+  z-index:1;
+  animation:aleteo 3s ease-in-out infinite;
+}
+@keyframes aleteo{
+  0%,100%{transform:translateY(0) rotate(-3deg);}
+  50%{transform:translateY(-16px) rotate(3deg);}
+}
+
+/* ===== Pétalos que caen ===== */
+.petalo-cae{
+  position:fixed;
+  top:-30px;
+  font-size:clamp(.9rem,2.6vw,1.3rem);
+  opacity:0;
+  pointer-events:none;
+  z-index:2;
+  animation:caerPetalo linear forwards;
+}
+@keyframes caerPetalo{
+  0%{transform:translate(0,-6vh) rotate(0deg); opacity:0;}
+  12%{opacity:.85;}
+  100%{transform:translate(var(--dx,40px), 108vh) rotate(var(--rot,360deg)); opacity:0;}
+}
+
+/* ===== Campo de flores (SVG) ===== */
+.campo{
+  position:fixed;
+  left:0; right:0; bottom:0;
+  width:100%;
+  height:clamp(150px, 26vh, 280px);
+  z-index:1;
+  pointer-events:none;
+  display:block;
+}
+
+/* ===== Escena principal ===== */
+.escena{
+  position:relative;
+  z-index:5;
+  width:min(92vw, 480px);
+  text-align:center;
+  padding:30px 10px 40px;
+}
+.logo-paloma{
+  position:relative;
+  font-size:clamp(3rem, 8vw, 4.4rem);
+  display:inline-block;
+  animation:vueloPaz 4.5s ease-in-out infinite;
+  filter:drop-shadow(0 10px 18px rgba(120,90,60,.28));
+}
+.logo-paloma::before{
+  content:"";
+  position:absolute; inset:-30px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,216,150,.75), transparent 68%);
+  filter:blur(3px);
+  z-index:-1;
+  animation:resplandor 3.5s ease-in-out infinite alternate;
+}
+@keyframes resplandor{0%{opacity:.5; transform:scale(.92);}100%{opacity:1; transform:scale(1.06);}}
+@keyframes vueloPaz{
+  0%,100%{transform:translateY(0) rotate(-4deg);}
+  50%{transform:translateY(-12px) rotate(4deg);}
+}
+.titulo{
+  font-family:"Dancing Script",cursive;
+  font-weight:700;
+  font-size:clamp(2rem, 7vw, 2.9rem);
+  color:var(--cripto);
+  text-shadow:0 2px 0 rgba(255,255,255,.55);
+  margin:10px auto 6px;
+  line-height:1.15;
+  background:linear-gradient(90deg,#8a5e2a,#c89b4a,#fff3c4,#c89b4a,#8a5e2a);
+  background-size:220% auto;
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+  animation:brilloTitulo 6s linear infinite;
+  filter:drop-shadow(0 3px 10px rgba(150,110,50,.3));
+}
+@supports not ((-webkit-background-clip:text) or (background-clip:text)){
+  .titulo{
+    color:var(--cripto);
+    -webkit-text-fill-color:currentColor;
+    background:none;
+    text-shadow:0 2px 0 rgba(255,255,255,.55);
+  }
+}
+@keyframes brilloTitulo{
+  0%{background-position:0% center;}
+  100%{background-position:220% center;}
+}
+
+/* ===== Botón volver ===== */
+.btn-volver{
+  position:fixed;
+  top:14px; left:14px;
+  z-index:50;
+  width:44px; height:44px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+  font-size:1.25rem;
+  text-decoration:none;
+  color:var(--texto);
+  background:linear-gradient(135deg, #fff8ec, #f7e3b8);
+  border:2px solid var(--dorado);
+  box-shadow:0 4px 14px rgba(120,80,40,.28), 0 0 18px rgba(255,240,200,.6);
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  transition:transform .18s ease, box-shadow .18s ease;
+  animation:vueltaBtn 3.2s ease-in-out infinite;
+}
+@keyframes vueltaBtn{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-4px);}
+}
+.btn-volver:active{animation:none; transform:scale(.92);}
+.subtitulo{
+  font-size:clamp(.88rem, 3.2vw, 1.02rem);
+  font-weight:400;
+  color:rgba(91,64,56,.92);
+  max-width:44ch;
+  margin:0 auto 26px;
+  line-height:1.5;
+}
+
+/* ===== Botón ===== */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-family:"Poppins",sans-serif;
+  font-weight:700;
+  font-size:clamp(.95rem,3vw,1.08rem);
+  color:var(--texto);
+  padding:15px 34px;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  background:linear-gradient(115deg, #fff8ec, #fdf3dc 45%, #f7e3b8);
+  border:2px solid var(--dorado);
+  box-shadow:0 8px 0 var(--dorado-claro), 0 14px 28px rgba(120,80,40,.3), 0 0 26px rgba(255,240,200,.7);
+  transition:all .2s ease;
+  position:relative;
+  overflow:hidden;
+  animation:flotarBtn 3s ease-in-out infinite;
+}
+.btn::after{
+  content:"";
+  position:absolute; top:0; left:-130%;
+  width:55%; height:100%;
+  background:linear-gradient(115deg, transparent, rgba(255,255,255,.8), transparent);
+  transform:skewX(-20deg);
+  animation:brilloBtn 3.6s ease-in-out infinite;
+}
+@keyframes brilloBtn{0%,50%{left:-130%;}100%{left:140%;}}
+@keyframes flotarBtn{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+.btn:active{animation:none; transform:translateY(4px); box-shadow:0 3px 0 var(--dorado-claro);}
+.pie{
+  margin-top:22px;
+  font-family:"Caveat",cursive;
+  font-size:clamp(1.05rem,3.4vw,1.25rem);
+  color:rgba(91,64,56,.8);
+}
+
+/* ===== Carta del mensaje ===== */
+#carta-modal{
+  position:fixed; inset:0;
+  display:none;
+  align-items:center; justify-content:center;
+  background:rgba(70,48,38,.55);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  z-index:1000;
+  padding:16px;
+  overflow:hidden;
+}
+#carta-modal.ver{display:flex;}
+.papel{
+  position:relative;
+  width:min(94vw, 460px);
+  max-height:88dvh;
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  background:
+    radial-gradient(130% 100% at 12% 8%, rgba(212,162,78,.14), transparent 45%),
+    radial-gradient(130% 100% at 88% 92%, rgba(190,120,150,.12), transparent 45%),
+    repeating-linear-gradient(0deg, rgba(180,140,90,.045) 0 1px, transparent 1px 3px),
+    linear-gradient(170deg, #fffdf7, #fbf3e4);
+  border:1.5px solid rgba(212,162,78,.6);
+  border-radius:20px;
+  padding:26px 22px 20px;
+  box-shadow:0 20px 50px rgba(60,40,30,.35), inset 0 0 60px rgba(212,162,78,.1);
+}
+.papel::before{
+  content:"🕊️";
+  position:absolute;
+  font-size:7rem;
+  right:-12px; bottom:-20px;
+  opacity:.07;
+  transform:rotate(-12deg);
+  pointer-events:none;
+}
+.papel::-webkit-scrollbar{width:6px;}
+.papel::-webkit-scrollbar-thumb{background:var(--dorado); border-radius:6px;}
+
+.cerrar{
+  position:sticky;
+  top:0;
+  margin-left:auto;
+  display:block;
+  width:34px; height:34px;
+  border-radius:50%;
+  border:1.5px solid var(--dorado);
+  background:linear-gradient(135deg, #ffe9a8, #edc274);
+  color:var(--texto);
+  font-size:1.05rem;
+  font-weight:700;
+  cursor:pointer;
+  z-index:5;
+  box-shadow:0 2px 8px rgba(120,80,40,.25);
+}
+.carta-encabezado{
+  text-align:center;
+  font-family:"Dancing Script",cursive;
+  font-weight:700;
+  font-size:clamp(1.6rem,5.4vw,2.1rem);
+  color:var(--dorado-claro);
+  margin:4px 0 12px;
+  padding-bottom:10px;
+  border-bottom:1.5px dashed rgba(212,162,78,.55);
+}
+.carta-encabezado::before,
+.carta-encabezado::after{
+  content:"❀";
+  font-size:1rem;
+  color:var(--dorado);
+  opacity:.75;
+}
+.carta-texto{
+  font-family:"Caveat",cursive;
+  font-size:clamp(1.18rem, 4vw, 1.42rem);
+  line-height:1.5;
+  color:var(--texto);
+}
+.carta-texto .parrafo{
+  display:block;
+  opacity:0;
+  transform:translateY(10px);
+  transition:all .55s ease;
+  margin-bottom:12px;
+}
+.carta-texto .parrafo.ver{opacity:1; transform:none;}
+.carta-despedida{
+  font-family:"Dancing Script",cursive;
+  font-weight:700;
+  font-size:1.35rem;
+  color:var(--dorado-claro);
+  text-align:right;
+  margin-top:14px;
+}
+.carta-despedida::before{
+  content:"── ❀ ──";
+  font-size:.75rem;
+  color:rgba(212,162,78,.55);
+  letter-spacing:2px;
+  margin-right:10px;
+}
+
+@media (max-width:480px){
+  .escena{padding:20px 6px 34px;}
+  .petalo-cae{font-size:.82rem;}
+  .btn-volver{width:40px; height:40px; font-size:1.1rem; top:12px; left:12px;}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important;}
+}
+</style>
+</head>
+<body>
+
+<div id="fondo"></div>
+
+<!-- ===== VOLVER AL INICIO ===== -->
+<a href="../index.html" class="btn-volver" title="Volver">←</a>
+
+<!-- ===== CAMPO DE FLORES ===== -->
+<svg class="campo" viewBox="0 0 1440 280" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <defs>
+    <radialGradient id="gAmapola" cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#f2a08f"/>
+      <stop offset="55%" stop-color="#d97b6c"/>
+      <stop offset="100%" stop-color="#b95f52"/>
+    </radialGradient>
+    <linearGradient id="gColinaLejana" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9a9b2"/>
+      <stop offset="100%" stop-color="#c68d9c"/>
+    </linearGradient>
+    <linearGradient id="gColinaCerca" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a9be8f"/>
+      <stop offset="100%" stop-color="#7d9a6a"/>
+    </linearGradient>
+    <g id="margarita">
+      <path d="M0 0 Q3 20 -2 40" stroke="#6f8f5e" stroke-width="2.5" fill="none"/>
+      <g fill="#fffdf6">
+        <ellipse rx="6.5" ry="14"/>
+        <ellipse rx="6.5" ry="14" transform="rotate(72)"/>
+        <ellipse rx="6.5" ry="14" transform="rotate(144)"/>
+        <ellipse rx="6.5" ry="14" transform="rotate(216)"/>
+        <ellipse rx="6.5" ry="14" transform="rotate(288)"/>
+      </g>
+      <circle r="5.5" fill="#ffd166"/>
+    </g>
+    <g id="amapola">
+      <path d="M0 6 Q-4 26 2 44" stroke="#6f8f5e" stroke-width="2.5" fill="none"/>
+      <circle r="12" fill="url(#gAmapola)"/>
+      <circle r="3.5" fill="#6e2a20"/>
+    </g>
+    <g id="florDorada">
+      <path d="M0 0 Q5 16 0 30" stroke="#6f8f5e" stroke-width="2" fill="none"/>
+      <circle r="4.5" fill="#f7cf6d"/>
+      <circle r="1.8" fill="#c98a2e"/>
+    </g>
+    <linearGradient id="gTulipan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e3737f"/>
+      <stop offset="100%" stop-color="#c14e63"/>
+    </linearGradient>
+    <g id="tulipan">
+      <path d="M0 2 Q-4 24 0 46" stroke="#6f8f5e" stroke-width="2.5" fill="none"/>
+      <path d="M-9 4 C-10 -14 -6 -26 0 -22 C6 -26 10 -14 9 4 C4 8 -4 8 -9 4 Z" fill="url(#gTulipan)"/>
+      <path d="M-9 4 C-10 -14 -6 -26 0 -22 C6 -26 10 -14 9 4 C4 8 -4 8 -9 4 Z" fill="none" stroke="rgba(255,220,225,.35)" stroke-width="1"/>
+    </g>
+  </defs>
+
+  <!-- colinas -->
+  <path d="M0 177 Q330 88 700 158 T1440 132 L1440 280 L0 280 Z" fill="url(#gColinaLejana)" opacity=".55"/>
+  <path d="M0 218 Q420 138 920 202 T1440 190 L1440 280 L0 280 Z" fill="url(#gColinaCerca)" opacity=".8"/>
+
+  <!-- flores -->
+  <use href="#margarita" x="120"  y="200" transform="scale(1)"/>
+  <use href="#amapola"   x="280"  y="215" transform="scale(1.1)"/>
+  <use href="#florDorada" x="420" y="225" transform="scale(1.2)"/>
+  <use href="#margarita" x="560"  y="205" transform="scale(.8)"/>
+  <use href="#amapola"   x="690"  y="232" transform="scale(1)"/>
+  <use href="#florDorada" x="815" y="215" transform="scale(1)"/>
+  <use href="#margarita" x="960"  y="228" transform="scale(1.05)"/>
+  <use href="#amapola"   x="1080" y="205" transform="scale(.85)"/>
+  <use href="#florDorada" x="1190" y="220" transform="scale(1.1)"/>
+  <use href="#margarita" x="1330" y="210" transform="scale(1)"/>
+  <use href="#amapola"   x="180"  y="250" transform="scale(.85)"/>
+  <use href="#margarita" x="380"  y="248" transform="scale(1)"/>
+  <use href="#florDorada" x="620" y="252" transform="scale(1.05)"/>
+  <use href="#amapola"   x="850"  y="256" transform="scale(.9)"/>
+  <use href="#margarita" x="1120" y="250" transform="scale(.85)"/>
+  <use href="#florDorada" x="1360" y="245" transform="scale(1)"/>
+  <use href="#florDorada" x="200" y="268" transform="scale(.85)"/>
+  <use href="#amapola"   x="455"  y="262" transform="scale(.8)"/>
+  <use href="#florDorada" x="700"  y="265" transform="scale(.9)"/>
+  <use href="#amapola"   x="980"  y="266" transform="scale(.8)"/>
+  <use href="#florDorada" x="1250" y="262" transform="scale(.9)"/>
+  <use href="#margarita" x="72"   y="222" transform="scale(.75)"/>
+  <use href="#margarita" x="1520" y="238" transform="scale(.85)"/>
+  <use href="#florDorada" x="1180" y="272" transform="scale(1)"/>
+  <use href="#florDorada" x="290"  y="272" transform="scale(.8)"/>
+  <!-- tulipanes -->
+  <use href="#tulipan" x="60"   y="188" transform="scale(1)"/>
+  <use href="#tulipan" x="235"  y="208" transform="scale(.9)"/>
+  <use href="#tulipan" x="500"  y="200" transform="scale(1.05)"/>
+  <use href="#tulipan" x="740"  y="225" transform="scale(1)"/>
+  <use href="#tulipan" x="895"  y="250" transform="scale(.9)"/>
+  <use href="#tulipan" x="1035" y="210" transform="scale(1)"/>
+  <use href="#tulipan" x="1170" y="246" transform="scale(1.05)"/>
+  <use href="#tulipan" x="1300" y="252" transform="scale(.9)"/>
+  <use href="#tulipan" x="320"  y="258" transform="scale(.85)"/>
+  <use href="#tulipan" x="770"  y="258" transform="scale(.9)"/>
+  <use href="#tulipan" x="1420" y="200" transform="scale(1)"/>
+  <use href="#tulipan" x="160"  y="222" transform="scale(.8)"/>
+  <use href="#tulipan" x="630"  y="210" transform="scale(.85)"/>
+  <use href="#tulipan" x="1140" y="266" transform="scale(.85)"/>
+  <use href="#tulipan" x="80"   y="268" transform="scale(.8)"/>
+  <use href="#tulipan" x="1480" y="258" transform="scale(.9)"/>
+</svg>
+
+<!-- ===== ESCENA PRINCIPAL ===== -->
+<main class="escena">
+  <span class="logo-paloma">🕊️</span>
+  <h1 class="titulo">En memoria y con amor</h1>
+  <p class="subtitulo">Hay fechas que duelen, pero también hay recuerdos que abrazan. Acá va un mensajito para esos días.</p>
+
+  <button class="btn" id="btn-abrir">🕊️&nbsp; Abrí el mensaje</button>
+  <p class="pie">Está bien llorar, está bien recordar.</p>
+</main>
+
+<!-- ===== CARTA ===== -->
+<div id="carta-modal">
+  <div class="papel">
+    <button class="cerrar" id="btn-cerrar">✕</button>
+    <div class="carta-encabezado">Para quien lo necesite hoy 🕊️</div>
+    <div class="carta-texto" id="carta-texto"></div>
+    <div class="carta-despedida">Con mucho amor 💛</div>
+  </div>
+</div>
+
+<script>
+/* =====================================================
+   ✏️ ACÁ VA EL TEXTO DEL MENSAJE
+   Escribí cada párrafo entre comillas "..." separados
+   por coma. Cada uno se muestra como un párrafo nuevo.
+   ===================================================== */
+const parrafosMensaje = [
+  "Mi Pachuchita bella🌹:",
+  "Hay meses que simplemente pesan de otra manera. Meses que traen consigo un silencio espeso, recuerdos que vuelven con una fuerza inmensa y una tristeza que quizás no siempre se ve por fuera, pero que vive guardada en un rincón muy hondo del corazón.",
+  "Sé que septiembre tiene ese peso para ti. Un eco que se vuelve presente, un año entero cargando con una ausencia que duele hasta en el alma, y días en los que parece que el tiempo no cura nada, sino que solo enseña a convivir con un vacío que jamás pediste.",
+  "Porque cuando alguien que amamos se nos va, no solo se lleva su presencia; se lleva sus palabras, sus abrazos y esa forma tan única que tenía de iluminar los días normales. Y está bien si hoy duele. Está bien si el pecho se aprieta, si odiás este mes y si hay momentos en los que lo único que querés es llorar o apagar el mundo un ratito. No tenés que disculparte por extrañar así.",
+  "Si hoy es un día que pesa, quiero que sepas que no estás sola en esto. Duele y está perfecto que duela: el dolor es la prueba de cuánto se amó. 💛",
+  "Pero quiero que, en medio de ese dolor, te des el espacio para recordar algo muy importante:",
+  "Ellos no se fueron del todo: viven en cada recuerdo, en cada risa que te sale sin aviso, en cada cosa que te enseñaron y todavía te acompañan.",
+  "Y si cerrás los ojos un segundo y pensás en ellos, sabés tan bien como yo qué es lo que desearían para tu vida señoritaa. Ellos no querrían verte atrapada en la tristeza eterna por su partida. Si pudieran elegir, te elegirían sonriendo. Te querrían ver cumplir tus sueños, hacer planes, emocionarte por cosas y disfrutar de la vida con esa fuerza hermosa que vos tenés adentro. Llevarlos presentes no significa soltarles la mano, sino dejar que sus recuerdos sean el impulso para seguir adelante, sabiendo que cada paso lindo que des también es un modo de honrarlos.",
+  "No hace falta apurarte a estar bien. Un día a la vez, un suspiro a la vez. Y si algún día el cielo se siente gris, mirá bien: hay una estrella que queda prendida por vos. 🕊️",
+  "No tenés que olvidar para seguir viviendo. No tenés que dejar de extrañar para volver a sonreír.",
+  "Sé que al leer esto probablemente se te caiga alguna lágrima, mi señoritaa y quiero que sepas que no escribo estas palabras con la intención de ponerte mal ni de abrir heridas que duelen, sino todo lo contrario: lo hago para que sientas mi abrazo más fuerte, para recordarte que no estás sola en este proceso y que, incluso en los días más grises, tu historia importa y tu felicidad también.",
+  "Mientras tanto, acá estoy yo. Aunque a veces esta distancia nos duela en el pecho y daría lo que fuera por romper los kilómetros con un abrazo de esos que acomodan el mundo, quiero que sepas que nunca vas a estar sola. Estoy para celebrar con vos los días en los que todo brille, pero sobre todo, estoy para cuando el mundo pese demasiado. Para escucharte las horas enteras si necesitás hablar, o simplemente para quedarme en silencio a tu lado, cuidándote cerquita, aunque sea desde acá.",
+  "Cada pasito que doy, cada esfuerzo y cada sueño que empujo hacia adelante, los sostengo con la ilusión intacta de que un día esta distancia sea solo una anécdota vieja. De poder estar al fin juntos, compartir unos mates sin apuro, armar nuestros planes y hacer realidad todo eso que tantas veces soñamos en voz baja.",
+  "Por eso, mi corazoncitoo, cuando este mes se ponga pesado y los recuerdos aprieten fuerte, abrazá tu historia con ternura. Llorá todo lo que necesites, pero después, despacito, volvé a levantar la mirada.",
+  "Porque todavía te esperan sonrisas que ni te imaginás. Hay lugares por descubrir, abrazos hermosos por recibir y una vida entera queriendo sorprenderte.",
+  
+  "Y yo quiero estar ahí para verlo. Quiero verte salir adelante, quiero verte florecer y quiero que algún día podamos mirar todo lo que pasamos, sentados codo a codo, y decir mirándonos a los ojos: \"A pesar de todo, valió la pena seguir\".",
+  "Te amoooo con el alma entera mi Pachuchis. ❤️"
+];
+
+/* ===== Fondo: estrellas, nubes, palomas y pétalos ===== */
+const fondo = document.getElementById("fondo");
+for (let i = 0; i < 14; i++) {
+  const e = document.createElement("span");
+  e.className = "estrella";
+  e.style.left = (Math.random() * 100) + "vw";
+  e.style.top = (Math.random() * 42) + "vh";
+  e.style.animationDelay = (Math.random() * 3) + "s";
+  e.style.animationDuration = (2.5 + Math.random() * 3) + "s";
+  e.style.transform += " scale(" + (0.7 + Math.random()) + ")";
+  fondo.appendChild(e);
+}
+const nubes = [
+  {top:"7vh",   dur:"70s", delay:"0s",   scale:1},
+  {top:"16vh",  dur:"95s", delay:"-30s", scale:.75},
+  {top:"26vh",  dur:"80s", delay:"-55s", scale:.55},
+  {top:"34vh",  dur:"110s",delay:"-10s", scale:.45}
+];
+nubes.forEach(n => {
+  const c = document.createElement("span");
+  c.className = "nube";
+  c.style.top = n.top;
+  c.style.animationDuration = n.dur;
+  c.style.animationDelay = n.delay;
+  c.style.transform = "scale(" + n.scale + ")";
+  fondo.appendChild(c);
+});
+const palomas = [
+  {top:"10vh", left:"6vw",  dur:"4s",   delay:"0s"},
+  {top:"20vh", left:"78vw", dur:"3.6s", delay:"-1.2s"},
+  {top:"32vh", left:"62vw", dur:"4.4s", delay:"-2.4s"},
+  {top:"7vh",  left:"70vw", dur:"3.8s", delay:"-3s"},
+  {top:"27vh", left:"14vw", dur:"4.2s", delay:"-0.6s"}
+];
+palomas.forEach(p => {
+  const s = document.createElement("span");
+  s.className = "paloma";
+  s.textContent = "🕊️";
+  s.style.top = p.top;
+  s.style.left = p.left;
+  s.style.animationDuration = p.dur;
+  s.style.animationDelay = p.delay;
+  fondo.appendChild(s);
+});
+const PETALOS = ["🌸","🌼","🌷"];
+const esMovil = window.innerWidth <= 600;
+function crearPetalo(lento) {
+  const p = document.createElement("span");
+  p.className = "petalo-cae";
+  p.textContent = PETALOS[Math.floor(Math.random() * PETALOS.length)];
+  p.style.left = (Math.random() * 96) + "vw";
+  p.style.setProperty("--dx", (Math.random() * 60 - 30) + "px");
+  p.style.setProperty("--rot", (Math.random() * 360 + 160) + "deg");
+  const dur = lento ? (12 + Math.random() * 8) : (8 + Math.random() * 6);
+  p.style.animationDuration = dur + "s";
+  p.style.animationDelay = (Math.random() * 2) + "s";
+  fondo.appendChild(p);
+  setTimeout(() => p.remove(), (dur + 3) * 1000);
+}
+if (esMovil) {
+  for (let i = 0; i < 4; i++) setTimeout(() => crearPetalo(true), i * 900);
+  setInterval(() => {
+    const activos = fondo.querySelectorAll(".petalo-cae").length;
+    if (activos < 6) crearPetalo(true);
+  }, 2600);
+} else {
+  for (let i = 0; i < 14; i++) setTimeout(() => crearPetalo(false), i * 250);
+  setInterval(() => {
+    const activos = fondo.querySelectorAll(".petalo-cae").length;
+    if (activos < 12) crearPetalo(false);
+  }, 2000);
+}
+
+/* ===== Carta del mensaje ===== */
+const modal = document.getElementById("carta-modal");
+const cartaTexto = document.getElementById("carta-texto");
+const btnAbrir = document.getElementById("btn-abrir");
+const btnCerrar = document.getElementById("btn-cerrar");
+
+modal.addEventListener("touchmove", (e) => {
+  if (!e.target.closest(".papel")) e.preventDefault();
+}, {passive:false});
+
+btnAbrir.addEventListener("click", () => {
+  modal.classList.add("ver");
+  document.body.classList.add("scroll-lock");
+  cartaTexto.innerHTML = "";
+  parrafosMensaje.forEach(texto => {
+    const p = document.createElement("span");
+    p.className = "parrafo";
+    p.textContent = texto;
+    cartaTexto.appendChild(p);
+  });
+  [...cartaTexto.children].forEach((p, i) => {
+    setTimeout(() => p.classList.add("ver"), 250 + i * 400);
+  });
+  modal.querySelector(".papel").scrollTop = 0;
+});
+
+function cerrarCarta() {
+  modal.classList.remove("ver");
+  document.body.classList.remove("scroll-lock");
+}
+btnCerrar.addEventListener("click", cerrarCarta);
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) cerrarCarta();
+});
+</script>
+</body>
+</html>
