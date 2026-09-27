@@ -1,23 +1,39 @@
 /* Importa las fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Great+Vibes&display=swap');
 
+html {
+    height: 100%;
+    /* Sin esto, iOS agranda la letra sola y todo se pasa de la pantalla */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* El body va FIJO a la pantalla y con 100dvh: la página nunca scrollea
+   y, cuando la barra del navegador del celu se encoge, la base del
+   vidrio no queda tapada */
 body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     margin: 0;
     background: #0c0f1e;
     font-family: 'Dancing Script', cursive;
     overflow: hidden;
+    overscroll-behavior: none;
     transition: background-color 1s ease-in-out;
 }
 
 /* Botón para volver al índice */
 .back-button {
     position: fixed;
-    top: 18px;
-    left: 18px;
+    top: calc(16px + env(safe-area-inset-top));
+    left: calc(16px + env(safe-area-inset-left));
     z-index: 50;
     width: 48px;
     height: 48px;
@@ -42,6 +58,13 @@ body {
     border-color: #ef5350;
     box-shadow: 0 0 22px rgba(255, 100, 100, 0.5);
     transform: scale(1.1) rotate(-8deg);
+}
+
+@media (hover: none), (pointer: coarse) {
+    .back-button {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
 }
 
 /* ==============================================
@@ -324,6 +347,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    height: 100dvh;
     width: 100%;
     overflow: hidden;
     transform-style: preserve-3d;
@@ -333,12 +357,19 @@ body {
 
 .glass {
     position: relative;
-    width: 280px;
+    /* El ancho real del vidrio, para que el pétalo que cae pueda moverse
+       con transform (y no recalcular la posición en cada frame) */
+    --ancho-vidrio: 280px;
+    width: min(var(--ancho-vidrio), 78vw);
     height: 500px;
+    /* Sin esto el navegador "estiraba" el vidrio para que entrara en una
+       pantalla baja, pero la flor y el contador (absolutos) seguían
+       con su tamaño y terminaban superpuestos */
+    flex-shrink: 0;
     background: transparent;
     border: 2px solid rgba(255, 120, 120, 0.35);
     border-radius: 140px 140px 15px 15px;
-    box-shadow: 0 0 25px rgba(255, 60, 60, 0.25);
+    box-shadow: 0 0 25px rgba(255, 60, 60, 0.2);
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -346,6 +377,22 @@ body {
     justify-content: flex-end;
     padding-bottom: 25px;
     transform-style: preserve-3d;
+}
+
+/* El brillo del vidrio no anima border-color ni box-shadow: eso repinta el
+   vidrio entero (280x500) en cada frame y se nota mucho en el celu. Se
+   superpone una capa con el borde claro y sólo se anima su opacidad. */
+.glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: inherit;
+    box-shadow: 0 0 35px rgba(255, 110, 110, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+    will-change: opacity;
     animation: glass-shimmer 8s infinite ease-in-out;
 }
 
@@ -369,6 +416,8 @@ body {
     background: radial-gradient(circle at center, rgba(255, 70, 70, 0.5), transparent 70%);
     border-radius: 50%;
     filter: blur(20px);
+    /* Sube a su propia capa: el blur no se vuelve a calcular en cada frame */
+    will-change: transform, opacity;
     animation: pulse-glow 3.5s infinite alternate ease-in-out;
     z-index: 0;
 }
@@ -379,8 +428,8 @@ body {
 }
 
 @keyframes glass-shimmer {
-    0%, 100% { border-color: rgba(255, 120, 120, 0.35); box-shadow: 0 0 25px rgba(255, 60, 60, 0.2); }
-    50% { border-color: rgba(255, 255, 255, 0.6); box-shadow: 0 0 35px rgba(255, 110, 110, 0.4); }
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
 }
 
 .flower {
@@ -448,12 +497,25 @@ body {
     box-shadow: 0 0 12px rgba(229, 57, 53, 0.8), inset 0 -4px 8px rgba(60, 0, 0, 0.6);
     transform: translateZ(9px);
     z-index: 7;
+}
+
+/* El brillo del capullo: una capa con opacidad, en vez de animar el
+   box-shadow (que repintaba el capullo en cada frame) */
+.bud::after {
+    content: '';
+    position: absolute;
+    inset: -9px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 130, 130, 0.6), transparent 70%);
+    opacity: 0.35;
+    pointer-events: none;
+    will-change: opacity;
     animation: bud-glow 3s infinite alternate ease-in-out;
 }
 
 @keyframes bud-glow {
-    0% { box-shadow: 0 0 8px rgba(229, 57, 53, 0.6), inset 0 -4px 8px rgba(60, 0, 0, 0.6); }
-    100% { box-shadow: 0 0 18px rgba(255, 120, 120, 0.9), inset 0 -4px 8px rgba(60, 0, 0, 0.6); }
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
 }
 
 .stem {
@@ -544,6 +606,7 @@ body {
 }
 
 .counter-block {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -573,13 +636,23 @@ body {
     text-transform: lowercase;
 }
 
-.counter-block#c-anios-wrap {
+/* El brillo de los años: capa aparte con opacidad, para no repintar el
+   box-shadow del bloque en cada frame */
+.counter-block#c-anios-wrap::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 10px;
+    box-shadow: 0 0 14px rgba(255, 90, 90, .5);
+    opacity: 0.4;
+    pointer-events: none;
+    will-change: opacity;
     animation: counter-glow 2.5s infinite alternate ease-in-out;
 }
 
 @keyframes counter-glow {
-    0% { box-shadow: inset 0 0 8px rgba(229, 57, 53, 0.12), 0 0 8px rgba(255, 90, 90, 0.35); }
-    100% { box-shadow: inset 0 0 8px rgba(229, 57, 53, 0.12), 0 0 18px rgba(255, 120, 120, 0.7); }
+    0% { opacity: 0.35; }
+    100% { opacity: 1; }
 }
 
 /* Lucecitas flotando dentro del domo */
@@ -592,6 +665,7 @@ body {
     box-shadow: 0 0 8px 3px rgba(255, 110, 110, 0.45);
     opacity: 0.4;
     z-index: 3;
+    will-change: transform, opacity;
     animation: bokeh-float 7s infinite ease-in-out;
     pointer-events: none;
 }
@@ -613,11 +687,17 @@ body {
 /* Pétalo Animado Creciendo/Cayendo */
 .falling-petal {
     position: absolute;
+    left: 52%;
+    top: 130px;
+    margin-left: -13px;
     width: 26px;
     height: 20px;
     background: radial-gradient(circle at center, #ef9a9a, #c62828);
     border-radius: 50% 30% 60% 40% / 40% 60% 40% 60%;
     box-shadow: 0 0 10px rgba(229, 57, 53, 0.6);
+    /* Sólo transform: antes animaba "top" y "left", que obligaba al navegador
+       a recalcular la posición del pétalo 60 veces por segundo */
+    will-change: transform, opacity;
     animation: realistic-petal-fall 7s ease-in-out infinite;
     opacity: 0;
     z-index: 3;
@@ -625,12 +705,12 @@ body {
 }
 
 @keyframes realistic-petal-fall {
-    0% { top: 130px; left: 52%; transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); opacity: 0.9; }
-    20% { left: 42%; transform: rotateX(30deg) rotateY(20deg) rotateZ(60deg) scale(0.98); opacity: 1; }
-    40% { top: 230px; left: 62%; transform: rotateX(-20deg) rotateY(-30deg) rotateZ(130deg) scale(0.95); opacity: 0.9; }
-    60% { left: 38%; transform: rotateX(40deg) rotateY(30deg) rotateZ(200deg) scale(0.92); opacity: 0.8; }
-    80% { top: 340px; left: 55%; transform: rotateX(-10deg) rotateY(-40deg) rotateZ(280deg) scale(0.9); opacity: 0.8; }
-    100% { top: 400px; left: 48%; transform: rotateX(65deg) rotateY(0deg) rotateZ(340deg) scale(0.85); opacity: 0.85; }
+    0% { transform: translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); opacity: 0.9; }
+    20% { transform: translate3d(calc(var(--ancho-vidrio) * -0.10), 0, 0) rotateX(30deg) rotateY(20deg) rotateZ(60deg) scale(0.98); opacity: 1; }
+    40% { transform: translate3d(calc(var(--ancho-vidrio) * 0.10), 100px, 0) rotateX(-20deg) rotateY(-30deg) rotateZ(130deg) scale(0.95); opacity: 0.9; }
+    60% { transform: translate3d(calc(var(--ancho-vidrio) * -0.14), 100px, 0) rotateX(40deg) rotateY(30deg) rotateZ(200deg) scale(0.92); opacity: 0.8; }
+    80% { transform: translate3d(calc(var(--ancho-vidrio) * 0.03), 210px, 0) rotateX(-10deg) rotateY(-40deg) rotateZ(280deg) scale(0.9); opacity: 0.8; }
+    100% { transform: translate3d(calc(var(--ancho-vidrio) * -0.04), 270px, 0) rotateX(65deg) rotateY(0deg) rotateZ(340deg) scale(0.85); opacity: 0.85; }
 }
 
 /* Botón abrir carta fuera de la rosa */
@@ -661,9 +741,11 @@ body {
     transform: scale(1.06);
 }
 
+/* Sólo se mueve el botón: animar el box-shadow en cada frame pintaba
+   todo el halo una y otra vez */
 @keyframes pulse-button {
-    from { transform: scale(1); box-shadow: 0 0 15px rgba(229, 57, 53, 0.3); }
-    to { transform: scale(1.05); box-shadow: 0 0 24px rgba(229, 57, 53, 0.55); }
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
 }
 
 .hidden {
@@ -699,8 +781,12 @@ body {
 /* Adaptación móvil */
 @media (max-width: 600px) {
     .glass {
-        width: 250px;
+        --ancho-vidrio: 250px;
+        width: min(var(--ancho-vidrio), 78vw);
         height: 440px;
+    }
+    .flower {
+        top: 60px;
     }
     .counter {
         bottom: 38px;
@@ -728,30 +814,11 @@ body {
     .counter-block .label {
         font-size: 0.62em;
     }
-    /* Botón emoji de la carta: arriba a la derecha en celular */
-    .go-to-envelope {
-        position: fixed;
-        top: 18px;
-        right: 18px;
-        width: 54px;
-        height: 54px;
-        margin: 0;
-        padding: 0;
-        font-size: 1.55em;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        background: rgba(120, 8, 8, 0.55);
-        border: 2px solid rgba(255, 140, 140, 0.8);
-        backdrop-filter: blur(4px);
-    }
-    .go-to-envelope .btn-text {
-        display: none;
-    }
+    /* Botón emoji de la carta: arriba a la derecha en celular
+       (las reglas fija/redonda van en el bloque de pantallas táctiles) */
     .back-button {
-        top: 14px;
-        left: 14px;
+        top: calc(14px + env(safe-area-inset-top));
+        left: calc(14px + env(safe-area-inset-left));
         width: 46px;
         height: 46px;
     }
@@ -789,5 +856,70 @@ body {
         right: 15px;
         padding: 6px 14px;
         font-size: 1em;
+    }
+}
+
+/* En cualquier pantalla táctil (celu parado o apaisado) el botón de las
+   cartitas va fijo en la esquina: si queda en el flujo, en el celu
+   apaisado no entra en la pantalla y queda cortado */
+@media (hover: none), (pointer: coarse) {
+    .go-to-envelope {
+        position: fixed;
+        top: calc(16px + env(safe-area-inset-top));
+        right: calc(16px + env(safe-area-inset-right));
+        width: 54px;
+        height: 54px;
+        margin: 0;
+        padding: 0;
+        font-size: 1.55em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(120, 8, 8, 0.72);
+        border: 2px solid rgba(255, 140, 140, 0.8);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .go-to-envelope .btn-text {
+        display: none;
+    }
+}
+
+/* Pantalla baja (celu apaisado o una ventana baja): el vidrio se achica
+   entero con un transform, así entra completo sin que sus partes internas
+   se pisen. Un transform no recalcula nada, a diferencia de tocar el alto */
+@media (max-height: 560px) {
+    .glass {
+        transform: scale(.66);
+    }
+
+    /* el botón de las cartitas también se va arriba, o queda cortado */
+    .go-to-envelope {
+        position: fixed;
+        top: calc(12px + env(safe-area-inset-top));
+        right: calc(12px + env(safe-area-inset-right));
+        width: 48px;
+        height: 48px;
+        margin: 0;
+        padding: 0;
+        font-size: 1.4em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(120, 8, 8, 0.72);
+        border: 2px solid rgba(255, 140, 140, 0.8);
+    }
+
+    .go-to-envelope .btn-text {
+        display: none;
+    }
+}
+
+@media (max-height: 460px) {
+    .glass {
+        transform: scale(.56);
     }
 }

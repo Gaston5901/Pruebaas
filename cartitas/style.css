@@ -1,5 +1,5 @@
 /* Importa las fuentes */
-@import url('https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Dancing+Script:wght@400;500;700&family=Great+Vibes&family=Parisienne&family=Pinyon+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:wght@400;500;600&family=Dancing+Script:wght@400;500;700&family=Great+Vibes&family=Parisienne&family=Pinyon+Script&display=swap');
 
 /* ==============================================
    PALETA (misma que la Rosa)
@@ -28,14 +28,27 @@
     box-sizing: border-box;
 }
 
-html,
-body {
+html {
     height: 100%;
+    /* Sin esto, iOS agranda la letra sola y todo se pasa de la pantalla */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
+/* El body va FIJO a la pantalla: así la página nunca tiene scroll propio
+   (ni de lado ni arriba), aunque el contenido sea más alto que la pantalla.
+   100dvh acompaña a la barra de direcciones del celu, que se encoge al
+   hacer scroll y dejaba el pie de la página tapado. */
 body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
     margin: 0;
     overflow: hidden;
+    overscroll-behavior: none;
     font-family: 'Dancing Script', cursive;
     color: var(--rosa);
     background:
@@ -50,8 +63,8 @@ body {
    ============================================== */
 .back-button {
     position: fixed;
-    top: 18px;
-    left: 18px;
+    top: calc(14px + env(safe-area-inset-top));
+    left: calc(14px + env(safe-area-inset-left));
     z-index: 50;
     width: 48px;
     height: 48px;
@@ -70,11 +83,15 @@ body {
     user-select: none;
 }
 
-.back-button:hover {
-    background: rgba(229, 57, 53, .35);
-    border-color: var(--rojo-claro);
-    box-shadow: 0 0 22px rgba(255, 100, 100, .5);
-    transform: scale(1.1) rotate(-8deg);
+/* El hover va solo con mouse de verdad: en el celu queda "pegado" al tocar
+   y dejaba el sobre levantado con sombra para siempre */
+@media (hover: hover) and (pointer: fine) {
+    .back-button:hover {
+        background: rgba(229, 57, 53, .35);
+        border-color: var(--rojo-claro);
+        box-shadow: 0 0 22px rgba(255, 100, 100, .5);
+        transform: scale(1.1) rotate(-8deg);
+    }
 }
 
 /* ==============================================
@@ -86,6 +103,8 @@ body {
     z-index: 1;
     pointer-events: none;
     overflow: hidden;
+    /* La capa no se dibuja nunca: los pétalos se mueven solos adentro */
+    contain: strict;
 }
 
 .petalo {
@@ -97,15 +116,9 @@ body {
     border-radius: 50% 30% 60% 40% / 40% 60% 40% 60%;
     box-shadow: 0 0 10px rgba(229, 57, 53, .55);
     opacity: 0;
+    /* Sube a su propia capa: al caerse no recalcula nada de la página */
+    will-change: transform, opacity;
     animation: caer linear infinite;
-}
-
-@keyframes caer {
-    0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
-    10% { opacity: .85; }
-    50% { transform: translate3d(38px, 52vh, 0) rotate(190deg); opacity: .7; }
-    90% { opacity: .8; }
-    100% { transform: translate3d(-30px, 108vh, 0) rotate(360deg); opacity: 0; }
 }
 
 /* ==============================================
@@ -119,7 +132,23 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 22px 16px 4vh;
+    /* Los env() dejan el texto lejos de la muesca y de la barra del celu.
+       --sobra-abajo (lo mide script.js) suma lo que el abanico se pasa por
+       abajo, para que los sobres nunca queden cortados. */
+    padding:
+        calc(18px + env(safe-area-inset-top))
+        calc(14px + env(safe-area-inset-right))
+        calc(10px + env(safe-area-inset-bottom) + var(--sobra-abajo, 0px))
+        calc(14px + env(safe-area-inset-left));
+    min-height: 0;
+}
+
+@keyframes caer {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+    10% { opacity: .85; }
+    50% { transform: translate3d(38px, 52vh, 0) rotate(190deg); opacity: .7; }
+    90% { opacity: .8; }
+    100% { transform: translate3d(-30px, 108vh, 0) rotate(360deg); opacity: 0; }
 }
 
 .cabecera {
@@ -173,6 +202,9 @@ body {
     position: relative;
     flex: 1 1 auto;
     width: 100%;
+    /* Sin esto el pedestal no se achica y termina empujando el abanico
+       fuera de la pantalla en los celus bajos */
+    min-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -184,7 +216,9 @@ body {
     height: min(26vh, 190px);
     border-radius: 50%;
     background: radial-gradient(circle at 50% 45%, rgba(255, 120, 110, .40), rgba(255, 90, 90, .10) 55%, transparent 72%);
-    filter: blur(14px);
+    /* El desenfoque sale del gradiente, no de un filtro: un blur de 14px que
+       además se escalaba en cada frame era de lo que más trababa el celu */
+    will-change: transform, opacity;
     animation: pulso-base 3.6s infinite alternate ease-in-out;
 }
 
@@ -196,6 +230,21 @@ body {
     border: 1.5px solid rgba(255, 140, 140, .22);
     border-radius: 170px 170px 18px 18px;
     box-shadow: 0 0 30px rgba(255, 70, 70, .14) inset;
+}
+
+/* El brillo del vidrio no anima border-color ni box-shadow (eso repinta el
+   borde entero en cada frame y se nota en el celu): se superpone una capa
+   con el borde claro y sólo se anima su opacidad, que va por la GPU */
+.pedestal-borde::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border: 1.5px solid rgba(255, 255, 255, .45);
+    border-radius: inherit;
+    box-shadow: 0 0 45px rgba(255, 110, 110, .3) inset;
+    opacity: 0;
+    pointer-events: none;
+    will-change: opacity;
     animation: brillo-vidrio 8s infinite ease-in-out;
 }
 
@@ -205,8 +254,8 @@ body {
 }
 
 @keyframes brillo-vidrio {
-    0%, 100% { border-color: rgba(255, 120, 120, .22); box-shadow: 0 0 30px rgba(255, 70, 70, .14) inset; }
-    50% { border-color: rgba(255, 255, 255, .45); box-shadow: 0 0 45px rgba(255, 110, 110, .3) inset; }
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
 }
 
 /* ==============================================
@@ -239,12 +288,15 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-.sobre:hover,
-.sobre:focus-visible {
-    transform: translateX(calc(-50% + var(--dx, 0px))) rotate(0deg) translateY(-24px) scale(1.07);
-    z-index: 60;
-    outline: none;
-    filter: drop-shadow(0 16px 26px rgba(255, 90, 90, .45));
+/* El hover va solo con mouse de verdad (en el celu quedaba pegado al tocar) */
+@media (hover: hover) and (pointer: fine) {
+    .sobre:hover,
+    .sobre:focus-visible {
+        transform: translateX(calc(-50% + var(--dx, 0px))) rotate(0deg) translateY(-24px) scale(1.07);
+        z-index: 60;
+        outline: none;
+        filter: drop-shadow(0 16px 26px rgba(255, 90, 90, .45));
+    }
 }
 
 .sobre:active {
@@ -345,11 +397,14 @@ body {
 .sobre .brillo {
     position: absolute;
     top: -40%;
-    left: -70%;
+    left: 0;
     width: 40%;
     height: 180%;
     background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, .14) 45%, rgba(255, 255, 255, .26) 50%, rgba(255, 255, 255, .14) 55%, transparent 70%);
-    transform: skewX(-20deg);
+    /* Sólo transform: antes se animaba "left", y eso obligaba a recalcular
+       la posición de los 6 sobres en cada frame (el tirón que se不仅是) */
+    transform: translate3d(-260%, 0, 0) skewX(-20deg);
+    will-change: transform;
     animation: barrer 6s ease-in-out infinite;
     pointer-events: none;
     z-index: 4;
@@ -357,8 +412,8 @@ body {
 }
 
 @keyframes barrer {
-    0% { left: -70%; }
-    40%, 100% { left: 135%; }
+    0% { transform: translate3d(-260%, 0, 0) skewX(-20deg); }
+    40%, 100% { transform: translate3d(270%, 0, 0) skewX(-20deg); }
 }
 
 /* Papelo que asoma cuando se abre */
@@ -471,7 +526,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 26px 16px;
+    /* Padding chico + env(): el papel entra entero en la pantalla, con
+       espacio para la muesca, la barra del celu y el botón de cerrar */
+    padding:
+        calc(8px + env(safe-area-inset-top))
+        calc(8px + env(safe-area-inset-right))
+        calc(8px + env(safe-area-inset-bottom))
+        calc(8px + env(safe-area-inset-left));
+    overflow: hidden;
     opacity: 0;
     visibility: hidden;
     transition: opacity .5s ease, visibility .5s ease;
@@ -485,7 +547,7 @@ body {
 .lector-fondo {
     position: absolute;
     inset: 0;
-    background: rgba(10, 4, 14, .74);
+    background: rgba(10, 4, 14, .82);
     backdrop-filter: blur(7px);
     -webkit-backdrop-filter: blur(7px);
 }
@@ -493,9 +555,17 @@ body {
 /* Papel de la carta */
 .papel {
     position: relative;
-    width: min(94vw, 520px);
+    /* 100% del hueco que deja el lector (antes 94vw + el padding del lector
+       pasaban del ancho de la pantalla y el papel se salía de los lados) */
+    width: 100%;
+    max-width: 520px;
     max-height: 100%;
+    min-height: 0;
+    /* Sólo scrollea el texto hacia abajo: nunca de lado */
+    overflow-x: hidden;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     padding: 42px 30px 34px;
     border-radius: 8px;
     /* Cada carta puede tener su propio papel: data-tema o data-fondo
@@ -515,7 +585,7 @@ body {
     background-repeat: no-repeat, no-repeat;
     border: 2px solid rgba(255, 210, 127, .75);
     box-shadow: 0 26px 60px rgba(0, 0, 0, .6), inset 0 0 40px rgba(190, 140, 80, .18);
-    transform: scale(.86) rotate(-.6deg);
+    transform: scale(.86) rotate(var(--tilt, -.6deg));
     opacity: 0;
     transition: transform .6s cubic-bezier(.2, 1.3, .4, 1), opacity .45s ease;
     scrollbar-width: thin;
@@ -587,7 +657,7 @@ body {
 }
 
 .lector.visible .papel {
-    transform: scale(1) rotate(-.6deg);
+    transform: scale(1) rotate(var(--tilt, -.6deg));
     opacity: 1;
 }
 
@@ -690,11 +760,13 @@ body {
     background-image: var(--renglones);
     background-repeat: repeat;
     background-position: 0 0;
-    /* Las palabras NO se parten nunca */
+    /* Las palabras no se parten nunca, salvo que una sea más ancha que
+       el papel: antes eso desbordaba la carta de los costados y
+       aparecía un scroll horizontal */
     hyphens: none;
     -webkit-hyphens: none;
-    overflow-wrap: normal;
-    word-break: keep-all;
+    overflow-wrap: break-word;
+    word-break: normal;
 }
 
 .letra-cuerpo p:last-child {
@@ -827,17 +899,17 @@ body {
 /* Botón para cerrar la carta */
 .cerrar {
     position: fixed;
-    top: 18px;
-    right: 18px;
+    top: calc(10px + env(safe-area-inset-top));
+    right: calc(10px + env(safe-area-inset-right));
     z-index: 90;
-    width: 50px;
-    height: 50px;
+    width: 46px;
+    height: 46px;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Dancing Script', cursive;
-    font-size: 1.7em;
+    font-size: 1.6em;
     line-height: 1;
     color: #7a1f1f;
     background: rgba(255, 253, 243, .94);
@@ -851,11 +923,13 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
-.cerrar:hover {
-    background: var(--oro-claro);
-    color: #4c0714;
-    transform: scale(1.08) rotate(90deg);
-    box-shadow: 0 8px 26px rgba(0, 0, 0, .6);
+@media (hover: hover) and (pointer: fine) {
+    .cerrar:hover {
+        background: var(--oro-claro);
+        color: #4c0714;
+        transform: scale(1.08) rotate(90deg);
+        box-shadow: 0 8px 26px rgba(0, 0, 0, .6);
+    }
 }
 
 .cerrar:active {
@@ -869,26 +943,43 @@ body.leyendo .back-button {
     transform: scale(.5);
 }
 
+/* Mientras se lee una carta se congelan las animaciones de fondo: el
+   scroll del papel queda mucho más liviano en el celu */
+body.leyendo .petalo,
+body.leyendo .pedestal-base,
+body.leyendo .pedestal-borde,
+body.leyendo .hint {
+    animation-play-state: paused;
+}
+
 /* ==============================================
    CELULAR
    ============================================== */
 @media (max-width: 600px) {
     :root {
-        --ancho-sobre: 132px;
-        --alto-sobre: 92px;
-        --paso: 36px;
+        /* --paso y --ancho-sobre los recalcula script.js según el ancho
+           real de la pantalla: estos son solo los valores de arranque */
+        --ancho-sobre: 120px;
+        --alto-sobre: 90px;
+        --paso: 44px;
     }
 
-    .escena {
-        padding: 16px 12px 3vh;
+    /* El papel derecho, sin inclinar: inclinado se veía borroso en el
+       celu y empujaba las esquinas fuera de la pantalla */
+    .papel {
+        --tilt: 0deg;
+        /* arriba hay lugar para la X de cerrar: el texto nunca queda
+           tapado por el botón */
+        padding: 52px 18px 30px;
     }
 
     .cabecera h1 {
-        font-size: 1.85rem;
+        font-size: clamp(1.5rem, 7.6vw, 1.95rem);
     }
 
     .hint {
         font-size: 1.05em;
+        margin-top: 8px;
     }
 
     .contador {
@@ -898,24 +989,12 @@ body.leyendo .back-button {
 
     .pedestal-base {
         width: 84vw;
-        height: 20vh;
+        height: min(20vh, 150px);
     }
 
     .pedestal-borde {
         width: 88vw;
-        height: 24vh;
-    }
-
-    .papel {
-        padding: 34px 20px 28px;
-    }
-
-    .cerrar {
-        top: 12px;
-        right: 12px;
-        width: 44px;
-        height: 44px;
-        font-size: 1.5em;
+        height: min(24vh, 170px);
     }
 
     /* Lacre más chico para que entre justo en la franja visible */
@@ -941,6 +1020,58 @@ body.leyendo .back-button {
     .back-button {
         width: 44px;
         height: 44px;
+    }
+}
+
+/* El desenfoque del fondo del lector, a pantalla completa, es de lo más
+   caro que hay: en pantallas táctiles va un color opaco y listo */
+@media (hover: none), (pointer: coarse) {
+    .lector-fondo {
+        background: rgba(10, 4, 14, .93);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .back-button {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}
+
+/* Pantallas bajas (celu con la barra del navegador abierta): achica la
+   cabecera para que el abanico siga entrando entero */
+@media (max-height: 620px) {
+    .cabecera h1 {
+        font-size: 1.5rem;
+    }
+
+    .contador {
+        margin-top: 6px;
+        padding: 4px 14px;
+        font-size: .95em;
+    }
+
+    .hint {
+        margin-top: 6px;
+        font-size: 1em;
+    }
+}
+
+/* Celu apaisado: la pantalla es ancha pero baja, así que los sobres se
+   achican (entran los 6 parecidos) y el abanico se levanta */
+@media (max-height: 620px) and (min-width: 601px) {
+    :root {
+        --ancho-sobre: 150px;
+        --alto-sobre: 104px;
+        --paso: 42px;
+    }
+
+    .abanico {
+        height: calc(var(--alto-sobre) + 24px);
+    }
+
+    .sobre {
+        bottom: 8px;
     }
 }
 
