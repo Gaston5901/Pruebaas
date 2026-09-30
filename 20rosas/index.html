@@ -838,11 +838,27 @@ body.con-portada{overflow:hidden;}
   overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
   padding:1.6rem 1.5rem 2rem;
 }
+/* La carta es larga: el borde de abajo se difumina mientras queda
+   texto por ver, y desaparece cuando ya llegaste al final. Con eso se
+   entiende que hay que deslizar, sin agregar otro cartelito. */
+.modal-carta.scrollable .carta-cuerpo{
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 46px),transparent 100%);
+  mask-image:linear-gradient(180deg,#000 0,#000 calc(100% - 46px),transparent 100%);
+}
+.modal-carta.al-final .carta-cuerpo{
+  -webkit-mask-image:none;mask-image:none;
+}
 .carta-cuerpo p{
   font-family:'Cormorant Garamond',serif;font-size:clamp(1.08rem,3.6vw,1.2rem);
   line-height:1.92;color:var(--tinta);margin-bottom:1.1rem;
 }
 .carta-cuerpo p:last-of-type{margin-bottom:0;}
+/* El P.D. va con su propio aire, un poquito más chico y en cursiva,
+   como cuando uno se acuerda de algo de último momento */
+.carta-pd{
+  font-size:clamp(1rem,3.2vw,1.1rem) !important;font-style:italic;
+  color:var(--tinta-2) !important;margin-top:1.5rem !important;
+}
 .carta-firma{
   margin-top:1.6rem;text-align:right;
   font-family:'Dancing Script',cursive;font-size:1.5rem;color:var(--lila);
@@ -1309,14 +1325,14 @@ html{scroll-behavior:auto;}
       <p class="cuenta-detalle" id="cuentaDetalle">Falta para que se abra</p>
     </div>
 
-    <p class="lock-sello-txt">Ya se abrió. Te elijo todos los d&iacute;as, en los que salen bien y en los que no. No porque seas perfecta, sino porque sos vos. Y eso es un mont&oacute;n.</p>
+    <p class="lock-sello-txt">Ya se abrió. Te elijo todos los días, en los que salen bien y en los que no, y sobre todo en estos. No porque seas perfecta, sino porque sos vos. Y eso es un montón.</p>
   </div>
 </section>
 
 <footer class="site-footer bg-candado">
   <span class="foot-flowers">🌹 🌸 🌺 🌼</span>
   <p class="foot-text">Para Iriss, pachuchitaa y señoritaa</p>
-  <p class="foot-sub">Siempre te van a faltar otras veinte</p>
+  <p class="foot-sub">No te suelto la mano, ni hoy ni nunca 🌹</p>
 </footer>
 
 <!-- ══════════ ICONO DE LA CARTA (arriba a la derecha) ══════════
@@ -1366,17 +1382,19 @@ html{scroll-behavior:auto;}
 <div class="modal modal-carta" id="mCarta" role="dialog" aria-modal="true" aria-labelledby="cartaTitulo">
   <div class="modal-box">
     <div class="carta-cab">
-      <h3 id="cartaTitulo"><small>Una carta para vos</small>Iriss,</h3>
+      <h3 id="cartaTitulo"><small>Una carta para vos</small>Mi querida Iriss</h3>
       <button class="modal-x" id="xCarta" aria-label="Cerrar">✕</button>
     </div>
     <div class="carta-cuerpo" id="cartaCuerpo">
-      <p>No tengo una fecha para esto ni un motivo que justifique el tamaño de lo que te mandé. No es un cumpleaños, no es un aniversario, no es nada. Es un martes cualquiera y aun así quise hacer algo grande.</p>
-      <p>Hay una fecha que sí importa, y no es esta: el 26 de abril. Ese día hablamos por primera vez y sin querer algo empezó a andar. Todo lo que está arriba de acá son las cosas que sé de vos, escritas para que las vayas encontrando.</p>
-      <p>Armé veinte rosas porque veinte es un número que se puede contar con los dedos y porque me gustaba la idea de que pudieras ir descubriendo una por una. Y te aclaro algo importante: acá no caben veinte. Solo elegí veinte, y ya me quedé con ganas de escribir todas las demás.</p>
-      <p>Lo que más me gusta de vos no es una sola cosa, es una suma. Que te acordás de los detalles. Que no te da pudor querer. Que cuando algo te importa, se nota. Que tenés una forma de decir lo que pensás que no hiere a nadie y sin embargo igual deja huella. Eso no se enseña, se tiene o no se tiene.</p>
-      <p>No te voy a prometer que nada va a cambiar, porque sería mentira. Sí te prometo esto: esto no se termina acá, y vas a seguir teniendo cositas lindas nuevas todos los días.</p>
-      <p>Gracias por existir con ese ruido que hacés en la vida de la gente que te quiere.</p>
-      <div class="carta-firma">Con veinte rosas de sobra, siempre 🌹<small>P.D. contestame el mensaje</small></div>
+      <p>Sé que ahora mismo la oscuridad parece abarcarlo todo, y que el dolor por la ausencia de tus abuelos, abuelas y de esos familiares tan cercanos que se fueron ha dejado un vacío inmenso en tu pecho. Entiendo perfectamente si sientes que estás en un pozo sin salida, luchando una batalla silenciosa y agotadora contra vos misma, lidiando con reproches, sintiéndote mal con vos y queriendo cargar con todo en soledad.</p>
+      <p>Sé muy bien lo que es pasar noches enteras llorando, sintiendo que el tiempo se detiene, que estás estancada y que no ves ninguna salida. Yo mismo pasé por algo muy similar a mis 20 años: caí en una depresión profunda en la que me autosaboteaba, pasé tres años sintiendo que todo era oscuro, que no había solución y cargando con un dolor inmenso sin saber qué pasaría conmigo. Sé lo feo, lo pesado y lo aterrador que es vivir esa tormenta por dentro, con la sensación de que uno mismo es su peor enemigo.</p>
+      <p>Hasta que mi hermana me tendió la mano y me llevó con un profesional, entendí que no tenía por qué seguir cayendo solo. Por eso hoy te lo digo mirándote a los ojos desde el fondo de mi alma: no quiero que pases por esto sola. Quizás yo no tenga la fórmula mágica para sanar todo tu dolor de golpe, y a lo mejor no puedo salvarte yo solo, pero te prometo algo: no te voy a soltar la mano. Voy a estar en todo lo que pueda estar, acompañándote con paciencia infinita, abrazando tus días más grises y quedándome a tu lado mientras encontrás la fuerza para salir de esta.</p>
+      <p>Quiero que respires hondo y recuerdes quién sos de verdad. Sos un ser sumamente talentoso, con un potencial hermoso, una sensibilidad única y una capacidad inmensa de crear y sentir. Tenés un futuro precioso por delante y una lista de metas, deseos y sueños que merecés cumplir con toda el alma.</p>
+      <p>Has pasado por muchísimo sufrimiento y tu corazón ha cargado con pérdidas que marcan a cualquiera, pero te juro que la vida no es solo esto. Ya vas a ver que vendrán muchos días de felicidad pura, risas sinceras y una paz y estabilidad que tanto anhelás y merecés. Tu vida vale muchísimo, tu existencia es un regalo para quienes te amamos, y este dolor tan grande que hoy te pesa no define ni tu valor ni tu historia.</p>
+      <p>No te pelees con vos misma, tené un poquito de compasión con tu alma cansada. Permitite sanar a tu ritmo, pero por favor, no te rindas. Yo estoy acá, orgulloso de la gran mujer que sos, dispuesto a sostenerte y a caminar con vos de la mano hasta que volvamos a ver la luz.</p>
+      <p>Te amo con todo mi corazón.</p>
+      <p class="carta-pd">P.D. contestame el mensaje, aunque sea para decirme que estás bien.</p>
+      <div class="carta-firma">No te suelto la mano, ni hoy ni nunca.<small>de Puchoo, con todo el amor que te tengo, mi niñaa</small></div>
     </div>
   </div>
 </div>
@@ -1621,7 +1639,7 @@ function abrirSobre(){
   mailOpen = true;
   cartaFab.classList.add('abierto');
   // Se espera a que la tapa termine de girar antes de mostrar el modal.
-  setTimeout(() => abrirModal(mCarta), 520);
+  setTimeout(() => { abrirModal(mCarta); marcarScrollCarta(); }, 520);
 }
 function cerrarSobre(){
   mailOpen = false;
@@ -1629,6 +1647,22 @@ function cerrarSobre(){
 }
 cartaFab.addEventListener('click', abrirSobre);
 document.getElementById('xCarta').addEventListener('click', () => cerrarModal(mCarta));
+
+/* La carta es larga. Mientras quede texto por ver le difuminamos el
+   borde de abajo, y cuando llegás al final se lo sacamos: así se
+   entiende que hay más para leer sin poner otro cartelito. */
+const cartaBody = document.getElementById('cartaCuerpo');
+function marcarScrollCarta(){
+  if(!cartaBody) return;
+  // queda texto por ver?
+  const sobra = cartaBody.scrollHeight - cartaBody.clientHeight;
+  mCarta.classList.toggle('scrollable', sobra > 8);
+  // y estamos al final? (mira la posición, no el alto: el alto no cambia)
+  const alFinal = sobra <= 8 || (cartaBody.scrollTop + cartaBody.clientHeight) >= cartaBody.scrollHeight - 4;
+  mCarta.classList.toggle('al-final', alFinal);
+}
+if (cartaBody) cartaBody.addEventListener('scroll', marcarScrollCarta, { passive:true });
+window.addEventListener('resize', marcarScrollCarta);
 
 /* ══════════════════════════════════════════════════
    8 · CANDADO CON FECHA
