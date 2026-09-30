@@ -397,8 +397,102 @@ header{
   background: linear-gradient(135deg, #ffb4c9, #e53935);
 }
 
-/* Variante del Disparo de Corazones: morado nocturno */
+/* ══════════════════════════════════════════════════════
+   CARD 28 · LAS 20 ROSAS
+   Tinta de la página 20rosas: atardecer cálido, rosa coral y oro.
+   Todo el movimiento es transform/opacity (GPU), no box-shadow, para
+   no repintar la card entera en el celu.
+   ══════════════════════════════════════════════════════ */
 .card[data-num="28"]{
+  background:
+    radial-gradient(250px 150px at 16% 6%, rgba(255, 154, 107, .3), transparent 65%),
+    radial-gradient(260px 160px at 86% 16%, rgba(157, 111, 208, .26), transparent 68%),
+    linear-gradient(150deg, #4a1226, #2a0a1c 52%, #14040d);
+  border-color: #ff9a6b;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(80, 25, 20, .55), 0 2px 14px rgba(255, 154, 107, .45), inset 0 0 38px rgba(255, 154, 107, .1);
+}
+
+/* Luciérnugas de fondo, como las del cielo de la portada */
+.card[data-num="28"]::before{
+  background:
+    radial-gradient(3px 3px at 20% 18%, rgba(255, 226, 190, .8), transparent 60%),
+    radial-gradient(2px 2px at 66% 10%, rgba(255, 201, 168, .6), transparent 60%),
+    radial-gradient(3px 3px at 82% 34%, rgba(255, 226, 190, .55), transparent 60%),
+    radial-gradient(2px 2px at 28% 48%, rgba(255, 180, 140, .6), transparent 60%),
+    radial-gradient(3px 3px at 58% 58%, rgba(255, 226, 190, .7), transparent 60%),
+    radial-gradient(2px 2px at 40% 76%, rgba(217, 194, 242, .55), transparent 60%),
+    radial-gradient(320px 200px at 50% 104%, rgba(184, 61, 43, .5), transparent 72%);
+  opacity: .85;
+}
+
+/* Un pétalo que sube y baja: la rosa */
+.card[data-num="28"]::after{
+  content: "🌹";
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  font-size: 1.25rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 10px rgba(255, 122, 100, .7));
+  animation: petalo-rosa 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes petalo-rosa {
+  0%, 100% { transform: translateY(0) rotateZ(-8deg) scale(1); opacity: .55; }
+  50%      { transform: translateY(-16px) rotateZ(8deg) scale(1.12); opacity: 1; }
+}
+
+.card[data-num="28"] h2{
+  color: #ffc7a4;
+  text-shadow: 0 0 16px rgba(255, 154, 107, .7), 0 1px 2px rgba(20, 4, 13, .85);
+  font-size: 1.34rem;
+}
+
+.card[data-num="28"] .card-number{
+  background: linear-gradient(135deg, #ffd9a8, #ff9a6b 55%, #b83d2b);
+  color: #3d0c1a;
+  border-color: #ffd9a8;
+  box-shadow: 0 2px 10px rgba(255, 154, 107, .6), inset 0 1px 4px rgba(255, 255, 255, .45);
+  animation: numero-late 3.4s ease-in-out infinite;
+}
+
+.card[data-num="28"] .tag{
+  background: linear-gradient(90deg, rgba(74, 18, 38, .95), rgba(122, 40, 30, .95));
+  border-color: #ff9a6b;
+  color: #ffd9c6;
+  box-shadow: 0 2px 10px rgba(90, 25, 20, .5);
+}
+
+.card[data-num="28"] .arrow{
+  background: linear-gradient(135deg, #4a1226, #2a0a1c);
+  border-color: #ff9a6b;
+  color: #ffc7a4;
+  box-shadow: 0 2px 10px rgba(255, 154, 107, .45), inset 0 0 10px rgba(255, 154, 107, .15);
+  font-size: 1.3rem;
+}
+
+.card[data-num="28"]:hover{
+  border-color: #ffd9a8;
+  background:
+    radial-gradient(270px 160px at 16% 6%, rgba(255, 154, 107, .42), transparent 65%),
+    radial-gradient(280px 170px at 86% 16%, rgba(157, 111, 208, .34), transparent 68%),
+    linear-gradient(150deg, #5e1a30, #340c22 52%, #1a0612);
+  box-shadow: 0 14px 44px rgba(80, 25, 20, .7), 0 2px 14px rgba(255, 154, 107, .7), inset 0 0 48px rgba(255, 154, 107, .16);
+}
+
+.card[data-num="28"]:hover .card-number{
+  background: linear-gradient(135deg, #fff0d8, #ffb98d 55%, #d1523a);
+}
+
+.card[data-num="28"]:hover .arrow{
+  background: linear-gradient(135deg, #5e1a30, #3d0c1a);
+  box-shadow: 0 2px 14px rgba(255, 154, 107, .7), inset 0 0 14px rgba(255, 154, 107, .25);
+}
+
+/* Variante del Disparo de Corazones: morado nocturno */
+.card[data-num="29"]{
   background:
     radial-gradient(240px 140px at 18% 8%, rgba(255, 82, 168, .22), transparent 65%),
     radial-gradient(240px 150px at 85% 18%, rgba(90, 24, 60, .45), transparent 68%),
@@ -418,17 +512,17 @@ header{
 }
 
 /* ##################################################################
-   Pulso del borde de la card 28. Está DEFINIDO pero NO se usa (no
+   Pulso del borde de la card 29. Está DEFINIDO pero NO se usa (no
    cuesta nada). Copiar si lo querés de vuelta: agregá
    "animation: corazon-card-borde 4s ease-in-out infinite;" a la
-   card 28. Ojo: en el celu se nota, porque repinta la card entera.
+   card 29. Ojo: en el celu se nota, porque repinta la card entera.
    ################################################################## */
 @keyframes corazon-card-borde {
   0%, 100% { box-shadow: 0 8px 32px rgba(60, 4, 30, .5), 0 2px 8px rgba(255, 82, 168, .35), inset 0 0 26px rgba(255, 82, 168, .08); }
   50% { box-shadow: 0 10px 40px rgba(80, 6, 40, .65), 0 2px 14px rgba(255, 82, 168, .7), inset 0 0 40px rgba(255, 82, 168, .16); }
 }
 
-.card[data-num="28"]::before{
+.card[data-num="29"]::before{
   background:
     radial-gradient(4px 4px at 22% 20%, rgba(255,120,200,.85), transparent 60%),
     radial-gradient(3px 3px at 68% 12%, rgba(255,120,200,.7), transparent 60%),
@@ -442,7 +536,7 @@ header{
 
 /* Resplandor flotante en la card (este SÍ quedó: usa sólo transform
    y opacity, o sea que lo mueve la GPU sin tocar la página) */
-.card[data-num="28"]::after{
+.card[data-num="29"]::after{
   content: "";
   position: absolute;
   width: 10px;
@@ -461,27 +555,27 @@ header{
   50% { transform: translateY(-18px) rotateZ(15deg) scale(1.15); opacity: .95; }
 }
 
-.card[data-num="28"] h2{
+.card[data-num="29"] h2{
   color: #ff8ad0;
   text-shadow: 0 0 14px rgba(255,82,168,.75), 0 1px 2px rgba(10,2,8,.8);
   font-size: 1.3rem;
 }
 
-.card[data-num="28"] .card-number{
+.card[data-num="29"] .card-number{
   background: linear-gradient(135deg, #ffb7dd, #ff5ab8 55%, #e91e63);
   color: #2c0018;
   border-color: #ffb7dd;
   box-shadow: 0 2px 10px rgba(255,82,168,.65), inset 0 1px 4px rgba(255,255,255,.4);
 }
 
-.card[data-num="28"] .tag{
+.card[data-num="29"] .tag{
   background: linear-gradient(90deg, rgba(58, 10, 36, .95), rgba(90, 20, 56, .95));
   border-color: #ff5ab8;
   color: #ffc9e8;
   box-shadow: 0 2px 10px rgba(90, 10, 50, .5);
 }
 
-.card[data-num="28"] .arrow{
+.card[data-num="29"] .arrow{
   background: linear-gradient(135deg, #3a0a24, #1c0410);
   border-color: #ff5ab8;
   color: #ff9bd6;
@@ -489,7 +583,7 @@ header{
   font-size: 1.3rem;
 }
 
-.card[data-num="28"]:hover{
+.card[data-num="29"]:hover{
   border-color: #ffb7dd;
   background:
     radial-gradient(260px 150px at 18% 8%, rgba(255, 82, 168, .32), transparent 65%),
@@ -499,11 +593,11 @@ header{
   box-shadow: 0 14px 44px rgba(80, 6, 40, .75), 0 2px 14px rgba(255, 82, 168, .75), inset 0 0 46px rgba(255, 82, 168, .18);
 }
 
-.card[data-num="28"]:hover .card-number{
+.card[data-num="29"]:hover .card-number{
   background: linear-gradient(135deg, #ffd0ea, #ff75c8 55%, #f2308a);
 }
 
-.card[data-num="28"]:hover .arrow{
+.card[data-num="29"]:hover .arrow{
   background: linear-gradient(135deg, #4c0e2e, #3a0a24);
   box-shadow: 0 2px 14px rgba(255,82,168,.75), inset 0 0 14px rgba(255,82,168,.28);
 }
@@ -712,7 +806,9 @@ footer{
    promote a capa propia para que no repinten nada */
 .torta-btn,
 .card[data-num="27"] .card-number,
-.card[data-num="28"]::after {
+.card[data-num="28"] .card-number,
+.card[data-num="28"]::after,
+.card[data-num="29"]::after {
   will-change: transform;
 }
 
@@ -767,9 +863,20 @@ footer{
       </a> -->
 
 
-<!-- card 28 -->
-         <!-- <a class="card" data-num="28" href="disparo_corazon/index.html">
-                                                                         <h2><span class="card-number"></span>Corazones disparados</h2>
+<!-- card 28 · Las 20 rosas · NUEVA -->
+         <a class="card" data-num="28" href="20rosas/index.html">
+           <h2><span class="card-number"></span>Las 20 rosas</h2>
+           <div class="meta">
+             <span class="tag">Veinte cositas para Iriss 🌹</span>
+             <span class="arrow">→</span>
+           </div>
+         </a>
+
+
+
+<!-- card 29 · Corazones disparados -->
+         <!-- <a class="card" data-num="29" href="disparo_corazon/index.html">
+                                                                          <h2><span class="card-number"></span>Corazones disparados</h2>
         <div class="meta">
                                                                           <span class="tag">Iriss bonitaa💜</span>
           <span class="arrow">→</span>

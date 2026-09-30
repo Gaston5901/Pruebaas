@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veinte cositas lindas &middot; Para Iriss</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Caveat:wght@400;600&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --sun:      #ff9a6b;
+  --coral:    #ef6f57;
+  --coral-d:  #b83d2b;
+  --lila:     #9d6fd0;
+  --lila-l:   #d9c2f2;
+  --durazno:  #ffcfa8;
+  --oro:      #e0a03a;
+  --crema:    #fff7f0;
+  --tinta:    #3f2431;
+  --tinta-2:  #7d5a68;
+  --noche:    #2a1420;
+  --borde:    rgba(239,111,87,.24);
+  --card:     rgba(255,255,255,.78);
+  --rosa-alto:260px;   /* alto de la rosa del hero. Cambialo según tu PNG */
+}
+
+html{scroll-behavior:smooth;}
+
+body{
+  font-family:'Nunito',sans-serif;font-weight:300;color:var(--tinta);
+  background:var(--noche);
+  min-height:100vh;overflow-x:hidden;line-height:1.6;
+  -webkit-text-size-adjust:100%;
+}
+body.locked{overflow:hidden;}
+img{max-width:100%;display:block;}
+
+#flowerCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+
+/* ═══════════════════════════════════════
+   FONDOS: uno distinto por sección
+   ═══════════════════════════════════════ */
+
+/* 1 · HERO — foto + atardecer */
+.bg-hero{
+  position:relative;
+  background-color:#3a1c22;
+  background-image:
+    linear-gradient(180deg, rgba(58,28,34,.62) 0%, rgba(74,32,30,.34) 42%, rgba(43,20,32,.72) 100%),
+    linear-gradient(120deg, rgba(255,154,107,.34) 0%, rgba(239,111,87,.12) 38%, rgba(157,111,208,.30) 100%),
+    url('fondo.jpg');
+  background-size:cover;background-position:center;background-attachment:fixed;
+}
+.bg-hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 100%, rgba(255,180,110,.42), transparent 68%),
+    radial-gradient(circle at 50% 50%, rgba(255,220,180,.10), transparent 55%);
+}
+
+/* 2 · RAZONES — papel cálido, textura de lino */
+.bg-razones{
+  background-color:var(--crema);
+  background-image:
+    radial-gradient(ellipse 80% 55% at 8% 2%,   rgba(255,207,168,.75), transparent 62%),
+    radial-gradient(ellipse 75% 50% at 95% 18%,  rgba(217,194,242,.55), transparent 62%),
+    radial-gradient(ellipse 90% 60% at 50% 100%, rgba(255,154,107,.30), transparent 68%),
+    repeating-linear-gradient(45deg,  rgba(200,120,90,.028) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(-45deg, rgba(200,120,90,.028) 0 2px, transparent 2px 5px);
+  background-attachment:fixed;
+}
+
+/* 3 · CARTA — atardecer profundo con sol bajo y estrellas
+   Ya no se usa: la carta es el ícono flotante. Queda por si la
+   querés volver como sección. */
+.bg-carta{
+  background-color:#2b1420;
+  background-image:
+    radial-gradient(ellipse 120% 62% at 50% 118%, rgba(255,168,92,.55), transparent 62%),
+    radial-gradient(ellipse 90% 50% at 20% 8%,   rgba(157,111,208,.34), transparent 62%),
+    radial-gradient(ellipse 80% 46% at 88% 22%,  rgba(239,111,87,.26), transparent 60%),
+    linear-gradient(180deg, #2b1420 0%, #3d1a26 48%, #5a2430 100%);
+  background-attachment:fixed;
+}
+.bg-carta::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, rgba(255,236,205,.95), transparent 1.5px),
+    radial-gradient(1px 1px   at 68% 12%, rgba(255,214,160,.9),  transparent 1px),
+    radial-gradient(1.4px 1.4px at 38% 62%, rgba(255,255,255,.7),  transparent 1.4px),
+    radial-gradient(1px 1px   at 84% 48%, rgba(255,224,180,.9),  transparent 1px),
+    radial-gradient(1.5px 1.5px at 22% 78%, rgba(255,240,215,.85), transparent 1.5px),
+    radial-gradient(1px 1px   at 56% 88%, rgba(255,214,160,.8),  transparent 1px),
+    radial-gradient(1.3px 1.3px at 90% 82%, rgba(255,255,255,.55), transparent 1.3px),
+    radial-gradient(1px 1px   at 8% 48%,  rgba(255,224,180,.65), transparent 1px);
+  background-size:400px 400px;
+  animation:brillar 5.5s ease-in-out infinite alternate;
+  will-change:opacity;
+}
+@keyframes brillar{0%{opacity:.22;}100%{opacity:.7;}}
+
+/* 4 · POESÍA — espacio profundo: nebulosas y estrellas que titilan
+
+   Las estrellas van en DOS capas (::before y ::after) con ritmos
+   distintos, para que no se vea "todo brillando a la vez". De cada
+   capa solo se anima 'opacity': eso lo resuelve la GPU sin repintar
+   nada, que es lo más barato que hay. No hay imágenes, no hay
+   filtros y no hay JS, así que no carga nada extra. */
+.bg-poesia{
+  position:relative;overflow:hidden;
+  background-color:#04050e;
+  background-image:
+    radial-gradient(ellipse 62% 46% at 10% 4%,   rgba(124,74,186,.42), transparent 62%),
+    radial-gradient(ellipse 58% 44% at 92% 16%,  rgba(28,92,186,.38),  transparent 62%),
+    radial-gradient(ellipse 70% 50% at 74% 96%,  rgba(198,66,120,.26),  transparent 64%),
+    radial-gradient(ellipse 45% 34% at 26% 72%,  rgba(52,186,196,.20),  transparent 66%),
+    linear-gradient(180deg,#04050e 0%,#0a0b22 46%,#150a26 100%);
+  background-attachment:fixed;
+}
+.bg-poesia::before,
+.bg-poesia::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background-repeat:repeat;
+  animation-duration:5.5s;animation-timing-function:ease-in-out;
+  animation-iteration-count:infinite;animation-direction:alternate;
+  will-change:opacity;
+}
+/* capa 1: las estrellas grandes, las que se ven titilar */
+.bg-poesia::before{
+  background-image:
+    radial-gradient(2px 2px   at 10% 14%, rgba(255,255,255,.95), transparent 2px),
+    radial-gradient(1.3px 1.3px at 32% 8%,  rgba(214,200,255,.9),  transparent 1.3px),
+    radial-gradient(1.7px 1.7px at 58% 20%, rgba(255,238,208,.9),  transparent 1.7px),
+    radial-gradient(1.1px 1.1px at 76% 6%,  rgba(255,255,255,.8),  transparent 1.1px),
+    radial-gradient(1.9px 1.9px at 88% 34%, rgba(198,222,255,.9),  transparent 1.9px),
+    radial-gradient(1.2px 1.2px at 22% 46%, rgba(255,255,255,.75), transparent 1.2px),
+    radial-gradient(1.5px 1.5px at 46% 58%, rgba(255,228,192,.85), transparent 1.5px),
+    radial-gradient(2px 2px   at 68% 44%, rgba(255,255,255,.85), transparent 2px),
+    radial-gradient(1.1px 1.1px at 6% 76%,  rgba(226,208,255,.8),  transparent 1.1px),
+    radial-gradient(1.8px 1.8px at 36% 88%, rgba(255,242,216,.85), transparent 1.8px),
+    radial-gradient(1.2px 1.2px at 62% 78%, rgba(255,255,255,.7),  transparent 1.2px),
+    radial-gradient(1.9px 1.9px at 94% 66%, rgba(255,216,172,.8),  transparent 1.9px);
+  background-size:520px 520px;
+  animation-name:chispa;
+}
+@keyframes chispa{0%{opacity:.18;}100%{opacity:.95;}}
+
+/* capa 2: el polvo de estrellas finitas, mucho más chicas y más tenues.
+   Tile de 250px para que se repitan más seguido y parezca que hay
+   MUCHAS más de las que se ven. */
+.bg-poesia::after{
+  background-image:
+    radial-gradient(1px 1px   at 12% 18%, rgba(255,255,255,.7), transparent 1px),
+    radial-gradient(1px 1px   at 38% 6%,  rgba(206,190,255,.65), transparent 1px),
+    radial-gradient(1px 1px   at 64% 30%, rgba(255,240,214,.6), transparent 1px),
+    radial-gradient(1px 1px   at 86% 12%, rgba(214,232,255,.65), transparent 1px),
+    radial-gradient(1px 1px   at 24% 42%, rgba(255,255,255,.55), transparent 1px),
+    radial-gradient(1px 1px   at 52% 54%, rgba(255,226,190,.6), transparent 1px),
+    radial-gradient(1px 1px   at 78% 48%, rgba(255,255,255,.6), transparent 1px),
+    radial-gradient(1px 1px   at 8% 66%,  rgba(224,206,255,.6), transparent 1px),
+    radial-gradient(1px 1px   at 34% 78%, rgba(255,255,255,.55), transparent 1px),
+    radial-gradient(1px 1px   at 66% 86%, rgba(255,232,196,.6), transparent 1px),
+    radial-gradient(1px 1px   at 92% 72%, rgba(255,255,255,.55), transparent 1px),
+    radial-gradient(1px 1px   at 46% 94%, rgba(210,226,255,.6), transparent 1px);
+  background-size:250px 250px;
+  animation-name:parpadeo;animation-duration:3.6s;animation-delay:-1.4s;
+}
+@keyframes parpadeo{0%{opacity:.12;}100%{opacity:.62;}}
+
+/* 5 · CANDADO — noche cálida con estrellas de plata */
+.bg-candado{
+  background-color:#180d1c;
+  background-image:
+    radial-gradient(ellipse 90% 55% at 50% 0%, rgba(224,160,58,.24), transparent 60%),
+    radial-gradient(ellipse 80% 50% at 15% 100%, rgba(157,111,208,.22), transparent 62%),
+    linear-gradient(180deg, #180d1c 0%, #24122a 55%, #33192e 100%);
+  background-attachment:fixed;
+}
+.bg-candado::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.6;
+  background-image:
+    radial-gradient(1.4px 1.4px at 14% 22%, rgba(255,255,255,.9), transparent 1.4px),
+    radial-gradient(1px 1px   at 62% 14%, rgba(255,232,190,.9), transparent 1px),
+    radial-gradient(1.5px 1.5px at 30% 55%, rgba(255,255,255,.6), transparent 1.5px),
+    radial-gradient(1px 1px   at 78% 42%, rgba(255,240,210,.85),transparent 1px),
+    radial-gradient(1.3px 1.3px at 46% 84%, rgba(255,255,255,.55),transparent 1.3px),
+    radial-gradient(1px 1px   at 88% 72%, rgba(255,232,190,.8), transparent 1px);
+  background-size:340px 340px;
+  animation:brillar 6s ease-in-out infinite alternate;
+  will-change:opacity;
+}
+
+/* ═══════════════════════════════════════
+   TIPOGRAFÍA Y PIEZAS COMUNES
+   ═══════════════════════════════════════ */
+.sec{position:relative;z-index:3;padding:5.5rem 1.4rem;max-width:840px;margin:0 auto;}
+.sec-head{text-align:center;margin-bottom:2.8rem;position:relative;z-index:2;}
+.sec-head .sp{margin-bottom:2rem;}
+
+.sec-pill{
+  display:inline-block;margin-bottom:1.1rem;padding:.38rem 1.15rem;border-radius:100px;
+  font-size:.64rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--coral-d);background:linear-gradient(135deg,rgba(255,207,168,.85),rgba(255,154,107,.4));
+  border:1px solid rgba(239,111,87,.28);
+}
+.sec-pill.dark{color:#ffd0b8;background:rgba(255,207,168,.16);border-color:rgba(255,207,168,.38);}
+.sec-h{
+  font-family:'Playfair Display',serif;font-style:italic;font-weight:400;
+  font-size:clamp(1.9rem,5.6vw,3rem);line-height:1.2;margin-bottom:.6rem;
+}
+.sec-h em{
+  font-style:normal;
+  background:linear-gradient(100deg,var(--coral),var(--lila));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.sec-p{font-size:.95rem;color:var(--tinta-2);line-height:1.95;}
+.sec-p.inv{color:#e8c9b8;}
+.sec-h.inv{color:#fff2e6;}
+
+/* NOTA: estas dos NO usan backdrop-filter a propósito.
+   Debajo de ellas esta el canvas de flores, que se repinta 60 veces por
+   segundo. Si las tarjetas desenfocaran el fondo, el navegador tendria que
+   re-desenfocar ese canvas en cada frame y toda la pagina titila.
+   Se usan fondos casi opacos, que se ven igual de lindos y no titilan. */
+.paper{
+  background:linear-gradient(160deg,rgba(255,255,255,.93),rgba(255,247,240,.88));
+  border:1px solid var(--borde);border-radius:26px;
+  box-shadow:0 18px 50px rgba(180,80,60,.13);
+}
+.glass{
+  background:linear-gradient(160deg,rgba(38,20,32,.82),rgba(28,14,26,.86));
+  border:1px solid rgba(255,207,168,.28);border-radius:26px;
+  box-shadow:0 18px 50px rgba(0,0,0,.3);
+}
+
+/* ═══════════════════════════════════════
+   HERO
+   ═══════════════════════════════════════ */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:3.5rem 1.4rem 5rem;overflow:hidden;
+}
+.hero>*{position:relative;z-index:2;}
+
+.petal-ring{
+  position:absolute;width:480px;height:480px;top:50%;left:50%;
+  transform:translate(-50%,-50%);pointer-events:none;opacity:.34;
+  animation:spin 48s linear infinite;
+  will-change:transform;
+}
+@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+
+.hero-badge{
+  display:inline-block;margin-bottom:1.5rem;padding:.55rem 1.6rem;border-radius:100px;
+  font-family:'Nunito',sans-serif;
+  font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:#fff0e6;background:rgba(120,50,60,.5);
+  border:1px solid rgba(255,214,196,.3);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  box-shadow:0 6px 26px rgba(0,0,0,.28);
+  opacity:0;animation:pop .8s cubic-bezier(.34,1.56,.64,1) .3s forwards;
+}
+
+/* ── La rosa del hero ──
+   Hay dos capas: el PNG (rosa.png) y el SVG de respaldo.
+   Si el PNG no existe, el <img> dispara onerror y esconde solo el PNG,
+   queda el SVG. Si existe, el SVG se esconde y se ve el PNG.
+   Para cambiar la foto: poné tu archivo como "rosa.png" en esta carpeta.
+   Ajustá el alto con --rosa-alto (px) según tu imagen. */
+.hero-rose{
+  position:relative;margin-bottom:1.2rem;
+  opacity:0;animation:pop 1s cubic-bezier(.34,1.56,.64,1) .5s forwards;
+}
+.hero-rose .rosa-img{
+  height:var(--rosa-alto,260px);width:auto;max-width:78vw;
+  object-fit:contain;position:relative;z-index:2;
+  display:none;
+  -webkit-user-drag:none;user-select:none;
+}
+.hero-rose .rosa-svg{position:relative;z-index:2;animation:respirar 4.5s ease-in-out infinite;}
+.hero-rose.con-png .rosa-img{display:block;animation:respirar 4.5s ease-in-out infinite;}
+.hero-rose.con-png .rosa-svg{display:none;}
+/* Con el PNG recortado la flor esta mas arriba: el brillo va centrado en
+   la cabeza (28% del alto), no en el medio de la planta. */
+.hero-rose.con-png::before{top:28%;width:calc(var(--rosa-alto,260px) * .92);height:calc(var(--rosa-alto,260px) * .92);}
+
+.hero-rose::before{
+  content:'';position:absolute;left:50%;top:38%;
+  width:calc(var(--rosa-alto,260px) * 1.1);height:calc(var(--rosa-alto,260px) * 1.1);
+  transform:translate(-50%,-50%);
+  border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle, rgba(255,190,150,.5) 0%, rgba(255,140,110,.22) 45%, transparent 70%);
+  animation:halo 4.5s ease-in-out infinite;
+}
+@keyframes halo{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.85;}50%{transform:translate(-50%,-50%) scale(1.14);opacity:1;}}
+/* Solo escala, sin giro: el rotate de +/-0.6deg se leia como un temblor
+   y hacia parpadear la rosa. */
+@keyframes respirar{0%,100%{transform:scale(1);}50%{transform:scale(1.03);}}
+.hero-rose::after{
+  content:'';position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);
+  width:calc(var(--rosa-alto,260px) * .52);height:26px;border-radius:50%;
+  background:radial-gradient(ellipse, rgba(0,0,0,.28), transparent 70%);
+  filter:blur(6px);
+}
+
+.hero-for{
+  display:block;font-family:'Playfair Display',serif;font-style:italic;
+  font-size:clamp(1.1rem,3.4vw,1.6rem);color:#ffd9c4;margin-bottom:.1rem;
+  opacity:0;animation:rise 1s ease .85s forwards;
+}
+.hero-title{
+  font-family:'Dancing Script',cursive;font-weight:700;
+  font-size:clamp(4.4rem,16vw,9.5rem);line-height:.9;margin-bottom:.6rem;
+  background:linear-gradient(100deg,#ffd9a8 0%,#ff9a6b 34%,#ff7a5c 55%,#d9a6f0 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 26px rgba(0,0,0,.42)) drop-shadow(0 0 40px rgba(255,150,110,.3));
+  opacity:0;animation:rise 1s ease 1s forwards;
+}
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.05rem,3.2vw,1.45rem);color:#f3d6c6;
+  max-width:32ch;margin-bottom:2rem;
+  text-shadow:0 2px 14px rgba(0,0,0,.4);
+  opacity:0;animation:rise 1s ease 1.2s forwards;
+}
+.hero-nick{
+  display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:2.4rem;
+  opacity:0;animation:rise 1s ease 1.4s forwards;
+}
+.nick{
+  padding:.35rem 1rem;border-radius:100px;
+  font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+  color:#ffe3d2;background:rgba(255,240,230,.14);
+  border:1px solid rgba(255,207,168,.4);
+}
+.scroll-hint{
+  position:absolute;bottom:1.6rem;left:50%;transform:translateX(-50%);z-index:3;
+  display:flex;flex-direction:column;align-items:center;gap:.6rem;
+  background:none;border:none;cursor:pointer;padding:.5rem 1rem;
+  font-family:'Nunito',sans-serif;
+  font-size:.74rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:#fff2e8;
+  /* el texto y la flecha van sobre un vidrio oscuro: asi el cartelito
+     se lee de una y no se pierde contra el cielo del atardecer */
+  background:rgba(90,35,48,.42);
+  border:1px solid rgba(255,190,160,.28);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border-radius:100px;
+  text-shadow:0 2px 10px rgba(0,0,0,.5);
+  box-shadow:0 8px 28px rgba(0,0,0,.32);
+  /* solo aparece: acá no se anima transform, o se pisa con el translateX
+     que lo centra y la pagina entera tiembla */
+  opacity:0;animation:aparece 1s ease 1.6s forwards;
+  -webkit-tap-highlight-color:transparent;
+  transition:background .3s,box-shadow .3s;
+}
+.scroll-hint:hover{background:rgba(110,42,56,.55);box-shadow:0 10px 32px rgba(0,0,0,.42);}
+/* La flecha es un SVG, no bordes de CSS: los bordes quedan con los
+   cortes torcidos y se ven rotos. El SVG se dibuja con stroke y por
+   eso tiene las puntas redondas y simetricas.
+
+   Va QUIETA, sin animacion. Antes se movia y se veía nerviosa, como
+   rota. Ahora esta parada, pero mas grande, con mas contraste y con
+   un brillo, asi que se nota igual (o mas) que antes. */
+.scroll-arrow{
+  display:block;line-height:0;width:30px;height:42px;
+  filter:drop-shadow(0 2px 10px rgba(0,0,0,.55)) drop-shadow(0 0 16px rgba(255,154,107,.45));
+}
+.scroll-arrow svg{display:block;width:100%;height:100%;}
+.scroll-arrow .chev1,.scroll-arrow .chev2{animation:none;opacity:1;stroke-width:2.8;}
+@keyframes aparece{from{opacity:0;}to{opacity:1;}}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(7px);}}
+@keyframes pop{from{opacity:0;transform:scale(.72);}to{opacity:1;transform:scale(1);}}
+@keyframes rise{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+/* en celular la flecha se agranda y sube un poco: es la única pista
+   de que hay mas abajo */
+@media(max-width:768px){
+  .scroll-hint{bottom:1.1rem;font-size:.75rem;gap:.6rem;color:#fff0e4;}
+  .scroll-arrow{width:35px;height:49px;}
+  .scroll-arrow .chev1,.scroll-arrow .chev2{stroke-width:3;}
+}
+
+/* ═══════════════════════════════════════
+   PORTADA / BIENVENIDA
+   Aparece antes que todo. El botón "Entrar" es lo que enciende la
+   música, porque los navegadores no dejan sonar audio solo.
+   ═══════════════════════════════════════ */
+#portada{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
+  background:
+    radial-gradient(1100px 620px at 50% 22%, #6d2f45 0%, #43182c 46%, #220d18 100%);
+  text-align:center;
+  transition:opacity .85s ease, visibility .85s;
+}
+#portada.saliendo{opacity:0;visibility:hidden;pointer-events:none;}
+.port-in{
+  display:flex;flex-direction:column;align-items:center;
+  max-width:34rem;width:100%;
+  animation:portEntra 1.1s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes portEntra{
+  from{opacity:0;transform:translateY(28px) scale(.97);}
+  to  {opacity:1;transform:none;}
+}
+.port-rosa{
+  width:clamp(96px,20vw,150px);height:auto;margin-bottom:1.5rem;
+  filter:drop-shadow(0 12px 34px rgba(0,0,0,.5));
+  animation:respirar 4.5s ease-in-out infinite;
+}
+.port-eyebrow{
+  display:inline-block;margin-bottom:1rem;padding:.4rem 1.2rem;border-radius:100px;
+  font-size:.62rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;
+  color:#ffd9c6;background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,190,160,.26);
+}
+.port-h{
+  margin:0 0 .9rem;
+  font-family:'Playfair Display',serif;font-weight:400;
+  font-size:clamp(1.9rem,6.4vw,3rem);line-height:1.14;color:#fff6ee;
+}
+.port-h em{font-style:italic;color:#ffc7a4;}
+.port-txt{
+  margin:0 0 .5rem;max-width:29rem;
+  font-size:clamp(1rem,2.6vw,1.14rem);line-height:1.7;color:#f0d9d0;
+}
+/* "y después te amo" va en otra tipografía, más blanda, para que sea
+   lo que más se lea de toda la portada */
+.port-firma{
+  margin:0 0 2.2rem;
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:clamp(1.25rem,3.8vw,1.7rem);line-height:1.3;
+  color:#ffc7a4;
+}
+.port-btn{
+  display:inline-flex;align-items:center;gap:.7rem;
+  padding:1rem 2.6rem;border:none;border-radius:100px;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.06em;
+  color:#4a1a26;
+  background:linear-gradient(135deg,#ffd9a8,#ff9a6b);
+  box-shadow:0 12px 34px rgba(255,120,80,.32),0 2px 0 rgba(255,255,255,.35) inset;
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
+  -webkit-tap-highlight-color:transparent;
+}
+.port-btn:hover{transform:translateY(-3px) scale(1.03);
+  box-shadow:0 18px 44px rgba(255,120,80,.42),0 2px 0 rgba(255,255,255,.35) inset;}
+.port-btn:active{transform:translateY(-1px) scale(.99);}
+.port-btn:focus-visible{outline:3px solid #ffd9a8;outline-offset:4px;}
+/* mientras la portada esta puesta, la pagina de adentro no se scrollea */
+body.con-portada{overflow:hidden;}
+/* en celular se corre un poco para que el boton no quede pegado al borde */
+@media(max-height:640px){
+  .port-rosa{width:clamp(66px,13vw,92px);margin-bottom:.9rem;}
+  .port-txt{margin-bottom:1.4rem;line-height:1.6;}
+  #portada{padding:1.1rem;}
+}
+
+/* ═══════════════════════════════════════
+   20 RAZONES
+   ═══════════════════════════════════════ */
+.reasons-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:14px;max-width:450px;margin:0 auto 2rem;position:relative;z-index:2;
+}
+.rose{position:relative;}
+.rose input{position:absolute;opacity:0;width:0;height:0;}
+.rose-face{
+  width:100%;aspect-ratio:1;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;cursor:pointer;user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  background:rgba(255,255,255,.75);
+  border:2px solid rgba(239,111,87,.2);
+  box-shadow:0 3px 14px rgba(200,120,90,.12);
+  filter:grayscale(.6) opacity(.6);
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+}
+.rose-face::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,154,107,.55),transparent 70%);
+  opacity:0;transition:opacity .4s;
+}
+.rose input:checked + .rose-face{
+  filter:none;border-color:transparent;
+  background:linear-gradient(140deg,#fff4ee,#ffdcc4 52%,#e6c9f7);
+  box-shadow:0 10px 28px rgba(239,111,87,.32),0 0 0 3px rgba(255,255,255,.85);
+  transform:scale(1.14) translateY(-3px);
+}
+.rose input:checked + .rose-face::before{opacity:1;}
+.rose-num{
+  position:absolute;bottom:-2px;right:-2px;width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;font-weight:700;color:#fff;background:var(--coral);
+  box-shadow:0 3px 9px rgba(239,111,87,.45);
+  opacity:0;transform:scale(0);transition:all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.rose input:checked ~ .rose-num{opacity:1;transform:scale(1);}
+
+.counter{padding:1.9rem 2rem;max-width:380px;margin:0 auto 1.6rem;text-align:center;position:relative;z-index:2;}
+.counter-flowers{display:block;font-size:1.35rem;margin-bottom:.5rem;letter-spacing:.1em;}
+.counter-num{
+  display:block;font-family:'Dancing Script',cursive;font-weight:700;
+  font-size:4rem;line-height:1;color:var(--coral);
+  text-shadow:0 4px 22px rgba(239,111,87,.22);
+}
+.counter-of{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--tinta-2);margin:.4rem 0 .7rem;}
+.counter-msg{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;color:var(--lila);min-height:1.5em;}
+
+.bar{height:7px;border-radius:100px;background:rgba(255,207,168,.55);margin-top:1.2rem;overflow:hidden;}
+.bar-fill{
+  height:100%;width:0;border-radius:100px;
+  background:linear-gradient(90deg,var(--sun),var(--coral) 55%,var(--lila));
+  box-shadow:0 0 12px rgba(239,111,87,.4);
+  transition:width .6s cubic-bezier(.34,1.56,.64,1);
+}
+
+.btn{
+  display:inline-flex;align-items:center;gap:10px;padding:.85rem 2rem;border-radius:100px;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-size:.76rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:#fff;
+  background:linear-gradient(135deg,var(--sun),var(--coral) 60%,var(--coral-d));
+  border:none;box-shadow:0 8px 26px rgba(239,111,87,.34);
+  transition:all .35s;position:relative;z-index:2;
+  -webkit-tap-highlight-color:transparent;min-height:44px;
+}
+.btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 34px rgba(239,111,87,.46);}
+.btn:active{transform:scale(.97);}
+.hint-small{
+  display:block;margin-top:1.1rem;font-size:.7rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--tinta-2);opacity:.75;position:relative;z-index:2;
+}
+
+/* ═══════════════════════════════════════
+   SOBRE (3D) — técnica del de flores amarillas, paleta atardecer
+
+   OJO: esta sección ya NO se usa en la página. La carta pasó a ser
+   el ícono flotante .carta-fab (más abajo, arriba a la derecha).
+   Todo este CSS queda guardado por si algún querés volver a armar
+   la sección del sobre grande.
+   ═══════════════════════════════════════ */
+.mail-sec{
+  position:relative;z-index:3;padding:5.5rem 1.4rem 6rem;text-align:center;
+}
+.sobre-wrap{
+  position:relative;width:min(90vw,400px);height:250px;
+  margin:0 auto;perspective:1200px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  animation:flotar 5.5s ease-in-out infinite;
+}
+@keyframes flotar{0%,100%{transform:translateY(0);}50%{transform:translateY(-11px);}}
+.sobre-wrap::after{
+  content:'';position:absolute;inset:0;border-radius:14px;pointer-events:none;z-index:20;
+  background:linear-gradient(115deg,transparent 26%,rgba(255,255,255,.4) 44%,rgba(255,255,255,.1) 50%,transparent 62%);
+  transform:translateX(-130%);
+  animation:brillo 4.5s ease-in-out infinite;
+}
+@keyframes brillo{0%{transform:translateX(-130%);}55%{transform:translateX(130%);}100%{transform:translateX(130%);}}
+.sobre{position:absolute;inset:0;transform-style:preserve-3d;filter:drop-shadow(0 22px 34px rgba(0,0,0,.5));}
+
+.sobre-cuerpo{
+  position:absolute;inset:0;border-radius:14px;overflow:hidden;
+  background:
+    linear-gradient(160deg,rgba(255,255,255,.9),transparent 50%),
+    repeating-linear-gradient(0deg,rgba(180,110,80,.035) 0 1px,transparent 1px 3px),
+    linear-gradient(180deg,#fff8f1 0%,#ffe9d5 55%,#f8dcc4 100%);
+  border:1px solid rgba(200,140,110,.4);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.95),inset 0 -22px 44px rgba(180,110,70,.16),0 20px 45px rgba(0,0,0,.5);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:20px;
+}
+.sobre-cuerpo::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:linear-gradient(135deg,rgba(255,255,255,.55) 0%,transparent 45%),
+             linear-gradient(-135deg,rgba(200,130,90,.1) 0%,transparent 45%);
+}
+.sobre-cuerpo::after{
+  content:'';position:absolute;inset:8px;pointer-events:none;z-index:3;
+  border:1px solid rgba(200,140,110,.4);border-radius:9px;
+}
+/* solapas laterales, efecto sobre real */
+.sobre-solapas{position:absolute;inset:0;border-radius:14px;overflow:hidden;pointer-events:none;z-index:1;}
+.sobre-solapas::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,#fff5ea 0%,#ffe2c8 100%);
+  clip-path:polygon(0 0,50% 50%,0 100%);
+  filter:drop-shadow(1px 0 1px rgba(160,100,60,.22));
+}
+.sobre-solapas::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,#fff5ea 0%,#ffe2c8 100%);
+  clip-path:polygon(100% 0,50% 50%,100% 100%);
+  filter:drop-shadow(-1px 0 1px rgba(160,100,60,.22));
+}
+
+.sobre-para{text-align:center;z-index:10;transition:opacity .4s ease;margin-bottom:12px;}
+.sobre-para .et{
+  display:block;font-size:.62rem;text-transform:uppercase;letter-spacing:3px;
+  color:#b8763f;font-weight:700;
+}
+.sobre-para .nom{
+  position:relative;display:inline-block;
+  font-family:'Dancing Script',cursive;font-weight:700;
+  font-size:clamp(1.5rem,6vw,2rem);color:#5c3220;line-height:1.2;padding:0 40px;
+  text-shadow:0 1px 0 rgba(255,255,255,.85);
+}
+.sobre-para .nom::before,.sobre-para .nom::after{
+  content:'❀';position:absolute;top:50%;transform:translateY(-50%);
+  font-size:.85rem;color:var(--coral);font-family:'Nunito',sans-serif;
+}
+.sobre-para .nom::before{left:2px;}
+.sobre-para .nom::after{right:2px;}
+
+.sobre-tapa{
+  position:absolute;top:0;left:0;right:0;height:70%;z-index:12;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.9),transparent 55%),
+    repeating-linear-gradient(0deg,rgba(180,110,80,.035) 0 1px,transparent 1px 3px),
+    linear-gradient(175deg,#fff3e6,#ffdcc0 62%,#f0c6d8);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top center;
+  transition:transform .75s cubic-bezier(.4,0,.2,1);
+  filter:drop-shadow(0 5px 7px rgba(0,0,0,.2));
+  display:flex;justify-content:center;padding-top:15px;
+  border-bottom:1px solid rgba(200,140,110,.35);
+}
+.sobre.abierto .sobre-tapa{transform:rotateX(-168deg);}
+
+.sobre-de{text-align:center;z-index:13;transition:opacity .4s ease;}
+.sobre-de .et{
+  display:block;font-size:.58rem;text-transform:uppercase;letter-spacing:2.5px;
+  color:#b8763f;font-weight:700;
+}
+.sobre-de .nom{
+  position:relative;display:inline-block;
+  font-family:'Dancing Script',cursive;font-weight:700;
+  font-size:clamp(1.05rem,4vw,1.3rem);color:#5c3220;line-height:1.1;padding:0 30px;
+  text-shadow:0 1px 0 rgba(255,255,255,.85);
+}
+.sobre-de .nom::before,.sobre-de .nom::after{
+  content:'❀';position:absolute;top:50%;transform:translateY(-50%);
+  font-size:.7rem;color:var(--coral);font-family:'Nunito',sans-serif;
+}
+.sobre-de .nom::before{left:0;}
+.sobre-de .nom::after{right:0;}
+
+/* Texto de abajo del sobre */
+.env-hint{
+  position:relative;z-index:2;
+  margin-top:2rem;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;
+  color:#ffd0b8;transition:opacity .5s ease;
+}
+
+/* ═══════════════════════════════════════
+   ICONO DE LA CARTA — fixed arriba a la derecha
+   Es el mismo sobre, pero en 64px. Al tocarlo se abre la tapa
+   y, un instante después, aparece el modal con la carta.
+   ═══════════════════════════════════════ */
+.carta-fab{
+  position:fixed;top:1rem;right:1rem;z-index:200;
+  width:64px;height:64px;padding:0;margin:0;border:none;cursor:pointer;
+  border-radius:50%;background:none;color:inherit;font:inherit;
+  display:flex;align-items:center;justify-content:center;
+  filter:drop-shadow(0 8px 18px rgba(0,0,0,.5));
+  -webkit-tap-highlight-color:transparent;
+}
+.carta-fab-fondo{
+  position:absolute;inset:0;border-radius:50%;
+  background:
+    linear-gradient(150deg,rgba(255,207,168,.26),rgba(239,111,87,.12)),
+    linear-gradient(180deg,#40223a 0%,#2a1430 60%,#1d0e22 100%);
+  border:1px solid rgba(255,207,168,.42);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 -6px 14px rgba(0,0,0,.35),0 0 22px rgba(239,111,87,.18);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s;
+}
+.carta-fab:hover .carta-fab-fondo{transform:scale(1.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 30px rgba(239,111,87,.4);}
+.carta-fab:active .carta-fab-fondo{transform:scale(.94);}
+.carta-fab:focus-visible{outline:2px solid #ffd0b8;outline-offset:4px;}
+
+/* cartelito que aparece al pasar el mouse o al tomar el foco con el teclado */
+.carta-fab-tip{
+  position:absolute;right:calc(100% + 12px);top:50%;transform:translateY(-50%);
+  padding:.42rem .9rem;border-radius:100px;white-space:nowrap;
+  font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:#4a2a1c;background:linear-gradient(135deg,#fff8f1,#ffdcc4);
+  box-shadow:0 6px 18px rgba(0,0,0,.4);
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.carta-fab:hover .carta-fab-tip,.carta-fab:focus-visible .carta-fab-tip{opacity:1;}
+
+.carta-fab-ico{
+  position:relative;z-index:2;width:38px;height:38px;
+  overflow:visible;transform:translateZ(0);
+}
+/* la tapa gira sobre su borde de arriba */
+.carta-fab-tapa{
+  transform-origin:24px 12.4px;
+  transition:transform .55s cubic-bezier(.4,0,.2,1);
+  filter:drop-shadow(0 2px 2px rgba(120,60,30,.28));
+}
+.carta-fab.abierto .carta-fab-tapa{transform:rotateX(-168deg);}
+.carta-fab-sello{transition:opacity .3s,transform .3s;transform-origin:24px 35px;}
+.carta-fab.abierto .carta-fab-sello{opacity:0;transform:scale(.3);}
+
+/* Lacre de cera coral */
+.sobre-sello{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:56px;height:56px;border-radius:50%;z-index:14;
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  background:radial-gradient(circle at 32% 30%,#ffa88a 0%,#ef6f57 35%,#c1402c 68%,#8a2013 100%);
+  box-shadow:0 6px 18px rgba(0,0,0,.5),inset 0 2px 6px rgba(255,255,255,.5),inset 0 -4px 9px rgba(0,0,0,.4);
+  border:1.5px solid rgba(255,255,255,.4);
+  transition:opacity .4s,transform .4s;
+}
+.sobre-sello::after{
+  content:'';position:absolute;inset:4px;border-radius:50%;
+  border:1px dashed rgba(255,255,255,.5);pointer-events:none;
+}
+.sobre.abierto .sobre-sello{opacity:0;transform:translate(-50%,-50%) scale(.4);}
+.sobre.abierto .sobre-para,.sobre.abierto .sobre-de{opacity:0;}
+
+/* Carta que sube del sobre (despues aparece como modal) */
+.carta-hoja{
+  position:absolute;left:4%;right:4%;top:0;z-index:50;
+  background:
+    repeating-linear-gradient(0deg,rgba(180,110,80,.04) 0 1px,transparent 1px 3px),
+    linear-gradient(180deg,#fffdfa 0%,#fff4ea 50%,#ffeede 100%);
+  border:1.5px solid rgba(200,140,110,.4);border-radius:12px;padding:26px 20px;
+  box-shadow:0 14px 40px rgba(0,0,0,.45),inset 0 0 60px rgba(239,160,110,.1);
+  transform:translateY(0) scale(.88);opacity:0;
+  transition:transform .7s cubic-bezier(.34,1.25,.6,1),opacity .4s;
+  max-height:70vh;overflow:hidden;
+}
+.sobre.abierto .carta-hoja{transform:translateY(-26%) scale(1);opacity:1;}
+.carta-hoja .c-enc{
+  text-align:center;font-family:'Dancing Script',cursive;font-weight:700;
+  font-size:clamp(1.6rem,5.5vw,2.1rem);color:var(--coral-d);
+  margin-bottom:12px;padding-bottom:8px;
+  border-bottom:1.5px dashed rgba(200,140,110,.5);
+}
+.carta-hoja .c-txt{
+  font-family:'Caveat',cursive;font-size:clamp(1.15rem,4vw,1.4rem);
+  line-height:1.5;color:#5c3220;
+}
+
+/* ═══════════════════════════════════════
+   MODALES
+   ═══════════════════════════════════════ */
+.modal{
+  position:fixed;inset:0;z-index:900;
+  display:none;align-items:center;justify-content:center;
+  padding:1.1rem;
+  /* Sin backdrop-filter: el canvas de flores esta detras y se repinta siempre,
+     desenfocarlo en cada frame hacia que la carta tiemble. Fondo fijo. */
+  background:rgba(38,20,30,.72);
+  -webkit-tap-highlight-color:transparent;
+  transform:translateZ(0);
+}
+.modal.ver{display:flex;opacity:1;animation:mfade .3s ease both;}
+@keyframes mfade{from{opacity:0;}to{opacity:1;}}
+.modal-box{
+  position:relative;width:min(480px,100%);max-height:86vh;overflow-y:auto;
+  -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  transform:translateZ(0);
+  padding:3rem 1.9rem 1.9rem;border-radius:26px;text-align:center;
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(255,207,168,.5), transparent 55%),
+    linear-gradient(165deg,#fffbf6,#ffeede 55%,#f2e0f8);
+  border:1px solid rgba(239,111,87,.28);
+  box-shadow:0 30px 80px rgba(0,0,0,.45);
+  animation:mpop .45s cubic-bezier(.34,1.4,.64,1);
+}
+@keyframes mpop{from{opacity:0;transform:scale(.86) translateY(22px);}to{opacity:1;transform:none;}}
+.modal-x{
+  position:absolute;top:.7rem;right:.7rem;z-index:5;
+  width:38px;height:38px;border-radius:50%;border:none;cursor:pointer;
+  font-size:1.15rem;font-weight:700;color:#fff;
+  background:linear-gradient(135deg,var(--sun),var(--coral));
+  box-shadow:0 4px 14px rgba(239,111,87,.45);
+  transition:all .25s;
+}
+.modal-x:hover{transform:scale(1.1) rotate(90deg);}
+.modal-x:active{transform:scale(.92);}
+.m-rosa{font-size:2.6rem;margin-bottom:.7rem;animation:bob 3s ease-in-out infinite;}
+.m-num{
+  display:inline-block;margin-bottom:1rem;padding:.25rem .9rem;border-radius:100px;
+  font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#fff;
+  background:linear-gradient(135deg,var(--sun),var(--coral));
+}
+.m-text{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.25rem,5vw,1.55rem);line-height:1.62;color:var(--tinta);
+  min-height:3em;
+}
+.m-nav{
+  display:flex;align-items:center;justify-content:center;gap:1.1rem;margin-top:1.6rem;
+}
+.m-nav button{
+  width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(239,111,87,.35);
+  background:rgba(255,255,255,.75);color:var(--coral-d);
+  font-size:1.1rem;cursor:pointer;transition:all .25s;
+}
+.m-nav button:hover:not(:disabled){background:#fff;transform:scale(1.1);}
+.m-nav button:disabled{opacity:.3;cursor:default;}
+.m-dots{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;max-width:220px;}
+.m-dot{width:7px;height:7px;border-radius:50%;background:rgba(239,111,87,.25);transition:all .3s;}
+.m-dot.on{background:var(--coral);transform:scale(1.35);box-shadow:0 0 8px rgba(239,111,87,.5);}
+
+/* Modal carta */
+.modal-carta .modal-box{
+  width:min(620px,100%);padding:0;display:flex;flex-direction:column;
+  max-height:90vh;overflow:hidden;text-align:left;
+  background:linear-gradient(170deg,#fffdfa,#fff4ea 60%,#ffeede);
+}
+.carta-cab{
+  position:sticky;top:0;z-index:6;flex-shrink:0;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:1.1rem 1.4rem;
+  /* Sin backdrop-filter: en un elemento sticky dentro de un scroller
+     hace titilear la carta. Fondo opaco y su propia capa. */
+  background:linear-gradient(180deg,#fff4ea 0%,#ffeedf 100%);
+  transform:translateZ(0);
+  border-bottom:1px solid rgba(200,140,110,.3);
+  border-radius:26px 26px 0 0;
+  box-shadow:0 2px 10px rgba(180,110,70,.1);
+}
+.carta-cab h3{
+  font-family:'Dancing Script',cursive;font-weight:700;
+  font-size:clamp(1.3rem,4.5vw,1.7rem);color:var(--coral-d);line-height:1.1;
+}
+.carta-cab h3 small{
+  display:block;font-family:'Nunito',sans-serif;font-size:.58rem;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--lila);margin-bottom:.2rem;
+}
+.carta-cuerpo{
+  overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  padding:1.6rem 1.5rem 2rem;
+}
+.carta-cuerpo p{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(1.08rem,3.6vw,1.2rem);
+  line-height:1.92;color:var(--tinta);margin-bottom:1.1rem;
+}
+.carta-cuerpo p:last-of-type{margin-bottom:0;}
+.carta-firma{
+  margin-top:1.6rem;text-align:right;
+  font-family:'Dancing Script',cursive;font-size:1.5rem;color:var(--lila);
+}
+.carta-firma small{
+  display:block;font-family:'Nunito',sans-serif;font-size:.6rem;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-2);margin-top:.3rem;
+}
+
+/* ═══════════════════════════════════════
+   POESÍA — tarjetas de vidrio sobre el espacio
+   ═══════════════════════════════════════ */
+.bg-poesia .sec-h em{background:linear-gradient(100deg,#ffb08a,#c9a3ff);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.poem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;position:relative;z-index:2;}
+.poem{
+  padding:2rem 1.7rem 1.5rem;position:relative;overflow:hidden;
+  border:1px solid rgba(201,163,255,.2);border-radius:26px;
+  background:
+    radial-gradient(130% 90% at 12% 0%, rgba(124,74,186,.3), transparent 58%),
+    radial-gradient(90% 70% at 100% 100%, rgba(198,66,120,.16), transparent 60%),
+    linear-gradient(160deg, rgba(38,30,74,.88), rgba(11,9,28,.93));
+  box-shadow:0 18px 50px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07);
+  transition:transform .35s,box-shadow .35s,border-color .35s;
+}
+.poem:hover{
+  transform:translateY(-6px);
+  border-color:rgba(201,163,255,.45);
+  box-shadow:0 28px 62px rgba(0,0,0,.6),0 0 0 1px rgba(201,163,255,.16),0 0 44px rgba(124,74,186,.3);
+}
+/* la barrita de color de arriba, con un brillo propio */
+.poem::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#ff9a6b,#ef6f57,#9d6fd0);
+  box-shadow:0 0 14px rgba(239,111,87,.55);
+}
+.poem:nth-child(3n)::before{background:linear-gradient(90deg,#c9a3ff,#7f8cf0,#ff9a6b);box-shadow:0 0 14px rgba(157,111,208,.6);}
+.poem:nth-child(3n+2)::before{background:linear-gradient(90deg,#ef6f57,#e0a03a,#ffd08a);box-shadow:0 0 14px rgba(224,160,58,.55);}
+/* la estrella chiquita de la esquina, que gira al pasar el mouse */
+.poem::after{
+  content:'✦';position:absolute;top:.85rem;right:1.05rem;line-height:1;
+  font-size:1.45rem;color:rgba(201,163,255,.5);
+  text-shadow:0 0 14px rgba(157,111,208,.7);
+  transition:transform .5s,color .35s,text-shadow .35s;
+}
+.poem:hover::after{transform:rotate(90deg) scale(1.18);color:rgba(255,203,168,.9);text-shadow:0 0 20px rgba(239,111,87,.85);}
+.chip{
+  display:inline-flex;align-items:center;gap:.45rem;margin-bottom:1rem;
+  padding:.3rem .9rem;border-radius:100px;
+  font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  color:#ffc3a8;background:linear-gradient(135deg,rgba(255,154,107,.26),rgba(239,111,87,.12));
+  border:1px solid rgba(255,154,107,.4);
+  box-shadow:0 2px 10px rgba(239,111,87,.18);
+}
+.chip::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;}
+.poem:nth-child(3n) .chip{color:#cdb4ff;background:linear-gradient(135deg,rgba(157,111,208,.28),rgba(127,140,240,.12));border-color:rgba(157,111,208,.45);box-shadow:0 2px 10px rgba(157,111,208,.22);}
+.poem:nth-child(3n+2) .chip{color:#ffdf9e;background:linear-gradient(135deg,rgba(224,160,58,.26),rgba(255,154,107,.12));border-color:rgba(224,160,58,.45);box-shadow:0 2px 10px rgba(224,160,58,.22);}
+.poem-text{
+  font-family:'Cormorant Garamond',serif;font-size:1.14rem;line-height:1.8;
+  color:#ece2ff;white-space:pre-line;font-style:italic;
+  text-shadow:0 1px 12px rgba(0,0,0,.4);
+}
+.poem-author{
+  display:flex;align-items:center;gap:.75rem;margin-top:1.3rem;
+  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:#a897cc;
+}
+.poem-author::before{
+  content:'';flex:0 0 28px;height:1px;
+  background:linear-gradient(90deg,rgba(201,163,255,.75),transparent);
+}
+
+/* ═══════════════════════════════════════
+   CANDADO CON FECHA
+   ═══════════════════════════════════════ */
+.lock-sec{
+  position:relative;z-index:3;padding:5.5rem 1.4rem 6.5rem;
+  max-width:700px;margin:0 auto;text-align:center;
+}
+.lock{
+  padding:2.8rem 1.8rem;position:relative;overflow:hidden;
+  color:#f7e6d6;
+  transition:all .7s cubic-bezier(.34,1.56,.64,1);
+}
+.lock.sello{
+  background:linear-gradient(150deg,rgba(224,160,58,.22),rgba(255,207,168,.14));
+  border-color:rgba(224,160,58,.5);
+  box-shadow:0 22px 60px rgba(224,160,58,.25),0 0 0 1px rgba(224,160,58,.2) inset;
+}
+.lock-icon{font-size:3.2rem;margin-bottom:.9rem;display:block;transition:filter .6s;}
+.lock.sin-fecha .lock-icon{filter:grayscale(.85) opacity(.6);}
+.lock.sello .lock-icon{animation:bob 2.6s ease-in-out infinite;}
+.lock-h{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.4rem,5vw,1.8rem);margin-bottom:.55rem;color:#fff2e6;}
+.lock-p{font-size:.92rem;color:#e0c0ae;max-width:46ch;margin:0 auto;line-height:1.85;}
+
+.candado-caja{
+  margin:1.8rem auto 0;padding:1.4rem 1.2rem;max-width:460px;
+  background:rgba(0,0,0,.28);border:1px solid rgba(255,207,168,.22);border-radius:20px;
+}
+.candado-fecha{
+  font-family:'Dancing Script',cursive;font-weight:700;
+  font-size:clamp(1.6rem,5.5vw,2.1rem);color:var(--oro);
+  text-shadow:0 2px 18px rgba(224,160,58,.4);margin-bottom:.3rem;
+}
+.candado-fecha small{
+  display:block;font-family:'Nunito',sans-serif;font-size:.58rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;color:#d8b088;margin-top:.2rem;
+}
+.cuenta{display:flex;justify-content:center;gap:.6rem;margin-top:1.1rem;}
+.cuenta-caja{
+  min-width:64px;padding:.7rem .4rem;border-radius:14px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,207,168,.2);
+}
+.cuenta-num{
+  display:block;font-family:'Playfair Display',serif;font-weight:700;
+  font-size:clamp(1.5rem,6vw,2rem);color:#fff6ec;line-height:1;
+}
+.cuenta-lab{
+  display:block;font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;
+  color:#d8b088;margin-top:.35rem;
+}
+.cuenta-detalle{
+  margin-top:1rem;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:#e0c0ae;
+}
+/* Cuando la fecha ya paso: dias desde ese dia */
+.desde{display:none;margin-top:1.2rem;}
+.desde-num{
+  display:block;font-family:'Dancing Script',cursive;font-weight:700;
+  font-size:clamp(3rem,13vw,4.6rem);line-height:1;color:var(--oro);
+  text-shadow:0 4px 26px rgba(224,160,58,.45);
+}
+.desde-lab{
+  display:block;margin-top:.5rem;font-size:.68rem;letter-spacing:.2em;
+  text-transform:uppercase;color:#e8c9b8;
+}
+.desde-texto{
+  margin-top:1rem;font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.05rem,4vw,1.2rem);line-height:1.7;color:#ffd9a8;
+}
+.lock-secreto{
+  max-height:0;overflow:hidden;opacity:0;
+  transition:max-height 1s ease,opacity .7s ease,margin 1s ease;
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.12rem,4.4vw,1.3rem);line-height:1.75;color:#ffd9a8;margin-top:0;
+}
+.lock.sello .lock-secreto{max-height:400px;opacity:1;margin-top:1.6rem;}
+.lock-sello-txt{
+  display:none;margin-top:1.6rem;font-family:'Playfair Display',serif;
+  font-size:1.05rem;color:#e0c0ae;
+}
+.lock.sello .lock-sello-txt{display:block;}
+
+/* ═══════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════ */
+.site-footer{position:relative;z-index:3;text-align:center;padding:3rem 1.4rem 6rem;}
+.foot-flowers{display:block;font-size:1.6rem;margin-bottom:.9rem;letter-spacing:.14em;animation:bob 4s ease-in-out infinite;}
+.foot-text{font-family:'Dancing Script',cursive;font-size:1.7rem;color:#ffd0b8;}
+.foot-sub{font-size:.85rem;color:#e0c0ae;margin-top:.35rem;}
+
+/* ═══════════════════════════════════════
+   REVEAL
+   ═══════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════ */
+@media(max-width:768px){
+  .bg-hero,.bg-razones,.bg-carta,.bg-poesia,.bg-candado{background-attachment:scroll !important;}
+  .petal-ring{width:330px;height:330px;}
+  :root{--rosa-alto:205px;}
+}
+@media(max-width:600px){
+  .sec,.mail-sec,.poem-sec,.lock-sec{padding:3.8rem 1.1rem;}
+  .sec-head{margin-bottom:2.1rem;}
+  .reasons-grid{grid-template-columns:repeat(4,1fr);gap:11px;max-width:330px;}
+  .counter{padding:1.6rem 1.4rem;}
+  .counter-num{font-size:3.4rem;}
+  .poem-grid{grid-template-columns:1fr;gap:1rem;}
+  .poem{padding:1.7rem 1.35rem 1.35rem;}
+  /* Estrellas más livianas para el celular: se cae la capa de polvo
+     (la que se repite cada 250px) y queda una sola. Menos memoria de
+     GPU y menos capas que componer, y a simple vista se ve igual.
+     El 'will-change:auto' cancela el de la regla base. */
+  .bg-poesia::after{display:none;}
+  .bg-poesia::before{background-size:420px 420px;animation-duration:7s;will-change:auto;}
+  .sobre-wrap{height:218px;width:min(88vw,340px);}
+  .modal{padding:.7rem;}
+  .modal-box{padding:2.6rem 1.3rem 1.5rem;max-height:88vh;}
+  .modal-carta .modal-box{max-height:92vh;}
+  .carta-cab{padding:.9rem 1rem;}
+  .carta-cuerpo{padding:1.3rem 1.1rem 1.7rem;}
+  .carta-hoja{display:none;}
+  .cuenta{gap:.4rem;}
+  .cuenta-caja{min-width:56px;padding:.6rem .3rem;}
+  .m-nav{gap:.7rem;}
+  .m-dots{max-width:170px;}
+  .lock{padding:2.1rem 1.2rem;}
+  .carta-fab{top:.7rem;right:.7rem;width:54px;height:54px;}
+  .carta-fab-ico{width:33px;height:33px;}
+  .carta-fab-tip{display:none;}
+}
+@media(max-width:360px){
+  .reasons-grid{grid-template-columns:repeat(4,1fr);gap:9px;}
+  .nick{font-size:.62rem;padding:.3rem .8rem;}
+}
+@media(hover:none){
+  .rose-face{filter:grayscale(.4) opacity(.75);}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+  html{scroll-behavior:auto;}
+}
+
+/* ══════════════════════════════════════════════════
+   VOLVER AL INDEX
+   Arriba a la izquierda, al lado de donde estaba el reproductor
+   (ahora no queda nada ahí, así que el hueco está libre).
+   ══════════════════════════════════════════════════ */
+#volver{
+  position:fixed;top:1rem;left:1rem;z-index:120;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;border-radius:100px;
+  text-decoration:none;color:#ffe8d8;
+  background:rgba(90,35,48,.45);
+  border:1px solid rgba(255,190,160,.3);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  box-shadow:0 8px 26px rgba(0,0,0,.3);
+  transition:background .3s,transform .25s,box-shadow .3s;
+  -webkit-tap-highlight-color:transparent;
+}
+#volver:hover{
+  background:rgba(122,44,58,.6);
+  transform:translateX(-3px);
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+#volver:focus-visible{outline:3px solid #ffd9a8;outline-offset:3px;}
+#volver .vk{font-size:1.15rem;line-height:1;transition:transform .25s;}
+#volver:hover .vk{transform:translateX(-3px);}
+@media(max-width:768px){
+  #volver{top:.7rem;left:.7rem;width:40px;height:40px;}
+  #volver .vk{font-size:1.05rem;}
+}
+/* ══════════════════════════════════════════════════
+   TODO QUIETO
+   Estas cuatro cosas se quedaban moviendo solas y eso hacia
+   titilar la pagina: la rosa de arriba, el anillo de flores
+   que la rodea, el sobre y las estrellas del fondo.
+
+   Este bloque las frena todas. Para volver a animarlas,
+   borralo entero (o comentá las lineas que quieras).
+
+   OJO: las estrellas de la POESIA no estan aca a proposito.
+   Esas titilan, porque se pidio asi. Si alguna vez se quejan
+   del parpadeo, sacales el brillo a mano o volveles a poner
+   la linea de abajo.
+   ══════════════════════════════════════════════════ */
+.petal-ring,                    /* anillo de flores que gira */
+.hero-rose::before,             /* halo de la rosa */
+.hero-rose .rosa-svg,           /* la rosa */
+.hero-rose.con-png .rosa-img,   /* tu PNG de la rosa */
+.sobre-wrap,                    /* el sobre flotando */
+.sobre-wrap::after,             /* el brillo que le barre */
+.bg-carta::before,              /* estrellas de la seccion del sobre */
+.bg-candado::before,            /* estrellas de la seccion del candado */
+/* .bg-poesia::before,          <- descomentar para apagar el parpadeo */
+.scroll-dot,                    /* el puntito que baja */
+.m-rosa,                        /* la rosa del modal */
+.lock.sello .lock-icon,         /* candado (esta oculto, pero por si la mostras) */
+.foot-flowers{animation:none !important;}
+
+/* La pagina tampoco hace scroll suave: se queda quieta al topar */
+html{scroll-behavior:auto;}
+</style>
+</head>
+<body class="con-portada">
+
+<!-- ══════════ PORTADA · lo primero que se ve ══════════
+     El botón "Entrar" cierra esto Y prende la música (los navegadores
+     no dejan reproducir audio sin que el usuario toque algo). -->
+<div id="portada" role="dialog" aria-modal="true" aria-labelledby="portTitulo">
+  <div class="port-in">
+    <img class="port-rosa" src="rosa.png" alt="" onerror="this.style.display='none'">
+    <span class="port-eyebrow">Sin fecha &middot; Sin l&iacute;mite</span>
+    <h2 class="port-h" id="portTitulo">Te arm&eacute; algo<br>para vos, Iriss</h2>
+    <p class="port-txt">Espero que te gusten.</p>
+    <p class="port-firma"> Tii Amooouuuuu.</p>
+    <button class="port-btn" id="portBtn" type="button">Entrar <span aria-hidden="true">🌹</span></button>
+  </div>
+</div>
+
+<!-- ══════════ VOLVER AL INDEX ══════════ -->
+<a href="../index.html" id="volver" aria-label="Volver al inicio" title="Volver al inicio">
+  <span class="vk" aria-hidden="true">&larr;</span>
+</a>
+
+<canvas id="flowerCanvas"></canvas>
+
+<!-- ══════════ 1 · HERO ══════════ -->
+<section class="hero bg-hero">
+  <svg class="petal-ring" viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g font-size="20" text-anchor="middle">
+      <text x="240" y="24">🌸</text><text x="360" y="60">🌼</text><text x="442" y="156">🌹</text>
+      <text x="460" y="254">🌷</text><text x="428" y="352">🌸</text><text x="360" y="434">🌺</text>
+      <text x="240" y="466">💮</text><text x="120" y="434">🌼</text><text x="52" y="352">🌹</text>
+      <text x="20" y="254">🌷</text><text x="38" y="156">🌸</text><text x="120" y="60">🌺</text>
+    </g>
+  </svg>
+
+  <div class="hero-badge">Sin fecha &middot; Sin l&iacute;mite &middot; Porque te amo+</div>
+
+  <div class="hero-rose" id="heroRose">
+    <!-- Poné tu imagen como "rosa.png" en esta carpeta y aparece sola.
+         Si no está el archivo, se muestra el SVG de abajo. -->
+    <img class="rosa-img" id="rosaImg" src="rosa.png" alt="Una rosa"
+         onerror="this.style.display='none'"
+         onload="document.getElementById('heroRose').classList.add('con-png')">
+    <svg class="rosa-svg" width="200" height="230" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <radialGradient id="pA" cx="50%" cy="35%" r="60%"><stop offset="0%" stop-color="#ffe2c4"/><stop offset="45%" stop-color="#ff9a6b"/><stop offset="100%" stop-color="#d1523a"/></radialGradient>
+        <radialGradient id="pB" cx="42%" cy="32%" r="60%"><stop offset="0%" stop-color="#fff0e0"/><stop offset="48%" stop-color="#f2795c"/><stop offset="100%" stop-color="#b8402c"/></radialGradient>
+        <radialGradient id="pC" cx="58%" cy="30%" r="60%"><stop offset="0%" stop-color="#ffd0b8"/><stop offset="48%" stop-color="#e5708f"/><stop offset="100%" stop-color="#9a3350"/></radialGradient>
+        <radialGradient id="pD" cx="50%" cy="40%" r="60%"><stop offset="0%" stop-color="#ffeadd"/><stop offset="55%" stop-color="#ff8a6b"/><stop offset="100%" stop-color="#c9452f"/></radialGradient>
+        <radialGradient id="hoja" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#a8c896"/><stop offset="100%" stop-color="#43764a"/></radialGradient>
+        <linearGradient id="tallo" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#3f6b44"/><stop offset="45%" stop-color="#6a9a5e"/><stop offset="100%" stop-color="#3a6340"/></linearGradient>
+      </defs>
+
+      <path d="M100 228 Q97 190 96 160 Q95 132 97 108" stroke="url(#tallo)" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M96 168 Q70 158 56 134 Q80 130 96 152Z" fill="url(#hoja)" opacity="0.95"/>
+      <path d="M96 152 Q124 144 136 118 Q110 120 96 140Z" fill="url(#hoja)" opacity="0.88"/>
+      <path d="M96 190 Q74 184 62 166 Q82 162 96 178Z" fill="url(#hoja)" opacity="0.7"/>
+
+      <ellipse cx="97" cy="108" rx="17" ry="21" fill="#4f7a52" opacity="0.5" transform="rotate(-22 97 108)"/>
+      <ellipse cx="97" cy="108" rx="17" ry="21" fill="#4f7a52" opacity="0.5" transform="rotate(22 97 108)"/>
+      <ellipse cx="97" cy="108" rx="15" ry="19" fill="#43764a" opacity="0.45"/>
+
+      <g id="rosa-corola">
+        <g opacity="0.8">
+          <ellipse cx="100" cy="48" rx="26" ry="34" fill="url(#pC)" transform="rotate(0 100 96)"/>
+          <ellipse cx="100" cy="48" rx="26" ry="34" fill="url(#pA)" transform="rotate(45 100 96)"/>
+          <ellipse cx="100" cy="48" rx="26" ry="34" fill="url(#pB)" transform="rotate(90 100 96)"/>
+          <ellipse cx="100" cy="48" rx="26" ry="34" fill="url(#pC)" transform="rotate(135 100 96)"/>
+          <ellipse cx="100" cy="48" rx="26" ry="34" fill="url(#pA)" transform="rotate(180 100 96)"/>
+          <ellipse cx="100" cy="48" rx="26" ry="34" fill="url(#pB)" transform="rotate(225 100 96)"/>
+          <ellipse cx="100" cy="48" rx="26" ry="34" fill="url(#pC)" transform="rotate(270 100 96)"/>
+          <ellipse cx="100" cy="48" rx="26" ry="34" fill="url(#pA)" transform="rotate(315 100 96)"/>
+        </g>
+        <g opacity="0.9">
+          <ellipse cx="100" cy="62" rx="22" ry="30" fill="url(#pB)" transform="rotate(24 100 96)"/>
+          <ellipse cx="100" cy="62" rx="22" ry="30" fill="url(#pC)" transform="rotate(78 100 96)"/>
+          <ellipse cx="100" cy="62" rx="22" ry="30" fill="url(#pA)" transform="rotate(132 100 96)"/>
+          <ellipse cx="100" cy="62" rx="22" ry="30" fill="url(#pB)" transform="rotate(186 100 96)"/>
+          <ellipse cx="100" cy="62" rx="22" ry="30" fill="url(#pC)" transform="rotate(240 100 96)"/>
+          <ellipse cx="100" cy="62" rx="22" ry="30" fill="url(#pA)" transform="rotate(294 100 96)"/>
+          <ellipse cx="100" cy="62" rx="22" ry="30" fill="url(#pB)" transform="rotate(348 100 96)"/>
+        </g>
+        <g opacity="0.95">
+          <ellipse cx="100" cy="74" rx="18" ry="25" fill="url(#pA)" transform="rotate(12 100 96)"/>
+          <ellipse cx="100" cy="74" rx="18" ry="25" fill="url(#pB)" transform="rotate(72 100 96)"/>
+          <ellipse cx="100" cy="74" rx="18" ry="25" fill="url(#pC)" transform="rotate(132 100 96)"/>
+          <ellipse cx="100" cy="74" rx="18" ry="25" fill="url(#pA)" transform="rotate(192 100 96)"/>
+          <ellipse cx="100" cy="74" rx="18" ry="25" fill="url(#pB)" transform="rotate(252 100 96)"/>
+          <ellipse cx="100" cy="74" rx="18" ry="25" fill="url(#pC)" transform="rotate(312 100 96)"/>
+        </g>
+        <g opacity="1">
+          <ellipse cx="100" cy="84" rx="13" ry="19" fill="url(#pD)" transform="rotate(20 100 96)"/>
+          <ellipse cx="100" cy="84" rx="13" ry="19" fill="url(#pC)" transform="rotate(92 100 96)"/>
+          <ellipse cx="100" cy="84" rx="13" ry="19" fill="url(#pD)" transform="rotate(164 100 96)"/>
+          <ellipse cx="100" cy="84" rx="13" ry="19" fill="url(#pB)" transform="rotate(236 100 96)"/>
+          <ellipse cx="100" cy="84" rx="13" ry="19" fill="url(#pD)" transform="rotate(308 100 96)"/>
+        </g>
+        <g opacity="1">
+          <ellipse cx="100" cy="92" rx="8" ry="12" fill="url(#pC)" transform="rotate(0 100 96)"/>
+          <ellipse cx="100" cy="92" rx="8" ry="12" fill="url(#pD)" transform="rotate(72 100 96)"/>
+          <ellipse cx="100" cy="92" rx="8" ry="12" fill="url(#pB)" transform="rotate(144 100 96)"/>
+          <ellipse cx="100" cy="92" rx="8" ry="12" fill="url(#pD)" transform="rotate(216 100 96)"/>
+          <ellipse cx="100" cy="92" rx="8" ry="12" fill="url(#pC)" transform="rotate(288 100 96)"/>
+        </g>
+        <ellipse cx="100" cy="96" rx="9" ry="11" fill="#ff7a5c"/>
+        <ellipse cx="96" cy="92" rx="6" ry="7" fill="#ffe8dc" opacity="0.75"/>
+        <ellipse cx="100" cy="89" rx="4.5" ry="5"  fill="#fff8f2" opacity="0.8"/>
+        <ellipse cx="90" cy="72" rx="9" ry="14" fill="#fff" opacity="0.16" transform="rotate(-28 90 72)"/>
+      </g>
+    </svg>
+  </div>
+
+  <span class="hero-for">para</span>
+  <h1 class="hero-title">Iriss</h1>
+  <p class="hero-sub">Veinte cosas<br>lindas de vos.</p>
+
+  <div class="hero-nick">
+    <span class="nick">pachuchitaa</span>
+    <span class="nick">señoritaa</span>
+    <span class="nick">🌹</span>
+  </div>
+
+  <button class="scroll-hint" id="scrollHint" type="button" aria-label="Bajá para ver las veinte cositas">
+    <span>Deslizá para ver las 20</span>
+    <span class="scroll-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 34" width="24" height="34" fill="none" stroke="currentColor"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path class="chev1" d="M4.5 8.5 L12 16 L19.5 8.5"/>
+        <path class="chev2" d="M4.5 18 L12 25.5 L19.5 18"/>
+      </svg>
+    </span>
+  </button>
+</section>
+
+<!-- ══════════ 2 · 20 COSITAS LINDAS ══════════ -->
+<section class="sec bg-razones">
+  <div class="sec-head">
+    <div class="sec-pill reveal sp">Tocá cada rosa</div>
+    <h2 class="sec-h reveal">Veinte cositas<br>lindas para <em>vos</em></h2>
+    <p class="sec-p reveal">No hay nada que celebrar ni una fecha que esperar.<br>Solo toc&aacute; las rosas, una por una.</p>
+  </div>
+
+  <div class="reasons-grid reveal" id="grid"></div>
+
+  <div class="counter paper reveal">
+    <span class="counter-flowers" id="cFlowers">🌹</span>
+    <span class="counter-num" id="cNum">0</span>
+    <div class="counter-of">de 20 cositas</div>
+    <p class="counter-msg" id="cMsg">Esperando tus rosas</p>
+    <div class="bar"><div class="bar-fill" id="bar"></div></div>
+  </div>
+
+  <span class="hint-small reveal">Tocá una rosa y te muestra una cosita linda</span>
+</section>
+
+<!-- ══════════ 3 · POESÍA ══════════ -->
+<section class="poem-sec bg-poesia" style="padding:5.5rem 1.4rem;">
+  <div class="sec-head">
+    <div class="sec-pill dark reveal sp">Poes&iacute;a &amp; frases</div>
+    <h2 class="sec-h inv reveal">Palabras que <em>quedan</em></h2>
+    <p class="sec-p inv reveal">Esto es de relleno: cambi&aacute; lo que quieras, son tuyas.</p>
+  </div>
+  <div class="poem-grid" id="poems"></div>
+</section>
+
+<!-- ══════════ 4 · CANDADO ══════════
+     OCULTO A PROPÓSITO. Para volver a mostrarlo:
+     1) borrá el "hidden" y el "display:none" de abajo
+     2) el JS sigue funcionando solo, no hay que tocar nada más
+     ─────────────────────────────────────────── -->
+<section class="lock-sec bg-candado" hidden style="display:none;">
+  <div class="lock glass sin-fecha" id="lock">
+    <span class="lock-icon" id="lockIcon">🔒</span>
+    <h3 class="lock-h" id="lockH">Esto empezó un día de abril</h3>
+    <p class="lock-p" id="lockP">No hace falta que esperes ningún día. Acá abajo va.</p>
+
+    <div class="candado-caja">
+      <div class="candado-fecha" id="candadoFecha">26 / 04 / 26<small id="candadoSub">Desde ese día</small></div>
+      <div class="cuenta" id="cuenta">
+        <div class="cuenta-caja"><span class="cuenta-num" id="cd">00</span><span class="cuenta-lab">días</span></div>
+        <div class="cuenta-caja"><span class="cuenta-num" id="ch">00</span><span class="cuenta-lab">horas</span></div>
+        <div class="cuenta-caja"><span class="cuenta-num" id="cm">00</span><span class="cuenta-lab">min</span></div>
+        <div class="cuenta-caja"><span class="cuenta-num" id="cs">00</span><span class="cuenta-lab">seg</span></div>
+      </div>
+      <div class="desde" id="desde">
+        <span class="desde-num" id="desdeNum">0</span>
+        <span class="desde-lab" id="desdeLab">días desde el 26 de abril</span>
+        <p class="desde-texto" id="desdeTexto"></p>
+      </div>
+      <p class="cuenta-detalle" id="cuentaDetalle">Falta para que se abra</p>
+    </div>
+
+    <p class="lock-sello-txt">Ya se abrió. Te elijo todos los d&iacute;as, en los que salen bien y en los que no. No porque seas perfecta, sino porque sos vos. Y eso es un mont&oacute;n.</p>
+  </div>
+</section>
+
+<footer class="site-footer bg-candado">
+  <span class="foot-flowers">🌹 🌸 🌺 🌼</span>
+  <p class="foot-text">Para Iriss, pachuchitaa y señoritaa</p>
+  <p class="foot-sub">Siempre te van a faltar otras veinte</p>
+</footer>
+
+<!-- ══════════ ICONO DE LA CARTA (arriba a la derecha) ══════════
+     La carta ya no tiene sección propia: vive acá, siempre visible.
+     Tocá el sobre y se abre, y atrás aparece el modal con la carta. -->
+<button class="carta-fab" id="cartaFab" aria-label="Abrir la carta para vos" aria-haspopup="dialog">
+  <span class="carta-fab-fondo"></span>
+  <span class="carta-fab-tip">La carta</span>
+  <svg class="carta-fab-ico" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="cfCuerpo" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fff5ea"/><stop offset="100%" stop-color="#f6cfa9"/>
+      </linearGradient>
+      <linearGradient id="cfTapa" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#fff9f2"/><stop offset="100%" stop-color="#f0bd95"/>
+      </linearGradient>
+    </defs>
+    <rect x="4" y="13" width="40" height="29" rx="8" fill="url(#cfCuerpo)"/>
+    <rect x="9" y="17" width="30" height="21" rx="5" fill="#fffdf9"/>
+    <g stroke="#e2b79a" stroke-width="1.1" stroke-linecap="round" opacity=".55">
+      <path d="M14 22h20"/><path d="M14 27h20"/><path d="M14 32h13"/>
+    </g>
+    <path d="M4 22 L19 33.2 a6.6 6.6 0 0 0 10 0 L44 22 v11.6 a7.4 7.4 0 0 1 -7.4 7.4 H11.4 A7.4 7.4 0 0 1 4 33.6 Z"
+          fill="#eab48f" opacity=".92"/>
+    <path d="M4.7 20.4 C4.7 16 8.3 12.4 12.7 12.4 H35.3 C39.7 12.4 43.3 16 43.3 20.4 L24 34.6 Z"
+          fill="url(#cfTapa)" class="carta-fab-tapa"/>
+    <path class="carta-fab-sello" d="M24 40.2c-1.9-2.2-5.6-4.6-5.6-8.2a3.1 3.1 0 0 1 5.6-2 3.1 3.1 0 0 1 5.6 2c0 3.6-3.7 6-5.6 8.2Z" fill="#ef6f57"/>
+  </svg>
+</button>
+
+<!-- ══════════ MODAL RAZÓN ══════════ -->
+<div class="modal" id="mRazon" role="dialog" aria-modal="true" aria-labelledby="mRazonNum">
+  <div class="modal-box">
+    <button class="modal-x" id="xRazon" aria-label="Cerrar">✕</button>
+    <div class="m-rosa" id="mRosa">🌹</div>
+    <span class="m-num" id="mRazonNum">Cosita 1 de 20</span>
+    <p class="m-text" id="mRazonTxt"></p>
+    <div class="m-nav">
+      <button id="mPrev" aria-label="Anterior">‹</button>
+      <div class="m-dots" id="mDots"></div>
+      <button id="mNext" aria-label="Siguiente">›</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MODAL CARTA ══════════ -->
+<div class="modal modal-carta" id="mCarta" role="dialog" aria-modal="true" aria-labelledby="cartaTitulo">
+  <div class="modal-box">
+    <div class="carta-cab">
+      <h3 id="cartaTitulo"><small>Una carta para vos</small>Iriss,</h3>
+      <button class="modal-x" id="xCarta" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="carta-cuerpo" id="cartaCuerpo">
+      <p>No tengo una fecha para esto ni un motivo que justifique el tamaño de lo que te mandé. No es un cumpleaños, no es un aniversario, no es nada. Es un martes cualquiera y aun así quise hacer algo grande.</p>
+      <p>Hay una fecha que sí importa, y no es esta: el 26 de abril. Ese día hablamos por primera vez y sin querer algo empezó a andar. Todo lo que está arriba de acá son las cosas que sé de vos, escritas para que las vayas encontrando.</p>
+      <p>Armé veinte rosas porque veinte es un número que se puede contar con los dedos y porque me gustaba la idea de que pudieras ir descubriendo una por una. Y te aclaro algo importante: acá no caben veinte. Solo elegí veinte, y ya me quedé con ganas de escribir todas las demás.</p>
+      <p>Lo que más me gusta de vos no es una sola cosa, es una suma. Que te acordás de los detalles. Que no te da pudor querer. Que cuando algo te importa, se nota. Que tenés una forma de decir lo que pensás que no hiere a nadie y sin embargo igual deja huella. Eso no se enseña, se tiene o no se tiene.</p>
+      <p>No te voy a prometer que nada va a cambiar, porque sería mentira. Sí te prometo esto: esto no se termina acá, y vas a seguir teniendo cositas lindas nuevas todos los días.</p>
+      <p>Gracias por existir con ese ruido que hacés en la vida de la gente que te quiere.</p>
+      <div class="carta-firma">Con veinte rosas de sobra, siempre 🌹<small>P.D. contestame el mensaje</small></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MÚSICA ══════════
+     No hay reproductor: no se ve ningún botón ni barra. La música
+     sola, en bucle, y arranca cuando la persona toca "Entrar" en la
+     portada (los navegadores no dejan sonar audio sin un toque). -->
+<audio id="bgAudio" loop preload="auto">
+  <source src="cancion.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ══════════════════════════════════════════════════
+   1 · LA FECHA DEL CANDADO
+   El candado se abre solo cuando llega este momento.
+   Formato: new Date(AÑO, MES-1, DÍA, HORA, MIN, 0, 0)
+   Para 26 de abril de 2026 -> new Date(2026, 3, 26, 0, 0, 0, 0)
+   ══════════════════════════════════════════════════ */
+const FECHA_CANDADO = new Date(2026, 3, 26, 0, 0, 0, 0);
+
+/* MODO_PRUEBA = true -> abre el candado al instante, para que puedas
+   ver como queda sin esperar a la fecha. Dejalo en false para publicar. */
+const MODO_PRUEBA = false;
+
+/* ══════════════════════════════════════════════════
+   2 · EDITÁ ACÁ: las 20 razones y la poesía
+   ══════════════════════════════════════════════════ */
+const RAZONES = [
+  'Tu valor no tiene medida: sos una obra de arte en todos los sentidos.',
+  'Tenés un corazón gigante y una luz que ilumina todo a tu alrededor.',
+  'Sos de esas personas que hacen que el mundo sea un lugar mucho más bonito.',
+  'Lo que valés es incalculable: tu esencia es única y maravillosa.',
+  'Cada detalle tuyo demuestra la hermosa persona que sos por dentro y por fuera.',
+  'Te amo con cada latido y con cada pensamiento que cruza mi mente.',
+  'Mi amor por vos crece cada día, sin pausa y sin medida.',
+  'Si tuviera que elegir un lugar en el mundo, sería siempre a tu lado.',
+  'Te amo más de lo que las palabras pueden explicar.',
+  'Sos mi persona favorita en este mundo, hoy y siempre.',
+  'Llegaste para ponerle los colores más bonitos a mis días.',
+  'Mi vida es infinitamente mejor desde que te tengo en ella.',
+  'Sos mi paz, mi refugio y mi mayor alegría.',
+  'Cada segundo a tu distancia o a tu lado se vuelve inolvidable.',
+  'Gracias por ser exactamente quien sos: la dueña de mi corazón.',
+  'Adoro cada pedacito de vos, de tu risa y de tu forma de ser.',
+  'Sos mi inspiración constante y el motor de mis mejores sonrisas.',
+  'Te amo hoy, mañana y el resto de mi vida entera.',
+  'Contigo aprendí que el amor más sincero es el que se siente por vos.',
+  'Valés oro puro, y amarte es lo más lindo que me ha pasado.'
+];
+
+const POEMAS = [
+  { chip:'Poesía', text:'Te escribo sin motivo,\ncomo quien siembra sin tierra:\npor el gusto de mirar\nque algo, en algún lado,\nest\u00e1 avanzando.', author:'De ejemplo' },
+
+  { chip:'Rima', text:'Puedo escribir los versos m\u00e1s tristes esta noche.\nEscribir, por ejemplo: "La noche est\u00e1 estrellada\ny tiritan, azules, los astros, a lo lejos."\n\nDespu\u00e9s le agrego una l\u00ednea tuya,\ny ya no es lo mismo.', author:'Adaptado de Pablo Neruda' },
+
+  { chip:'Frase', text:'No te necesito para estar bien.\nTe necesito para querer estar bien.\n\nQue es una diferencia enorme\nque casi nadie nota.', author:'De ejemplo' },
+
+  { chip:'Deseo', text:'Que este a\u00f1o te encuentre en los lugares\nque siempre quisiste ir,\ny que el camino de ida\nsea m\u00e1s lindo que el de vuelta.', author:'De ejemplo' },
+
+  { chip:'Haiku', text:'luz de la tarde \u2014\ntu nombre en mi boca,\ny nada m\u00e1s.', author:'De ejemplo' },
+
+  { chip:'Carta', text:'Ac\u00e1 va una que no entra en ning\u00fan sobre:\n\n"Gracias por hacerme\nre\u00edr con cosas que no tienen gracia."\n\nDespu\u00e9s decime si re\u00edste.', author:'De ejemplo' }
+];
+
+/* ══════════════════════════════════════════════════
+   3 · FONDO ANIMADO: FLORES + PÉTALOS
+   ══════════════════════════════════════════════════ */
+const fems = ['🌸','🌹','🌺','🌼','💮','🥀'];
+
+const fc = document.getElementById('flowerCanvas');
+const fx = fc.getContext('2d');
+let floaties = [];
+function resizeFc(){ fc.width = innerWidth; fc.height = innerHeight; }
+for(let i=0;i<20;i++){
+  floaties.push({
+    x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+    em:fems[(Math.random()*fems.length)|0],
+    sz:13+Math.random()*17,
+    vx:(Math.random()-.5)*.24, vy:-.13-Math.random()*.24,
+    alpha:.05+Math.random()*.11,
+    rot:Math.random()*Math.PI*2, rv:(Math.random()-.5)*.005,
+    wave:Math.random()*Math.PI*2
+  });
+}
+
+/* El canvas de flores pinta UNA SOLA VEZ y se queda quieto.
+   Antes se repintaba 60 veces por segundo y eso hacia titilar la pagina.
+   Ahora es un dibujo fijo: se vuelve a pintar solo al cambiar el tamaño
+   de la ventana. */
+function pintarFondo(){
+  fx.clearRect(0,0,fc.width,fc.height);
+  for(const f of floaties){
+    fx.save(); fx.globalAlpha = f.alpha;
+    fx.translate(f.x,f.y); fx.rotate(f.rot);
+    fx.font = f.sz+'px serif'; fx.textAlign='center'; fx.textBaseline='middle';
+    fx.fillText(f.em,0,0); fx.restore();
+  }
+}
+resizeFc();
+pintarFondo();
+addEventListener('resize', () => { resizeFc(); pintarFondo(); });
+
+
+/* ══════════════════════════════════════════════════
+   4 · MODALES (genéricos)
+   ══════════════════════════════════════════════════ */
+function abrirModal(el){
+  el.classList.add('ver');
+  document.body.classList.add('locked');
+}
+function cerrarModal(el){
+  el.classList.remove('ver');
+  // Si era el modal de la carta, el sobre de arriba a la derecha
+  // vuelve a cerrarse despacio, asi se puede volver a abrir.
+  if(el.id === 'mCarta') cerrarSobre();
+  if(!document.querySelector('.modal.ver')){
+    document.body.classList.remove('locked');
+  }
+}
+document.querySelectorAll('.modal').forEach(m => {
+  m.addEventListener('click', e => { if(e.target === m) cerrarModal(m); });
+});
+document.addEventListener('keydown', e => {
+  if(e.key !== 'Escape') return;
+  const abierto = document.querySelector('.modal.ver');
+  if(abierto) cerrarModal(abierto);
+});
+
+/* ══════════════════════════════════════════════════
+   5 · LAS 20 RAZONES -> MODAL CENTRADO
+   ══════════════════════════════════════════════════ */
+const grid = document.getElementById('grid');
+const cNum = document.getElementById('cNum');
+const cMsg = document.getElementById('cMsg');
+const cFlowers = document.getElementById('cFlowers');
+const bar = document.getElementById('bar');
+
+const mRazon = document.getElementById('mRazon');
+const mRazonNum = document.getElementById('mRazonNum');
+const mRazonTxt = document.getElementById('mRazonTxt');
+const mRosa = document.getElementById('mRosa');
+const mDots = document.getElementById('mDots');
+const mPrev = document.getElementById('mPrev');
+const mNext = document.getElementById('mNext');
+
+let count = 0;
+let vistas = [];        // indices de las razones ya descubiertas
+let actual = 0;         // posicion dentro de 'vistas'
+
+for(let i=0;i<20;i++){
+  const wrap = document.createElement('div');
+  wrap.className = 'rose';
+  wrap.innerHTML =
+    '<input type="checkbox" id="r'+i+'">' +
+    '<label class="rose-face" for="r'+i+'" title="Cosita '+(i+1)+' de 20">🌹</label>' +
+    '<span class="rose-num">'+(i+1)+'</span>';
+  const inp = wrap.querySelector('input');
+  inp.addEventListener('change', () => {
+    count += inp.checked ? 1 : -1;
+    if(inp.checked){
+      if(!vistas.includes(i)) vistas.push(i);
+      mostrarRazon(i);
+    } else {
+      vistas = vistas.filter(v => v !== i);
+    }
+    actualizarContador();
+  });
+  grid.appendChild(wrap);
+}
+
+function mostrarRazon(i){
+  actual = vistas.indexOf(i);
+  pintarRazon();
+  abrirModal(mRazon);
+}
+function pintarRazon(){
+  const i = vistas[actual];
+  if(i === undefined) return;
+  mRazonNum.textContent = 'Cosita ' + (i+1) + ' de 20';
+  mRazonTxt.textContent = RAZONES[i];
+  mRosa.textContent = i === 19 ? '🌺' : (i % 2 ? '🌸' : '🌹');
+  mPrev.disabled = actual === 0;
+  mNext.disabled = actual === vistas.length - 1;
+  mDots.innerHTML = vistas.map((v,k) =>
+    '<span class="m-dot'+(k===actual?' on':'')+'" data-k="'+k+'"></span>').join('');
+}
+mPrev.addEventListener('click', ()=>{ if(actual>0){ actual--; pintarRazon(); } });
+mNext.addEventListener('click', ()=>{ if(actual<vistas.length-1){ actual++; pintarRazon(); } });
+mDots.addEventListener('click', e => {
+  const d = e.target.closest('.m-dot');
+  if(d){ actual = +d.dataset.k; pintarRazon(); }
+});
+document.getElementById('xRazon').addEventListener('click', ()=>cerrarModal(mRazon));
+
+const sets = ['🌹','🌹🌹','🌹🌹🌹','🌹🌹🌹🌹','🌹🌹🌹🌹🌹','🌹🌹🌹🌹🌹🌹'];
+const msgs = [
+  'Esperando tus rosas',
+  'Una cosita y ya empieza',
+  'Dos, y sigue',
+  'Van tres. No pares.',
+  'Se está llenando de cositas lindas',
+  'Cada una pesa más que la anterior',
+  'Media vuelta. Vas por la mitad.',
+  'Esto ya es un jardín',
+  'Falta poco, señoritaa',
+  'Falta nada 🌹'
+];
+function actualizarContador(){
+  cNum.textContent = count;
+  bar.style.width = (count/20*100) + '%';
+  cMsg.textContent = count===20 ? msgs[msgs.length-1] : msgs[Math.min(Math.floor(count/2.2), msgs.length-2)];
+  cFlowers.textContent = sets[Math.min(Math.floor(count/4), sets.length-1)];
+}
+
+/* ══════════════════════════════════════════════════
+   6 · POESÍA
+   ══════════════════════════════════════════════════ */
+const poemsWrap = document.getElementById('poems');
+POEMAS.forEach(p => {
+  const el = document.createElement('article');
+  el.className = 'poem reveal';
+  el.innerHTML =
+    '<span class="chip">' + p.chip + '</span>' +
+    '<div class="poem-text">' + p.text + '</div>' +
+    '<span class="poem-author">' + p.author + '</span>';
+  poemsWrap.appendChild(el);
+});
+
+/* ══════════════════════════════════════════════════
+   7 · ICONO DE LA CARTA -> SOBRE + MODAL
+   El ícono de arriba a la derecha abre su tapa y, medio
+   segundo después, aparece el modal con la carta entera.
+   Al cerrar el modal, el sobre vuelve a cerrarse.
+   ══════════════════════════════════════════════════ */
+const cartaFab = document.getElementById('cartaFab');
+const mCarta = document.getElementById('mCarta');
+let mailOpen = false;
+
+function abrirSobre(){
+  if(mailOpen) return;
+  mailOpen = true;
+  cartaFab.classList.add('abierto');
+  // Se espera a que la tapa termine de girar antes de mostrar el modal.
+  setTimeout(() => abrirModal(mCarta), 520);
+}
+function cerrarSobre(){
+  mailOpen = false;
+  cartaFab.classList.remove('abierto');
+}
+cartaFab.addEventListener('click', abrirSobre);
+document.getElementById('xCarta').addEventListener('click', () => cerrarModal(mCarta));
+
+/* ══════════════════════════════════════════════════
+   8 · CANDADO CON FECHA
+   ══════════════════════════════════════════════════ */
+const lockBox = document.getElementById('lock');
+const lockIcon = document.getElementById('lockIcon');
+const lockH = document.getElementById('lockH');
+const lockP = document.getElementById('lockP');
+const cd = document.getElementById('cd');
+const ch = document.getElementById('ch');
+const cm = document.getElementById('cm');
+const cs = document.getElementById('cs');
+const cuentaDetalle = document.getElementById('cuentaDetalle');
+const candadoSub = document.getElementById('candadoSub');
+const cuentaBox = document.getElementById('cuenta');
+const desdeBox = document.getElementById('desde');
+const desdeNum = document.getElementById('desdeNum');
+const desdeLab = document.getElementById('desdeLab');
+const desdeTexto = document.getElementById('desdeTexto');
+let timer = null, abierto = false;
+
+const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const FECHA_TEXTO = FECHA_CANDADO.getDate() + ' de ' + MESES[FECHA_CANDADO.getMonth()] + ' de ' + FECHA_CANDADO.getFullYear();
+document.getElementById('candadoFecha').firstChild.nodeValue = FECHA_CANDADO.getDate() + ' / ' + String(FECHA_CANDADO.getMonth()+1).padStart(2,'0') + ' / ' + String(FECHA_CANDADO.getFullYear()).slice(2);
+candadoSub.textContent = 'Desde el ' + FECHA_CANDADO.getDate() + ' de ' + MESES[FECHA_CANDADO.getMonth()];
+
+function abrirCandado(){
+  if(abierto) return;
+  abierto = true;
+  clearInterval(timer);
+  lockBox.classList.remove('sin-fecha');
+  lockBox.classList.add('sello');
+  lockIcon.textContent = '🔓';
+  cuentaBox.style.display = 'none';
+  cuentaDetalle.textContent = 'Todo esto empezó el ' + FECHA_TEXTO;
+
+  const dias = Math.floor((Date.now() - FECHA_CANDADO.getTime()) / 86400000);
+  if(dias > 0){
+    desdeBox.style.display = 'block';
+    desdeNum.textContent = dias;
+    desdeLab.textContent = 'días desde el ' + FECHA_CANDADO.getDate() + ' de ' + MESES[FECHA_CANDADO.getMonth()];
+    desdeTexto.textContent = dias === 1
+      ? 'Un día. Y ya parece que hace mucho más.'
+      : dias < 30
+        ? 'Todavía es poquito, pero ya no tiene vuelta atrás.'
+        : 'Y no se nos va a acabar.';
+  }
+}
+
+function tick(){
+  const diff = (MODO_PRUEBA ? -1 : FECHA_CANDADO.getTime()) - Date.now();
+  if(diff <= 0){ abrirCandado(); return; }
+  const seg = Math.floor(diff/1000);
+  cd.textContent = Math.floor(seg/86400);
+  ch.textContent = String(Math.floor(seg%86400/3600)).padStart(2,'0');
+  cm.textContent = String(Math.floor(seg%3600/60)).padStart(2,'0');
+  cs.textContent = String(seg%60).padStart(2,'0');
+  cuentaDetalle.textContent = 'Falta para que se abra';
+}
+tick();
+if(!abierto) timer = setInterval(tick, 1000);
+
+/* ══════════════════════════════════════════════════
+   9 · REVEAL AL HACER SCROLL
+   ══════════════════════════════════════════════════ */
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e,i) => {
+    if(e.isIntersecting){
+      e.target.style.transitionDelay = (i*.07)+'s';
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold:.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* La flecha del hero: si la tocás, baja sola a las veinte cositas. */
+const hint = document.getElementById('scrollHint');
+if (hint) {
+  hint.addEventListener('click', () => {
+    const destino = document.querySelector('.bg-razones');
+    if (destino) destino.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+  // y desaparece apenas ya no queda nada abajo (si scrollearon, no estorba)
+  window.addEventListener('scroll', () => {
+    hint.style.opacity = window.scrollY > 120 ? '0' : '';
+    hint.style.pointerEvents = window.scrollY > 120 ? 'none' : '';
+  }, { passive:true });
+}
+
+/* ══════════════════════════════════════════════════
+   10 · MÚSICA
+   ══════════════════════════════════════════════════ */
+const audio = document.getElementById('bgAudio');
+let started = false;
+
+// Sin reproductor ni barra: solo el audio, en bucle.
+// Arranca en silencio y sube de a poco, para que entre suave y no de golpe.
+const VOL_FINAL = .38;
+audio.volume = 0;
+
+function prenderMusica(){
+  audio.play().then(() => {
+    if (audio.volume >= VOL_FINAL) return;      // ya estaba alta
+    let v = 0;
+    const subir = setInterval(() => {
+      v = Math.min(VOL_FINAL, v + .03);
+      audio.volume = v;
+      if (v >= VOL_FINAL) clearInterval(subir);
+    }, 70);
+  }).catch(() => {
+    // No hay cancion.mp3, o el navegador no deja sonar: la página
+    // sigue funcionando igual, nada más que en silencio.
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   11 · PORTADA
+   El botón "Entrar" es lo que cierra la portada y lo que prende la
+   música. No puede arrancar sola al abrir la página porque los
+   navegadores bloquean el audio automático: hace falta un toque.
+   ══════════════════════════════════════════════════ */
+const portada = document.getElementById('portada');
+const portBtn = document.getElementById('portBtn');
+
+if (portada && portBtn) {
+  portBtn.focus();
+
+  portBtn.addEventListener('click', () => {
+    portada.classList.add('saliendo');
+    document.body.classList.remove('con-portada');
+    window.scrollTo(0, 0);
+
+    // este mismo toque enciende la música
+    started = true;
+    prenderMusica();
+
+    // y sacamos la portada del medio, así no estorba ni le roba el foco
+    setTimeout(() => { portada.remove(); }, 900);
+  });
+}
+</script>
+</body>
+</html>
