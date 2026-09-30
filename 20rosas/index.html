@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Veinte cositas lindas &middot; Para Iriss</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Caveat:wght@400;600&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Caveat:wght@400;500;600;700&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
@@ -820,7 +820,8 @@ body.con-portada{overflow:hidden;}
   padding:1.1rem 1.4rem;
   /* Sin backdrop-filter: en un elemento sticky dentro de un scroller
      hace titilear la carta. Fondo opaco y su propia capa. */
-  background:linear-gradient(180deg,#fff4ea 0%,#ffeedf 100%);
+  /* Mismo crema que el papel de abajo, para que no se vea la costura */
+  background:linear-gradient(180deg,#fffef6 0%,#fdf9ea 100%);
   transform:translateZ(0);
   border-bottom:1px solid rgba(200,140,110,.3);
   border-radius:26px 26px 0 0;
@@ -830,13 +831,47 @@ body.con-portada{overflow:hidden;}
   font-family:'Dancing Script',cursive;font-weight:700;
   font-size:clamp(1.3rem,4.5vw,1.7rem);color:var(--coral-d);line-height:1.1;
 }
-.carta-cab h3 small{
-  display:block;font-family:'Nunito',sans-serif;font-size:.58rem;font-weight:700;
-  letter-spacing:.18em;text-transform:uppercase;color:var(--lila);margin-bottom:.2rem;
-}
 .carta-cuerpo{
+  --renglon:28px;
   overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
-  padding:1.6rem 1.5rem 2rem;
+}
+.carta-cuerpo::-webkit-scrollbar{width:5px;}
+.carta-cuerpo::-webkit-scrollbar-thumb{background:rgba(120,30,50,.3);border-radius:4px;}
+.carta-cuerpo::-webkit-scrollbar-track{background:transparent;}
+/* Los renglones van en .carta-papel y NO en .carta-cuerpo a propósito:
+   el fondo de un elemento con scroll queda pegado a su caja y no baja
+   con el texto (las letras se moveían y los renglones se quedaban
+   fijos). Como .carta-papel está DENTRO del scroll, su fondo es parte
+   del contenido y los renglones viajan con las letras. */
+.carta-papel{
+  /* --renglon manda: es a la vez el alto de línea, cada cuántas píxeles
+     se dibuja un renglón y el múltiplo de los margenes. Si se cambia,
+     se cambian los dos y la hoja sigue cerrando bien. Copiado de la
+     carta de "ya salieron / cartaraspar". */
+  --renglon:28px;
+  position:relative;
+  min-height:100%;
+  padding:34px 30px 60px 42px;
+  color:#3c2a1d;
+  background:
+    repeating-linear-gradient(transparent 0 calc(var(--renglon) - 1px),
+      rgba(120,150,200,.35) calc(var(--renglon) - 1px) var(--renglon)),
+    linear-gradient(180deg,#fffef6,#fdf9ea);
+  /* origin en content-box para que el 1er renglón caiga exacto debajo
+     de la 1ra línea de texto; el clip queda en border-box (default)
+     para que los renglones sigan en el padding y se vea papel. */
+  background-origin:content-box;
+}
+/* Línea roja del margen, como en un cuaderno */
+.carta-papel::before{
+  content:'';position:absolute;top:0;left:34px;bottom:0;width:2px;
+  background:rgba(200,60,70,.5);pointer-events:none;
+}
+/* Pliegue del borde derecho */
+.carta-papel::after{
+  content:'';position:absolute;top:0;right:0;bottom:0;width:26px;
+  background:linear-gradient(90deg,rgba(0,0,0,0),rgba(210,170,90,.22));
+  pointer-events:none;
 }
 /* La carta es larga: el borde de abajo se difumina mientras queda
    texto por ver, y desaparece cuando ya llegaste al final. Con eso se
@@ -849,23 +884,52 @@ body.con-portada{overflow:hidden;}
   -webkit-mask-image:none;mask-image:none;
 }
 .carta-cuerpo p{
-  font-family:'Cormorant Garamond',serif;font-size:clamp(1.08rem,3.6vw,1.2rem);
-  line-height:1.92;color:var(--tinta);margin-bottom:1.1rem;
+  font-family:'Caveat',cursive;font-weight:500;
+  font-size:clamp(20px,5vw,24px);
+  line-height:var(--renglon);color:#3c2a1d;
+  margin:0 0 var(--renglon);
 }
 .carta-cuerpo p:last-of-type{margin-bottom:0;}
-/* El P.D. va con su propio aire, un poquito más chico y en cursiva,
-   como cuando uno se acuerda de algo de último momento */
-.carta-pd{
-  font-size:clamp(1rem,3.2vw,1.1rem) !important;font-style:italic;
-  color:var(--tinta-2) !important;margin-top:1.5rem !important;
+/* El saludo va en su propio renglón y medio (2 x 28), para que no se
+   corra de la grilla y quede igual que en la carta original. */
+.carta-saludo{
+  font-family:'Caveat',cursive;font-weight:700;
+  font-size:clamp(26px,6.5vw,32px);
+  line-height:calc(var(--renglon) * 2);
+  color:#3c2a1d;margin:0 0 var(--renglon);
 }
 .carta-firma{
-  margin-top:1.6rem;text-align:right;
-  font-family:'Dancing Script',cursive;font-size:1.5rem;color:var(--lila);
+  margin-top:var(--renglon);text-align:right;
+  font-family:'Caveat',cursive;font-weight:700;
+  font-size:clamp(22px,5.5vw,27px);line-height:var(--renglon);
+  color:#3c2a1d;
+}
+/* La foto va antes de la firma, como en la carta de "ya salieron".
+   Los margenes son multiplos del renglon para no romper la grilla. */
+.carta-foto{
+  display:block;
+  width:min(100%,210px);height:252px;object-fit:cover;
+  margin:var(--renglon) auto;
+  border:5px solid #fffdf3;border-radius:12px;
+  box-shadow:0 5px 14px rgba(75,25,25,.24),0 0 0 1px rgba(150,120,70,.45);
+  transform:rotate(-2deg);
 }
 .carta-firma small{
   display:block;font-family:'Nunito',sans-serif;font-size:.6rem;
   letter-spacing:.16em;text-transform:uppercase;color:var(--tinta-2);margin-top:.3rem;
+}
+/* "de Pachucho, con todo el amor..." en letra linda (Dancing Script,
+   la de las firmas) y en dorado, para que sea lo último que se lea
+   y se quede. El dorado es oscuro a propósito: el dorado claro sobre
+   papel crema daba 2.7:1 y no se leía; este da 5:1 y sigue siendo
+   dorado. */
+.carta-firma .carta-de{
+  font-family:'Dancing Script',cursive;
+  font-size:clamp(1.1rem,3.8vw,1.3rem);
+  font-weight:700;letter-spacing:none;text-transform:none;
+  line-height:var(--renglon);
+  color:#8f600c;
+  text-shadow:0 1px 0 rgba(255,255,255,.5),0 0 16px rgba(224,160,58,.28);
 }
 
 /* ═══════════════════════════════════════
@@ -1050,7 +1114,10 @@ body.con-portada{overflow:hidden;}
   .modal-box{padding:2.6rem 1.3rem 1.5rem;max-height:88vh;}
   .modal-carta .modal-box{max-height:92vh;}
   .carta-cab{padding:.9rem 1rem;}
-  .carta-cuerpo{padding:1.3rem 1.1rem 1.7rem;}
+  /* En celular la hoja aprieta un poco los bordes, pero el renglón y la
+     línea del margen se quedan igual que en la carta original. */
+  .carta-papel{padding:28px 22px 56px 36px;}
+  .carta-papel::before{left:28px;}
   .carta-hoja{display:none;}
   .cuenta{gap:.4rem;}
   .cuenta-caja{min-width:56px;padding:.6rem .3rem;}
@@ -1382,19 +1449,22 @@ html{scroll-behavior:auto;}
 <div class="modal modal-carta" id="mCarta" role="dialog" aria-modal="true" aria-labelledby="cartaTitulo">
   <div class="modal-box">
     <div class="carta-cab">
-      <h3 id="cartaTitulo"><small>Una carta para vos</small>Mi querida Iriss</h3>
+      <h3 id="cartaTitulo">Una carta para vos</h3>
       <button class="modal-x" id="xCarta" aria-label="Cerrar">✕</button>
     </div>
     <div class="carta-cuerpo" id="cartaCuerpo">
-      <p>Sé que ahora mismo la oscuridad parece abarcarlo todo, y que el dolor por la ausencia de tus abuelos, abuelas y de esos familiares tan cercanos que se fueron ha dejado un vacío inmenso en tu pecho. Entiendo perfectamente si sientes que estás en un pozo sin salida, luchando una batalla silenciosa y agotadora contra vos misma, lidiando con reproches, sintiéndote mal con vos y queriendo cargar con todo en soledad.</p>
-      <p>Sé muy bien lo que es pasar noches enteras llorando, sintiendo que el tiempo se detiene, que estás estancada y que no ves ninguna salida. Yo mismo pasé por algo muy similar a mis 20 años: caí en una depresión profunda en la que me autosaboteaba, pasé tres años sintiendo que todo era oscuro, que no había solución y cargando con un dolor inmenso sin saber qué pasaría conmigo. Sé lo feo, lo pesado y lo aterrador que es vivir esa tormenta por dentro, con la sensación de que uno mismo es su peor enemigo.</p>
-      <p>Hasta que mi hermana me tendió la mano y me llevó con un profesional, entendí que no tenía por qué seguir cayendo solo. Por eso hoy te lo digo mirándote a los ojos desde el fondo de mi alma: no quiero que pases por esto sola. Quizás yo no tenga la fórmula mágica para sanar todo tu dolor de golpe, y a lo mejor no puedo salvarte yo solo, pero te prometo algo: no te voy a soltar la mano. Voy a estar en todo lo que pueda estar, acompañándote con paciencia infinita, abrazando tus días más grises y quedándome a tu lado mientras encontrás la fuerza para salir de esta.</p>
-      <p>Quiero que respires hondo y recuerdes quién sos de verdad. Sos un ser sumamente talentoso, con un potencial hermoso, una sensibilidad única y una capacidad inmensa de crear y sentir. Tenés un futuro precioso por delante y una lista de metas, deseos y sueños que merecés cumplir con toda el alma.</p>
-      <p>Has pasado por muchísimo sufrimiento y tu corazón ha cargado con pérdidas que marcan a cualquiera, pero te juro que la vida no es solo esto. Ya vas a ver que vendrán muchos días de felicidad pura, risas sinceras y una paz y estabilidad que tanto anhelás y merecés. Tu vida vale muchísimo, tu existencia es un regalo para quienes te amamos, y este dolor tan grande que hoy te pesa no define ni tu valor ni tu historia.</p>
-      <p>No te pelees con vos misma, tené un poquito de compasión con tu alma cansada. Permitite sanar a tu ritmo, pero por favor, no te rindas. Yo estoy acá, orgulloso de la gran mujer que sos, dispuesto a sostenerte y a caminar con vos de la mano hasta que volvamos a ver la luz.</p>
-      <p>Te amo con todo mi corazón.</p>
-      <p class="carta-pd">P.D. contestame el mensaje, aunque sea para decirme que estás bien.</p>
-      <div class="carta-firma">No te suelto la mano, ni hoy ni nunca.<small>de Puchoo, con todo el amor que te tengo, mi niñaa</small></div>
+      <div class="carta-papel" id="cartaPapel">
+      <div class="carta-saludo">Mi querida Iriss:</div>
+      <p>Sé que ahora mismo la oscuridad parece abarcarlo todo, y que el dolor por la ausencia de tus abuelos, abuelas y de esos familiares tan cercanos que se fueron ha dejado un vacío inmenso en tu pecho. Entiendo perfectamente si sientes que estás en un pozo sin salida, luchando una batalla silenciosa y agotadora contra ti misma, lidiando con reproches, sintiéndote mal contigo y queriendo cargar con todo en soledad.</p>
+      <p>Sé muy bien lo que es pasar noches enteras llorando, sintiendo que el tiempo se detiene, que estás estancada y que no ves ninguna salida. Yo mismo pasé por algo muy similar a mis 20 años: caí en una depresión profunda en la que me autosaboteaba, pasé tres años sintiendo que todo era oscuro, que no había solución y cargando con un dolor inmeso sin saber qué pasaría conmigo. Sé lo feo, lo pesado y lo aterrador que es vivir esa tormenta por dentro, con la sensación de que uno mismo es su peor enemigo.</p>
+      <p>Hasta que mi hermana me tendió la mano y me llevó con un profesional, entendí que no tenía por qué seguir cayendo solo. Por eso hoy te lo digo mirándote a los ojos desde el fondo de mi alma: no quiero que pases por esto sola. Quizás yo no tenga la fórmula mágica para sanar todo tu dolor de golpe, y a lo mejor no puedo salvarte yo solo, pero te prometo algo: no te voy a soltar la mano.</p>
+      <p>Quiero que sepas muy bien que yo no estoy acá para ser algo temporal en tu vida. Vine para quedarme, para hacer todo lo que esté a mi alcance y acompañarte en cada paso. Y por favor, nunca pienses que por contarme tus cosas te vuelves vulnerable o que yo voy a usar eso como un arma para hacerte daño. Jamás haría eso, ¡jamás! Tu confianza es lo más sagrado que tengo, y abrir tu corazón conmigo es un acto de valentía, no de debilidad. A veces, contar lo que nos pesa y ponerlo en palabras es el primer paso para sentirnos un poquito más alivianados, y quiero que sepas que este es tu espacio seguro. Estoy aquí para escucharte sin juicios, para cuidarte y para proteger lo que sentimos.</p>
+      <p>Quiero que respires hondo y recuerdes quién eres de verdad. Eres un ser sumamente talentoso, con un potencial hermoso, una sensibilidad única y una capacidad inmensa de crear y sentir. Tienes un futuro precioso por delante y una lista de metas, deseos y sueños que mereces cumplir con toda el alma.</p>
+      <p>Has pasado por muchísimo sufrimiento y tu corazón ha cargado con pérdidas que marcan a cualquiera, pero te juro que la vida no es solo esto. Ya verás que vendrán muchos días de felicidad pura, risas sinceras y una paz y estabilidad que tanto anhelas y mereces. Tu vida vale muchísimo, tu existencia es un regalo, y este dolor tan grande que hoy te pesa no define ni tu valor ni tu historia.</p>
+      <p>No te pelees contigo misma, ten un poquito de compasión con tu alma cansada. Permítete sanar a tu ritmo, pero por favor, no te rindas. Somos un mismo latido los dos, y estoy para todo lo que necesites, viendo cómo sales de esto pasito a pasito. Yo estoy aquí, orgulloso de la gran mujer que eres, dispuesto a sostenerte y a caminar contigo de la mano hasta que volvamos a ver la luz. Te amo con todo mi corazón.</p>
+      <img class="carta-foto" src="imagen-amor.jpg.png" alt="Dos manos formando un corazón">
+      <div class="carta-firma">No te suelto la mano, ni hoy ni nunca.<small class="carta-de">de Pachucho, con todo el amor que te tengo, mi niña</small></div>
+      </div>
     </div>
   </div>
 </div>
