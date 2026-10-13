@@ -936,7 +936,12 @@ body.con-portada{overflow:hidden;}
    POESÍA — tarjetas de vidrio sobre el espacio
    ═══════════════════════════════════════ */
 .bg-poesia .sec-h em{background:linear-gradient(100deg,#ffb08a,#c9a3ff);-webkit-background-clip:text;background-clip:text;color:transparent;}
-.poem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.2rem;position:relative;z-index:2;}
+/* Ahora hay una sola card, así que la grilla no se estira a lo ancho
+   entero: la limita a 620px y la centra. */
+.poem-grid{
+  display:grid;grid-template-columns:minmax(0,620px);justify-content:center;
+  gap:1.2rem;position:relative;z-index:2;
+}
 .poem{
   padding:2rem 1.7rem 1.5rem;position:relative;overflow:hidden;
   border:1px solid rgba(201,163,255,.2);border-radius:26px;
@@ -958,8 +963,6 @@ body.con-portada{overflow:hidden;}
   background:linear-gradient(90deg,#ff9a6b,#ef6f57,#9d6fd0);
   box-shadow:0 0 14px rgba(239,111,87,.55);
 }
-.poem:nth-child(3n)::before{background:linear-gradient(90deg,#c9a3ff,#7f8cf0,#ff9a6b);box-shadow:0 0 14px rgba(157,111,208,.6);}
-.poem:nth-child(3n+2)::before{background:linear-gradient(90deg,#ef6f57,#e0a03a,#ffd08a);box-shadow:0 0 14px rgba(224,160,58,.55);}
 /* la estrella chiquita de la esquina, que gira al pasar el mouse */
 .poem::after{
   content:'✦';position:absolute;top:.85rem;right:1.05rem;line-height:1;
@@ -977,20 +980,33 @@ body.con-portada{overflow:hidden;}
   box-shadow:0 2px 10px rgba(239,111,87,.18);
 }
 .chip::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor;}
-.poem:nth-child(3n) .chip{color:#cdb4ff;background:linear-gradient(135deg,rgba(157,111,208,.28),rgba(127,140,240,.12));border-color:rgba(157,111,208,.45);box-shadow:0 2px 10px rgba(157,111,208,.22);}
-.poem:nth-child(3n+2) .chip{color:#ffdf9e;background:linear-gradient(135deg,rgba(224,160,58,.26),rgba(255,154,107,.12));border-color:rgba(224,160,58,.45);box-shadow:0 2px 10px rgba(224,160,58,.22);}
 .poem-text{
   font-family:'Cormorant Garamond',serif;font-size:1.14rem;line-height:1.8;
   color:#ece2ff;white-space:pre-line;font-style:italic;
   text-shadow:0 1px 12px rgba(0,0,0,.4);
 }
-.poem-author{
-  display:flex;align-items:center;gap:.75rem;margin-top:1.3rem;
-  font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:#a897cc;
+/* Los mensajes del ánimo van en tres bloques con distinto color, para
+   que se lean como tres voces y no como un solo texto pegado. Un
+   poco más chicos que el de arriba, que hace de entrada. */
+.animo-msg{
+  margin-top:1.4rem;display:flex;flex-direction:column;gap:1.15rem;
 }
-.poem-author::before{
-  content:'';flex:0 0 28px;height:1px;
-  background:linear-gradient(90deg,rgba(201,163,255,.75),transparent);
+.animo-msg p{
+  margin:0;font-family:'Cormorant Garamond',serif;
+  font-size:1.05rem;line-height:1.85;font-style:italic;
+  text-shadow:0 1px 12px rgba(0,0,0,.45);
+}
+.animo-a{color:#ffd9a8;}                        /* dorado calido */
+.animo-b{color:#c9b8ff;}                        /* lavanda */
+.animo-sep{
+  color:rgba(255,195,168,.55);font-style:normal;
+  text-align:center;font-size:.9rem;letter-spacing:.08em;
+}
+.animo-c{
+  margin-top:1.3rem;text-align:right;
+  font-family:'Dancing Script',cursive;font-size:1.3rem;line-height:1.5;
+  font-style:normal;color:#ffb3c1;
+  text-shadow:0 1px 12px rgba(0,0,0,.4);
 }
 
 /* ═══════════════════════════════════════
@@ -1210,8 +1226,8 @@ html{scroll-behavior:auto;}
   <div class="port-in">
     <img class="port-rosa" src="rosa.png" alt="" onerror="this.style.display='none'">
     <span class="port-eyebrow">Sin fecha &middot; Sin l&iacute;mite</span>
-    <h2 class="port-h" id="portTitulo">Te arm&eacute; algo<br>para vos, Iriss</h2>
-    <p class="port-txt">Espero que te gusten.</p>
+    <h2 class="port-h" id="portTitulo">Te arm&eacute; algo<br>para vos Iriss</h2>
+    <p class="port-txt">Desde mi Corazon.</p>
     <p class="port-firma"> Tii Amooouuuuu.</p>
     <button class="port-btn" id="portBtn" type="button">Entrar <span aria-hidden="true">🌹</span></button>
   </div>
@@ -1235,7 +1251,7 @@ html{scroll-behavior:auto;}
     </g>
   </svg>
 
-  <div class="hero-badge">Sin fecha &middot; Sin l&iacute;mite &middot; Porque te amo+</div>
+  <div class="hero-badge">Lee la carta &middot; de la derecha &middot; Porque te amo+</div>
 
   <div class="hero-rose" id="heroRose">
     <!-- Poné tu imagen como "rosa.png" en esta carpeta y aparece sola.
@@ -1314,16 +1330,16 @@ html{scroll-behavior:auto;}
 
   <span class="hero-for">para</span>
   <h1 class="hero-title">Iriss</h1>
-  <p class="hero-sub">Veinte cosas<br>lindas de vos.</p>
+  <p class="hero-sub">Mi niñaa de<br>Ojos bonitos.</p>
 
-  <div class="hero-nick">
+  <!-- <div class="hero-nick">
     <span class="nick">pachuchitaa</span>
     <span class="nick">señoritaa</span>
     <span class="nick">🌹</span>
-  </div>
+  </div> -->
 
   <button class="scroll-hint" id="scrollHint" type="button" aria-label="Bajá para ver las veinte cositas">
-    <span>Deslizá para ver las 20</span>
+    <span>Deslizá hasta el final, que hay mas cosas</span>
     <span class="scroll-arrow" aria-hidden="true">
       <svg viewBox="0 0 24 34" width="24" height="34" fill="none" stroke="currentColor"
            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -1338,8 +1354,8 @@ html{scroll-behavior:auto;}
 <section class="sec bg-razones">
   <div class="sec-head">
     <div class="sec-pill reveal sp">Tocá cada rosa</div>
-    <h2 class="sec-h reveal">Veinte cositas<br>lindas para <em>vos</em></h2>
-    <p class="sec-p reveal">No hay nada que celebrar ni una fecha que esperar.<br>Solo toc&aacute; las rosas, una por una.</p>
+    <h2 class="sec-h reveal">Cositas<br>lindas para <em>Iriss</em></h2>
+    <!-- <p class="sec-p reveal">No hay nada que celebrar ni una fecha que esperar.<br>Solo toc&aacute; las rosas, una por una.</p> -->
   </div>
 
   <div class="reasons-grid reveal" id="grid"></div>
@@ -1355,14 +1371,37 @@ html{scroll-behavior:auto;}
   <span class="hint-small reveal">Tocá una rosa y te muestra una cosita linda</span>
 </section>
 
-<!-- ══════════ 3 · POESÍA ══════════ -->
+<!-- ══════════ 3 · MENSAJE ══════════
+     Antes acá iban poems de relleno con etiquetas ("Poesía", "Rima",
+     "Frase"...). Se sacaron: la sección es un único mensaje. -->
 <section class="poem-sec bg-poesia" style="padding:5.5rem 1.4rem;">
   <div class="sec-head">
-    <div class="sec-pill dark reveal sp">Poes&iacute;a &amp; frases</div>
-    <h2 class="sec-h inv reveal">Palabras que <em>quedan</em></h2>
-    <p class="sec-p inv reveal">Esto es de relleno: cambi&aacute; lo que quieras, son tuyas.</p>
+    <div class="sec-pill dark reveal sp">Para vos</div>
+    <h2 class="sec-h inv reveal">Un <em>empujoncito</em></h2>
   </div>
-  <div class="poem-grid" id="poems"></div>
+  <div class="poem-grid reveal">
+    <article class="poem">
+      <span class="chip">Ánimo</span>
+      <div class="poem-text">Echale ganas.
+Sé que hay cansancio, estrés y días difíciles,
+pero son solo rachas.
+
+Recordá lo fuerte, inteligente y valiente
+que sos, Iriss.
+
+Podés con esto y con mucho más, corazonón.</div>
+
+      <div class="animo-msg">
+        <p class="animo-a">✦A veces la mente nos hace creer que no sumamos nada al mundo, pero es una mentira de la tristeza. Tu sola existencia hace que este mundo sea un lugar mejor. No necesitás lograr nada grande hoy, ni cumplir expectativas de nadie. Solo respirar y estar acá ya es suficiente. Valés muchísimoo mi amoourr✦</p>
+
+        <p class="animo-sep">✦•┈๑⋅⋯ ⋯⋅๑┈·✦</p>
+
+        <p class="animo-b">✦Sé que estás librando una batalla muy silenciosa y profunda con la vida misma. Ojalá pudiera aliviarte el peso de tus recuerdos. Pero quiero recordarte esto: tu paso por esta tierra importa, tu vida tiene un propósito, y la luz que tenés adentro no se borró, solo está cansada. Tenete paciencia por favorr señoritaa Iriss.✦</p>
+      </div>
+
+      <p class="animo-c">al miedo hay que sonreírle para que se confunda, teamoo mi señoritaa ♡</p>
+    </article>
+  </div>
 </section>
 
 <!-- ══════════ 4 · CANDADO ══════════
@@ -1462,7 +1501,7 @@ html{scroll-behavior:auto;}
       <p>Quiero que respires hondo y recuerdes quién eres de verdad. Eres un ser sumamente talentoso, con un potencial hermoso, una sensibilidad única y una capacidad inmensa de crear y sentir. Tienes un futuro precioso por delante y una lista de metas, deseos y sueños que mereces cumplir con toda el alma.</p>
       <p>Has pasado por muchísimo sufrimiento y tu corazón ha cargado con pérdidas que marcan a cualquiera, pero te juro que la vida no es solo esto. Ya verás que vendrán muchos días de felicidad pura, risas sinceras y una paz y estabilidad que tanto anhelas y mereces. Tu vida vale muchísimo, tu existencia es un regalo, y este dolor tan grande que hoy te pesa no define ni tu valor ni tu historia.</p>
       <p>No te pelees contigo misma, ten un poquito de compasión con tu alma cansada. Permítete sanar a tu ritmo, pero por favor, no te rindas. Somos un mismo latido los dos, y estoy para todo lo que necesites, viendo cómo sales de esto pasito a pasito. Yo estoy aquí, orgulloso de la gran mujer que eres, dispuesto a sostenerte y a caminar contigo de la mano hasta que volvamos a ver la luz. Te amo con todo mi corazón.</p>
-      <img class="carta-foto" src="imagen-amor.jpg.png" alt="Dos manos formando un corazón">
+      <img class="carta-foto" src="imagen-amor.jpg" alt="Dos manos formando un corazón">
       <div class="carta-firma">No te suelto la mano, ni hoy ni nunca.<small class="carta-de">de Pachucho, con todo el amor que te tengo, mi niña</small></div>
       </div>
     </div>
@@ -1514,20 +1553,6 @@ const RAZONES = [
   'Te amo hoy, mañana y el resto de mi vida entera.',
   'Contigo aprendí que el amor más sincero es el que se siente por vos.',
   'Valés oro puro, y amarte es lo más lindo que me ha pasado.'
-];
-
-const POEMAS = [
-  { chip:'Poesía', text:'Te escribo sin motivo,\ncomo quien siembra sin tierra:\npor el gusto de mirar\nque algo, en algún lado,\nest\u00e1 avanzando.', author:'De ejemplo' },
-
-  { chip:'Rima', text:'Puedo escribir los versos m\u00e1s tristes esta noche.\nEscribir, por ejemplo: "La noche est\u00e1 estrellada\ny tiritan, azules, los astros, a lo lejos."\n\nDespu\u00e9s le agrego una l\u00ednea tuya,\ny ya no es lo mismo.', author:'Adaptado de Pablo Neruda' },
-
-  { chip:'Frase', text:'No te necesito para estar bien.\nTe necesito para querer estar bien.\n\nQue es una diferencia enorme\nque casi nadie nota.', author:'De ejemplo' },
-
-  { chip:'Deseo', text:'Que este a\u00f1o te encuentre en los lugares\nque siempre quisiste ir,\ny que el camino de ida\nsea m\u00e1s lindo que el de vuelta.', author:'De ejemplo' },
-
-  { chip:'Haiku', text:'luz de la tarde \u2014\ntu nombre en mi boca,\ny nada m\u00e1s.', author:'De ejemplo' },
-
-  { chip:'Carta', text:'Ac\u00e1 va una que no entra en ning\u00fan sobre:\n\n"Gracias por hacerme\nre\u00edr con cosas que no tienen gracia."\n\nDespu\u00e9s decime si re\u00edste.', author:'De ejemplo' }
 ];
 
 /* ══════════════════════════════════════════════════
@@ -1682,17 +1707,9 @@ function actualizarContador(){
 
 /* ══════════════════════════════════════════════════
    6 · POESÍA
+   Ya no se pintan desde JS: la sección tiene un único mensaje
+   escrito en el HTML (ver la sección "3 · MENSAJE").
    ══════════════════════════════════════════════════ */
-const poemsWrap = document.getElementById('poems');
-POEMAS.forEach(p => {
-  const el = document.createElement('article');
-  el.className = 'poem reveal';
-  el.innerHTML =
-    '<span class="chip">' + p.chip + '</span>' +
-    '<div class="poem-text">' + p.text + '</div>' +
-    '<span class="poem-author">' + p.author + '</span>';
-  poemsWrap.appendChild(el);
-});
 
 /* ══════════════════════════════════════════════════
    7 · ICONO DE LA CARTA -> SOBRE + MODAL

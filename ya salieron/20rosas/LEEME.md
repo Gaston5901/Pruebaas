@@ -2,7 +2,9 @@
 
 Doble clic en **`index.html`**. No necesita internet.
 
-El original quedó como `20 Rosas.html` (backup).
+Este es el único archivo de la página: la copia vieja `20 Rosas.html` se
+borró (6 MB, era la anterior con todo embebido). Si la necesitas de vuelta:
+`git checkout -- "20rosas/20 Rosas.html"`
 
 ---
 

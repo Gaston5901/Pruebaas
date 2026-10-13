@@ -9,6 +9,11 @@ const fullText = [
   "y nadie te frenará.",
 ];
 
+let dpr = 1;
+let W = 0;
+let H = 0;
+let isMobile = false;
+
 let fontSize = 80;
 let lineHeight = 100;
 let heartScale = 14;
@@ -31,10 +36,10 @@ let eyeAlpha = 0;
 
 function fitFont() {
   const tempCtx = document.createElement('canvas').getContext('2d');
-  let size = 66 * Math.min(1.6, canvas.width / 640);
-  let maxWidth = canvas.width * 0.92;
+  let size = 70 * Math.min(1.6, W / 640);
+  let maxWidth = W * (isMobile ? 0.95 : 0.92);
 
-  while (size > 12) {
+  while (size > (isMobile ? 15 : 12)) {
     tempCtx.font = `bold ${size}px 'Segoe UI', Arial, sans-serif`;
     let widest = 0;
     fullText.forEach(line => {
@@ -49,7 +54,7 @@ function fitFont() {
 
 function generateClouds(width, height) {
   clouds.length = 0;
-  const count = Math.max(5, Math.round(width / 260));
+  const count = isMobile ? 3 : Math.max(5, Math.round(width / 260));
   for (let i = 0; i < count; i++) {
     clouds.push({
       x: Math.random() * width,
@@ -64,7 +69,9 @@ function generateClouds(width, height) {
 
 function generatePetals(width, height) {
   petals.length = 0;
-  const count = Math.max(22, Math.round(width / 28));
+  const count = isMobile
+    ? Math.max(6, Math.round(width / 70))
+    : Math.max(22, Math.round(width / 28));
   for (let i = 0; i < count; i++) {
     petals.push(newPetal(width, height, Math.random()));
   }
@@ -93,18 +100,26 @@ function repositionShooters() {
 }
 
 function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  W = window.innerWidth;
+  H = window.innerHeight;
+  isMobile = W < 820;
+  dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 2 : 2);
+
+  canvas.width = Math.round(W * dpr);
+  canvas.height = Math.round(H * dpr);
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
   fontSize = fitFont();
   lineHeight = fontSize * 1.18;
   heartScale = Math.max(6, fontSize * 0.17);
-  layoutShift = canvas.width < 800 ? canvas.height * 0.16 : 0;
+  layoutShift = isMobile ? H * 0.16 : 0;
 
   repositionShooters();
 
-  generateClouds(canvas.width, canvas.height);
-  generatePetals(canvas.width, canvas.height);
+  generateClouds(W, H);
+  generatePetals(W, H);
 
   resetAnimation();
 }
@@ -122,10 +137,10 @@ function resetAnimation() {
 function generateHeartDots() {
   const heartDots = [];
   const scale = heartScale;
-  const pointsCount = 180;
-  const offsetX = canvas.width / 2;
+  const pointsCount = isMobile ? 130 : 180;
+  const offsetX = W / 2;
   const textBlockH = fullText.length * lineHeight;
-  const offsetY = (canvas.height - textBlockH) / 2 + textBlockH + fontSize * 2.4 - layoutShift;
+  const offsetY = (H - textBlockH) / 2 + textBlockH + fontSize * 2.4 - layoutShift;
 
   heartCenter.x = offsetX;
   heartCenter.y = offsetY;
@@ -143,11 +158,11 @@ function generateAllTargetDots() {
   const tempCtx = document.createElement('canvas').getContext('2d');
   tempCtx.font = `bold ${fontSize}px 'Segoe UI', Arial, sans-serif`;
   const textBlockH = fullText.length * lineHeight;
-  const startY = (canvas.height - textBlockH) / 2 + fontSize * 1.0 - layoutShift;
+  const startY = (H - textBlockH) / 2 + fontSize * 1.0 - layoutShift;
 
   fullText.forEach((line, lineIndex) => {
     const lineWidth = tempCtx.measureText(line).width;
-    let xCursor = (canvas.width - lineWidth) / 2;
+    let xCursor = (W - lineWidth) / 2;
     const y = startY + lineIndex * lineHeight;
 
     for (let char of line) {
@@ -171,18 +186,20 @@ function generateCharDots(char, x, y) {
   tempCanvas.width = canvas.width;
   tempCanvas.height = canvas.height;
   const tempCtx = tempCanvas.getContext('2d');
-  tempCtx.font = `bold ${fontSize}px 'Segoe UI', Arial, sans-serif`;
-  tempCtx.fillText(char, x, y);
+  tempCtx.font = `bold ${fontSize * dpr}px 'Segoe UI', Arial, sans-serif`;
+  tempCtx.fillText(char, x * dpr, y * dpr);
 
   const imageData = tempCtx.getImageData(0, 0, canvas.width, canvas.height).data;
   const charDots = [];
-  const density = Math.max(4, Math.round(5 * Math.min(1, canvas.width / 900)));
+
+  const densityCss = isMobile ? 4 : Math.max(4, Math.round(5 * Math.min(1, W / 900)));
+  const density = Math.max(2, Math.round(densityCss * dpr));
 
   for (let yPos = 0; yPos < canvas.height; yPos += density) {
     for (let xPos = 0; xPos < canvas.width; xPos += density) {
       const index = (yPos * canvas.width + xPos) * 4;
       if (imageData[index + 3] > 128) {
-        charDots.push({ x: xPos, y: yPos });
+        charDots.push({ x: xPos / dpr, y: yPos / dpr });
       }
     }
   }
@@ -200,7 +217,7 @@ function shootDot() {
   if (!currentTargets) return;
 
   const isHeart = currentCharIndex === targetDotsQueue.length - 1;
-  const batchSize = isHeart ? 4 : 1;
+  const batchSize = isHeart ? (isMobile ? 3 : 4) : 1;
 
   for (let i = 0; i < batchSize; i++) {
     if (currentTargets.length === 0) break;
@@ -233,21 +250,24 @@ function shootDot() {
 }
 
 function startCelebration() {
+  const totalBursts = isMobile ? 5 : 18;
+  const burstGap = isMobile ? 320 : 220;
   let count = 0;
   const burstLoop = setInterval(() => {
-    if (count >= 18) {
+    if (count >= totalBursts) {
       clearInterval(burstLoop);
       return;
     }
     celebrateBurst();
     count++;
-  }, 220);
+  }, burstGap);
 }
 
 function celebrateBurst() {
-  const sourceX = Math.random() * canvas.width;
-  const sourceY = canvas.height * (0.2 + Math.random() * 0.35);
-  for (let i = 0; i < 26; i++) {
+  const sourceX = Math.random() * W;
+  const sourceY = H * (0.2 + Math.random() * 0.35);
+  const particles = isMobile ? 10 : 26;
+  for (let i = 0; i < particles; i++) {
     const angle = Math.random() * Math.PI * 2;
     const speed = 2 + Math.random() * 7;
     celebrationBursts.push({
@@ -263,18 +283,18 @@ function celebrateBurst() {
 }
 
 function drawBackground() {
-  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  const gradient = ctx.createLinearGradient(0, 0, 0, H);
   gradient.addColorStop(0, "#2a0a3d");
   gradient.addColorStop(0.5, "#1c0626");
   gradient.addColorStop(1, "#0d0211");
   ctx.fillStyle = gradient;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillRect(0, 0, W, H);
 }
 
 function drawClouds() {
   clouds.forEach(cloud => {
     cloud.x += cloud.speed;
-    if (cloud.x - cloud.w > canvas.width) {
+    if (cloud.x - cloud.w > W) {
       cloud.x = -cloud.w;
     }
 
@@ -298,8 +318,8 @@ function drawPetals() {
     p.x += Math.sin(time * p.swaySpeed + p.phase) * p.sway;
     p.rotation += p.rotSpeed;
 
-    if (p.y > canvas.height + 30) {
-      Object.assign(p, newPetal(canvas.width, canvas.height));
+    if (p.y > H + 30) {
+      Object.assign(p, newPetal(W, H));
       p.y = -20;
     }
 
@@ -307,8 +327,10 @@ function drawPetals() {
     ctx.translate(p.x, p.y);
     ctx.rotate(p.rotation);
     ctx.globalAlpha = p.alpha;
-    ctx.shadowColor = "rgba(210, 90, 255, 0.8)";
-    ctx.shadowBlur = 12;
+    if (!isMobile) {
+      ctx.shadowColor = "rgba(210, 90, 255, 0.8)";
+      ctx.shadowBlur = 12;
+    }
     ctx.fillStyle = "#d16bff";
     ctx.beginPath();
     ctx.ellipse(0, 0, p.size, p.size * 0.55, 0, 0, Math.PI * 2);
@@ -333,8 +355,10 @@ function drawCuteFace() {
     const ex = cx + side * s * 6.5;
     const ey = cy + s * 2.2;
 
-    ctx.shadowColor = "rgba(255, 170, 220, 0.9)";
-    ctx.shadowBlur = 6;
+    if (!isMobile) {
+      ctx.shadowColor = "rgba(255, 170, 220, 0.9)";
+      ctx.shadowBlur = 6;
+    }
     ctx.fillStyle = "#33102b";
     ctx.beginPath();
     ctx.arc(ex, ey, s * 2.1, 0, Math.PI * 2);
@@ -367,7 +391,9 @@ function animate() {
   drawClouds();
   drawPetals();
 
-  const dotSize = Math.max(9, 15 * Math.min(canvas.width / 700, 1));
+  const dotSize = isMobile
+    ? Math.min(9, Math.max(6, fontSize * 0.18))
+    : Math.max(9, 15 * Math.min(W / 700, 1));
 
   dots.forEach(dot => {
     const dx = dot.targetX - dot.x;

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>IRISS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<!-- 
+
+Contáctame:
+
+    * Invitame un café
+ https://buymeacoffee.com/alexx.dev
+
+    * Portafolio Web
+ https://alexxdev.vercel.app
+
+    * Sigueme en tiktok
+ https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc 
+ 
+ *Canal de WhatsApp
+ https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
+
+ 
+ WhatsApp: +52 1 55 6628 1018
+
+-->
+<body>
+
+    <video id="background-video" autoplay loop muted playsinline>
+        <source src="video.mp4" type="video/mp4">
+    </video>
+
+    <div id="book" class="book">
+        <div class="spiral"></div>
+        <div class="back-cover"></div>
+        <!-- Las hojas del diario se crean con JavaScript -->
+    </div>
+
+    <button id="new-page-fab" class="fab hidden" aria-label="Nueva página">＋</button>
+    <button id="close-book-btn" class="close-book hidden" aria-label="Cerrar el diario">✕</button>
+    <a id="back-home-btn" class="back-home" href="../index.html" aria-label="Volver al inicio" title="Volver al inicio">←</a>
+
+    <!-- Candado -->
+    <div id="lock-modal" class="overlay hidden">
+        <div class="modal-content">
+            <div class="floating-hearts">💖</div>
+            <div class="lock-icon">🔒✨</div>
+            <h2>Diario Privado</h2>
+            <p>Para abrir, acomodá la fecha en que empezamos a hablar:</p>
+
+            <div class="lock-combo" id="lock-combo">
+                <div class="combo-group">
+                    <button type="button" class="combo-arrow" data-step="dia" data-dir="1" aria-label="Subir día">▲</button>
+                    <span class="combo-value" id="combo-dia">00</span>
+                    <button type="button" class="combo-arrow" data-step="dia" data-dir="-1" aria-label="Bajar día">▼</button>
+                    <span class="combo-label">Día</span>
+                </div>
+                <div class="combo-group">
+                    <button type="button" class="combo-arrow" data-step="mes" data-dir="1" aria-label="Subir mes">▲</button>
+                    <span class="combo-value" id="combo-mes">00</span>
+                    <button type="button" class="combo-arrow" data-step="mes" data-dir="-1" aria-label="Bajar mes">▼</button>
+                    <span class="combo-label">Mes</span>
+                </div>
+                <div class="combo-group">
+                    <button type="button" class="combo-arrow" data-step="anio" data-dir="1" aria-label="Subir año">▲</button>
+                    <span class="combo-value" id="combo-anio">00</span>
+                    <button type="button" class="combo-arrow" data-step="anio" data-dir="-1" aria-label="Bajar año">▼</button>
+                    <span class="combo-label">Año</span>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button id="unlock-btn">Desbloquear ❤️</button>
+                <button id="close-modal-btn" data-close="lock">Cancelar</button>
+            </div>
+            <p id="error-message">Ups, esa no es la fecha 💔</p>
+        </div>
+    </div>
+
+    <!-- Ayuda / ¿Cómo funciona? -->
+    <div id="help-modal" class="overlay hidden">
+        <div class="modal-content help-content">
+            <div class="lock-icon">❓</div>
+            <h2>¿Cómo funciona?</h2>
+            <ul class="help-list">
+                <li><b>🔒 Clave:</b> para abrir el diario, poné la fecha en que empezamos a hablar.</li>
+                <li><b>＋ (botón rosa):</b> crea una hoja nueva con fecha, foto y texto.</li>
+                <li><b>✏️:</b> edita una hoja cuando quieras.</li>
+                <li><b>🗑️:</b> borra una hoja (te pide confirmación antes).</li>
+                <li><b>📷:</b> podés sumar una foto del día; se achica sola para no pesar.</li>
+                <li><b>🎨 Colorear:</b> en el editor, seleccioná unas palabras y dales color o un estilo de letra distinto.</li>
+                <li><b>📖 Leer todo:</b> abre la hoja completa cuando el texto es largo.</li>
+                <li><b>Ant. / Sig. / Última ⏭:</b> para moverte entre las hojas.</li>
+                <li><b>✕:</b> cierra el diario. <b>←</b> (arriba a la izquierda) vuelve al inicio.</li>
+                <li><b>💾:</b> todo se guarda solito en este dispositivo, sin internet.</li>
+            </ul>
+            <div class="modal-buttons">
+                <button id="help-ok" class="main-btn">¡Entendido! 💖</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lector: muestra la página completa cuando hay mucho texto -->
+    <div id="reader-modal" class="overlay hidden">
+        <div class="reader-box">
+            <div class="reader-header">
+                <span id="reader-fecha" class="reader-date"></span>
+                <button class="close-x" data-close="reader" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="reader-scroll">
+                <h2 id="reader-titulo" class="reader-title"></h2>
+                <img id="reader-foto" class="reader-photo hidden" alt="Foto del día">
+                <p id="reader-texto" class="reader-text"></p>
+            </div>
+            <div class="reader-footer">
+                <button class="soft-btn" data-close="reader">Cerrar ✖</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Editor: crear o editar una página del diario -->
+    <div id="editor-modal" class="overlay hidden">
+        <div class="editor-box">
+            <div class="reader-header">
+                <h2 id="editor-heading">Nueva página</h2>
+                <button class="close-x" data-close="editor" aria-label="Cerrar">✕</button>
+            </div>
+
+            <div class="editor-fields">
+                <label class="field">
+                    <span>Fecha del día</span>
+                    <input type="date" id="editor-fecha">
+                </label>
+
+                <label class="field">
+                    <span>Título (opcional)</span>
+                    <input type="text" id="editor-titulo" maxlength="60" placeholder="Ej: Un día increíble">
+                </label>
+
+                <div class="field">
+                    <span>Foto del día (opcional)</span>
+                    <div class="photo-row">
+                        <label class="soft-btn file-btn">
+                            📷 Elegir foto
+                            <input type="file" id="editor-foto" accept="image/*" hidden>
+                        </label>
+                        <button id="editor-quitar-foto" class="soft-btn hidden">Quitar</button>
+                    </div>
+                    <img id="editor-preview" class="photo-preview hidden" alt="Vista previa">
+                </div>
+
+                <label class="field">
+                    <span>¿Qué pasó hoy?</span>
+                    <textarea id="editor-texto" maxlength="6000" rows="6" placeholder="Escribí con tus palabras lo que viviste, lo que sentiste, lo que no querés olvidar..."></textarea>
+                </label>
+
+                <div class="format-toolbar">
+                    <span class="format-label">🎨 Colorear palabras</span>
+                    <div class="format-row" id="format-colores"></div>
+                    <span class="format-label">✍️ Estilo de letra</span>
+                    <div class="format-row" id="format-letras"></div>
+                    <input type="color" id="editor-color-full" class="hidden" value="#ff4081">
+                    <p class="format-hint">1️⃣ Seleccioná las palabras → 2️⃣ tocá un color o un estilo. El ✨ sirve para elegir cualquier color. En el editor vas a ver unos códigos raros, pero en la hoja quedan las palabras de color 💕</p>
+                </div>
+
+                <p id="editor-error" class="editor-error"></p>
+            </div>
+
+            <div class="editor-footer">
+                <button id="editor-guardar" class="main-btn">Guardar página 💾</button>
+                <button class="soft-btn" data-close="editor">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmación linda (eliminar) -->
+    <div id="confirm-modal" class="overlay hidden">
+        <div class="modal-content">
+            <div class="floating-hearts">💫</div>
+            <div class="lock-icon" id="confirm-emoji">🗑️</div>
+            <h2 id="confirm-titulo">¿Eliminar esta página?</h2>
+            <p id="confirm-mensaje">Se va a borrar del diario y no se puede deshacer.</p>
+            <div class="modal-buttons">
+                <button id="confirm-ok" class="danger-btn">Sí, eliminar</button>
+                <button id="confirm-cancel" class="outline-btn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aviso flotante -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+
+<!-- 
+
+Contáctame:
+
+    * Invitame un café
+ https://buymeacoffee.com/alexx.dev
+
+    * Portafolio Web
+ https://alexxdev.vercel.app
+
+    * Sigueme en tiktok
+ https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc 
+ 
+ *Canal de WhatsApp
+ https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
+
+ 
+ WhatsApp: +52 1 55 6628 1018
+
+-->
+</html>
