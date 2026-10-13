@@ -64,6 +64,7 @@ let editingId = null;
 let pendingPhotoData = null;   // dataURL de la foto elegida o existente
 let pendingPhotoIsNew = false;
 let previewBlobUrl = null;     // blob temporal de la foto elegida
+let ubicacionAntesNueva = null;
 
 /* =========================================================
    GUARDADO (IndexedDB con respaldo en localStorage)
@@ -231,6 +232,34 @@ const ESTILOS = [
     { key: "mono", label: "Máquina", css: "font-family:'Courier New',monospace;font-size:.92em" }
 ];
 
+let formatoActivo = { color: null, font: null };
+
+function actualizarEstiloEditor() {
+    const color = formatoActivo.color || "#4f4f4f";
+    const font = formatoActivo.font && FONTES[formatoActivo.font]
+        ? FONTES[formatoActivo.font]
+        : "'Georgia', serif";
+    editorTexto.style.color = color;
+    editorTexto.style.fontFamily = font;
+}
+
+function elegirFormatoActivo(atributo, valor) {
+    if (atributo === "c") formatoActivo.color = valor === "none" ? null : valor;
+    if (atributo === "f") formatoActivo.font = valor === "none" ? null : valor;
+    actualizarEstiloEditor();
+}
+
+function textoConFormatoActivo(texto) {
+    const attrs = [];
+    if (formatoActivo.color) attrs.push("c=" + formatoActivo.color);
+    if (formatoActivo.font) attrs.push("f=" + formatoActivo.font);
+    if (!texto || !attrs.length) return texto;
+    return texto.split(/(⟦[^⟧]*⟧)/g).map(parte => {
+        if (!parte || parte.startsWith("⟦")) return parte;
+        return `⟦${attrs.join(" ")}⟧${parte}⟦/⟧`;
+    }).join("");
+}
+
 function renderFormato(raw) {
     const tokens = String(raw == null ? "" : raw).split(/(⟦[^⟧]*⟧)/g);
     let html = "";
@@ -266,7 +295,10 @@ function wrapFormato(stAttr, msj) {
     const ta = editorTexto;
     const s = ta.selectionStart, e = ta.selectionEnd;
     if (s == null || s === e) {
-        editorError.textContent = "Primero seleccioná las palabras 🌸";
+        const [atributo, valor] = stAttr.split("=");
+        elegirFormatoActivo(atributo, valor);
+        editorError.textContent = "";
+        if (msj) mostrarToast("Formato listo para escribir " + (atributo === "c" ? "con color 💕" : "con esa letra ✍️"));
         ta.focus();
         return;
     }
@@ -320,7 +352,10 @@ function initFormatToolbar() {
         b.className = "format-swatch";
         b.style.background = color;
         b.setAttribute("aria-label", "Color " + color);
-        b.addEventListener("click", () => wrapFormato("c=" + color, "Color aplicado 💕"));
+            b.addEventListener("click", () => {
+                elegirFormatoActivo("c", color);
+                wrapFormato("c=" + color, "Color aplicado 💕");
+            });
         cCont.appendChild(b);
     });
 
@@ -337,7 +372,10 @@ function initFormatToolbar() {
     none.className = "format-swatch none";
     none.title = "Sin color";
     none.textContent = "✕";
-    none.addEventListener("click", () => wrapFormato("c=none"));
+    none.addEventListener("click", () => {
+        elegirFormatoActivo("c", "none");
+        wrapFormato("c=none");
+    });
     cCont.appendChild(none);
 
     ESTILOS.forEach(est => {
@@ -346,7 +384,10 @@ function initFormatToolbar() {
         b.className = "format-font" + (est.cls ? " " + est.cls : "");
         b.textContent = est.label;
         if (est.css) b.style.cssText = est.css;
-        b.addEventListener("click", () => wrapFormato("f=" + est.key, "Estilo aplicado ✍️"));
+        b.addEventListener("click", () => {
+            elegirFormatoActivo("f", est.key);
+            wrapFormato("f=" + est.key, "Estilo aplicado ✍️");
+        });
         fCont.appendChild(b);
     });
 
@@ -354,12 +395,19 @@ function initFormatToolbar() {
     limp.type = "button";
     limp.className = "format-font clean";
     limp.textContent = "✂️ Quitar formato";
-    limp.addEventListener("click", limpiarFormatoSel);
+    limp.addEventListener("click", () => {
+        elegirFormatoActivo("c", "none");
+        elegirFormatoActivo("f", "none");
+        limpiarFormatoSel();
+    });
     fCont.appendChild(limp);
 
     const colorFull = document.getElementById("editor-color-full");
     if (colorFull) {
-        colorFull.addEventListener("change", () => wrapFormato("c=" + colorFull.value, "Color aplicado 💕"));
+        colorFull.addEventListener("change", () => {
+            elegirFormatoActivo("c", colorFull.value);
+            wrapFormato("c=" + colorFull.value, "Color aplicado 💕");
+        });
     }
 }
 
@@ -390,6 +438,15 @@ function modalAbierto() {
 
 function abrirModal(el) { el.classList.remove("hidden"); }
 function cerrarModal(el) { el.classList.add("hidden"); }
+
+function cerrarEditor() {
+    cerrarModal(editorModal);
+    if (ubicacionAntesNueva !== null) {
+        currentLocation = ubicacionAntesNueva;
+        ubicacionAntesNueva = null;
+        aplicarEstado();
+    }
+}
 
 function comprimirImagen(file) {
     return new Promise((resolve, reject) => {
@@ -428,11 +485,11 @@ function comprimirImagen(file) {
 /* =========================================================
    DIBUJO DEL LIBRO
    ========================================================= */
-function sideHTML(side, cara) {
+function sideHTML(side, cara, sideIndex, totalSides) {
     if (side.tipo === "portada") {
         return `
             <div class="page-inner cover-content">
-                <button class="help-btn" data-action="help" aria-label="¿Cómo funciona?" title="¿Cómo funciona?">?</button>
+                <button class="help-btn" data-action="help" aria-label="Abrir ayuda" title="Abrir ayuda">Ayuda</button>
                 <span class="corner corner-tl"></span>
                 <span class="corner corner-tr"></span>
                 <span class="corner corner-bl"></span>
@@ -478,9 +535,10 @@ function sideHTML(side, cara) {
 
     const e = side.e;
     const numPagina = entries.indexOf(e) + 1;
-    const prevBtn = `<button class="prev-btn" data-action="prev">&larr; Ant.</button>`;
-    const nextBtn = `<button class="next-btn" data-action="next">Sig. &rarr;</button>`;
-    const lastBtn = `<button class="last-btn" data-action="last" title="Ir a la última página">Última ⏭</button>`;
+    const prevBtn = `<button class="prev-btn" data-action="prev" aria-label="Página anterior" title="Página anterior">&larr;</button>`;
+    const nextBtn = `<button class="next-btn" data-action="next" aria-label="Página siguiente" title="Página siguiente">&rarr;</button>`;
+    const lastBtn = `<button class="last-btn" data-action="last" aria-label="Última página" title="Ir a la última página">⏭</button>`;
+    const esUltimaEntrada = sideIndex === entries.length;
 
     return `
         <div class="page-inner entry${e.foto ? "" : " sin-foto"}">
@@ -488,6 +546,7 @@ function sideHTML(side, cara) {
                 <span class="entry-date">${esc(fmtFecha(e.fecha))}</span>
                 <span class="entry-tools">
                     <button class="icon-btn" data-action="edit" data-id="${e.id}" title="Editar">✏️</button>
+                    <button class="icon-btn" data-action="new" title="Nueva página">＋</button>
                     <button class="icon-btn" data-action="delete" data-id="${e.id}" title="Eliminar">🗑️</button>
                 </span>
             </div>
@@ -496,11 +555,11 @@ function sideHTML(side, cara) {
             ${e.texto ? `<p class="entry-text">${renderFormato(e.texto)}</p>` : ""}
             <span class="page-num">Pág. ${numPagina}</span>
             <div class="page-nav">
-                <div class="nav-side">${cara === "back" ? prevBtn : ""}</div>
+                <div class="nav-side">${prevBtn}</div>
                 <div class="nav-center">
                     <button class="read-btn hidden" data-action="read" data-id="${e.id}">📖 Leer todo</button>
                 </div>
-                <div class="nav-side nav-right">${cara === "front" && entries.length >= 2 ? lastBtn : ""}${cara === "front" ? nextBtn : ""}</div>
+                <div class="nav-side nav-right">${!esUltimaEntrada && entries.length >= 2 ? lastBtn : ""}${nextBtn}</div>
             </div>
         </div>`;
 }
@@ -514,15 +573,16 @@ function renderBook() {
 
     const sides = [{ tipo: "portada" }];
     entries.forEach(e => sides.push({ tipo: "entrada", e }));
-    if (sides.length % 2 === 1) sides.push({ tipo: "cta" });
+    sides.push({ tipo: "cta" });
+    if (sides.length % 2 === 1) sides.push({ tipo: "vacio" });
 
     const N = sides.length / 2;
     for (let i = 0; i < N; i++) {
         const paper = document.createElement("div");
         paper.className = "paper";
         paper.innerHTML =
-            `<div class="front">${sideHTML(sides[i * 2], "front")}</div>` +
-            `<div class="back">${sideHTML(sides[i * 2 + 1] || { tipo: "vacio" }, "back")}</div>`;
+            `<div class="front">${sideHTML(sides[i * 2], "front", i * 2, sides.length)}</div>` +
+            `<div class="back">${sideHTML(sides[i * 2 + 1] || { tipo: "vacio" }, "back", i * 2 + 1, sides.length)}</div>`;
         book.appendChild(paper);
     }
 
@@ -542,6 +602,7 @@ function aplicarEstado() {
     });
     book.classList.toggle("open", currentLocation > 1);
     actualizarBotonCerrar();
+    actualizarBotonNuevaPagina();
 }
 
 function actualizarBotonCerrar() {
@@ -550,11 +611,14 @@ function actualizarBotonCerrar() {
     closeBookBtn.classList.toggle("hidden", !(isBookUnlocked && currentLocation > N));
 }
 
+function actualizarBotonNuevaPagina() {
+    fab.classList.add("hidden");
+}
+
 function cerrarDiario() {
     isBookUnlocked = false;
     currentLocation = 1;
     aplicarEstado();
-    fab.classList.add("hidden");
     closeBookBtn.classList.add("hidden");
 }
 
@@ -611,6 +675,14 @@ function irAEntrada(id) {
     aplicarEstado();
 }
 
+function irAHojaCreacion() {
+    const indiceCta = entries.length + 1; // portada + entradas
+    // La CTA es el lado siguiente a la última entrada y debe quedar visible.
+    currentLocation = Math.ceil((indiceCta + 1) / 2);
+    currentLocation = Math.max(1, Math.min(currentLocation, getPapers().length + 1));
+    aplicarEstado();
+}
+
 /* =========================================================
    CANDADO (combinación día / mes / año)
    ========================================================= */
@@ -642,9 +714,51 @@ function stepCombo(group, dir) {
     renderCombo();
 }
 
+/* Si mantenés apretada una flecha, el número sube/baja rapidísimo y acelera */
+let holdTimeout = null;
+let holdRepeat = null;
+let holdBtn = null;
+let holdDesdePuntero = false;
+
+function detenerHold() {
+    if (holdTimeout) { clearTimeout(holdTimeout); holdTimeout = null; }
+    if (holdRepeat) { clearTimeout(holdRepeat); holdRepeat = null; }
+    if (holdBtn) { holdBtn.classList.remove("holding"); holdBtn = null; }
+}
+
+function empezarHold(btn) {
+    detenerHold();
+    holdBtn = btn;
+    btn.classList.add("holding");
+    stepCombo(btn.dataset.step, Number(btn.dataset.dir));
+    // Pausita inicial y después repite cada vez más rápido
+    holdTimeout = setTimeout(() => {
+        let delay = 130;
+        const tick = () => {
+            if (!holdBtn) return;
+            stepCombo(holdBtn.dataset.step, Number(holdBtn.dataset.dir));
+            delay = Math.max(40, delay - 9);
+            holdRepeat = setTimeout(tick, delay);
+        };
+        tick();
+    }, 380);
+}
+
+lockCombo.addEventListener("pointerdown", (e) => {
+    const btn = e.target.closest("[data-step]");
+    if (!btn) return;
+    holdDesdePuntero = true;
+    empezarHold(btn);
+});
+
+window.addEventListener("pointerup", detenerHold);
+window.addEventListener("pointercancel", detenerHold);
+
 lockCombo.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-step]");
     if (!btn) return;
+    // Ya lo manejó pointerdown (mouse/dedo); sólo acá caemos por teclado
+    if (holdDesdePuntero) { holdDesdePuntero = false; return; }
     stepCombo(btn.dataset.step, Number(btn.dataset.dir));
 });
 
@@ -665,7 +779,6 @@ function checkPassword() {
     if (variantes.includes(digitos)) {
         isBookUnlocked = true;
         cerrarModal(lockModal);
-        fab.classList.remove("hidden");
         goNextPage(); // siempre arranca desde la primera hoja
     } else {
         errorMessage.style.display = "block";
@@ -705,6 +818,7 @@ function revPreviewBlob() {
 
 function openEditor(entry) {
     editingId = entry ? entry.id : null;
+    if (entry) ubicacionAntesNueva = null;
     editorHeading.textContent = entry ? "Editar página" : "Nueva página";
     editorFecha.value = entry ? entry.fecha : todayISO();
     editorTitulo.value = entry ? (entry.titulo || "") : "";
@@ -715,9 +829,17 @@ function openEditor(entry) {
 
     pendingPhotoData = entry ? entry.foto : null;
     pendingPhotoIsNew = false;
+    formatoActivo = { color: null, font: null };
+    actualizarEstiloEditor();
     actualizarPreview();
 
     abrirModal(editorModal);
+}
+
+function abrirFormularioNuevaEntrada() {
+    ubicacionAntesNueva = currentLocation;
+    irAHojaCreacion();
+    openEditor(null);
 }
 
 function actualizarPreview() {
@@ -753,7 +875,7 @@ editorQuitarFoto.addEventListener("click", () => {
 editorGuardar.addEventListener("click", async () => {
     const fecha = editorFecha.value || todayISO();
     const titulo = editorTitulo.value.trim();
-    const texto = editorTexto.value.trim();
+    const texto = textoConFormatoActivo(editorTexto.value.trim());
 
     editorError.textContent = "";
 
@@ -794,6 +916,7 @@ editorGuardar.addEventListener("click", async () => {
         );
 
         revPreviewBlob();
+        ubicacionAntesNueva = null;
         cerrarModal(editorModal);
         renderBook();
         if (entry.id != null) irAEntrada(entry.id);
@@ -889,11 +1012,11 @@ book.addEventListener("click", (e) => {
     else if (action === "read") { e.stopPropagation(); openReader(findEntry(Number(target.dataset.id))); }
     else if (action === "edit") { e.stopPropagation(); openEditor(findEntry(Number(target.dataset.id))); }
     else if (action === "delete") { e.stopPropagation(); borrarEntrada(Number(target.dataset.id)); }
-    else if (action === "new") { e.stopPropagation(); openEditor(null); }
+    else if (action === "new") { e.stopPropagation(); abrirFormularioNuevaEntrada(); }
     else if (action === "help") { e.stopPropagation(); abrirModal(helpModal); }
 });
 
-fab.addEventListener("click", () => openEditor(null));
+fab.addEventListener("click", abrirFormularioNuevaEntrada);
 closeBookBtn.addEventListener("click", cerrarDiario);
 helpOk.addEventListener("click", () => cerrarModal(helpModal));
 
@@ -903,12 +1026,12 @@ document.addEventListener("click", (e) => {
         const which = closeBtn.dataset.close;
         if (which === "lock") cerrarModal(lockModal);
         if (which === "reader") cerrarModal(readerModal);
-        if (which === "editor") cerrarModal(editorModal);
+        if (which === "editor") cerrarEditor();
         return;
     }
     if (e.target === lockModal) cerrarModal(lockModal);
     if (e.target === readerModal) cerrarModal(readerModal);
-    if (e.target === editorModal) cerrarModal(editorModal);
+    if (e.target === editorModal) cerrarEditor();
     if (e.target === confirmModal) cerrarConfirm(false);
     if (e.target === helpModal) cerrarModal(helpModal);
 });
@@ -916,7 +1039,7 @@ document.addEventListener("click", (e) => {
 document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
         if (!confirmModal.classList.contains("hidden")) cerrarConfirm(false);
-        else if (!editorModal.classList.contains("hidden")) cerrarModal(editorModal);
+        else if (!editorModal.classList.contains("hidden")) cerrarEditor();
         else if (!readerModal.classList.contains("hidden")) cerrarModal(readerModal);
         else if (!helpModal.classList.contains("hidden")) cerrarModal(helpModal);
         else if (!lockModal.classList.contains("hidden")) cerrarModal(lockModal);

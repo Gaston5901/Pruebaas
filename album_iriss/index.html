@@ -2,31 +2,11 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>IRISS</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
-<!-- 
-
-Contáctame:
-
-    * Invitame un café
- https://buymeacoffee.com/alexx.dev
-
-    * Portafolio Web
- https://alexxdev.vercel.app
-
-    * Sigueme en tiktok
- https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc 
- 
- *Canal de WhatsApp
- https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
-
- 
- WhatsApp: +52 1 55 6628 1018
-
--->
 <body>
 
     <video id="background-video" autoplay loop muted playsinline>
@@ -46,25 +26,39 @@ Contáctame:
     <!-- Candado -->
     <div id="lock-modal" class="overlay hidden">
         <div class="modal-content">
-            <div class="floating-hearts">💖</div>
-            <div class="lock-icon">🔒✨</div>
+            <div class="floating-hearts">💜</div>
+            <div class="lock-icon lock-emblem">
+                <svg class="bts-logo" viewBox="0 0 466 766" role="img" aria-label="Símbolo de BTS">
+                    <defs>
+                        <linearGradient id="btsGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="#ffffff"/>
+                            <stop offset="0.45" stop-color="#e9d5ff"/>
+                            <stop offset="1" stop-color="#a97cff"/>
+                        </linearGradient>
+                    </defs>
+                    <g transform="translate(-61.32509,360.55642)" fill="url(#btsGrad)">
+                        <path d="m 526.98439,404.84899 c -10.10922,-3.68301 -20.01525,-7.26442 -29.89587,-10.89663 -60.45214,-22.19965 -120.87889,-44.4247 -181.35643,-66.54816 -2.74321,-1.016 -3.58141,-2.286 -3.58141,-5.18161 0.0762,-169.901 0.0762,-339.802 0.0254,-509.703 0,-2.48921 0.6096,-4.14021 2.66701,-5.76582 69.49456,-54.73712 138.93833,-109.55045 208.40749,-164.36378 1.0922,-0.86361 2.20981,-1.65101 3.75921,-2.79401 0,255.169 0,509.8808 0,765.22761 z"/>
+                        <path d="m 61.35049,404.84899 c 0,-255.19441 0,-509.98241 0,-765.40541 6.908816,5.43561 13.411232,10.51562 19.862847,15.62104 63.652553,50.21592 127.305103,100.45723 191.008453,150.59695 2.99721,2.36221 4.08941,4.72441 4.08941,8.55982 -0.1016,168.758001 -0.1016,337.516 0.0254,506.2994 0,4.24181 -1.0922,6.07061 -5.15621,7.54382 -68.63097,25.01906 -137.18573,50.21591 -205.76589,75.36197 -1.270003,0.48261 -2.565406,0.91441 -4.03861,1.42241 z"/>
+                    </g>
+                </svg>
+            </div>
             <h2>Diario Privado</h2>
-            <p>Para abrir, acomodá la fecha en que empezamos a hablar:</p>
+            <p>Mové las tres ruedas hasta formar la fecha en que empezamos a hablar:</p>
 
             <div class="lock-combo" id="lock-combo">
-                <div class="combo-group">
+                <div class="combo-group combo-wheel">
                     <button type="button" class="combo-arrow" data-step="dia" data-dir="1" aria-label="Subir día">▲</button>
                     <span class="combo-value" id="combo-dia">00</span>
                     <button type="button" class="combo-arrow" data-step="dia" data-dir="-1" aria-label="Bajar día">▼</button>
                     <span class="combo-label">Día</span>
                 </div>
-                <div class="combo-group">
+                <div class="combo-group combo-wheel">
                     <button type="button" class="combo-arrow" data-step="mes" data-dir="1" aria-label="Subir mes">▲</button>
                     <span class="combo-value" id="combo-mes">00</span>
                     <button type="button" class="combo-arrow" data-step="mes" data-dir="-1" aria-label="Bajar mes">▼</button>
                     <span class="combo-label">Mes</span>
                 </div>
-                <div class="combo-group">
+                <div class="combo-group combo-wheel">
                     <button type="button" class="combo-arrow" data-step="anio" data-dir="1" aria-label="Subir año">▲</button>
                     <span class="combo-value" id="combo-anio">00</span>
                     <button type="button" class="combo-arrow" data-step="anio" data-dir="-1" aria-label="Bajar año">▼</button>
@@ -83,19 +77,24 @@ Contáctame:
     <!-- Ayuda / ¿Cómo funciona? -->
     <div id="help-modal" class="overlay hidden">
         <div class="modal-content help-content">
-            <div class="lock-icon">❓</div>
-            <h2>¿Cómo funciona?</h2>
+            <div class="lock-icon">💡</div>
+            <h2>Ayuda del diario</h2>
+            <p class="help-intro">Acá tenés una guía rápida para usar todos los botones y personalizar tus páginas.</p>
             <ul class="help-list">
-                <li><b>🔒 Clave:</b> para abrir el diario, poné la fecha en que empezamos a hablar.</li>
-                <li><b>＋ (botón rosa):</b> crea una hoja nueva con fecha, foto y texto.</li>
-                <li><b>✏️:</b> edita una hoja cuando quieras.</li>
-                <li><b>🗑️:</b> borra una hoja (te pide confirmación antes).</li>
-                <li><b>📷:</b> podés sumar una foto del día; se achica sola para no pesar.</li>
-                <li><b>🎨 Colorear:</b> en el editor, seleccioná unas palabras y dales color o un estilo de letra distinto.</li>
-                <li><b>📖 Leer todo:</b> abre la hoja completa cuando el texto es largo.</li>
-                <li><b>Ant. / Sig. / Última ⏭:</b> para moverte entre las hojas.</li>
-                <li><b>✕:</b> cierra el diario. <b>←</b> (arriba a la izquierda) vuelve al inicio.</li>
-                <li><b>💾:</b> todo se guarda solito en este dispositivo, sin internet.</li>
+                <li><b>🔒 Clave:</b> mové las tres ruedas de día, mes y año hasta formar la fecha correcta y tocá “Desbloquear”.</li>
+                <li><b>＋ junto al lápiz:</b> te lleva a la hoja final y abre el formulario para crear una página nueva.</li>
+                <li><b>✏️:</b> abre el editor para cambiar fecha, título, texto, foto, color o letra.</li>
+                <li><b>🗑️:</b> borra una página después de pedirte confirmación.</li>
+                <li><b>📷:</b> agrega una foto; se comprime automáticamente para que ocupe menos espacio.</li>
+                <li><b>🎨 Colores:</b> seleccioná una palabra o frase y tocá un color. Si no seleccionás nada, el color queda activo para lo que escribas.</li>
+                <li><b>✍️ Tipografías:</b> seleccioná texto y elegí un estilo de letra. Sin selección, lo nuevo se escribe con esa tipografía en vivo.</li>
+                <li><b>🧽 Quitar formato:</b> devuelve el texto seleccionado a su color y letra normales.</li>
+                <li><b>📖 Leer todo:</b> abre la página completa cuando el texto es largo.</li>
+                <li><b>←:</b> vuelve a la página anterior; desde la primera entrada regresa a la portada.</li>
+                <li><b>⏭:</b> salta directamente a la última página escrita.</li>
+                <li><b>→:</b> avanza a la siguiente página. La última hoja sirve para crear una nueva.</li>
+                <li><b>💾:</b> todo queda guardado automáticamente en este dispositivo, sin internet.</li>
+                <li><b>✕:</b> cierra el diario. <b>← arriba:</b> vuelve al inicio.</li>
             </ul>
             <div class="modal-buttons">
                 <button id="help-ok" class="main-btn">¡Entendido! 💖</button>
@@ -163,7 +162,7 @@ Contáctame:
                     <span class="format-label">✍️ Estilo de letra</span>
                     <div class="format-row" id="format-letras"></div>
                     <input type="color" id="editor-color-full" class="hidden" value="#ff4081">
-                    <p class="format-hint">1️⃣ Seleccioná las palabras → 2️⃣ tocá un color o un estilo. El ✨ sirve para elegir cualquier color. En el editor vas a ver unos códigos raros, pero en la hoja quedan las palabras de color 💕</p>
+                    <p class="format-hint">Podés seleccionar palabras para darles formato. Si no seleccionás nada, el color y la letra elegidos quedan activos y lo que escribas se ve así en vivo. El ✨ sirve para elegir cualquier color 💕</p>
                 </div>
 
                 <p id="editor-error" class="editor-error"></p>
