@@ -38,6 +38,8 @@ const editorQuitarFoto = document.querySelector("#editor-quitar-foto");
 const editorTexto = document.querySelector("#editor-texto");
 const editorError = document.querySelector("#editor-error");
 const editorGuardar = document.querySelector("#editor-guardar");
+const formatColoresWrap = document.querySelector("#format-colores-wrap");
+const formatHint = document.querySelector("#format-hint");
 
 const fab = document.querySelector("#new-page-fab");
 const closeBookBtn = document.querySelector("#close-book-btn");
@@ -598,6 +600,7 @@ function aplicarEstado() {
         const loc = i + 1;
         const flipped = loc < currentLocation;
         p.classList.toggle("flipped", flipped);
+        p.classList.toggle("mobile-active", Math.ceil(currentLocation / 2) === loc);
         p.style.zIndex = flipped ? loc : (N - (loc - 1)) + N;
     });
     book.classList.toggle("open", currentLocation > 1);
@@ -606,9 +609,17 @@ function aplicarEstado() {
 }
 
 function actualizarBotonCerrar() {
-    // La "✕" aparece cuando ya no hay más hojas para adelante
+    // La CTA es la hoja final cuando todavía no hay páginas; en ese estado
+    // debe quedar disponible la acción para crear la primera.
     const N = getPapers().length;
-    closeBookBtn.classList.toggle("hidden", !(isBookUnlocked && currentLocation > N));
+    const paper = getPapers()[currentLocation - 2];
+    const ctaVisible = paper && paper.classList.contains("flipped") &&
+        paper.querySelector(".back .cta-content");
+    closeBookBtn.classList.toggle("hidden", !(
+        isBookUnlocked &&
+        currentLocation > N &&
+        !ctaVisible
+    ));
 }
 
 function actualizarBotonNuevaPagina() {
@@ -641,6 +652,12 @@ function goNextPage() {
     if (currentLocation > papers.length) return;
 
     const p = papers[currentLocation - 1];
+    // La CTA es el último destino: no dejamos que un swipe o una tecla
+    // la salteen y muestren una hoja vacía.
+    const visibleSide = currentLocation === 1
+        ? p.querySelector(".front")
+        : (p.classList.contains("flipped") ? p.querySelector(".back") : p.querySelector(".front"));
+    if (visibleSide && visibleSide.querySelector(".cta-content")) return;
     if (!p.classList.contains("flipped")) {
         p.classList.add("flipped");
         if (p._t) clearTimeout(p._t);
@@ -830,6 +847,13 @@ function openEditor(entry) {
     pendingPhotoData = entry ? entry.foto : null;
     pendingPhotoIsNew = false;
     formatoActivo = { color: null, font: null };
+    editorModal.classList.toggle("is-creating", !entry);
+    if (formatColoresWrap) formatColoresWrap.classList.toggle("hidden", !entry);
+    if (formatHint) {
+        formatHint.textContent = entry
+            ? "Seleccioná palabras para aplicarles color o tipografía. Si no seleccionás nada, la tipografía elegida queda activa para escribir."
+            : "Elegí una tipografía y escribí con tu estilo. Los colores se pueden sumar después, al editar la página.";
+    }
     actualizarEstiloEditor();
     actualizarPreview();
 
@@ -919,6 +943,8 @@ editorGuardar.addEventListener("click", async () => {
         ubicacionAntesNueva = null;
         cerrarModal(editorModal);
         renderBook();
+        // La entrada recién creada reemplaza a la CTA inicial y ocupa la
+        // primera página escrita, aunque haya sido creada desde la portada.
         if (entry.id != null) irAEntrada(entry.id);
         mostrarToast(esEdicion ? "Cambios guardados" : "Página guardada", "💖");
     } catch (err) {

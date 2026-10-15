@@ -157,12 +157,14 @@
                 </label>
 
                 <div class="format-toolbar">
-                    <span class="format-label">🎨 Colorear palabras</span>
-                    <div class="format-row" id="format-colores"></div>
+                    <div id="format-colores-wrap" class="format-colores-wrap">
+                        <span class="format-label">🎨 Colorear palabras</span>
+                        <div class="format-row" id="format-colores"></div>
+                    </div>
                     <span class="format-label">✍️ Estilo de letra</span>
                     <div class="format-row" id="format-letras"></div>
                     <input type="color" id="editor-color-full" class="hidden" value="#ff4081">
-                    <p class="format-hint">Podés seleccionar palabras para darles formato. Si no seleccionás nada, el color y la letra elegidos quedan activos y lo que escribas se ve así en vivo. El ✨ sirve para elegir cualquier color 💕</p>
+                    <p id="format-hint" class="format-hint">Podés elegir una tipografía para escribir. Al editar una página también podés seleccionar palabras y cambiar colores.</p>
                 </div>
 
                 <p id="editor-error" class="editor-error"></p>
