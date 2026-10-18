@@ -61,6 +61,7 @@ const helpOk = document.querySelector("#help-ok");
    ========================================================= */
 let entries = [];
 let currentLocation = 1;
+let mobilePageIndex = 0; // 0 = portada, 1..N = entradas, N + 1 = crear
 let isBookUnlocked = false;
 let editingId = null;
 let pendingPhotoData = null;   // dataURL de la foto elegida o existente
@@ -508,6 +509,7 @@ function sideHTML(side, cara, sideIndex, totalSides) {
                 <p class="cover-sub">Un día a la vez, guardado con amor</p>
                 <button class="next-btn" data-action="next">Abrir ❤️</button>
                 <div class="cover-signatures">
+                    <span class="signature-caption">Con cariño, para vos</span>
                     <img class="sign" src="firma-rm.png" alt="Firma de RM">
                     <img class="sign" src="firma-jin.png" alt="Firma de Jin">
                     <img class="sign" src="firma-suga.png" alt="Firma de Suga">
@@ -515,6 +517,15 @@ function sideHTML(side, cara, sideIndex, totalSides) {
                     <img class="sign" src="firma-jimin.png" alt="Firma de Jimin">
                     <img class="sign" src="firma-v.png" alt="Firma de V">
                     <img class="sign" src="firma-jk.png" alt="Firma de Jungkook">
+                </div>
+                <div class="cover-details" aria-hidden="true">
+                    <span>♡</span>
+                    <span>recuerdos</span>
+                    <i></i>
+                    <span>momentos</span>
+                    <i></i>
+                    <span>amor</span>
+                    <span>♡</span>
                 </div>
                 <p class="cover-est"><span class="est-heart">♥</span> Pachuchitaa <span class="est-heart">♥</span></p>
             </div>`;
@@ -555,12 +566,11 @@ function sideHTML(side, cara, sideIndex, totalSides) {
             ${e.titulo ? `<h2 class="entry-title">${esc(e.titulo)}</h2>` : ""}
             ${e.foto ? `<img class="entry-photo" src="${e.foto}" alt="Foto del día" data-action="read" data-id="${e.id}">` : ""}
             ${e.texto ? `<p class="entry-text">${renderFormato(e.texto)}</p>` : ""}
+            <button class="read-btn entry-read-btn hidden" data-action="read" data-id="${e.id}" aria-label="Leer todo el texto de esta página">Leer todo <span aria-hidden="true">⌄</span></button>
             <span class="page-num">Pág. ${numPagina}</span>
             <div class="page-nav">
                 <div class="nav-side">${prevBtn}</div>
-                <div class="nav-center">
-                    <button class="read-btn hidden" data-action="read" data-id="${e.id}">📖 Leer todo</button>
-                </div>
+                <div class="nav-center"></div>
                 <div class="nav-side nav-right">${!esUltimaEntrada && entries.length >= 2 ? lastBtn : ""}${nextBtn}</div>
             </div>
         </div>`;
@@ -589,8 +599,13 @@ function renderBook() {
     }
 
     currentLocation = Math.min(currentLocation, N + 1);
+    mobilePageIndex = Math.max(0, Math.min(mobilePageIndex, entries.length + 1));
     aplicarEstado();
     ajustarBotonesLectura();
+}
+
+function esVistaMovil() {
+    return window.matchMedia("(max-width: 700px)").matches;
 }
 
 function aplicarEstado() {
@@ -600,12 +615,32 @@ function aplicarEstado() {
         const loc = i + 1;
         const flipped = loc < currentLocation;
         p.classList.toggle("flipped", flipped);
-        p.classList.toggle("mobile-active", Math.ceil(currentLocation / 2) === loc);
+        const mobilePaper = Math.floor(mobilePageIndex / 2);
+        const mobileSide = mobilePageIndex % 2 === 0 ? "front" : "back";
+        p.classList.toggle("mobile-active", esVistaMovil() && mobilePaper === i);
+        p.querySelector(".front").classList.toggle(
+            "mobile-current",
+            esVistaMovil() && mobilePaper === i && mobileSide === "front"
+        );
+        p.querySelector(".back").classList.toggle(
+            "mobile-current",
+            esVistaMovil() && mobilePaper === i && mobileSide === "back"
+        );
         p.style.zIndex = flipped ? loc : (N - (loc - 1)) + N;
     });
-    book.classList.toggle("open", currentLocation > 1);
+    book.classList.toggle("open", esVistaMovil() ? mobilePageIndex > 0 : currentLocation > 1);
     actualizarBotonCerrar();
     actualizarBotonNuevaPagina();
+}
+
+function animarCambioPagina(direccion) {
+    if (!esVistaMovil()) return;
+    book.classList.remove("page-turn-next", "page-turn-prev");
+    void book.offsetWidth;
+    book.classList.add(direccion === "next" ? "page-turn-next" : "page-turn-prev");
+    window.setTimeout(() => {
+        book.classList.remove("page-turn-next", "page-turn-prev");
+    }, 1100);
 }
 
 function actualizarBotonCerrar() {
@@ -629,6 +664,7 @@ function actualizarBotonNuevaPagina() {
 function cerrarDiario() {
     isBookUnlocked = false;
     currentLocation = 1;
+    mobilePageIndex = 0;
     aplicarEstado();
     closeBookBtn.classList.add("hidden");
 }
@@ -639,6 +675,8 @@ function ajustarBotonesLectura() {
         const btn = el.querySelector(".read-btn");
         if (!txt || !btn) return;
         const desborda = txt.scrollHeight > txt.clientHeight + 4;
+        txt.classList.toggle("is-truncated", desborda);
+        el.classList.toggle("has-more-text", desborda);
         btn.classList.toggle("hidden", !desborda);
     });
 }
@@ -648,6 +686,13 @@ function ajustarBotonesLectura() {
    ========================================================= */
 function goNextPage() {
     if (!isBookUnlocked) { showLockModal(); return; }
+    if (esVistaMovil()) {
+        if (mobilePageIndex >= entries.length + 1) return;
+        mobilePageIndex++;
+        aplicarEstado();
+        animarCambioPagina("next");
+        return;
+    }
     const papers = getPapers();
     if (currentLocation > papers.length) return;
 
@@ -669,6 +714,13 @@ function goNextPage() {
 }
 
 function goPrevPage() {
+    if (esVistaMovil()) {
+        if (mobilePageIndex <= 0) return;
+        mobilePageIndex--;
+        aplicarEstado();
+        animarCambioPagina("prev");
+        return;
+    }
     if (currentLocation <= 1) return;
     currentLocation--;
     const papers = getPapers();
@@ -688,6 +740,7 @@ function irAEntrada(id) {
     const si = idx + 1; // 0 es la portada
     const k = Math.floor(si / 2) + 1;
     currentLocation = si % 2 === 0 ? k : k + 1;
+    mobilePageIndex = idx + 1;
     currentLocation = Math.max(1, Math.min(currentLocation, getPapers().length + 1));
     aplicarEstado();
 }
@@ -696,7 +749,16 @@ function irAHojaCreacion() {
     const indiceCta = entries.length + 1; // portada + entradas
     // La CTA es el lado siguiente a la última entrada y debe quedar visible.
     currentLocation = Math.ceil((indiceCta + 1) / 2);
+    mobilePageIndex = entries.length + 1;
     currentLocation = Math.max(1, Math.min(currentLocation, getPapers().length + 1));
+    aplicarEstado();
+}
+
+function abrirPaginaInicial() {
+    // La portada y la clave son el acceso: la primera página real siempre
+    // es la primera entrada guardada, o la hoja para crearla si está vacío.
+    currentLocation = 2;
+    mobilePageIndex = entries.length ? 1 : entries.length + 1;
     aplicarEstado();
 }
 
@@ -796,7 +858,7 @@ function checkPassword() {
     if (variantes.includes(digitos)) {
         isBookUnlocked = true;
         cerrarModal(lockModal);
-        goNextPage(); // siempre arranca desde la primera hoja
+        abrirPaginaInicial();
     } else {
         errorMessage.style.display = "block";
         lockCombo.classList.remove("shake");

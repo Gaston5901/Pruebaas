@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f1e9ff" />
+  <title>Para Pachuchitaa ♡</title>
+  <meta name="description" content="Una cartita de amor interactiva en pixel-art para Pachuchitaa. Abrí el sobre y leé la cartita." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%238a6fd1' d='M12 21.6 4.1 13.7a5.1 5.1 0 0 1 7.2-7.2l.7.7.7-.7a5.1 5.1 0 1 1 7.2 7.2z'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="stylesheet" href="./love.css" />
+</head>
+<body>  
+  <div class="fx" aria-hidden="true">
+    <div class="fx__aurora"></div>
+    <div class="fx__bts" id="btsBg"></div>
+    <div class="fx__vignette"></div>
+    <div class="fx__grain"></div>
+  </div>
+
+  <div class="rain" id="rain" aria-hidden="true"></div>
+
+  <a class="back" href="../index.html" aria-label="Volver al inicio" title="Volver al inicio">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+
+  <main class="scene">
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+    <div class="stage stage--aim" id="aimStage" tabindex="0" role="application"
+         aria-label="Apuntá y dispará la flecha de Cupido a la carta para abrirla. Presioná espacio para disparar.">
+
+      <div class="target" id="target">
+        <div class="envelope" aria-hidden="true">
+          <span class="envelope__flap"></span>
+          <span class="heart envelope__seal"></span>
+        </div>
+        <p class="target__label">
+          <span class="heart heart--inline"></span>
+          Una sorpresita
+          <span class="heart heart--inline"></span>
+        </p>
+      </div>
+
+      <div class="arrow" id="arrow" aria-hidden="true"></div>
+
+      <div class="archer" id="archer" aria-hidden="true">
+        <div class="bow" id="bow"></div>
+        <span class="nock" id="nock"></span>
+      </div>
+
+      <p class="hint" id="hint">
+        <span id="hintText">Apuntá y soltá para lanzar la flecha de Cupido</span>
+        <span class="heart heart--inline"></span>
+      </p>
+    </div>
+
+    <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true"></div>
+
+    <section class="window" id="window" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Carta para Pachuchitaa">
+      <header class="window__bar">
+        <span class="window__bar-title">Una cartita para vos</span>
+        <button class="window__close" type="button" id="closeBtn" aria-label="Cerrar la carta">&#10005;</button>
+      </header>
+
+      <div class="window__scroll" id="scroll">
+        <div class="content" id="content">
+          <p class="letter__to">
+            <span class="heart heart--inline"></span>
+            Para Pachuchitaa
+            <span class="heart heart--inline"></span>
+          </p>
+
+          <div class="cat-wrap">
+            <canvas class="cat" id="cat" width="16" height="16" aria-label="Un gatito con un corazón" role="img"></canvas>
+          </div>
+
+          <div class="letter__body">
+            <p>Pachuchitaa, leé esto con toda la calma del mundo, por favor. Me dolió un montón leerte así, pero a la vez me hace sentir muy unido a vos ver lo sincera y transparente que sos conmigo. Quiero responderte a todo lo que me dijiste, porque hay varias cosas que sentís y que de verdad no son tan así, mi niñaa bellaa.</p>
+            <p>Primero que nada: no sos para nada egoísta por querer ser amada y por querer amar. Al contrario, eso es lo más genuino, hermoso y humano que existe. Ninguno de los dos tiene la vida resuelta ni es perfecto, y yo no estoy buscando a alguien que 'ya esté completamente sana' o que no tenga miedos para elegirla. Yo te elijo a vos, con tus días buenos, tus días grises, tus dudas, tus cicatrices y todo lo que llevás adentro.</p>
+            <p>Sacate de la cabeza esa idea de que 'no tenés nada para darme' o que 'merezco algo mejor'. Vos me das un montón todos los días: me das tu risa, tus charlas, tu confianza al abrirte y esa forma tan tuya de hacer que todo se sienta más cálido y especial, incluso a la distancia. El amor no es una balanza donde tenés que dar cierto porcentaje para merecer que te quieran. Yo elijo estar acá por mi propia voluntad, porque me hacés bien y porque lo que siento por vos es único y real. De verdad creeme que no me estás arrastrando a nada ni sos ninguna carga.</p>
+            <p>Creo firmemente que Dios nos puso en el camino del otro, que nada de esto es casualidad. Coincidir con vos fue una de las bendiciones más lindas de mi vida, y sé en mi corazón que Él nos tiene preparadas cosas hermosas para el futuro. A veces los tiempos de Dios no son los mismos que los nuestros, pero confío plenamente en lo que estamos construyendo.</p>
+            <p>Y quiero que esto te quede re claro: yo no quiero estar con nadie más. No me interesa ninguna otra persona en este mundo que no seas vos. Vos tenés esa magia que me mueve todo por dentro, que me hace querer seguir y querer más de vos. Por eso no tengo apuro ni desesperación. Si hoy sentís que las cosas no salieron o no están funcionando exactamente como hubiéramos querido desde el principio, no pasa nada, todo tiene sus momentos. Yo no te voy a presionar a nada. Te voy a esperar todo el tiempo que sea necesario, el tiempo que a vos te tome sanar, acomodar tus ideas y sentirte bien con vos misma.</p>
+            <p>Si bien son tus cosas y tus procesos personales, quiero que caminemos juntos en esto. No tenés que atravesar tus momentos difíciles sola ni cargarlo todo vos únicamente. Dejame estar a tu lado, leernos, cuidarnos y ser ese refugio seguro. Siento que en el fondo somos un solo latido y que juntos podemos con lo que sea, paso a paso, sin presiones ni apuros.</p>
+            <p>Cada momento lindo que compartimos y todo lo que vivimos juntos no fue casualidad. Todo lo que sentimos el uno por el otro es muy real, y ninguna mala racha o momento de duda va a borrar la conexión tan hermosa que logramos construir entre los dos.</p>
+            <p>Sos una persona increíble, de re buen corazón y con un potencial enorme para darle a la vida. Sos un amor de persona. Tuve la oportunidad de conocer a esa Iriss hermosa, y sé que me falta conocer mucho más de vos, pero lo que vi y comprendí hasta ahora es algo único y mágico. Tenés un alma tan pura y buena, un corazoncito de pollito tierno que cuido un montón, y sos extremadamente bella y talentosa. Nunca dudes de eso, ojitos bonitos. Que esos ojos siempre brillen y nunca dejes que nadie ni nada los opaque o los apague. Siempre sé vos misma y confiá en vos siempre</p>
+            <p>No me asustan tus procesos ni tus miedos; al contrario, me dan más ganas de estar firme para vos y de recordarte lo valiosa e increíble que sos en los días que a vos misma te cueste verlo. Acá estoy para vos, no me voy a ir a ningún lado. Te amo demasiado, Pachuchitaa.</p>
+            <p class="letter__sign">Con todo mi coraazon y más,<br />— Gaston Abelardo Ituarte ♡</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="window__seal" aria-hidden="true"><span class="heart"></span></div>
+    </section>
+  </main>
+
+  <script type="module" src="./love.js"></script>
+</body>
+</html>

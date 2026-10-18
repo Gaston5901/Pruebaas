@@ -170,6 +170,7 @@ body {
     .paper {
         width: 100%;
         z-index: 2;
+        transform: none !important;
     }
 
     .back-cover {
@@ -180,6 +181,136 @@ body {
        tape la cara recién abierta y mantiene la CTA después de la última. */
     .paper:not(.mobile-active) {
         visibility: hidden;
+    }
+
+    /*
+     * En móviles se muestra una sola cara por vez. Evitar el giro 3D
+     * mantiene visible el contenido también en navegadores con problemas
+     * al renderizar preserve-3d dentro de una pantalla completa.
+     */
+    .paper .front,
+    .paper .back {
+        visibility: hidden;
+    }
+
+    .paper .mobile-current {
+        visibility: visible;
+    }
+
+    .paper .mobile-current.back {
+        transform: none;
+    }
+
+    .page-turn-next .mobile-current {
+        animation: mobile-page-turn-next 1.05s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+        transform-origin: left center;
+        will-change: transform, opacity, filter;
+    }
+
+    .page-turn-prev .mobile-current {
+        animation: mobile-page-turn-prev 1.05s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+        transform-origin: right center;
+        will-change: transform, opacity, filter;
+    }
+
+    .page-turn-next .mobile-current::before,
+    .page-turn-prev .mobile-current::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 29;
+        opacity: 0;
+        background: linear-gradient(
+            90deg,
+            transparent 48%,
+            rgba(91, 25, 44, 0.2) 72%,
+            rgba(55, 14, 30, 0.4)
+        );
+        animation: page-fold-shadow 1.05s ease-in-out both;
+    }
+
+    .page-turn-next .mobile-current::after,
+    .page-turn-prev .mobile-current::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 30;
+        opacity: 0;
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.65),
+            rgba(255, 255, 255, 0.18) 18%,
+            transparent 48%,
+            rgba(112, 35, 57, 0.12)
+        );
+        animation: page-sheen 1.05s ease-out both;
+    }
+
+    .page-turn-prev .mobile-current::after {
+        transform: scaleX(-1);
+    }
+
+    @keyframes mobile-page-turn-next {
+        0% {
+            opacity: 0;
+            filter: brightness(1.08) saturate(0.94);
+            transform: perspective(1400px) rotateY(-58deg) translateX(18%) scale(0.97);
+        }
+        48% {
+            opacity: 1;
+            filter: brightness(1.03) saturate(1.02);
+            transform: perspective(1400px) rotateY(7deg) translateX(-1%) scale(1.008);
+        }
+        78% { transform: perspective(1400px) rotateY(-2deg) translateX(0) scale(1.002); }
+        100% {
+            opacity: 1;
+            filter: brightness(1) saturate(1);
+            transform: perspective(1400px) rotateY(0) translateX(0) scale(1);
+        }
+    }
+
+    @keyframes mobile-page-turn-prev {
+        0% {
+            opacity: 0;
+            filter: brightness(1.08) saturate(0.94);
+            transform: perspective(1400px) rotateY(58deg) translateX(-18%) scale(0.97);
+        }
+        48% {
+            opacity: 1;
+            filter: brightness(1.03) saturate(1.02);
+            transform: perspective(1400px) rotateY(-7deg) translateX(1%) scale(1.008);
+        }
+        78% { transform: perspective(1400px) rotateY(2deg) translateX(0) scale(1.002); }
+        100% {
+            opacity: 1;
+            filter: brightness(1) saturate(1);
+            transform: perspective(1400px) rotateY(0) translateX(0) scale(1);
+        }
+    }
+
+    @keyframes page-fold-shadow {
+        0%, 100% { opacity: 0; }
+        35% { opacity: 0.85; }
+        68% { opacity: 0.16; }
+    }
+
+    @keyframes page-sheen {
+        0% { opacity: 0; transform: translateX(-18%); }
+        38% { opacity: 0.62; }
+        100% { opacity: 0; transform: translateX(18%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .page-turn-next .mobile-current,
+        .page-turn-prev .mobile-current,
+        .page-turn-next .mobile-current::after,
+        .page-turn-prev .mobile-current::after,
+        .page-turn-next .mobile-current::before,
+        .page-turn-prev .mobile-current::before {
+            animation-duration: 0.01ms;
+        }
     }
 
     .front,
@@ -211,16 +342,10 @@ body {
 
     .page-nav .next-btn,
     .page-nav .prev-btn,
-    .page-nav .last-btn,
-    .page-nav .read-btn {
+    .page-nav .last-btn {
         min-height: 38px;
         padding: 8px 8px;
         font-size: clamp(0.68rem, 2.6vw, 0.8rem);
-    }
-
-    .page-nav .read-btn {
-        padding-left: 7px;
-        padding-right: 7px;
     }
 
     .cta-content .prev-btn {
@@ -397,18 +522,18 @@ p {
 }
 
 .cover-signatures {
-    margin-top: 26px;
-    padding: 8px 14px 2px;
+    margin-top: 30px;
+    padding: 10px 14px 5px;
     border-top: 1px solid rgba(217, 139, 160, 0.35);
     border-bottom: 1px solid rgba(217, 139, 160, 0.25);
     background: rgba(255, 255, 255, 0.18);
     position: relative;
-    top: 24px;
+    top: 38px;
 }
 
 .cover-est {
     position: relative;
-    top: 24px;
+    top: 48px;
 }
 
 .cover-content .next-btn:hover {
@@ -546,26 +671,58 @@ p {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 6px 10px;
-    margin-top: 16px;
-    max-width: 96%;
+    gap: 8px 12px;
+    margin-top: 20px;
+    max-width: 94%;
+}
+
+.signature-caption {
+    flex-basis: 100%;
+    color: #b4788c;
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(0.9rem, 3.2vw, 1.1rem);
+    line-height: 1;
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
 }
 
 .sign {
-    height: clamp(24px, 8vw, 38px);
+    height: clamp(30px, 9vw, 48px);
     width: auto;
     object-fit: contain;
     mix-blend-mode: multiply; /* oculta el fondo blanco si lo tiene */
-    opacity: 0.92;
+    opacity: 0.96;
+    filter: contrast(1.08) saturate(1.08);
 }
 
-.cover-signatures .sign:nth-child(1) { transform: rotate(-6deg); }
-.cover-signatures .sign:nth-child(2) { transform: rotate(4deg); }
-.cover-signatures .sign:nth-child(3) { transform: rotate(-3deg); height: clamp(26px, 9vw, 42px); }
-.cover-signatures .sign:nth-child(4) { transform: rotate(6deg); }
-.cover-signatures .sign:nth-child(5) { transform: rotate(-5deg); height: clamp(30px, 12vw, 56px); }
-.cover-signatures .sign:nth-child(6) { transform: rotate(3deg); }
-.cover-signatures .sign:nth-child(7) { transform: rotate(-4deg); }
+.cover-signatures .sign:nth-of-type(1) { transform: rotate(-6deg); }
+.cover-signatures .sign:nth-of-type(2) { transform: rotate(4deg); }
+.cover-signatures .sign:nth-of-type(3) { transform: rotate(-3deg); height: clamp(34px, 10vw, 54px); }
+.cover-signatures .sign:nth-of-type(4) { transform: rotate(6deg); }
+.cover-signatures .sign:nth-of-type(5) { transform: rotate(-5deg); height: clamp(38px, 13vw, 64px); }
+.cover-signatures .sign:nth-of-type(6) { transform: rotate(3deg); }
+.cover-signatures .sign:nth-of-type(7) { transform: rotate(-4deg); }
+
+.cover-details {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    top: 42px;
+    color: #c08496;
+    font-size: clamp(0.62rem, 2.4vw, 0.78rem);
+    font-style: italic;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.cover-details i {
+    width: 18px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #d98ba0, transparent);
+}
 
 /* ===================== CTA (nueva página) ===================== */
 .cta-content {
@@ -720,29 +877,67 @@ p {
     padding: 0;
 }
 
+.entry-text.is-truncated {
+    -webkit-mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
+}
+
 .entry.sin-foto .entry-text { -webkit-line-clamp: 10; }
 
 .read-btn {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    background: linear-gradient(135deg, #e0507a, #ff7f97);
+    justify-content: center;
+    gap: 7px;
+    background:
+        linear-gradient(135deg, #b92e58, #e85d7c 55%, #ff9aae);
     color: white;
-    border: none;
-    padding: 9px 16px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    padding: 8px 15px;
     border-radius: 999px;
     font-family: 'Georgia', serif;
     font-weight: bold;
+    font-size: clamp(0.75rem, 2.8vw, 0.88rem);
     letter-spacing: 0.01em;
-    box-shadow: 0 4px 12px rgba(209, 62, 100, 0.35);
+    box-shadow: 0 4px 12px rgba(145, 30, 65, 0.35), 0 0 0 3px rgba(255, 183, 197, 0.35);
     white-space: nowrap;
-    min-height: 38px;
+    min-height: 40px;
     z-index: 20;
-    transition: transform 0.2s, box-shadow 0.2s;
+    animation: read-hint 2.8s ease-in-out infinite;
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+}
+
+.entry-read-btn {
+    position: absolute;
+    left: 50%;
+    bottom: 56px;
+    transform: translateX(-50%);
+    min-width: 124px;
+    padding: 7px 14px;
+    font-size: clamp(0.74rem, 2.8vw, 0.86rem);
+    z-index: 24;
+}
+
+.entry-read-btn span {
+    display: inline-block;
+    margin-left: 3px;
+    font-size: 1.25em;
+    line-height: 0.7;
+    transform: translateY(-1px);
+}
+
+@keyframes read-hint {
+    0%, 100% { box-shadow: 0 4px 12px rgba(145, 30, 65, 0.35), 0 0 0 3px rgba(255, 183, 197, 0.35); }
+    50% { box-shadow: 0 6px 16px rgba(145, 30, 65, 0.45), 0 0 0 6px rgba(255, 183, 197, 0.16); }
 }
 
 @media (hover: hover) {
-    .read-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 18px rgba(209, 62, 100, 0.5); }
+    .read-btn:hover {
+        animation: none;
+        transform: translateX(-50%) translateY(-2px) scale(1.03);
+        filter: brightness(1.06);
+        box-shadow: 0 7px 18px rgba(145, 30, 65, 0.5), 0 0 0 4px rgba(255, 183, 197, 0.28);
+    }
 }
 
 /* ===================== BOTONES DE PÁGINA ===================== */
@@ -818,7 +1013,6 @@ p {
     flex-shrink: 0;
 }
 
-.page-nav .read-btn,
 .page-nav .last-btn {
     position: static;
     transform: none;
@@ -1911,14 +2105,26 @@ p {
     .cover-divider { width: 74%; margin: 4px 0 10px; }
 
     .cover-signatures {
-        margin-top: 22px;
-        padding: 7px 8px 1px;
-        gap: 6px 8px;
+        margin-top: 24px;
+        padding: 8px 8px 3px;
+        gap: 7px 8px;
         max-width: 90%;
-        top: 20px;
+        top: 46px;
+    }
+
+    .signature-caption { font-size: clamp(0.82rem, 3.4vw, 1rem); }
+
+    .sign { height: clamp(28px, 9vw, 44px); }
+
+    .cover-details {
+        top: 50px;
+        gap: 6px;
+        letter-spacing: 0.08em;
     }
 
     .cta-emoji { font-size: clamp(2rem, 8.5vw, 2.8rem); }
+
+    .cover-est { top: 52px; }
 
     .cta-btn, .main-btn {
         padding: 11px 18px;
@@ -1971,8 +2177,7 @@ p {
         min-height: 38px;
     }
 
-    .page-nav .last-btn,
-    .page-nav .read-btn {
+    .page-nav .last-btn {
         padding: 8px 7px;
         font-size: 0.78rem;
         min-height: 38px;
