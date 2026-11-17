@@ -43,6 +43,11 @@
         <source src="./video/21 añosss.mp4" type="video/mp4">
       </video>
     </div>
+
+    <div class="wait-hint" id="waitHint">
+      <span class="wait-heart">🌹</span>
+      Esperá que termine...
+    </div>
   </div>
 
   <div class="surprise-overlay" id="surpriseOverlay">
@@ -53,6 +58,7 @@
         draggable="false"
       >
       <span class="btn-cut-line"></span>
+      <span class="ribbon-sparkles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
       <span class="touch-badge">Tocar</span>
     </a>
   </div>
@@ -129,6 +135,7 @@
     const myVideo = document.getElementById('myVideo');
     const surpriseOverlay = document.getElementById('surpriseOverlay');
     const surpriseBtn = document.getElementById('surpriseBtn');
+    const waitHint = document.getElementById('waitHint');
 
     // CONFIGURACIÓN DEL BUCLE DE FONDO
     const TIEMPO_INICIO_BUCLE = 10; // Cambiá este valor al segundo donde querés que reinicie el bucle
@@ -152,10 +159,16 @@
         myVideo.muted = true;
         myVideo.play().catch(() => {});
       });
+
+      // Aviso de esperar mientras se reproduce el video
+      waitHint.classList.add('show');
     });
 
     // Manejador de fin de reproducción para activar el bucle y mostrar el botón
     myVideo.addEventListener('ended', () => {
+      // Oculta el aviso de espera
+      waitHint.classList.remove('show');
+
       // Muestra el botón sorpresa únicamente la primera vez
       if (!yaMostroBoton) {
         surpriseOverlay.classList.add('active');

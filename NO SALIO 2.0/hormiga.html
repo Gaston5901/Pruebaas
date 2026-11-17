@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Hormiga</title>
+<style>
+   body {
+    margin: 0;
+    padding: 0;
+    background: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    touch-action: none;
+}
+canvas {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#lienzo {
+    z-index: 2;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+<canvas id="lienzo"></canvas>
+<script>
+'use strict';
+const a = document.getElementById('lienzo');
+const c = a.getContext("2d");
+function resizeCanvas() {
+    a.width = window.innerWidth;
+    a.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+document.body.style='margin:0;touch-action:none';
+const MAX_ANT_COUNT = 100;
+const HALF_ANT_COUNT = MAX_ANT_COUNT/2|0;
+const QUART_ANT_COUNT = MAX_ANT_COUNT/4|0;
+let i, j, k, l, objects, objectCount, score, totalScore, canvasBack, contextBack;
+let hsl = (s=0, l=0, a=1)=> contextBack.fillStyle = c.fillStyle = `hsl(0,${s}%,${l}%,${a}`;
+let drawAnt = (p, context)=>{
+    for(i=3; i--;){
+        hsl(0, 0, .2);
+        p.v && context.beginPath(context.fill(context.ellipse(
+            p.x, p.y+p.r/4, 
+            p.r*(.5-i/6), p.r*(1.3-i/6), 
+            p.a, 0, 9)));
+        hsl();
+        context.beginPath(context.fill(context.ellipse(
+            p.x, p.y, 
+            p.r/.6, p.r/15, 
+            p.a+Math.sin(i*2+p.d/13), 0, 9)));
+    }
+    for(i=3; i--;){
+        hsl(50, 9);
+        context.beginPath(context.fill(context.ellipse(
+            p.x-p.r*Math.sin(p.a)*(i-1.4), p.y+p.r*(Math.cos(p.a)*(i-1.4))-p.r/4, 
+            p.r*(i-1?.4:.2), p.r*(i?.8:.4), 
+            p.a, 0, 9)));
+    }
+};
+let spawnObject = ()=>{
+    objects.push({
+        x: ++objectCount%2 ? a.width*Math.random() : Math.random() < .5 ? -50 : a.width + 50,
+        y: objectCount%2 ? Math.random() < .5 ? -50 : a.height + 50 : a.height*Math.random(),
+        r: objectCount > QUART_ANT_COUNT ? 5+Math.random()*6 : 7+Math.random()*3,
+        v: Math.random()+1,
+        a: 0,
+        d: 0
+    });
+};
+let update = ()=>{
+    a.width += 0;
+    objects.map(p=>{
+        if (p.v){
+            p.x += p.v * Math.sin(p.a += (Math.random()*2-1)*.03);
+            p.y -= p.v * Math.cos(p.a += (Math.random()*2-1)*.03);
+            p.d += p.v -= p.v > 2 && .002;
+            if (p.x < -15) p.a = Math.random()*2-1 + 33;
+            if (p.x > a.width+15) p.a = Math.random()*2-1 - 33;
+            if (p.y < -15) p.a = Math.random()*2-1 + 22;
+            if (p.y > a.height+15) p.a = Math.random()*2-1;
+            drawAnt(p, c);
+        }
+    });
+    c.font = '6em cursive';
+    c.shadowBlur = 0;
+    for(i=9; i--;){
+        c.fillStyle = `hsl(0,99%,${50-i*9}%)`;
+        score && c.fillText(totalScore, 29+i, 99+i);
+    }
+};
+canvasBack = document.createElement('canvas');
+canvasBack.style.position = 'absolute';
+canvasBack.style.top = '0';
+canvasBack.style.left = '0';
+canvasBack.style.zIndex = '1';
+canvasBack.width = a.width;
+canvasBack.height = a.height;
+document.body.insertBefore(canvasBack, a);
+contextBack = canvasBack.getContext("2d");
+function redrawBackground() {
+    canvasBack.width = a.width;
+    canvasBack.height = a.height;
+    for(i=99; i--;)
+    for(j=99; j--;)
+    for(l=99-Math.random()*15, k=9; k--;){
+        contextBack.fillStyle = `hsl(0,0%,${l - k*3}%)`;
+        contextBack.fillRect(i*99-k/6, j*99-k/6, 91+k, 91+k);
+    }
+}
+redrawBackground();
+window.addEventListener('resize', function() {
+    resizeCanvas();
+    redrawBackground();
+});
+objects = [];
+objectCount = 0;
+score = 0;
+totalScore = 0;
+spawnObject();
+function handleClick(e) {
+    e.preventDefault();
+    let clientX, clientY;
+    if (e.touches) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+    } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+    }
+    c.beginPath();
+    c.arc(clientX, clientY, 15, 0, Math.PI * 2);
+    c.fillStyle = 'rgba(255, 0, 0, 0.8)';
+    c.fill();
+    c.beginPath();
+    c.arc(clientX, clientY, 8, 0, Math.PI * 2);
+    c.fillStyle = 'rgba(255, 100, 0, 0.9)';
+    c.fill();
+    c.beginPath();
+    c.arc(clientX, clientY, 3, 0, Math.PI * 2);
+    c.fillStyle = 'yellow';
+    c.fill();
+    objects.map(p=>{
+        if (p.v && Math.hypot(p.x - clientX, p.y - clientY) < p.r*2){
+            p.v = 0;
+            totalScore++;
+            score++;
+            if (score == MAX_ANT_COUNT) {
+                objectCount = 0;
+                score = 0;
+            }
+            let spawnCount = score ? (score == HALF_ANT_COUNT ? MAX_ANT_COUNT : 2) : 1;
+            for(i = spawnCount; i--;)
+                if (objectCount < HALF_ANT_COUNT || (score == HALF_ANT_COUNT && objectCount < MAX_ANT_COUNT))
+                    spawnObject();
+            for(i=29; i--;){
+                contextBack.fillStyle = `hsl(0,99%,${50-Math.random()*20}%)`;
+                contextBack.beginPath();
+                contextBack.ellipse(
+                    p.x+p.r*(Math.random()*2-1), p.y+p.r*(Math.random()*2-1), 
+                    p.r*(Math.random()+1)/2, p.r*(Math.random()+1)/7, 
+                    Math.random()*9, 0, 9);
+                contextBack.fill();
+            }
+            drawAnt(p, contextBack);
+            c.beginPath();
+            c.arc(clientX, clientY, 20, 0, Math.PI * 2);
+            c.fillStyle = 'rgba(255, 0, 0, 0.5)';
+            c.fill();
+        }
+        if (p.v && Math.hypot(p.x - clientX, p.y - clientY) < 199){
+            p.v = Math.random()*3 + 2;
+            p.a = Math.atan2(p.x - clientX, clientY - p.y) + Math.random()*2-1;
+        }
+    });
+}
+a.addEventListener('mousedown', handleClick);
+a.addEventListener('touchstart', handleClick);
+setInterval(update, 16);
+</script>
+</body>
+</html>

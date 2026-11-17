@@ -1,0 +1,94 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Courier New', monospace;
+  overflow: hidden;
+}
+
+#game-container {
+  position: relative;
+  width: 800px;
+  height: 500px;
+}
+
+#hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #000;
+  color: #fff;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  height: 36px;
+}
+
+#gameCanvas {
+  display: block;
+  background: #5c94fc;
+  width: 800px;
+  height: 464px;
+}
+
+#overlay {
+  position: absolute;
+  top: 36px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 36px);
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-align: center;
+  z-index: 10;
+}
+
+#overlay.hidden {
+  display: none;
+}
+
+#overlay-title {
+  font-size: 48px;
+  color: #e52521;
+  text-shadow: 3px 3px 0 #000;
+  margin-bottom: 20px;
+  letter-spacing: 4px;
+}
+
+#overlay-msg {
+  font-size: 16px;
+  color: #fff;
+  margin-bottom: 30px;
+  line-height: 2;
+}
+
+#overlay-btn {
+  background: #e52521;
+  color: #fff;
+  border: none;
+  padding: 12px 36px;
+  font-size: 18px;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  cursor: pointer;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+#overlay-btn:hover {
+  background: #ff4a46;
+}

@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Iriss🌹</title>
+  <meta name="description" content="Una carta de amor y reflexión para Iriss, de Gastón." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --night-1: #0b0812;
+      --night-2: #150e20;
+      --night-3: #1e1229;
+      --rose: #f3c3d4;
+      --rose-soft: #e7a8bf;
+      --lavender: #c9b6e4;
+      --gold: #f2d7a2;
+      --text: #efe6ef;
+      --muted: #b7a8bf;
+      --line: rgba(243, 195, 212, 0.18);
+      --glass: rgba(30, 18, 41, 0.55);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Quicksand', 'Segoe UI', Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--text);
+      font-family: var(--sans);
+      background:
+        radial-gradient(1200px 700px at 80% -10%, rgba(201, 182, 228, 0.20), transparent 60%),
+        radial-gradient(900px 600px at 10% 20%, rgba(243, 195, 212, 0.12), transparent 60%),
+        radial-gradient(1000px 800px at 50% 110%, rgba(242, 215, 162, 0.10), transparent 60%),
+        linear-gradient(180deg, var(--night-1), var(--night-2) 45%, var(--night-3));
+      background-attachment: fixed;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ====== CIELO / ESTRELLAS ====== */
+    #stars {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .sky-glow {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(60% 50% at 50% 0%, rgba(126, 87, 158, 0.18), transparent 70%);
+    }
+
+    /* ====== PÉTALOS QUE CAEN ====== */
+    .petals {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .petal {
+      position: absolute;
+      top: -40px;
+      width: 12px;
+      height: 12px;
+      border-radius: 80% 20% 80% 20%;
+      opacity: 0;
+      filter: blur(0.3px);
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0%   { transform: translate3d(0, -10vh, 0) rotate(0deg);   opacity: 0; }
+      10%  { opacity: var(--o, 0.6); }
+      50%  { transform: translate3d(var(--drift, 40px), 50vh, 0) rotate(180deg); }
+      90%  { opacity: var(--o, 0.6); }
+      100% { transform: translate3d(calc(var(--drift, 40px) * -0.6), 110vh, 0) rotate(360deg); opacity: 0; }
+    }
+
+    /* ====== LUNA ====== */
+    .moon-wrap {
+      position: fixed;
+      top: clamp(24px, 6vh, 70px);
+      right: clamp(18px, 7vw, 120px);
+      z-index: 1;
+      pointer-events: none;
+      transition: transform 0.4s ease-out;
+      will-change: transform;
+    }
+
+    .moon {
+      width: clamp(90px, 13vw, 170px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 30%, #fff7ea 0%, #f7e3c4 35%, #e8c8a6 70%, #cba586 100%);
+      box-shadow:
+        0 0 60px 10px rgba(242, 215, 162, 0.35),
+        0 0 140px 40px rgba(201, 182, 228, 0.18),
+        inset -14px -18px 30px rgba(120, 92, 74, 0.35);
+      animation: moonFloat 8s ease-in-out infinite;
+    }
+
+    @keyframes moonFloat {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    /* ====== BOTÓN VOLVER ====== */
+    .back {
+      position: fixed;
+      top: clamp(16px, 3vw, 30px);
+      left: clamp(16px, 3vw, 30px);
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      color: var(--rose);
+      text-decoration: none;
+      font-size: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .back:hover {
+      transform: translateX(-3px);
+      background: rgba(243, 195, 212, 0.12);
+      box-shadow: 0 0 20px rgba(243, 195, 212, 0.25);
+    }
+
+    /* ====== LAYOUT ====== */
+    main {
+      position: relative;
+      z-index: 2;
+      width: min(760px, 90vw);
+      margin: 0 auto;
+      padding: 0 0 110px;
+    }
+
+    /* ====== HERO ====== */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 18vh 0 12vh;
+      position: relative;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.72rem;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--rose-soft);
+      opacity: 0;
+      animation: fadeUp 1s ease 0.15s forwards;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 42px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose-soft));
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-weight: 500;
+      font-size: clamp(3rem, 11vw, 6.4rem);
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+      margin: 26px 0 0;
+      opacity: 0;
+      animation: fadeUp 1.1s ease 0.35s forwards;
+    }
+
+    .hero h1 em {
+      display: block;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--rose);
+      text-shadow: 0 0 40px rgba(243, 195, 212, 0.35);
+    }
+
+    .hero .lead {
+      max-width: 30ch;
+      margin: 30px 0 0;
+      font-size: clamp(1rem, 2.4vw, 1.15rem);
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeUp 1.1s ease 0.6s forwards;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 4vh;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      animation: fadeIn 1.4s ease 1.4s forwards;
+    }
+
+    .scroll-hint span {
+      display: block;
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(180deg, var(--rose-soft), transparent);
+      animation: pulseLine 2.2s ease-in-out infinite;
+    }
+
+    @keyframes pulseLine {
+      0%, 100% { transform: scaleY(0.4); opacity: 0.4; }
+      50%      { transform: scaleY(1);   opacity: 1; }
+    }
+
+    /* ====== REVEAL ====== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(38px);
+      transition: opacity 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ====== CARTA (sobre el fondo espacial) ====== */
+    .letter {
+      position: relative;
+      padding: clamp(28px, 5.5vw, 58px) clamp(24px, 6vw, 66px);
+      border-radius: 22px;
+      background: linear-gradient(160deg, rgba(38, 24, 52, 0.62), rgba(18, 11, 27, 0.42));
+      border: 1px solid rgba(243, 195, 212, 0.22);
+      backdrop-filter: blur(10px);
+      box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.35),
+        0 0 60px rgba(201, 182, 228, 0.10),
+        0 1px 0 rgba(255, 255, 255, 0.06) inset;
+      overflow: hidden;
+      color: #e9e0ee;
+    }
+
+    .letter::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(120% 80% at 100% 0%, rgba(243, 195, 212, 0.14), transparent 62%),
+        radial-gradient(100% 70% at 0% 100%, rgba(201, 182, 228, 0.14), transparent 62%);
+      pointer-events: none;
+    }
+
+    .letter > * {
+      position: relative;
+    }
+
+    .letter-mark {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      line-height: 1;
+      color: var(--rose-soft);
+      opacity: 0.7;
+      margin-bottom: 16px;
+    }
+
+    .letter h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.85rem, 5vw, 2.5rem);
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      margin: 0 0 26px;
+      color: var(--rose);
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(243, 195, 212, 0.22);
+    }
+
+    .letter p {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(1rem, 2.3vw, 1.08rem);
+      font-weight: 400;
+      line-height: 2.02;
+      letter-spacing: 0.01em;
+      color: #e3d8e9;
+      margin: 0 0 21px;
+    }
+
+    .letter p:last-child {
+      margin-bottom: 0;
+    }
+
+    .letter p.greeting {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1.35rem, 3.6vw, 1.65rem);
+      color: var(--rose-soft);
+      margin-bottom: 24px;
+    }
+
+    .letter p strong {
+      color: #ffe4ef;
+      font-weight: 600;
+      background: rgba(243, 195, 212, 0.18);
+      border-radius: 4px;
+      padding: 0.05em 0.18em;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+    }
+
+    .letter .sign {
+      margin-top: 34px;
+      padding-top: 22px;
+      border-top: 1px solid rgba(243, 195, 212, 0.22);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1.25rem, 3.4vw, 1.5rem);
+      color: var(--gold);
+      text-align: right;
+      letter-spacing: 0.01em;
+    }
+
+    /* ====== SEPARADOR ====== */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: clamp(70px, 12vh, 120px) 0;
+      color: var(--rose-soft);
+      opacity: 0.6;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      height: 1px;
+      width: min(140px, 28vw);
+      background: linear-gradient(90deg, transparent, var(--line), transparent);
+    }
+
+    .divider span {
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
+    }
+
+    /* ====== REFLEXIONES ====== */
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 500;
+      line-height: 1.08;
+      margin: 0 0 14px;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    .section-sub {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.7;
+      margin: 0 0 48px;
+      max-width: 46ch;
+    }
+
+    .cards {
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      position: relative;
+      padding: 30px clamp(24px, 4vw, 38px);
+      border-radius: 20px;
+      background: linear-gradient(150deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
+      border: 1px solid rgba(243, 195, 212, 0.12);
+      transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--rose), var(--lavender));
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(243, 195, 212, 0.3);
+      background: linear-gradient(150deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.28);
+    }
+
+    .card:hover::after { opacity: 1; }
+
+    .card .num {
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      opacity: 0.8;
+    }
+
+    .card h3 {
+      font-family: var(--serif);
+      font-size: clamp(1.35rem, 3.6vw, 1.7rem);
+      font-weight: 500;
+      margin: 12px 0 12px;
+      color: var(--text);
+    }
+
+    .card p {
+      margin: 0;
+      font-size: 0.98rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--muted);
+    }
+
+    /* ====== FRASE ====== */
+    .quote {
+      position: relative;
+      margin: clamp(80px, 14vh, 140px) 0;
+      padding: clamp(40px, 7vw, 70px) clamp(24px, 6vw, 60px);
+      text-align: center;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .quote p {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      line-height: 1.45;
+      font-weight: 400;
+      margin: 0;
+      color: var(--text);
+    }
+
+    .quote p em {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .quote .author {
+      display: block;
+      margin-top: 26px;
+      font-family: var(--sans);
+      font-style: normal;
+      font-size: 0.68rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ====== CIERRE ====== */
+    .ending {
+      text-align: center;
+      padding-top: clamp(20px, 6vh, 50px);
+    }
+
+    .ending .heart {
+      font-size: 1.4rem;
+      color: var(--rose);
+      display: inline-block;
+      animation: heartBeat 2.6s ease-in-out infinite;
+      filter: drop-shadow(0 0 12px rgba(243, 195, 212, 0.5));
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      15%      { transform: scale(1.12); }
+      30%      { transform: scale(1); }
+      45%      { transform: scale(1.08); }
+    }
+
+    .ending h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 7vw, 3.2rem);
+      font-weight: 500;
+      line-height: 1.15;
+      margin: 20px 0 24px;
+    }
+
+    .ending h2 em {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    .ending p {
+      font-size: clamp(0.98rem, 2.3vw, 1.08rem);
+      font-weight: 300;
+      line-height: 2;
+      color: var(--muted);
+      max-width: 40ch;
+      margin: 0 auto 10px;
+    }
+
+    .ending .firma {
+      margin-top: 40px;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--gold);
+    }
+
+    footer {
+      margin-top: 90px;
+      text-align: center;
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(183, 168, 191, 0.45);
+    }
+
+    /* ====== ANIMACIONES BASE ====== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(26px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ====== RESPONSIVE ====== */
+    @media (max-width: 620px) {
+      main {
+        width: 92vw;
+        padding-bottom: 80px;
+      }
+
+      .back {
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+      }
+
+      .hero {
+        min-height: 100svh;
+        padding: 26vh 0 14vh;
+      }
+
+      .eyebrow {
+        font-size: 0.62rem;
+        letter-spacing: 0.32em;
+        gap: 10px;
+      }
+
+      .eyebrow::before { width: 28px; }
+
+      .hero h1 {
+        font-size: clamp(2.35rem, 11vw, 3rem);
+        line-height: 1.02;
+        margin-top: 20px;
+      }
+
+      .hero .lead {
+        max-width: 34ch;
+        font-size: 0.98rem;
+        line-height: 1.7;
+        margin-top: 22px;
+      }
+
+      .moon-wrap {
+        top: 14px;
+        right: 8px;
+        opacity: 0.5;
+      }
+
+      .moon {
+        width: 88px;
+        animation-duration: 12s;
+      }
+
+      .scroll-hint { display: none; }
+
+      .letter {
+        padding: 26px 20px;
+        border-radius: 18px;
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+      }
+
+      .letter-mark {
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+      }
+
+      .letter h2 {
+        font-size: 1.7rem;
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+      }
+
+      .letter p {
+        font-size: 0.97rem;
+        line-height: 1.88;
+        margin-bottom: 18px;
+      }
+
+      .letter p.greeting {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+      }
+
+      .letter .sign {
+        margin-top: 28px;
+        padding-top: 18px;
+        font-size: 1.2rem;
+      }
+
+      .divider { margin: 54px 0; }
+
+      .section-title { font-size: clamp(1.85rem, 7vw, 2.4rem); }
+
+      .section-sub {
+        font-size: 0.9rem;
+        margin-bottom: 34px;
+      }
+
+      .cards { gap: 14px; }
+
+      .card {
+        padding: 24px 20px;
+        border-radius: 16px;
+      }
+
+      .card .num { font-size: 0.82rem; }
+
+      .card h3 {
+        font-size: 1.3rem;
+        margin: 10px 0;
+      }
+
+      .card p {
+        font-size: 0.93rem;
+        line-height: 1.75;
+      }
+
+      .quote {
+        margin: 62px 0;
+        padding: 36px 18px;
+      }
+
+      .quote p {
+        font-size: clamp(1.35rem, 7vw, 1.9rem);
+        line-height: 1.4;
+      }
+
+      .quote .author {
+        font-size: 0.62rem;
+        margin-top: 20px;
+      }
+
+      .ending { padding-top: 16px; }
+
+      .ending h2 {
+        font-size: clamp(1.9rem, 8vw, 2.5rem);
+        margin: 16px 0 20px;
+      }
+
+      .ending p {
+        font-size: 0.95rem;
+        line-height: 1.85;
+      }
+
+      .ending .firma {
+        margin-top: 32px;
+        font-size: 1.25rem;
+      }
+
+      footer {
+        margin-top: 60px;
+        font-size: 0.62rem;
+        letter-spacing: 0.22em;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .hero h1 { font-size: 2.1rem; }
+      .hero .lead { font-size: 0.94rem; }
+      .letter { padding: 24px 16px; }
+      .letter p { font-size: 0.94rem; }
+      .card { padding: 22px 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="sky-glow" aria-hidden="true"></div>
+  <div class="petals" id="petals" aria-hidden="true"></div>
+
+  <div class="moon-wrap" id="moonWrap" aria-hidden="true">
+    <div class="moon"></div>
+  </div>
+
+  <a class="back" href="../index.html" title="Volver">&#8592;</a>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Una carta para Iriss</p>
+      <h1>Mi corazón<em>te está esperando</em></h1>
+      <p class="lead">
+        No te escribo para presionarte. Te escribo para que sepas
+        que lo nuestro no fue cualquier cosa.
+      </p>
+      <div class="scroll-hint">
+        Seguí leyendo
+        <span></span>
+      </div>
+    </section>
+
+    <section class="letter reveal">
+      <div class="letter-mark">&ldquo;</div>
+      <h2>Para vos, Iriss</h2>
+      <p class="greeting">
+        Hola, soy yo, Gastón.
+      </p>
+      <p>
+        No sé si en este momento llegarás a leer esto, o si preferís mantener la
+        distancia, pero necesitaba escribirlo y sacarlo de adentro. Estuve
+        pensando muchísimo en todo este tiempo, en cada palabra, en cada charla y
+        en cada risa que compartimos. Se me hace imposible soltar así como así
+        todo lo lindo que vivimos, porque <strong>lo que tuvimos fue real,
+        sincero y muy profundo</strong>.
+      </p>
+      <p>
+        Quiero empezar por decirte algo muy importante, porque sé cómo sos y sé
+        perfectamente que te estás castigando con esto: <strong>vos no tenés la
+        culpa de nada</strong>, por favor no lo veas así. Nadie elige romperse por
+        dentro, ni cargar con mochilas pesadas, miedos del pasado o con cosas que
+        duelen. Entiendo que necesites tu espacio, que estés transitando tu
+        proceso y que sientas que alejarte es lo mejor para vos hoy. Pero quiero
+        que sepas que yo jamás te voy a ver como un problema, ni como un desastre,
+        ni como una carga. Para mí siempre fuiste y vas a ser mi niñita bella, la
+        personita que me llenó el alma.
+      </p>
+      <p>
+        Me duele en el alma ver que te sentís así, que cargues con la idea de que
+        no tenés nada para ofrecer o que no merecés amor. Al contrario:
+        <strong>me diste muchísimo más de lo que te imaginás</strong>. Me
+        enseñaste a valorar un montón de cosas, me acercaste más a Dios, y me
+        regalaste momentos hermosos que voy a guardar en mi corazón toda la vida.
+      </p>
+      <p>
+        Sé que hoy estás bloqueada, que sentís que no podés con vos misma y que
+        necesitás este tiempo sola para sanar. Y aunque me duela el alma en este
+        momento, acepto tu decisión. No hay enojo de mi parte, ni rencor, ni nada
+        malo; solo tengo un amor inmenso y un respeto absoluto por vos. Sabés
+        perfectamente dónde buscarme si algún día lo deseás. No te escribo para
+        presionarte ni para abrumarte, sino para que sepas que <strong>mi corazón
+        te está esperando todos los días</strong>. No salís de mi mente ni un solo
+        instante, y te espero todo lo que sea necesario, te amoo demasiado Iriss.
+      </p>
+      <p>
+        Me aferro con toda el alma y sigo creyendo firmemente en que Dios nos va a
+        juntar de vuelta, yo sé que sí. Si es Su voluntad, sé que más adelante nos
+        volveremos a reunir y a conectar de otra manera. No tengo ningún apuro,
+        porque cuando uno ama de verdad, sabe esperar y cuidar en silencio.
+      </p>
+      <p>
+        Por favor, cuidate muchísimo, mis ojitos bonitos. Enfocáte en sanar,
+        apoyate en Dios y en tu familia, y sé que vas a lograr todo lo hermoso que
+        te propongas porque tenés un corazón gigante.
+      </p>
+      <p>
+        Quiero que sepas que esto no es un adiós ni un hasta siempre... es un
+        <strong>hasta pronto</strong>, porque sé que nuestros caminos se van a
+        volver a cruzar y vamos a volver a conectar. Voy a estar acá, firme,
+        esperándote sip.
+      </p>
+      <p>
+        Te amo con el alma hoy y siempre, señoritaa Iriss.
+        <span aria-hidden="true">&#127801;</span>
+      </p>
+      <div class="sign">Con todo mi amor, Gastón🌹.</div>
+    </section>
+
+    <div class="divider reveal"><span>&#10022;</span></div>
+
+    <section class="reveal">
+      <h2 class="section-title">Lo que me enseñó<br><em>quererte</em></h2>
+      <p class="section-sub">
+        Cuatro cosas que me llevo de vos, y que voy a guardar siempre
+        en el corazón.
+      </p>
+      <div class="cards">
+        <article class="card">
+          <div class="num">01</div>
+          <h3>Me acercaste a Dios</h3>
+          <p>
+            Sin darte cuenta, me acercaste más a Él. Me mostraste una forma de
+            creer y de confiar que hoy me sostiene, y eso es algo que no se
+            olvida.
+          </p>
+        </article>
+        <article class="card">
+          <div class="num">02</div>
+          <h3>Me enseñaste a valorar</h3>
+          <p>
+            Me enseñaste a valorar un montón de cosas que antes pasaba por alto.
+            Cosas chiquitas, cotidianas, que hoy tienen otro sentido gracias a
+            vos.
+          </p>
+        </article>
+        <article class="card">
+          <div class="num">03</div>
+          <h3>Me regalaste momentos hermosos</h3>
+          <p>
+            Cada charla, cada risa, cada instante compartido quedó guardado en mi
+            corazón para toda la vida. Lo lindo que vivimos no se borra.
+          </p>
+        </article>
+        <article class="card">
+          <div class="num">04</div>
+          <h3>El amor verdadero sabe esperar</h3>
+          <p>
+            No tengo apuro. El amor verdadero sabe esperar y cuidar en silencio.
+            Mi corazón te va a estar esperando, sin presionarte, sin apurarte.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="quote reveal">
+      <p>
+        El amor verdadero <em>sabe esperar</em><br>
+        y cuidar en silencio.
+      </p>
+      <span class="author">Abelardo</span>
+    </section>
+
+    <section class="ending reveal">
+      <div class="heart">&#10084;</div>
+      <h2>Siempre vas a tener<br><em>un lugar especial acá</em></h2>
+      <p>
+        Te amo con el alma hoy y siempre, Iriss. Ojalá sanes, encuentres la paz
+        que tanto buscás y seas muy feliz.
+      </p>
+      <p>Yo voy a estar acá, firme, esperándote. Esto no es un adiós: es un hasta pronto.</p>
+      <div class="firma">Con todo mi amor, Gastón Abelardo Ituarte🌹. <span aria-hidden="true">&#127801;</span></div>
+    </section>
+
+    <footer>Para Iriss, con amor Pachuu</footer>
+  </main>
+
+  <script>
+    (function () {
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* ---------- ESTRELLAS ---------- */
+      var canvas = document.getElementById('stars');
+      var ctx = canvas.getContext('2d');
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var stars = [];
+      var w = 0, h = 0;
+
+      function buildStars() {
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        var count = Math.round((w * h) / 12000);
+        count = Math.max(40, Math.min(count, 180));
+        stars = [];
+        for (var i = 0; i < count; i++) {
+          stars.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            r: Math.random() * 1.4 + 0.3,
+            alpha: Math.random() * 0.6 + 0.2,
+            speed: Math.random() * 0.0009 + 0.0003,
+            phase: Math.random() * Math.PI * 2
+          });
+        }
+      }
+
+      function drawStars(t) {
+        ctx.clearRect(0, 0, w, h);
+        for (var i = 0; i < stars.length; i++) {
+          var s = stars[i];
+          var a = reduceMotion ? s.alpha : s.alpha * (0.55 + 0.45 * Math.sin(t * s.speed + s.phase));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255, 245, 240, ' + a.toFixed(3) + ')';
+          ctx.fill();
+        }
+        if (!reduceMotion) requestAnimationFrame(drawStars);
+      }
+
+      buildStars();
+      if (reduceMotion) {
+        drawStars(0);
+      } else {
+        requestAnimationFrame(drawStars);
+      }
+
+      var resizeTimer;
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () {
+          buildStars();
+          if (reduceMotion) drawStars(0);
+        }, 200);
+      });
+
+      /* ---------- PÉTALOS ---------- */
+      var petalsBox = document.getElementById('petals');
+      var petalColors = ['#f3c3d4', '#e7a8bf', '#c9b6e4', '#f2d7a2', '#f7d9e5'];
+
+      function createPetals() {
+        var amount = window.innerWidth < 620 ? 9 : 16;
+        for (var i = 0; i < amount; i++) {
+          var p = document.createElement('span');
+          p.className = 'petal';
+          var size = Math.random() * 10 + 7;
+          p.style.left = Math.random() * 100 + 'vw';
+          p.style.width = size + 'px';
+          p.style.height = size * 0.8 + 'px';
+          p.style.background = petalColors[Math.floor(Math.random() * petalColors.length)];
+          p.style.setProperty('--o', (Math.random() * 0.35 + 0.2).toFixed(2));
+          p.style.setProperty('--drift', (Math.random() * 160 - 80).toFixed(0) + 'px');
+          p.style.animationDuration = (Math.random() * 16 + 16).toFixed(1) + 's';
+          p.style.animationDelay = (-Math.random() * 26).toFixed(1) + 's';
+          petalsBox.appendChild(p);
+        }
+      }
+
+      if (!reduceMotion) createPetals();
+
+      /* ---------- REVEAL ON SCROLL ---------- */
+      var revealEls = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && !reduceMotion) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+        revealEls.forEach(function (el) { io.observe(el); });
+      } else {
+        revealEls.forEach(function (el) { el.classList.add('is-visible'); });
+      }
+
+      /* ---------- PARALLAX SUAVE DE LA LUNA ---------- */
+      var moonWrap = document.getElementById('moonWrap');
+      if (!reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+        window.addEventListener('mousemove', function (e) {
+          var x = (e.clientX / window.innerWidth - 0.5) * 18;
+          var y = (e.clientY / window.innerHeight - 0.5) * 18;
+          moonWrap.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,0)';
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

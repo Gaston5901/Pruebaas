@@ -33,7 +33,9 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 24px 0;
       background:
         radial-gradient(900px 500px at 15% 10%, #ffe0ef 30%, transparent 60%),
         radial-gradient(900px 500px at 85% 20%, #e1bee7 25%, transparent 60%),
@@ -266,6 +268,89 @@
             box-shadow: 0 10px 26px rgba(0,0,0,.18);
         }
         .volver-inicio:hover{ transform: translateY(-1px); background: rgba(255,255,255,.95); }
+
+    /* Botón para entrar antes de tiempo */
+    .entrar-wrap {
+      margin-top: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .entrar-ya {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 26px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f48fb1, #b39ddb);
+      color: #fff;
+      font-weight: 700;
+      font-size: clamp(0.85rem, 3vw, 1rem);
+      text-decoration: none;
+      border: 2px solid #fff;
+      box-shadow: 0 10px 24px rgba(244, 143, 177, 0.45);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      animation: pulseBtn 2.4s ease-in-out infinite;
+    }
+
+    .entrar-ya:hover {
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 14px 30px rgba(244, 143, 177, 0.6);
+      animation-play-state: paused;
+    }
+
+    .entrar-ya:active { transform: scale(0.97); }
+
+    @keyframes pulseBtn {
+      0%, 100% { box-shadow: 0 10px 24px rgba(244, 143, 177, 0.45); }
+      50% { box-shadow: 0 12px 32px rgba(179, 157, 219, 0.7); }
+    }
+
+    .entrar-hint {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.3px;
+    }
+
+    /* Mensaje cuando llega el día */
+    .llegada {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      margin: 4px 0;
+      padding: 18px 12px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255, 224, 130, 0.5), rgba(244, 143, 177, 0.35));
+      border: 2px dashed var(--accent1);
+    }
+
+    .llegada.show {
+      display: flex;
+      animation: llegadaPop 0.6s ease;
+    }
+
+    .llegada .big {
+      font-size: clamp(1.2rem, 5vw, 1.6rem);
+      font-weight: 700;
+      color: var(--accent1);
+    }
+
+    .llegada .small {
+      font-size: clamp(0.8rem, 3vw, 0.95rem);
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    @keyframes llegadaPop {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -297,7 +382,7 @@
     <!-- Barra de progreso -->
     <div class="progress-container">
       <div class="progress-info">
-        <span>Sorpresa cargada:</span>
+        <span id="progressLabel">Sorpresa cargada:</span>
         <span id="progress-text">0%</span>
       </div>
       <div class="progress-bar-bg">
@@ -306,7 +391,7 @@
     </div>
 
     <!-- Contador horizontal de 1 sola fila -->
-    <div class="countdown">
+    <div class="countdown" id="countdown">
       <div class="box">
         <div class="num" id="d">--</div>
         <div class="label">Días</div>
@@ -323,6 +408,18 @@
         <div class="num" id="s">--</div>
         <div class="label">Seg</div>
       </div>
+    </div>
+
+    <!-- Mensaje cuando ya es el día -->
+    <div class="llegada" id="llegada">
+      <span class="big">¡Llegó el día! 🎉</span>
+      <span class="small">Disfrutalo mucho 💜</span>
+    </div>
+
+    <!-- Botón para entrar antes de tiempo -->
+    <div class="entrar-wrap">
+      <a class="entrar-ya" href="../CUMPLE_DE_IRISS/index.html">Abrir mi regalo ahora 🎁</a>
+      <span class="entrar-hint" id="entrarHint">o esperá a que llegue el día 💜</span>
     </div>
 
     <!-- CÍRCULOS INFERIORES PARA IMÁGENES -->
@@ -357,11 +454,12 @@
 
     updatePhrase();
 
-    setInterval(() => {
+    const phraseInterval = setInterval(() => {
       phraseEl.style.opacity = 0;
       phraseCounterEl.style.opacity = 0;
 
       setTimeout(() => {
+        if (llegado) return;
         currentPhraseIdx = (currentPhraseIdx + 1) % frases.length;
         updatePhrase();
         phraseEl.style.opacity = 1;
@@ -369,17 +467,11 @@
       }, 400);
     }, 4000);
 
-    // LÓGICA DE FECHA (1 DE ENERO) Y BARRA DE PROGRESO
+    // LÓGICA DE FECHA (1 DE ENERO DE 2027) Y BARRA DE PROGRESO
     function getDates() {
       const now = new Date();
-      let targetYear = now.getFullYear();
-
-      if (now.getMonth() > 0 || (now.getMonth() === 0 && now.getDate() >= 1)) {
-        targetYear++;
-      }
-
-      const target = new Date(2026, 7, 3, 0, 25, 0, 0);
-      const start = new Date(targetYear - 1, 0, 1, 0, 0, 0, 0);
+      const target = new Date(2027, 0, 1, 0, 0, 0, 0);
+      const start = new Date(2026, 0, 1, 0, 0, 0, 0);
 
       return { now, start, target };
     }
@@ -390,17 +482,32 @@
     const elS = document.getElementById("s");
     const progressFill = document.getElementById("progress-fill");
     const progressText = document.getElementById("progress-text");
+    const progressLabel = document.getElementById("progressLabel");
+    const countdownEl = document.getElementById("countdown");
+    const llegadaEl = document.getElementById("llegada");
+    const entrarHint = document.getElementById("entrarHint");
+
+    let llegado = false;
 
 function tick() {
   const { now, start, target } = getDates();
   let diff = target - now;
 
   if (diff <= 0) {
-    // Completa la barra justo antes de redirigir
+    // Se completó la cuenta: se oculta el contador y se muestra el mensaje
     progressFill.style.width = "100%";
     progressText.textContent = "100%";
 
-    window.location.href = "../CUMPLE_DE_IRISS/index.html";
+    if (!llegado) {
+      llegado = true;
+      progressLabel.textContent = "¡Sorpresa lista!";
+      countdownEl.style.display = "none";
+      llegadaEl.classList.add("show");
+      entrarHint.textContent = "Ya podés abrirlo cuando quieras 🎁";
+      clearInterval(phraseInterval);
+      phraseEl.textContent = "¡Llegó el día! Disfrutalo mucho 💜";
+      phraseCounterEl.textContent = "🎉";
+    }
     return;
   }
 

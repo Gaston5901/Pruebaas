@@ -10,7 +10,7 @@
 }
 
 body {
-  background: #fdf6f0; /* Fondo crema cálido */
+  background: #fdf6f0;
   color: #2c1820;
   min-height: 100vh;
   display: flex;
@@ -72,7 +72,7 @@ body {
   width: 100%;
   max-width: 600px;
   border-radius: 24px;
-  padding: 40px 28px;
+  padding: 44px 34px 48px;
   box-shadow: 
     0 15px 35px rgba(180, 120, 140, 0.15),
     0 2px 10px rgba(0, 0, 0, 0.03);
@@ -205,7 +205,7 @@ body {
   font-size: 0.98rem;
   line-height: 1.8;
   color: #3b202c;
-  margin-bottom: 20px;
+  margin-bottom: 21px;
   font-weight: 400;
   letter-spacing: 0.1px;
 }
@@ -216,6 +216,36 @@ body {
   font-size: 1.8rem;
   color: #c84b7a;
   margin-bottom: 18px;
+}
+
+.paper-body strong {
+  color: #8e3158;
+  font-weight: 700;
+}
+
+.highlight-paragraph {
+  padding: 16px 18px;
+  border-left: 3px solid #e999b6;
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(90deg, rgba(255, 232, 241, 0.8), transparent);
+}
+
+.quote {
+  padding: 14px 18px;
+  color: #8e3158 !important;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem !important;
+  font-style: italic;
+  text-align: center;
+  border-top: 1px solid #f5cad9;
+  border-bottom: 1px solid #f5cad9;
+}
+
+.new-year-wish {
+  color: #c84b7a !important;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.65rem !important;
+  text-align: center;
 }
 
 /* Firma Cursiva */
@@ -237,6 +267,15 @@ body {
   font-size: 2.2rem;
   color: #c84b7a;
   display: block;
+}
+
+.handwritten-signature small {
+  display: block;
+  max-width: 430px;
+  margin: 16px 0 0 auto;
+  color: #8c5b6e;
+  font-size: 0.78rem;
+  line-height: 1.55;
 }
 
 /* ==========================================================
@@ -326,17 +365,75 @@ body {
 
 /* ADAPTACIÓN MOBILE */
 @media (max-width: 480px) {
+  body {
+    padding: 62px 8px 28px;
+  }
+
   .paper-card {
-    padding: 30px 18px;
+    padding: 32px 17px 36px;
     border-radius: 20px;
   }
 
+  .corner-heart {
+    font-size: 0.9rem;
+  }
+
+  .paper-header {
+    margin-bottom: 16px;
+  }
+
+  .stamp-date {
+    max-width: 92%;
+    font-size: 0.62rem;
+    letter-spacing: 1px;
+    line-height: 1.4;
+  }
+
   .paper-title {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    line-height: 1.05;
+  }
+
+  .paper-subtitle {
+    font-size: 0.78rem;
+    line-height: 1.4;
+  }
+
+  .paper-divider {
+    margin: 18px 0 24px;
   }
 
   .paper-body p {
-    font-size: 0.92rem;
-    line-height: 1.7;
+    font-size: 0.94rem;
+    line-height: 1.72;
+    margin-bottom: 18px;
+  }
+
+  .paper-body p.greeting {
+    font-size: 1.55rem;
+    line-height: 1.2;
+  }
+
+  .highlight-paragraph {
+    padding: 13px 14px;
+  }
+
+  .quote {
+    font-size: 1.2rem !important;
+    padding: 12px 10px;
+  }
+
+  .handwritten-signature {
+    margin-top: 28px;
+  }
+
+  .handwritten-signature span {
+    font-size: 1.9rem;
+    line-height: 1.1;
+  }
+
+  .handwritten-signature small {
+    font-size: 0.74rem;
+    line-height: 1.5;
   }
 }

@@ -596,7 +596,7 @@ body {
   }
 
   .completion-track {
-    animation: announcementScroll 8s linear infinite !important;
+    animation: announcementScroll 14s linear infinite !important;
   }
 }
 
@@ -830,7 +830,7 @@ body {
   gap: 0;
   white-space: nowrap;
   color: #ffb4d7;
-  animation: announcementScroll 7s linear infinite;
+  animation: announcementScroll 12s linear infinite;
   will-change: transform;
 }
 
@@ -892,7 +892,7 @@ body {
   }
 
   .completion-track {
-    animation-duration: 8s;
+    animation-duration: 14s;
   }
 
   .gift-number {

@@ -221,6 +221,48 @@ html, body {
   background: rgba(0, 0, 0, 0.05);
 }
 
+/* Aviso para esperar a que termine el video */
+.wait-hint {
+  position: absolute;
+  left: 50%;
+  top: 22px;
+  transform: translate3d(-50%, -10px, 0);
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(20, 10, 30, 0.55);
+  border: 1px solid rgba(255, 230, 255, 0.18);
+  color: #ffe6f5;
+  font-family: 'Caveat', 'Segoe Script', cursive;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.wait-hint.show {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0);
+}
+
+.wait-hint .wait-heart {
+  display: inline-block;
+  color: #ff8ac4;
+  animation: waitHeart 1.4s ease-in-out infinite;
+}
+
+@keyframes waitHeart {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+}
+
 /* ==========================================================
    OVERLAY DE REGALO FINAL
 ========================================================== */
@@ -247,7 +289,16 @@ html, body {
   width: min(88vw, 420px);
   cursor: pointer;
   text-decoration: none;
-  animation: ribbonFloat 2.8s infinite ease-in-out;
+}
+
+.surprise-overlay.active .btn-surprise {
+  animation: ribbonPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             ribbonFloat 2.8s 0.6s infinite ease-in-out;
+}
+
+@keyframes ribbonPop {
+  0% { opacity: 0; transform: scale(0.82); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 .btn-surprise .touch-badge {
@@ -255,15 +306,67 @@ html, body {
   top: 55%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
-  z-index: 3;
+  z-index: 4;
   color: #fff3c4;
   font-family: 'Caveat', 'Segoe Script', cursive;
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: 1px;
-  text-shadow: 0 3px 8px rgba(0, 0, 0, 0.85), 0 0 18px rgba(255, 215, 120, 0.55);
+  line-height: 1;
   white-space: nowrap;
+  padding: 3px 20px 5px;
+  border-radius: 999px;
+  background: rgba(18, 8, 24, 0.55);
+  border: 1px solid rgba(255, 215, 120, 0.45);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 0 12px rgba(255, 215, 120, 0.15);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7), 0 0 14px rgba(255, 215, 120, 0.5);
   animation: badgePulse 1.6s infinite ease-in-out;
+}
+
+/* Destellos alrededor del moño */
+.ribbon-sparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.ribbon-sparkles i {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff3c4;
+  box-shadow: 0 0 8px 2px rgba(255, 215, 120, 0.9);
+  opacity: 0;
+  animation: sparkleTwinkle 2.4s ease-in-out infinite;
+}
+
+.ribbon-sparkles i:nth-child(1) { top: 16%; left: 7%; animation-delay: 0s; }
+.ribbon-sparkles i:nth-child(2) { top: 6%; left: 72%; animation-delay: 0.4s; }
+.ribbon-sparkles i:nth-child(3) { top: 40%; left: 94%; animation-delay: 0.8s; }
+.ribbon-sparkles i:nth-child(4) { top: 80%; left: 84%; animation-delay: 1.2s; }
+.ribbon-sparkles i:nth-child(5) { top: 90%; left: 20%; animation-delay: 0.6s; }
+.ribbon-sparkles i:nth-child(6) { top: 58%; left: 3%; animation-delay: 1s; }
+
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 0; transform: scale(0.4); }
+  50% { opacity: 1; transform: scale(1.25); }
+}
+
+.surprise-overlay.active .btn-surprise img {
+  animation: ribbonGlow 2.6s ease-in-out infinite;
+}
+
+@keyframes ribbonGlow {
+  0%, 100% {
+    filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 10px rgba(255, 120, 180, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 26px rgba(255, 120, 180, 0.75));
+  }
 }
 
 @keyframes badgePulse {
@@ -347,6 +450,24 @@ html, body {
 
   .surprise-overlay {
     bottom: 14%;
+  }
+
+  .btn-surprise .touch-badge {
+    font-size: 1.55rem;
+    padding: 2px 16px 4px;
+  }
+
+  .ribbon-sparkles i {
+    width: 5px;
+    height: 5px;
+  }
+
+  .wait-hint {
+    top: 14px;
+    max-width: calc(100vw - 24px);
+    padding: 6px 14px;
+    font-size: 1rem;
+    letter-spacing: 0.2px;
   }
 }
 
