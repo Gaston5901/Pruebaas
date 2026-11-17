@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>El gran final · Iris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg: #07040e;
+            --panel: rgba(24, 12, 34, 0.72);
+            --gold: #d9b86a;
+            --gold-light: #fff2cf;
+            --rose: #d98aa8;
+            --violet: #8d5bb8;
+            --muted: #b9a9c8;
+        }
+        body {
+            min-height: 100dvh;
+            font-family: 'Outfit', sans-serif;
+            color: #f8f2ff;
+            background:
+                radial-gradient(circle at 18% 12%, rgba(141, 91, 184, 0.28), transparent 38%),
+                radial-gradient(circle at 82% 78%, rgba(217, 138, 168, 0.22), transparent 42%),
+                linear-gradient(160deg, #0b0616, var(--bg) 55%, #120820);
+            overflow-x: hidden;
+            padding: 28px 16px 42px;
+        }
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::before {
+            background-image:
+                radial-gradient(1.5px 1.5px at 12% 22%, #fff 40%, transparent 45%),
+                radial-gradient(1.5px 1.5px at 78% 16%, #ffe9b8 40%, transparent 45%),
+                radial-gradient(1px 1px at 42% 68%, #fff 40%, transparent 45%),
+                radial-gradient(1.5px 1.5px at 88% 54%, #f4b9d2 40%, transparent 45%),
+                radial-gradient(1px 1px at 28% 86%, #fff 40%, transparent 45%);
+            background-size: 260px 260px;
+            opacity: 0.55;
+            animation: breathing 7s ease-in-out infinite alternate;
+        }
+        body::after {
+            background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.62) 100%);
+        }
+        @keyframes breathing { from { opacity: 0.35; } to { opacity: 0.7; } }
+        @keyframes appear { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+        .final-wrap {
+            position: relative;
+            z-index: 1;
+            width: min(680px, 100%);
+            margin: 0 auto;
+            animation: appear 0.9s ease both;
+        }
+        .nav-arriba {
+            display: flex;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+        .volver {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+        }
+        .volver:hover { color: var(--gold-light); }
+        .eyebrow {
+            text-align: center;
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.32em;
+            text-transform: uppercase;
+        }
+        h1 {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+            font-size: clamp(1.7rem, 6vw, 2.6rem);
+            line-height: 1.15;
+            margin: 12px 0 10px;
+            background: linear-gradient(120deg, var(--gold-light), var(--rose), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .intro {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin: 0 auto 22px;
+            max-width: 520px;
+        }
+        .progress {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+        .progress span {
+            width: 26px;
+            height: 4px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.14);
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+        .progress span.hecho {
+            background: linear-gradient(90deg, var(--rose), var(--gold));
+            box-shadow: 0 0 10px rgba(217, 184, 106, 0.5);
+        }
+        .capitulos {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+        .card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 15px 16px;
+            border-radius: 18px;
+            background: var(--panel);
+            border: 1px solid rgba(217, 184, 106, 0.2);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+            backdrop-filter: blur(12px);
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+        .card:not(.bloqueada):hover {
+            transform: translateY(-2px);
+            border-color: rgba(217, 184, 106, 0.5);
+        }
+        .card.bloqueada { opacity: 0.48; }
+        .numero {
+            flex: 0 0 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            color: var(--gold-light);
+            border: 1px solid rgba(217, 184, 106, 0.55);
+            background: rgba(217, 184, 106, 0.08);
+        }
+        .card.hecha .numero { background: linear-gradient(135deg, var(--rose), var(--violet)); }
+        .info { flex: 1; min-width: 0; }
+        .info strong {
+            display: block;
+            font-family: 'Cinzel', serif;
+            font-size: 0.92rem;
+            letter-spacing: 0.04em;
+        }
+        .info small {
+            display: block;
+            color: var(--muted);
+            font-size: 0.78rem;
+            line-height: 1.4;
+            margin-top: 3px;
+        }
+        .estado {
+            flex: 0 0 auto;
+            padding: 9px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(217, 184, 106, 0.45);
+            background: rgba(217, 184, 106, 0.1);
+            color: var(--gold-light);
+            font-family: 'Cinzel', serif;
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .estado:active { transform: scale(0.96); }
+        .card.bloqueada .estado { cursor: default; border-color: rgba(255, 255, 255, 0.15); color: var(--muted); background: transparent; }
+        .cierre {
+            text-align: center;
+            margin-top: 24px;
+            color: var(--gold-light);
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.06em;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        .cierre.visible { opacity: 1; }
+        @media (max-width: 420px) {
+            body { padding: 20px 12px 32px; }
+            .card { gap: 10px; padding: 13px 12px; }
+            .numero { flex-basis: 36px; height: 36px; font-size: 0.8rem; }
+            .info small { font-size: 0.72rem; }
+            .estado { padding: 8px 10px; font-size: 0.62rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="final-wrap">
+        <div class="nav-arriba">
+            <a class="volver" href="index.html?desbloqueado=1">← Volver al contador y las promesas</a>
+        </div>
+        <div class="eyebrow">El gran final</div>
+        <h1>Tu historia, por capítulos</h1>
+        <p class="intro">Ya estamos llegando al final de este viaje, Iris. Vamos de a uno, sin apuro: cuando terminás un capítulo y volvés, se abre el siguiente. Al final, todos quedan abiertos para elegir el que quieras rever.</p>
+        <div class="progress" id="progress"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="capitulos" id="capitulos"></div>
+        <div class="cierre" id="cierre">Todo listo, Iris. Elegí por dónde empezar 💜</div>
+    </div>
+
+    <script>
+        (function () {
+            const KEY = 'sorpresa9_capitulos_completados';
+            const capitulos = [
+                { id: 1, nombre: 'La llegada', detalle: 'Cuando te dije que ya estábamos llegando al final. Ya lo viste.', auto: true },
+                { id: 2, nombre: 'Tus 21 deseos', detalle: 'Tocá cada vela y pedí un deseo, hasta llegar a tus 21 deseos.', destino: '../../lobby/index.html?capitulo=2' },
+                { id: 3, nombre: 'El cielo', detalle: 'Luces que se encienden para vos. Tocá para verlo cuando esté listo.' },
+                { id: 4, nombre: 'La carta', detalle: 'La guardamos para el momento justo. Tocá para marcarla como vista.' },
+                { id: 5, nombre: 'Tu retrato', detalle: 'Lo último que me quedó por darte. Tocá para marcarlo como visto.' }
+            ];
+
+            let completados = new Set();
+            try {
+                const guardados = JSON.parse(localStorage.getItem(KEY) || '[]');
+                if (Array.isArray(guardados)) guardados.forEach((n) => completados.add(Number(n)));
+            } catch (e) {
+                completados = new Set();
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const cap = Number(params.get('capitulo'));
+            if (params.get('listo') === '1' && cap >= 1 && cap <= 5) completados.add(cap);
+            completados.add(1);
+
+            function guardar() {
+                try { localStorage.setItem(KEY, JSON.stringify([...completados].sort((a, b) => a - b))); } catch (e) {}
+            }
+
+            function estaDesbloqueado(id) {
+                if (completados.size >= 5) return true;
+                return id === 1 || completados.has(id - 1) || completados.has(id);
+            }
+
+            function pintar() {
+                const grid = document.getElementById('capitulos');
+                const dots = [...document.querySelectorAll('#progress span')];
+                grid.innerHTML = '';
+
+                capitulos.forEach((capitulo) => {
+                    const hecho = completados.has(capitulo.id);
+                    const desbloqueado = estaDesbloqueado(capitulo.id);
+                    const card = document.createElement('div');
+                    card.className = 'card' + (hecho ? ' hecha' : '') + (!desbloqueado ? ' bloqueada' : '');
+
+                    const numero = document.createElement('div');
+                    numero.className = 'numero';
+                    numero.textContent = String(capitulo.id).padStart(2, '0');
+
+                    const info = document.createElement('div');
+                    info.className = 'info';
+                    const titulo = document.createElement('strong');
+                    titulo.textContent = capitulo.nombre;
+                    const detalle = document.createElement('small');
+                    detalle.textContent = capitulo.detalle;
+                    info.append(titulo, detalle);
+
+                    const estado = document.createElement(desbloqueado ? 'button' : 'span');
+                    estado.className = 'estado';
+                    if (!desbloqueado) {
+                        estado.textContent = 'Bloqueado 🔒';
+                    } else if (hecho) {
+                        estado.textContent = 'Ver de nuevo ↗';
+                    } else {
+                        estado.textContent = 'Abrir →';
+                    }
+
+                    if (desbloqueado) {
+                        estado.addEventListener('click', () => {
+                            if (capitulo.destino) {
+                                window.location.href = capitulo.destino;
+                                return;
+                            }
+                            completados.add(capitulo.id);
+                            guardar();
+                            pintar();
+                        });
+                    } else {
+                        estado.disabled = true;
+                    }
+
+                    card.append(numero, info, estado);
+                    grid.appendChild(card);
+                });
+
+                dots.forEach((dot, i) => dot.classList.toggle('hecho', completados.has(i + 1)));
+                document.getElementById('cierre').classList.toggle('visible', completados.size >= 5);
+            }
+
+            guardar();
+            pintar();
+
+            try {
+                if (params.has('capitulo') || params.has('listo')) {
+                    history.replaceState({}, '', window.location.pathname);
+                }
+            } catch (e) {}
+        })();
+    </script>
+</body>
+</html>

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (new URLSearchParams(window.location.search).get('capitulo') === '2') {
       const back = document.querySelector('.nav-btn');
-      if (back) back.href = '../sorpresa9/inicio/index.html';
+      if (back) back.href = '../sorpresa9/inicio/final.html';
     }
   }
 
@@ -189,7 +189,7 @@ function revealLobby() {
 
   setTimeout(() => {
     if (params.get('capitulo') === '2') {
-      window.location.href = "../sorpresa9/inicio/index.html?capitulo=2&listo=1";
+      window.location.href = "../sorpresa9/inicio/final.html?capitulo=2&listo=1";
       return;
     }
     window.location.href = "lobby.html?from=candles";
