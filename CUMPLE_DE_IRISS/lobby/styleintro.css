@@ -200,6 +200,33 @@
   z-index: 2;
 }
 
+.candle-final {
+  width: 100%;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.candle-wrapper.candle-grande {
+  width: 64px;
+  height: 132px;
+}
+
+.candle-grande .candle-flame {
+  width: 22px;
+  height: 34px;
+  margin-bottom: 4px;
+}
+
+.candle-grande .candle-body {
+  width: 48px;
+  height: 88px;
+  border-radius: 10px 10px 6px 6px;
+}
+
+.candle-grande .candle-letter {
+  font-size: 1.7rem;
+}
+
 /* Vela Apagada */
 .candle-wrapper.extinguished {
   pointer-events: none;
@@ -304,6 +331,27 @@
 
   .candle-letter {
     font-size: 0.8rem;
+  }
+
+  .candle-final { margin-top: 10px; }
+
+  .candle-wrapper.candle-grande {
+    width: 52px;
+    height: 108px;
+  }
+
+  .candle-grande .candle-flame {
+    width: 17px;
+    height: 26px;
+  }
+
+  .candle-grande .candle-body {
+    width: 38px;
+    height: 72px;
+  }
+
+  .candle-grande .candle-letter {
+    font-size: 1.3rem;
   }
 }
 

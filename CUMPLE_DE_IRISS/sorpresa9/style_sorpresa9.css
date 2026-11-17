@@ -10,9 +10,10 @@
 }
 
 body {
-  background: #fdf6f0;
-  color: #2c1820;
+  background: radial-gradient(circle at 50% 0%, #2b1024 0%, #170a1c 55%, #0c0510 100%);
+  color: #ffeaf3;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,11 +26,49 @@ body {
 
 .warm-bg {
   position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 10% 20%, rgba(255, 182, 193, 0.35) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(255, 218, 185, 0.4) 0%, transparent 40%);
+  inset: -12%;
   z-index: -1;
+  background:
+    radial-gradient(38% 32% at 16% 18%, rgba(255, 82, 150, 0.28) 0%, transparent 72%),
+    radial-gradient(34% 38% at 84% 24%, rgba(150, 100, 240, 0.26) 0%, transparent 72%),
+    radial-gradient(42% 36% at 50% 96%, rgba(255, 180, 120, 0.2) 0%, transparent 72%),
+    radial-gradient(55% 45% at 50% 55%, rgba(255, 210, 235, 0.09) 0%, transparent 70%);
+  animation: derivaMagica 20s ease-in-out infinite alternate;
+}
+
+.warm-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255, 107, 170, 0.5) 1.5px, transparent 1.5px),
+    radial-gradient(circle, rgba(155, 110, 240, 0.42) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 205, 120, 0.5) 1.2px, transparent 1.2px);
+  background-size: 90px 90px, 130px 130px, 170px 170px;
+  background-position: 0 0, 40px 60px, 90px 20px;
+  animation: destellos 16s linear infinite, brilloEstrellas 3.5s ease-in-out infinite alternate;
+}
+
+.warm-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, transparent 28%, rgba(6, 1, 10, 0.55) 100%);
+}
+
+@keyframes derivaMagica {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
+}
+
+@keyframes destellos {
+  from { background-position: 0 0, 40px 60px, 90px 20px; }
+  to { background-position: 90px 180px, 170px -70px, -80px 190px; }
+}
+
+@keyframes brilloEstrellas {
+  from { opacity: 0.4; }
+  to { opacity: 0.95; }
 }
 
 /* Botón Volver */
@@ -46,15 +85,15 @@ body {
 
 .btn-back {
   display: inline-block;
-  color: #c84b7a;
+  color: #ffb6d5;
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 700;
   padding: 8px 16px;
   border-radius: 20px;
-  background: #ffffff;
-  border: 1px solid #f4b4c6;
-  box-shadow: 0 4px 12px rgba(200, 75, 122, 0.1);
+  background: rgba(35, 12, 32, 0.82);
+  border: 1px solid rgba(255, 106, 178, 0.45);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   transition: all 0.3s ease;
 }
 
@@ -66,19 +105,6 @@ body {
 .contenido {
   text-align: center;
   max-width: 480px;
-}
-
-.contenido h1 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2.4rem;
-  color: #4a1c2b;
-  margin-bottom: 10px;
-}
-
-.contenido p {
-  color: #8c5b6e;
-  font-size: 1rem;
-  line-height: 1.6;
 }
 
 /* ==========================================================
@@ -166,7 +192,173 @@ body {
   box-shadow: 0 0 20px rgba(255, 42, 133, 0.7);
 }
 
+.capitulo {
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  transition: opacity 0.8s ease, transform 0.8s ease, visibility 0.8s ease;
+}
+
+.capitulo.activo {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.capitulo-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #ff8ec4;
+  margin-bottom: 16px;
+}
+
+.capitulo-dots {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+  margin-bottom: 30px;
+}
+
+.capitulo-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ffb6d5;
+  opacity: 0.35;
+  transition: all 0.45s ease;
+}
+
+.capitulo-dots span.actual {
+  background: #ff2a85;
+  opacity: 1;
+  transform: scale(1.4);
+  box-shadow: 0 0 12px rgba(255, 42, 133, 0.7);
+}
+
+.texto-guia {
+  max-width: 460px;
+  min-height: 230px;
+  margin: 0 auto;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.15rem, 4.2vw, 1.55rem);
+  font-weight: 600;
+  line-height: 1.5;
+  color: #fff1f7;
+  text-align: center;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+}
+
+.texto-guia .ultima {
+  display: block;
+  margin-top: 12px;
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.4rem, 5vw, 1.9rem);
+  color: #ff7ab8;
+  text-shadow: 0 0 18px rgba(255, 42, 133, 0.6);
+}
+
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: #ff7ab8;
+  vertical-align: -2px;
+  margin-left: 3px;
+  opacity: 0;
+  animation: parpadeo 0.8s step-end infinite;
+}
+
+.cursor.terminado {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes parpadeo {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.btn-seguir {
+  margin-top: 32px;
+  padding: 13px 30px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff2a85, #9333ea);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 22px rgba(255, 42, 133, 0.3);
+}
+
+.btn-seguir.visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  animation: latidoSuave 2.4s ease-in-out infinite;
+}
+
+.btn-seguir:active {
+  transform: scale(0.96);
+}
+
+@keyframes latidoSuave {
+  0%, 100% { box-shadow: 0 8px 22px rgba(255, 42, 133, 0.3); }
+  50% { box-shadow: 0 10px 28px rgba(147, 51, 234, 0.55); }
+}
+
+.capitulo.cerrado .texto-guia,
+.capitulo.cerrado .btn-seguir {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+.cierre-capitulo {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Cormorant Garamond', serif;
+  color: #ffeaf3;
+}
+
+.cierre-capitulo.visible {
+  display: flex;
+  animation: llegarCierre 0.7s ease both;
+}
+
+.cierre-capitulo span {
+  font-size: 2.4rem;
+}
+
+.cierre-capitulo p {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+@keyframes llegarCierre {
+  from { opacity: 0; transform: scale(0.9) translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
 @media (max-width: 480px) {
   .surprise-title { font-size: 1.5rem; }
   .contenido h1 { font-size: 2rem; }
+  .warm-bg { inset: -8%; animation-duration: 28s; }
+  .warm-bg::before { opacity: 0.65; }
+  .texto-guia { min-height: 260px; }
+  .capitulo-dots { margin-bottom: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .warm-bg,
+  .warm-bg::before { animation: none; }
 }

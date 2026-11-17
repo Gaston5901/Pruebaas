@@ -8,6 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('introBalloonsContainer')) {
     createFireflies();
     initIntroCandles();
+
+    if (new URLSearchParams(window.location.search).get('capitulo') === '2') {
+      const back = document.querySelector('.nav-btn');
+      if (back) back.href = '../sorpresa9/inicio/index.html';
+    }
   }
 
   // Si estamos en la vista del Lobby
@@ -87,7 +92,6 @@ function playBlowSound() {
 /* ==========================================================
    2. 21 VELAS INTERACTIVAS
 ========================================================== */
-const phrase = "HOY SOS LA REINA SEÑORITA"; // Exactamente 21 letras
 const introContainer = document.getElementById("introBalloonsContainer");
 const countdownWrapper = document.getElementById("countdown-wrapper");
 
@@ -97,50 +101,48 @@ let extinguishedCount = 0;
 function initIntroCandles() {
   if (!introContainer) return;
   introContainer.innerHTML = '';
-  totalCandles = 0;
+  totalCandles = 21;
   extinguishedCount = 0;
 
-  const words = phrase.split(" ");
+  let group = null;
 
-  words.forEach((word) => {
-    const wordSpan = document.createElement("span");
-    wordSpan.classList.add("candle-word");
-
-    for (let i = 0; i < word.length; i++) {
-      totalCandles++;
-      const letter = word[i];
-
-      const wrapper = document.createElement("div");
-      wrapper.classList.add("candle-wrapper");
-
-      wrapper.innerHTML = `
-        <div class="candle-flame"></div>
-        <div class="candle-body">
-          <span class="candle-letter">${letter}</span>
-        </div>
-      `;
-
-      wrapper.addEventListener("click", () => {
-        if (!wrapper.classList.contains("extinguished")) {
-          wrapper.classList.add("extinguished");
-          extinguishedCount++;
-
-          playBlowSound();
-          createSmoke(wrapper);
-
-          if (extinguishedCount === totalCandles) {
-            setTimeout(() => {
-              startCountdown();
-            }, 500);
-          }
-        }
-      });
-
-      wordSpan.appendChild(wrapper);
+  for (let numero = 1; numero <= 21; numero++) {
+    if (numero === 21 || (numero - 1) % 5 === 0) {
+      group = document.createElement("div");
+      group.classList.add("candle-word");
+      if (numero === 21) group.classList.add("candle-final");
+      introContainer.appendChild(group);
     }
 
-    introContainer.appendChild(wordSpan);
-  });
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("candle-wrapper");
+    if (numero === 21) wrapper.classList.add("candle-grande");
+
+    wrapper.innerHTML = `
+      <div class="candle-flame"></div>
+      <div class="candle-body">
+        <span class="candle-letter">${numero}</span>
+      </div>
+    `;
+
+    wrapper.addEventListener("click", () => {
+      if (!wrapper.classList.contains("extinguished")) {
+        wrapper.classList.add("extinguished");
+        extinguishedCount++;
+
+        playBlowSound();
+        createSmoke(wrapper);
+
+        if (extinguishedCount === totalCandles) {
+          setTimeout(() => {
+            startCountdown();
+          }, 500);
+        }
+      }
+    });
+
+    group.appendChild(wrapper);
+  }
 }
 
 function createSmoke(element) {
@@ -183,8 +185,13 @@ function revealLobby() {
     overlay.style.transition = "opacity 0.8s ease, transform 0.8s ease";
   }
 
-  // Redirige al lobby enviando el parámetro ?from=candles
+  const params = new URLSearchParams(window.location.search);
+
   setTimeout(() => {
+    if (params.get('capitulo') === '2') {
+      window.location.href = "../sorpresa9/inicio/index.html?capitulo=2&listo=1";
+      return;
+    }
     window.location.href = "lobby.html?from=candles";
   }, 800);
 }
