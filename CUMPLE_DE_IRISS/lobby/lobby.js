@@ -221,18 +221,17 @@ function initWelcomeModal() {
 ========================================================== */
 function initLobbyAnimations() {
   const isMobile = window.matchMedia('(max-width: 768px)').matches;
-  const heartInterval = isMobile ? 8000 : 2200;
-  const maxHearts = isMobile ? 2 : 10;
 
-  // En celular se muestran pocos corazones para evitar trabajo continuo de renderizado.
-  const heartTimer = setInterval(() => {
-    const container = document.getElementById('balloonContainer');
-    if (container && container.childElementCount < maxHearts) {
-      createHeartBalloon();
-    }
-  }, heartInterval);
+  if (!isMobile) {
+    const heartTimer = setInterval(() => {
+      const container = document.getElementById('balloonContainer');
+      if (container && container.childElementCount < 10) {
+        createHeartBalloon();
+      }
+    }, 2200);
 
-  window.addEventListener('pagehide', () => clearInterval(heartTimer), { once: true });
+    window.addEventListener('pagehide', () => clearInterval(heartTimer), { once: true });
+  }
 
   // Desfase flotante en las tarjetas
   const giftBoxes = document.querySelectorAll('.gift-box');

@@ -569,6 +569,10 @@ body {
     filter: none;
   }
 
+  .balloon-container {
+    display: none;
+  }
+
   .gift-badge {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
