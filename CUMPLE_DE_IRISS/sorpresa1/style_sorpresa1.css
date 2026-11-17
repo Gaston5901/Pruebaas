@@ -201,6 +201,18 @@ body {
   z-index: 2;
 }
 
+.story-image {
+  display: block;
+  width: min(100%, 285px);
+  height: auto;
+  max-height: 285px;
+  margin: 4px auto 24px;
+  border: 6px solid #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(110, 47, 74, 0.18);
+  object-fit: contain;
+}
+
 .paper-body p {
   font-size: 0.98rem;
   line-height: 1.8;

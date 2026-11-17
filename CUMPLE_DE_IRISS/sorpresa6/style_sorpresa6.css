@@ -30,14 +30,23 @@ body {
   display: block;
 }
 
-.stage-note {
+.stage-notes {
   position: fixed;
-  left: 0;
-  right: 0;
+  left: 50%;
   bottom: 88px;
-  margin: 0 auto;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   width: max-content;
   max-width: calc(100vw - 32px);
+  pointer-events: none;
+}
+
+.stage-note {
+  max-width: 100%;
   padding: 7px 18px;
   text-align: center;
   background: rgba(26, 5, 20, 0.6);
@@ -48,14 +57,25 @@ body {
   font-size: 0.95rem;
   letter-spacing: 0.5px;
   box-shadow: 0 0 16px rgba(255, 90, 170, 0.25);
-  z-index: 5;
-  pointer-events: none;
-  animation: note-pulse 2.6s ease-in-out infinite;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: note-in 0.9s ease forwards;
 }
 
-@keyframes note-pulse {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 1; }
+.stage-note.typing::after {
+  content: '▌';
+  margin-left: 2px;
+  color: #ff8ac4;
+  animation: caret-blink 0.7s steps(1) infinite;
+}
+
+@keyframes note-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes caret-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
 /* Botón Volver */
@@ -177,5 +197,6 @@ body {
 
 @media (max-width: 480px) {
   .surprise-title { font-size: 1.5rem; }
-  .stage-note { font-size: 0.82rem; }
+  .stage-notes { bottom: 60px; gap: 6px; }
+  .stage-note { font-size: 0.82rem; padding: 6px 14px; }
 }

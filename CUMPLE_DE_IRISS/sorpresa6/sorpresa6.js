@@ -8,17 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('surpriseOverlay');
   const btnOpen = document.getElementById('btnOpenSorpresa');
   const canvas = document.getElementById('roseCanvas');
-  const note = document.getElementById('stageNote');
-  if (!canvas || !note) return;
+  const notes = document.getElementById('stageNotes');
+  if (!canvas || !notes) return;
   const ctx = canvas.getContext('2d');
 
   const TRUNK = '#7a1020';   // rojo profundo (base del tronco)
   const TIP = '#ffffff';     // blanco puro (puntas)
   const BLOSSOM = '#ffffff'; // florecitas blancas
 
-  const STEPS = [];
   let S = 1, ox = 0, oy = 0;
-  let drawnCount = 0;
+  let drawnPrims = 0;
   let done = false;
   let playing = false;
 
@@ -63,14 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function buildSteps() {
     prims.length = 0;
-    STEPS.length = 0;
 
     T = { x: 0, y: -150, h: 90 };
     tree(70);
-
-    for (let i = 0; i < prims.length; i += 24) {
-      STEPS.push(prims.slice(i, i + 24));
-    }
   }
 
   /* ---------- Bounds y escala ---------- */
@@ -83,11 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (y < minY) minY = y;
       if (y > maxY) maxY = y;
     };
-    for (const st of STEPS) {
-      for (const p of st) {
-        if (p.k === 's') { see(p.x1, p.y1); see(p.x2, p.y2); }
-        else see(p.x, p.y);
-      }
+    for (const p of prims) {
+      if (p.k === 's') { see(p.x1, p.y1); see(p.x2, p.y2); }
+      else see(p.x, p.y);
     }
     return { minX, minY, maxX, maxY };
   }
@@ -117,61 +109,84 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Dibujo ---------- */
 
-  function drawStep(st) {
+  function drawPrimitive(p) {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
-    for (const p of st) {
-      if (p.k === 's') {
-        ctx.strokeStyle = p.color;
-        ctx.lineWidth = Math.max(0.6, p.w * S);
-        ctx.beginPath();
-        ctx.moveTo(ox + p.x1 * S, oy - p.y1 * S);
-        ctx.lineTo(ox + p.x2 * S, oy - p.y2 * S);
-        ctx.stroke();
-      } else {
-        ctx.fillStyle = BLOSSOM;
-        ctx.shadowColor = 'rgba(255, 255, 255, 0.9)';
-        ctx.shadowBlur = 12;
-        ctx.beginPath();
-        ctx.arc(ox + p.x * S, oy - p.y * S, Math.max(1, 2.2 * S), 0, Math.PI * 2);
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
+    if (p.k === 's') {
+      ctx.strokeStyle = p.color;
+      ctx.lineWidth = Math.max(0.6, p.w * S);
+      ctx.beginPath();
+      ctx.moveTo(ox + p.x1 * S, oy - p.y1 * S);
+      ctx.lineTo(ox + p.x2 * S, oy - p.y2 * S);
+      ctx.stroke();
+    } else {
+      ctx.fillStyle = BLOSSOM;
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.9)';
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(ox + p.x * S, oy - p.y * S, Math.max(1, 2.2 * S), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
     }
   }
 
   function redraw(upTo) {
     resize();
-    for (let i = 0; i < upTo; i++) drawStep(STEPS[i]);
+    for (let i = 0; i < upTo && i < prims.length; i++) drawPrimitive(prims[i]);
+  }
+
+  function addNote(text, speed = 55) {
+    const line = document.createElement('div');
+    line.className = 'stage-note typing';
+    notes.appendChild(line);
+    let idx = 0;
+    (function typeChar() {
+      if (idx >= text.length) {
+        line.classList.remove('typing');
+        return;
+      }
+      line.textContent = text.slice(0, ++idx);
+      setTimeout(typeChar, speed);
+    })();
   }
 
   function endDraw() {
     done = true;
     playing = false;
-    note.textContent = 'Este árbol lo dibujó alguien que te quiere.';
-    note.style.display = 'block';
-    note.style.opacity = '0';
-    note.style.transition = 'opacity 1.2s ease';
-    setTimeout(() => { note.style.opacity = '1'; }, 40);
+    addNote('Que se te cumpla todo lo que pediste, Señoritaa. 🌹');
   }
 
   function play() {
     if (playing) return;
     playing = true;
-    note.style.display = 'block';
-    note.textContent = 'Dicen que este árbol cumple deseos. Pedí el tuyo con el corazón.';
-    let i = 0;
-    (function tick() {
-      const total = STEPS.length;
-      if (i >= total) {
-        endDraw();
-        return;
+    addNote('Señoritaa... pedí tu deseo en voz baja, que este árbol sabe escuchar.');
+
+    const total = prims.length;
+    const DURACION = 9600; // misma lentitud que antes, pero fluida
+    const inicio = performance.now();
+    let midNoteShown = false;
+    drawnPrims = 0;
+
+    (function frame(now) {
+      const t = Math.min(1, (now - inicio) / DURACION);
+      const objetivo = t * total;
+
+      while (drawnPrims < objetivo) {
+        drawPrimitive(prims[drawnPrims]);
+        drawnPrims++;
       }
-      if (i / total >= 0.5) note.textContent = 'Pedí un deseo, que este árbol te escucha.';
-      drawStep(STEPS[i]);
-      drawnCount = ++i;
-      setTimeout(tick, 70);
-    })();
+
+      if (!midNoteShown && t >= 0.5) {
+        midNoteShown = true;
+        addNote('Miralo crecer: cada rama es un pedacito de todo lo que te quiero.');
+      }
+
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        endDraw();
+      }
+    })(performance.now());
   }
 
   /* ---------- Lluvia de florecitas blancas ---------- */
@@ -233,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ---------- Eventos ---------- */
 
-  window.addEventListener('resize', () => { if (drawnCount > 0) redraw(drawnCount); });
+  window.addEventListener('resize', () => { if (drawnPrims > 0) redraw(drawnPrims); });
 
   /* ---------- Inicio ---------- */
 
