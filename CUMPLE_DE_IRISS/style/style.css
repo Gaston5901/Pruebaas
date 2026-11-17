@@ -255,12 +255,6 @@ html, body {
 .wait-hint .wait-heart {
   display: inline-block;
   color: #ff8ac4;
-  animation: waitHeart 1.4s ease-in-out infinite;
-}
-
-@keyframes waitHeart {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.3); }
 }
 
 /* ==========================================================
@@ -635,5 +629,44 @@ body.abriendo .globos {
 
   .btn-surprise .touch-badge {
     font-size: 1.5rem;
+  }
+}
+
+/* ==========================================================
+   RENDIMIENTO EN CELULAR (video de fondo + listón "Tocar")
+   ========================================================== */
+@media (max-width: 700px) {
+  /* Un solo video: ocultamos la copia difuminada de fondo */
+  .video-bg {
+    display: none;
+  }
+
+  /* El blur sobre un video que se mueve se recalcula en cada frame: lo sacamos */
+  .video-frame {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(18, 10, 30, 0.9);
+  }
+
+  /* El brillo animado repinta el moño en cada frame: lo dejamos fijo */
+  .surprise-overlay.active .btn-surprise img {
+    animation: none;
+    filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.45));
+  }
+
+  /* Animaciones solo con transform/opacity y en su propia capa */
+  .surprise-overlay.active .btn-surprise {
+    will-change: transform;
+  }
+
+  .btn-surprise .touch-badge {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgba(18, 8, 24, 0.78);
+    will-change: transform, opacity;
+  }
+
+  .ribbon-sparkles i {
+    will-change: transform, opacity;
   }
 }

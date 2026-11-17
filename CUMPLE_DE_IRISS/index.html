@@ -66,6 +66,7 @@
   <script>
     // Generador de destellos de fondo (menos en mobile para que vaya fluido)
     const esMobile = window.innerWidth <= 600;
+    const esCelular = window.matchMedia('(max-width: 700px)').matches;
     const totalSpark = esMobile ? 14 : 30;
     const bg = document.getElementById('bg');
     for (let i = 0; i < totalSpark; i++) {
@@ -153,7 +154,7 @@
       bgVideo.muted = true;
       myVideo.muted = false;
 
-      bgVideo.play().catch(() => {});
+      if (!esCelular) bgVideo.play().catch(() => {});
 
       myVideo.play().catch(() => {
         myVideo.muted = true;
@@ -177,10 +178,15 @@
 
       // Vuelve al punto deseado para que continúe en bucle
       myVideo.currentTime = TIEMPO_INICIO_BUCLE;
-      bgVideo.currentTime = TIEMPO_INICIO_BUCLE;
-
       myVideo.play().catch(() => {});
-      bgVideo.play().catch(() => {});
+
+      // En celular no reproducimos la copia difuminada: ahorra mucha GPU
+      if (esCelular) {
+        bgVideo.pause();
+      } else {
+        bgVideo.currentTime = TIEMPO_INICIO_BUCLE;
+        bgVideo.play().catch(() => {});
+      }
     });
 
     surpriseBtn.addEventListener('click', (event) => {
