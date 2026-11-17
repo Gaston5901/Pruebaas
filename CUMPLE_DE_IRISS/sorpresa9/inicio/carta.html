@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>La carta · Iris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Playfair+Display:ital,wght@0,400;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            min-height: 100dvh;
+            font-family: 'Outfit', sans-serif;
+            color: #f8f2ff;
+            background:
+                radial-gradient(circle at 20% 10%, rgba(141, 91, 184, 0.3), transparent 40%),
+                radial-gradient(circle at 80% 85%, rgba(217, 138, 168, 0.22), transparent 42%),
+                linear-gradient(160deg, #0b0616, #07040e 60%, #120820);
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px 16px;
+        }
+        .carta-wrap { width: min(620px, 100%); }
+        .volver {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: #b9a9c8; text-decoration: none; font-size: 0.78rem;
+            margin-bottom: 18px;
+        }
+        .volver:hover { color: #fff2cf; }
+        .carta {
+            position: relative;
+            padding: 34px 28px 30px;
+            border-radius: 20px;
+            background: linear-gradient(160deg, #2a1237 0%, #12081b 100%);
+            border: 1px solid #d9b86a;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(217, 184, 106, 0.18);
+            text-align: center;
+        }
+        .crest { font-family: 'Cinzel', serif; font-size: 0.68rem; letter-spacing: 0.24em; color: #d9b86a; margin-bottom: 20px; }
+        h1 {
+            font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+            font-size: clamp(1.6rem, 5vw, 2.2rem); color: #fff2cf; margin-bottom: 16px;
+        }
+        p, blockquote {
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 1rem; line-height: 1.7; color: #e9dcf2;
+        }
+        blockquote {
+            margin: 20px 0;
+            padding: 16px 18px;
+            border-left: 2px solid #d98aa8;
+            border-right: 2px solid #d98aa8;
+            color: #fff2cf;
+        }
+        .signoff { font-family: 'Cinzel', serif; font-size: 0.78rem; letter-spacing: 0.12em; color: #d98aa8; margin-top: 22px; }
+        .cerrar {
+            display: inline-flex; align-items: center; justify-content: center;
+            margin-top: 24px; padding: 12px 22px; border-radius: 999px;
+            background: linear-gradient(135deg, #d98aa8, #8d5bb8);
+            border: 1px solid #d9b86a; color: #fff2cf;
+            font-family: 'Cinzel', serif; font-size: 0.74rem; letter-spacing: 0.1em;
+            text-decoration: none;
+        }
+        .cerrar:active { transform: scale(0.97); }
+        @media (max-width: 420px) {
+            body { padding: 18px 12px; }
+            .carta { padding: 26px 18px 24px; }
+            p, blockquote { font-size: 0.92rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="carta-wrap">
+        <a class="volver" href="final.html?capitulo=4&listo=1">← Volver al gran final</a>
+        <article class="carta">
+            <div class="crest">✦ Eternamente Juntos ✦</div>
+            <h1>Amor de mi vida,</h1>
+            <p>Hoy celebramos que todo esto que escribimos juntos empezó un 26 de abril de 2026, con un mensaje que cambió mis días para siempre.</p>
+            <blockquote>«Si pudiera volver al primer día en que te vi, te buscaría aún más rápido solo para tener un poquito más de tiempo contigo.»</blockquote>
+            <div class="signoff">— Por siempre tuyo ♥</div>
+            <a class="cerrar" href="final.html?capitulo=4&listo=1">Cerrar y seguir →</a>
+        </article>
+    </div>
+</body>
+</html>

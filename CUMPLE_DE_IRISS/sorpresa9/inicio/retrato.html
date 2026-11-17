@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Tu retrato · Iris</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            min-height: 100dvh;
+            font-family: 'Outfit', sans-serif;
+            color: #f8f2ff;
+            background:
+                radial-gradient(circle at 18% 12%, rgba(141, 91, 184, 0.3), transparent 38%),
+                radial-gradient(circle at 82% 82%, rgba(217, 138, 168, 0.22), transparent 42%),
+                linear-gradient(160deg, #0b0616, #07040e 60%, #120820);
+            display: flex; align-items: center; justify-content: center;
+            padding: 24px 16px;
+        }
+        .retrato-wrap { width: min(560px, 100%); text-align: center; }
+        .volver {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: #b9a9c8; text-decoration: none; font-size: 0.78rem;
+            margin-bottom: 18px; align-self: flex-start;
+        }
+        .volver:hover { color: #fff2cf; }
+        .eyebrow { font-family: 'Cinzel', serif; font-size: 0.64rem; letter-spacing: 0.26em; color: #d9b86a; text-transform: uppercase; }
+        h1 { font-family: 'Cinzel', serif; font-size: clamp(1.6rem, 6vw, 2.2rem); color: #fff2cf; margin: 10px 0 8px; }
+        .bajada { color: #b9a9c8; font-size: 0.88rem; line-height: 1.5; margin-bottom: 20px; }
+        .marco {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            max-height: 62dvh;
+            border-radius: 20px;
+            padding: 10px;
+            background: linear-gradient(145deg, rgba(217, 184, 106, 0.8), rgba(141, 91, 184, 0.5));
+            box-shadow: 0 22px 55px rgba(0, 0, 0, 0.65), 0 0 26px rgba(217, 184, 106, 0.2);
+            display: grid; place-items: center;
+            overflow: hidden;
+        }
+        .marco img { width: 100%; height: 100%; object-fit: contain; border-radius: 12px; background: #12081b; }
+        .fallback {
+            display: none;
+            width: 100%; height: 100%;
+            border-radius: 12px;
+            background: linear-gradient(160deg, #2a1237, #12081b);
+            flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+            color: #d9b86a; font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 0.1em;
+        }
+        .corazon { font-size: 3rem; color: #d98aa8; filter: drop-shadow(0 0 18px rgba(217, 138, 168, 0.5)); }
+        .cerrar {
+            display: inline-flex; align-items: center; justify-content: center;
+            margin-top: 20px; padding: 12px 22px; border-radius: 999px;
+            background: linear-gradient(135deg, #d98aa8, #8d5bb8);
+            border: 1px solid #d9b86a; color: #fff2cf;
+            font-family: 'Cinzel', serif; font-size: 0.74rem; letter-spacing: 0.1em;
+            text-decoration: none;
+        }
+        .cerrar:active { transform: scale(0.97); }
+        @media (max-width: 420px) {
+            body { padding: 18px 12px; }
+            .bajada { font-size: 0.82rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="retrato-wrap">
+        <a class="volver" href="final.html?capitulo=5&listo=1">← Volver al gran final</a>
+        <div class="eyebrow">Capítulo 5</div>
+        <h1>Tu retrato</h1>
+        <p class="bajada">Lo último que me quedó por darte, hecho con todo el cariño del mundo.</p>
+        <div class="marco">
+            <img src="retrato.png" alt="Retrato que hice para vos" onerror="this.style.display='none';document.getElementById('fallback').style.display='flex';">
+            <div class="fallback" id="fallback">
+                <span class="corazon">♥</span>
+                <span>Tu retrato va acá 💜</span>
+            </div>
+        </div>
+        <a class="cerrar" href="final.html?capitulo=5&listo=1">Cerrar y terminar →</a>
+    </div>
+</body>
+</html>

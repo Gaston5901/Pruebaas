@@ -2510,3 +2510,12 @@ if (IS_HEADER) {
 		);
 	}, 0);
 }
+
+const botonContinuarFinal = document.querySelector('.fire-continue__btn');
+if (botonContinuarFinal) {
+	botonContinuarFinal.addEventListener('click', () => {
+		if (new URLSearchParams(window.location.search).get('capitulo') === '3') {
+			window.location.href = '../sorpresa9/inicio/final.html?capitulo=3&listo=1';
+		}
+	});
+}
