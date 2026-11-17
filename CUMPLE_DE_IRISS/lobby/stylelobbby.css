@@ -565,6 +565,10 @@ body {
     filter: none;
   }
 
+  .balloon-heart {
+    filter: none;
+  }
+
   .gift-badge {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
