@@ -47,19 +47,59 @@ body {
 
 .stage-note {
   max-width: 100%;
-  padding: 7px 18px;
+  padding: 0 10px;
   text-align: center;
-  background: rgba(26, 5, 20, 0.6);
-  border: 1px solid rgba(255, 164, 204, 0.55);
-  border-radius: 999px;
-  color: #ffb7dd;
+  background: none;
+  border: none;
+  color: #ffd1e8;
   font-style: italic;
   font-size: 0.95rem;
-  letter-spacing: 0.5px;
-  box-shadow: 0 0 16px rgba(255, 90, 170, 0.25);
+  line-height: 1.4;
+  letter-spacing: 0.3px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.85), 0 0 14px rgba(255, 90, 170, 0.5);
   opacity: 0;
   transform: translateY(10px);
   animation: note-in 0.9s ease forwards;
+}
+
+/* Nombre que se va formando arriba */
+.stage-name {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  text-align: center;
+  z-index: 6;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  color: #ffe0f0;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 16px rgba(255, 90, 170, 0.55));
+  pointer-events: none;
+}
+
+.stage-name .name-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  filter: blur(6px);
+  animation: name-form 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i) * 75ms);
+}
+
+.stage-name .name-space {
+  display: inline-block;
+  width: 0.32em;
+}
+
+@keyframes name-form {
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
 .stage-note.typing::after {
@@ -197,6 +237,7 @@ body {
 
 @media (max-width: 480px) {
   .surprise-title { font-size: 1.5rem; }
-  .stage-notes { bottom: 60px; gap: 6px; }
-  .stage-note { font-size: 0.82rem; padding: 6px 14px; }
+  .stage-notes { bottom: 56px; gap: 4px; }
+  .stage-note { font-size: 0.85rem; padding: 0 8px; }
+  .stage-name { top: 54px; font-size: clamp(1.3rem, 6vw, 1.8rem); }
 }

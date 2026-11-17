@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnOpen = document.getElementById('btnOpenSorpresa');
   const canvas = document.getElementById('roseCanvas');
   const notes = document.getElementById('stageNotes');
+  const nameEl = document.getElementById('stageName');
   if (!canvas || !notes) return;
   const ctx = canvas.getContext('2d');
 
@@ -94,7 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.style.height = H + 'px';
 
     const b = bounds();
-    const padX = 30, padY = 50;
+    const padX = 30;
+    const padY = window.innerWidth > 700 ? 105 : 85;
     const bw = Math.max(1, b.maxX - b.minX);
     const bh = Math.max(1, b.maxY - b.minY);
     S = Math.min((W - padX * 2) / bw, (H - padY * 2) / bh);
@@ -150,16 +152,35 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
   }
 
+  function buildName() {
+    if (!nameEl || nameEl.dataset.built) return;
+    const txt = nameEl.dataset.text || '';
+    nameEl.innerHTML = '';
+    for (let i = 0; i < txt.length; i++) {
+      const span = document.createElement('span');
+      if (txt[i] === ' ') {
+        span.className = 'name-space';
+      } else {
+        span.className = 'name-letter';
+        span.textContent = txt[i];
+      }
+      span.style.setProperty('--i', i);
+      nameEl.appendChild(span);
+    }
+    nameEl.dataset.built = '1';
+  }
+
   function endDraw() {
     done = true;
     playing = false;
-    addNote('Que se te cumpla todo lo que pediste, Señoritaa. 🌹');
+    addNote('Que se te cumpla todo lo que pediste, Señoritaa🌹');
   }
 
   function play() {
     if (playing) return;
     playing = true;
-    addNote('Señoritaa... pedí tu deseo en voz baja, que este árbol sabe escuchar.');
+    buildName();
+    addNote('Señoritaaa, pedí tu deseo en voz baja, que este árbol sabe escuchar.');
 
     const total = prims.length;
     const DURACION = 9600; // misma lentitud que antes, pero fluida
@@ -178,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!midNoteShown && t >= 0.5) {
         midNoteShown = true;
-        addNote('Miralo crecer: cada rama es un pedacito de todo lo que te quiero.');
+        addNote('Miralo crecer, cada rama es un pedacito de todo lo que te quiero.');
       }
 
       if (t < 1) {
