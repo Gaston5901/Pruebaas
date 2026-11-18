@@ -858,8 +858,17 @@ Contáctame:
         .btn-final:active { transform: scale(0.97); }
 
         @media (max-width: 520px) {
-            .fp-gate { gap: 0.7rem; padding: 1rem; }
-            .fp-gate-badge { font-size: 0.64rem; letter-spacing: 0.12em; }
+            .fp-gate { gap: 0.7rem; padding: 4.6rem 1rem 1rem; }
+            .fp-gate-badge {
+                position: absolute;
+                top: max(22px, env(safe-area-inset-top));
+                left: 50%;
+                transform: translateX(-50%);
+                width: max-content;
+                max-width: 86vw;
+                font-size: 0.64rem;
+                letter-spacing: 0.12em;
+            }
             .fp-gate .subtitle { font-size: 2rem; }
             .fp-wrap { width: min(56vw, 200px); margin: 0.1rem 0; }
             .fp-hint { font-size: 0.88rem; max-width: 290px; }
