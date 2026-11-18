@@ -100,7 +100,7 @@ Contáctame:
         .fp-gate {
             position: fixed; inset: 0; z-index: 9000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 2rem; padding: 2rem;
+            gap: 1rem; padding: 1.4rem;
             background: 
                 radial-gradient(circle at 50% 45%, rgba(226, 190, 107, 0.12) 0%, rgba(196, 91, 110, 0.08) 35%, transparent 70%),
                 radial-gradient(ellipse at center, #1b0d26 0%, #0e0716 65%, #060309 100%);
@@ -114,20 +114,17 @@ Contáctame:
         }
         .fp-gate-badge {
             font-family: 'Cinzel', serif;
-            font-size: 0.78rem;
-            letter-spacing: 0.4em;
+            font-size: 0.72rem;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
-            color: var(--gold);
-            padding: 0.45rem 1.2rem;
-            border: 1px solid rgba(226, 190, 107, 0.3);
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(6px);
-            box-shadow: 0 0 25px rgba(226, 190, 107, 0.12);
+            color: var(--gold-light);
+            text-align: center;
+            line-height: 1.4;
+            max-width: 90%;
         }
         .fp-gate .subtitle {
             font-family: 'Pinyon Script', cursive; 
-            font-size: clamp(3.3rem, 8.5vw, 5.2rem);
+            font-size: clamp(2.2rem, 6vw, 3.4rem);
             background: linear-gradient(135deg, #ffffff 0%, var(--gold-light) 45%, var(--rose-gold) 100%);
             -webkit-background-clip: text;
             background-clip: text;
@@ -139,15 +136,15 @@ Contáctame:
         }
         .fp-wrap { 
             position: relative; 
-            width: min(74vw, 285px); 
+            width: min(64vw, 240px); 
             aspect-ratio: 1/1; 
             display: flex; align-items: center; justify-content: center; 
-            margin: 0.6rem 0; 
+            margin: 0.2rem 0; 
             touch-action: none; 
             cursor: pointer; 
         }
         .fp-pulse { 
-            position: absolute; inset: -18px; border-radius: 50%; 
+            position: absolute; inset: -12px; border-radius: 50%; 
             border: 1px solid rgba(226, 190, 107, 0.38); 
             box-shadow: 0 0 20px rgba(226, 190, 107, 0.12);
             animation: fpPulse 3.2s cubic-bezier(0.25, 1, 0.5, 1) infinite; 
@@ -247,16 +244,18 @@ Contáctame:
         .fp-hint { 
             font-family: 'Cormorant Garamond', serif; 
             font-style: italic; 
-            font-size: clamp(1.25rem, 2.8vw, 1.55rem); 
+            font-size: clamp(0.95rem, 2.4vw, 1.15rem); 
             color: var(--text-muted); 
-            letter-spacing: .04em; 
+            letter-spacing: .02em; 
             text-align: center; 
-            min-height: 1.8em; 
+            line-height: 1.4;
+            max-width: 420px;
+            min-height: 1.6em; 
             transition: opacity .6s, color .6s; 
         }
         .fp-gate.is-success .fp-hint { 
             font-family: 'Pinyon Script', cursive; 
-            font-size: clamp(2.2rem, 5vw, 3.1rem); 
+            font-size: clamp(1.8rem, 4.5vw, 2.6rem); 
             font-style: normal; 
             color: var(--gold-light); 
             text-shadow: 0 0 20px rgba(226, 190, 107, 0.5);
@@ -859,6 +858,12 @@ Contáctame:
         .btn-final:active { transform: scale(0.97); }
 
         @media (max-width: 520px) {
+            .fp-gate { gap: 0.7rem; padding: 1rem; }
+            .fp-gate-badge { font-size: 0.64rem; letter-spacing: 0.12em; }
+            .fp-gate .subtitle { font-size: 2rem; }
+            .fp-wrap { width: min(56vw, 200px); margin: 0.1rem 0; }
+            .fp-hint { font-size: 0.88rem; max-width: 290px; }
+            .fp-gate.is-success .fp-hint { font-size: 1.6rem; }
             main { padding: 4rem 1rem 2.5rem; gap: 1.4rem; }
             .header-aniversario .pre-title { letter-spacing: 0.28em; font-size: 0.72rem; }
             .promises-title { font-size: 0.9rem; letter-spacing: 0.18em; }
@@ -910,7 +915,7 @@ Contáctame:
             <div class="fp-svg-base" aria-hidden="true"></div>
             <span class="fp-tint" aria-hidden="true"></span>
         </div>
-        <div class="fp-hint" id="fpHint">Mantené presionada tu huella: ya estamos llegando al final de este viaje, Iris ♥</div>
+        <div class="fp-hint" id="fpHint">Mantené la huella para seguir, Iris ♥</div>
     </div>
 
     <a class="btn-volver-lobby" href="../../lobby/lobby.html" aria-label="Volver al lobby">←</a>
@@ -1424,7 +1429,7 @@ Contáctame:
                 bar.style.transition = 'stroke-dashoffset .8s cubic-bezier(0.2, 0.8, 0.2, 1)';
                 bar.style.strokeDashoffset = 1000;
                 setTimeout(() => { bar.style.transition = 'stroke-dashoffset .1s linear'; }, 850);
-                hint.textContent = "Mantén presionada tu huella para desbloquear nuestra historia ♥";
+                hint.textContent = "Mantené la huella para seguir, Iris ♥";
             }
 
             function success() {
