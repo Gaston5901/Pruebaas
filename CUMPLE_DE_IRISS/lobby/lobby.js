@@ -176,6 +176,40 @@ function startCountdown() {
   }, 900);
 }
 
+function mostrarTortaFinal(callback) {
+  const overlay = document.getElementById("tortaFinal");
+  const numero = document.getElementById("tortaNumero");
+  const gif = document.getElementById("tortaGif");
+
+  if (!overlay) {
+    callback();
+    return;
+  }
+
+  let restante = 7;
+  if (numero) numero.textContent = restante;
+  if (gif) gif.src = gif.src;
+  overlay.classList.add("visible");
+
+  const timer = setInterval(() => {
+    restante--;
+
+    if (restante <= 0) {
+      clearInterval(timer);
+      overlay.classList.remove("visible");
+      callback();
+      return;
+    }
+
+    if (numero) {
+      numero.textContent = restante;
+      numero.classList.remove("pop");
+      void numero.offsetWidth;
+      numero.classList.add("pop");
+    }
+  }, 1000);
+}
+
 function revealLobby() {
   const overlay = document.getElementById("intro-overlay");
 
@@ -188,11 +222,13 @@ function revealLobby() {
   const params = new URLSearchParams(window.location.search);
 
   setTimeout(() => {
-    if (params.get('capitulo') === '2') {
-      window.location.href = "../sorpresa9/inicio/final.html?capitulo=2&listo=1";
-      return;
-    }
-    window.location.href = "lobby.html?from=candles";
+    const destino = params.get('capitulo') === '2'
+      ? "../sorpresa9/inicio/final.html?capitulo=2&listo=1"
+      : "lobby.html?from=candles";
+
+    mostrarTortaFinal(() => {
+      window.location.href = destino;
+    });
   }, 800);
 }
 
