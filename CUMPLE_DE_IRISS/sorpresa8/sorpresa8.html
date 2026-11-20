@@ -19,11 +19,11 @@
     <div class="surprise-intro-card">
       <span class="surprise-tag">Sorpresa N°8 💗</span>
       <h1 class="surprise-title">
-        Hay algo<br>
-        <span class="highlight-title">que quiero decirte</span>
+        Tengo algo<br>
+        <span class="highlight-title">para vos</span>
       </h1>
       <p class="surprise-desc">
-        Esta sorpresa es cortita pero va al corazón. Prepará la sonrisa.
+        Tocá y mirá quiénes te mandan un saludo por tu cumple 💗
       </p>
       <button class="btn-enter-surprise" id="btnOpenSorpresa">Abrir 💗</button>
     </div>
@@ -34,12 +34,24 @@
 
   <!-- NAVEGACIÓN -->
   <div class="top-bar">
-    <a href="../lobby/lobby.html" class="btn-back">←</a>
+    <a href="../lobby/lobby.html" class="btn-back" aria-label="Volver al lobby">←</a>
   </div>
 
-  <main class="contenido">
-    <h1>Te Quiero</h1>
-    <p>Acá va a ir el contenido de la sorpresa 8.</p>
+  <main class="contenido" id="contenido">
+    <section class="saludos" id="saludos" aria-hidden="true">
+      <div class="saludos-cinta">💗 Para vos, Iris 💗</div>
+      <div class="saludos-marco" id="saludosMarco">
+        <video id="saludosVideo" playsinline webkit-playsinline disablepictureinpicture disableremoteplayback controlsList="nodownload noplaybackrate noremoteplayback" preload="auto">
+          <source src="happy.mp4" type="video/mp4">
+        </video>
+        <div class="saludos-brillo"></div>
+        <div class="fin-saludos" id="finSaludos">
+          <span class="fin-corazon">💗</span>
+          <p>Feliz cumple, Iris. Siempre brillá así.</p>
+          <button class="btn-repetir" id="btnRepetir">Ver de nuevo 💗</button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script src="sorpresa8.js"></script>

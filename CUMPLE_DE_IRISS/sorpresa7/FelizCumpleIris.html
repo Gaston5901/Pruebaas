@@ -17,7 +17,8 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            background: #fce4ec;
+            background: #0b0410;
+            color: #fff;
         }
 
         .back-button {
@@ -54,10 +55,38 @@
             position: fixed;
             inset: 0;
             z-index: -1;
-            background-image: url('https://i.pinimg.com/736x/c1/23/d7/c123d756b79e59ab4410ab069a1016a4.jpg');
-            background-size: cover;
-            background-position: center;
-            filter: brightness(0.9);
+            background:
+                radial-gradient(circle at 20% 20%, rgba(173, 20, 87, 0.28), transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(88, 28, 135, 0.25), transparent 45%),
+                linear-gradient(160deg, #160713 0%, #08030d 60%, #1a071c 100%);
+        }
+
+        .regalo-tocable {
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            color: #fff;
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.6rem, 5vw, 2.2rem);
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+        }
+
+        .regalo-tocable img {
+            width: min(260px, 55vw);
+            filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.4));
+            animation: giftPulse 2.2s ease-in-out infinite;
+            transition: transform 0.2s ease;
+        }
+
+        .regalo-tocable:active img { transform: scale(0.94); }
+
+        @keyframes giftPulse {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.03); }
         }
 
         /* --- SOBRE (ENVELOPE) --- */
@@ -383,7 +412,7 @@
         .modal-extra-img {
             width: 100%;
             max-height: 65vh;
-            object-fit: cover;
+            object-fit: contain;
             border-radius: 12px;
             display: block;
             animation: modal-image-float 2.4s ease-in-out infinite;
@@ -447,121 +476,29 @@
     <div class="bg-gif-fijo"></div>
     <button class="back-button" id="backButton" type="button" aria-label="Volver al lobby" title="Volver al lobby">&#8592;</button>
 
-    <!-- Audio Oculto -->
-    <audio id="audioCarta" loop>
-        <source src="https://github.com/Baque2005/Organizador/raw/refs/heads/master/As%20The%20World%20Caves%20In%20-%20Matt%20Maltese%20(Cover%20by%20Sarah%20Cothran).mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Sobre -->
-    <div class="envelope" id="envelope">
-        <div class="envelope-inner">
-            <div class="envelope-front">
-                <img src="https://i.pinimg.com/1200x/95/7d/6e/957d6e96c7e17b1a6391d6a33db34e8f.jpg" class="stamp" alt="sello">
-                <div style="text-align: left; color: white;">
-                    <p><b>Para:</b> ti ❤️</p>
-                    <p><b>De:</b> mi</p>
-                </div>
-            </div>
-            <div class="envelope-back">
-                <div class="top-fold"></div>
-                <div class="letter-preview">
-                    <img src="https://img.freepik.com/vector-premium/pulgar-dedos-imprimir-marca-huella-dactilar-amor-corazon_53500-1839.jpg" style="width: 50px;" alt="">
-                    <p style="color: #ad1457; font-weight: bold; font-size: 0.9rem;">Ábreme para ver tu sorpresa...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de la Carta -->
-    <div class="modal-carta" id="modalCarta">
-        <div class="modal-carta-content">
-            <button class="modal-carta-close" id="closeModalCarta">&times;</button>
-            
-            <div class="modal-carta-body">
-                <div style="text-align: center;">
-                    <div class="letra-flotante-badge">¡Feliz Cumpleaños!</div>
-                    
-                    <div class="img-polaroid" id="imgPrincipal">
-                        <img src="https://i.pinimg.com/736x/06/cd/70/06cd70fa55910b42f83ca97c0eca91d8.jpg" alt="imagen especial para mamá">
-                    </div>
-
-                    <div class="texto-carta">
-                        Hoy es un día muy especial porque celebramos tu vida y todo lo bonito que traes a las personas que te rodean. ✨<br><br>
-                        Deseo que este nuevo año te regale sonrisas sinceras, momentos inolvidables, salud, amor y muchos sueños cumplidos.<br><br>
-                        Que nunca te falten razones para sentirte feliz, ni que te falten personas que te quieran de verdad y te acompañen en cada paso.<br><br>
-                        <strong class="resaltado">Que la vida te sorprenda con cosas hermosas, que cada deseo de tu corazón encuentre su camino y que hoy seas muy feliz.</strong><br><br>
-                        <strong class="resaltado">¡Feliz cumpleaños! Que tengas un día muy bonito! ❤️</strong>
-                    </div>
-
-                    <div class="gift-hint">Tu regalo!! Abrelo!</div>
-                    <!-- Nuevo GIF solicitado -->
-                    <img id="giftDebajo" src="https://i.pinimg.com/1200x/d9/c2/ad/d9c2ad0f69b6bf26777b1992334a482a.jpg" class="modal-footer-gif shake" alt="gif cumpleaños">
-                </div>
-            </div>
-        </div>
-    </div>
+    <button class="regalo-tocable" id="regalo" type="button" aria-label="Abrir regalo">
+        <img src="regalo.gif" alt="Regalo sorpresa">
+        <span>Tocá el regalo 🎁</span>
+    </button>
 
     <!-- Modal extra -->
     <div class="modal-extra" id="modalExtra">
         <div class="modal-extra-content">
             <button class="modal-extra-close" id="closeModalExtra" aria-label="Cerrar">&times;</button>
-            <h3 class="modal-extra-title">Sorpresa!! tu regalo soy yo!</h3>
+            <h3 class="modal-extra-title">¡Tu gatito... o sea yo! 🐱</h3>
             <img class="modal-extra-img" src="https://i.pinimg.com/736x/e1/78/ed/e178ed3d4101a7f87d89db1b9338f440.jpg" alt="detalle de cumpleaños">
         </div>
     </div>
 
     <script>
-        // Bloqueo de seguridad básico
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        const envelope = document.getElementById('envelope');
-        const modal = document.getElementById('modalCarta');
-        const closeBtn = document.getElementById('closeModalCarta');
-        const audio = document.getElementById('audioCarta');
-        const imgPolaroid = document.getElementById('imgPrincipal');
-        const giftDebajo = document.getElementById('giftDebajo');
+        const regalo = document.getElementById('regalo');
         const modalExtra = document.getElementById('modalExtra');
         const closeModalExtraBtn = document.getElementById('closeModalExtra');
 
         document.getElementById('backButton').addEventListener('click', () => {
             window.location.href = 'loby.html';
-        });
-
-        // Función para abrir la carta
-        envelope.addEventListener('click', () => {
-            const isOpening = !envelope.classList.contains('open');
-            envelope.classList.toggle('open');
-
-            if (isOpening) {
-                // Iniciar música solo si no se está reproduciendo ya
-                if (audio.paused) {
-                    audio.currentTime = 15; 
-                    audio.play().catch(() => console.log("Se requiere interacción para iniciar audio"));
-                }
-
-                // Abrir modal tras la animación del sobre
-                setTimeout(() => {
-                    modal.classList.add('active');
-                    setTimeout(() => {
-                        imgPolaroid.classList.add('visible');
-                    }, 500);
-                }, 1200);
-            }
-        });
-
-        // Cerrar modal
-        function closeModal() {
-            modal.classList.remove('active');
-            imgPolaroid.classList.remove('visible');
-            setTimeout(() => {
-                envelope.classList.remove('open');
-            }, 300);
-            // La música sigue sonando
-        }
-
-        closeBtn.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => {
-            if(e.target === modal) closeModal();
         });
 
         function openModalExtra() {
@@ -572,11 +509,7 @@
             modalExtra.classList.remove('active');
         }
 
-        // Click en el gift inferior para abrir modal extra
-        giftDebajo.addEventListener('click', (e) => {
-            e.stopPropagation();
-            openModalExtra();
-        });
+        regalo.addEventListener('click', openModalExtra);
 
         closeModalExtraBtn.addEventListener('click', closeModalExtra);
         modalExtra.addEventListener('click', (e) => {
