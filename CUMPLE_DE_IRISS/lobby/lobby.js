@@ -298,9 +298,11 @@ function initWelcomeModal() {
     return;
   }
 
+  document.body.classList.add('solo-modal');
   modal.classList.remove('hidden-modal');
 
   closeBtn.addEventListener('click', () => {
+    document.body.classList.remove('solo-modal');
     modal.classList.add('hidden-modal');
     setTimeout(() => modal.remove(), 350);
   });

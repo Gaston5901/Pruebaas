@@ -680,6 +680,20 @@ body {
   transition: opacity 0.35s ease;
 }
 
+body.solo-modal .bg-overlay,
+body.solo-modal .balloon-container,
+body.solo-modal .lobby-container,
+body.solo-modal .nav-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.solo-modal .modal-overlay {
+  background: #08020e;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
 .modal-card {
   background: linear-gradient(145deg, rgba(38, 8, 30, 0.95), rgba(18, 4, 16, 0.98));
   border: 2px solid #ff2a85;

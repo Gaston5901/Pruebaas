@@ -4,33 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Iriss</title>
+    <script>
+        if (new URLSearchParams(window.location.search).get('desbloqueado') === '1') {
+            document.documentElement.classList.add('desbloqueado');
+        }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=DM+Serif+Display:ital@0;1&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
 
 
-       <!--
-
-Contáctame:
-
-   * Crea tus diseños sin código
- https://comparte-amor.vercel.app/
-
-    * Invitame un café
- https://buymeacoffee.com/alexx.dev
-
-    * Portafolio Web
- https://alexxdev.vercel.app
-
-    * Sigueme en tiktok
- https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc
  
-    * Canal de WhatsApp
- https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
-
-
--->
 
 
     <style>
@@ -112,6 +97,7 @@ Contáctame:
             transform: scale(1.06);
             pointer-events: none; 
         }
+        html.desbloqueado .fp-gate { display: none !important; }
         .fp-gate-badge {
             font-family: 'Cinzel', serif;
             font-size: 0.72rem;
@@ -872,8 +858,8 @@ Contáctame:
 
     
     <div class="fp-gate" id="fpGate">
-        <div class="fp-gate-badge">Ya estamos llegando al final de este viaje, Iris 💜</div>
-        <div class="subtitle">Para ti, mi amor</div>
+        <div class="fp-gate-badge">Ya estamos llegando al final de este viaje Iris 🌹</div>
+        <div class="subtitle">Para tuu</div>
         <div class="fp-wrap" id="fp" role="button" aria-label="Mantén presionada la huella" tabindex="0">
             <span class="fp-pulse"></span><span class="fp-pulse"></span><span class="fp-pulse"></span>
             <div class="fp-ring"></div>
@@ -893,7 +879,7 @@ Contáctame:
             <div class="fp-svg-base" aria-hidden="true"></div>
             <span class="fp-tint" aria-hidden="true"></span>
         </div>
-        <div class="fp-hint" id="fpHint">Mantené la huella para seguir, Iris ♥</div>
+        <div class="fp-hint" id="fpHint">Mantené la huella para seguir Iris ♥</div>
     </div>
 
     <a class="btn-volver-lobby" href="final.html?capitulo=2&listo=1" aria-label="Volver a los capítulos">←</a>
@@ -951,7 +937,7 @@ Contáctame:
             <h2 class="promises-title">Tres Promesas Para Nuestro Camino</h2>
             <p class="promises-sub">Toca cada tarjeta para descubrir un voto de todo este tiempo juntos</p>
             <div class="promises-grid">
-                <button class="promise-card" type="button" data-icono="✦" data-titulo="I. Nuestro Ayer" data-texto="«Atesorar cada recuerdo, cada primera vez y cada abrazo que nos trajo hasta este instante mágico.»">
+                <button class="promise-card" type="button" data-icono="✦" data-titulo="I. Nuestro Ayer" data-texto="«Atesorar cada charla hasta tarde, cada partida y cada recuerdo a la distancia que nos trajo hasta este instante mágico Pachucha.»">
                     <span class="promise-icon">✦</span>
                     <strong>I. Nuestro Ayer</strong>
                     <span class="promise-tap">Tocá para leer</span>
