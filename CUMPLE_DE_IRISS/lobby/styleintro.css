@@ -17,7 +17,7 @@
   align-items: center;
   z-index: 9999;
   transition: opacity 0.8s ease, visibility 0.8s ease, transform 0.8s ease;
-  padding: 20px;
+  padding: 20px 20px 64px;
   overflow: hidden;
 }
 
@@ -79,7 +79,7 @@
 .intro-header {
   text-align: center;
   z-index: 2;
-  margin-bottom: 25px;
+  margin-bottom: 16px;
 }
 
 .intro-badge {
@@ -112,6 +112,32 @@
   opacity: 0.9;
 }
 
+.deseos-progreso {
+  width: min(420px, 90vw);
+  margin: 0 auto 14px;
+  text-align: center;
+  z-index: 2;
+}
+
+.deseos-texto {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #e2be6b;
+  text-shadow: 0 0 12px rgba(226, 190, 107, 0.45);
+  margin-bottom: 6px;
+}
+
+.deseo-mensaje {
+  margin-top: 6px;
+  min-height: 1.1em;
+  font-size: 0.78rem;
+  color: #ffd9ef;
+  opacity: 0.95;
+}
+
 /* Contenedor de Velas */
 .intro-balloons-container {
   display: flex;
@@ -121,7 +147,7 @@
   gap: 16px 14px;
   max-width: 850px;
   z-index: 2;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   min-height: 90px;
 }
 
@@ -149,6 +175,14 @@
 
 .candle-wrapper:hover {
   transform: scale(1.15) translateY(-4px);
+}
+
+.candle-wrapper.error { animation: candleShake 0.35s ease; }
+
+@keyframes candleShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
 }
 
 .candle-flame {
@@ -227,6 +261,28 @@
   font-size: 1.7rem;
 }
 
+.candle-grande.listo .candle-body {
+  background: linear-gradient(180deg, #fff2cf 0%, #ff78c4 45%, #8a2be2 100%);
+  box-shadow: 0 0 26px rgba(255, 242, 207, 0.85), 0 0 52px rgba(226, 190, 107, 0.6);
+}
+
+.spark-particle {
+  position: absolute;
+  top: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff2cf;
+  box-shadow: 0 0 10px #ff78c4, 0 0 18px #e2be6b;
+  pointer-events: none;
+  animation: sparkFly 1s ease-out forwards;
+}
+
+@keyframes sparkFly {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--sparkX), var(--sparkY)) scale(0.2); opacity: 0; }
+}
+
 /* Vela Apagada */
 .candle-wrapper.extinguished {
   pointer-events: none;
@@ -253,39 +309,63 @@
   top: 15px;
   width: 8px;
   height: 8px;
-  background: rgba(220, 220, 220, 0.7);
+  background: rgba(225, 225, 235, 0.55);
   border-radius: 50%;
   pointer-events: none;
-  animation: riseSmoke 0.8s ease-out forwards;
+  animation: riseSmoke 1s ease-out forwards;
 }
 
 @keyframes riseSmoke {
-  0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
-  100% { transform: translate(var(--smokeX), -35px) scale(2.5); opacity: 0; }
+  0% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+  100% { transform: translate(var(--smokeX), -45px) scale(3.2); opacity: 0; }
 }
 
-/* Cuenta Regresiva (3, 2, 1) */
 #countdown-wrapper {
   z-index: 2;
-  min-height: 80px;
+  min-height: 90px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 10px;
 }
 
-.countdown-number {
+.continuar-frase {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 5rem;
+  font-size: clamp(1.1rem, 4vw, 1.5rem);
   font-weight: 700;
-  color: #ff78c4;
-  text-shadow: 0 0 25px rgba(255, 120, 196, 0.9), 0 0 50px rgba(138, 43, 226, 0.6);
-  animation: popNum 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  color: #fff2cf;
+  text-shadow: 0 0 20px rgba(255, 120, 196, 0.9), 0 0 40px rgba(226, 190, 107, 0.6);
+  animation: popNum 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
+
+.continuar-velas {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #1b0616;
+  padding: 12px 24px;
+  border: 1px solid #fff2cf;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fff2cf, #ff78c4 55%, #e2be6b);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 24px rgba(255, 120, 196, 0.75);
+  cursor: pointer;
+  animation: continuarPulse 1.6s ease-in-out infinite;
+}
+
+.continuar-velas:active { transform: scale(0.96); }
 
 @keyframes popNum {
-  0% { transform: scale(0.2); opacity: 0; }
-  50% { transform: scale(1.3); opacity: 1; }
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
   100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes continuarPulse {
+  0%, 100% { box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 18px rgba(255, 120, 196, 0.55); }
+  50% { box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 34px rgba(255, 120, 196, 0.95); }
 }
 
 /* ==========================================================
@@ -293,8 +373,11 @@
 ========================================================== */
 @media (max-width: 520px) {
   #intro-overlay {
-    padding: 12px 8px;
+    justify-content: flex-start;
+    padding: max(24px, calc(env(safe-area-inset-top) + 10px)) 8px 12px;
   }
+
+  .intro-header { margin-bottom: 12px; }
 
   .intro-title {
     font-size: 1.8rem;
@@ -305,9 +388,10 @@
   }
 
   .intro-balloons-container {
-    gap: 12px 10px;
+    gap: 10px 9px;
     padding: 0 4px;
     max-width: 100%;
+    margin-bottom: 10px;
   }
 
   .candle-word {
@@ -353,6 +437,12 @@
   .candle-grande .candle-letter {
     font-size: 1.3rem;
   }
+
+  .deseos-progreso { margin-bottom: 6px; }
+  .deseos-texto { font-size: 0.7rem; }
+  .deseo-mensaje { font-size: 0.72rem; }
+  #countdown-wrapper { min-height: 68px; gap: 8px; }
+  .continuar-velas { padding: 11px 18px; font-size: 0.76rem; }
 }
 
 /* ==========================================================
@@ -429,27 +519,34 @@
   object-fit: contain;
 }
 
-.torta-numero {
-  position: absolute;
-  right: clamp(16px, 4vw, 42px);
-  bottom: clamp(16px, 4vw, 42px);
-  width: clamp(56px, 12vw, 76px);
-  height: clamp(56px, 12vw, 76px);
-  display: flex;
+.torta-volver {
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  left: 14px;
+  z-index: 12001;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.85);
-  border: 1px solid rgba(226, 190, 107, 0.55);
-  color: #fff;
-  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  border: 1px solid rgba(255, 242, 207, 0.9);
+  background: rgba(82, 8, 30, 0.9);
+  color: #fff2cf;
+  font-size: 1.2rem;
   font-weight: 700;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 204, 130, 0.4);
 }
 
-.torta-numero.pop { animation: tortaPop 0.35s ease; }
+.torta-volver:active { transform: scale(0.94); }
 
-@keyframes tortaPop {
-  from { transform: scale(0.85); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+@media (max-width: 520px) {
+  .torta-volver {
+    top: max(10px, env(safe-area-inset-top));
+    left: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
 }

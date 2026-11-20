@@ -419,9 +419,44 @@
         #love-letter-modal.active .parchment-card {
             transform: translateY(0) scale(1);
         }
+        .volver-capitulos {
+            display: inline-flex !important;
+            position: fixed !important;
+            top: max(14px, env(safe-area-inset-top));
+            left: 14px;
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 218, 160, 0.9);
+            background: rgba(82, 8, 30, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #fff2cf;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 204, 130, 0.35);
+        }
+
+        @media (max-width: 520px) {
+            .volver-capitulos {
+                top: max(10px, env(safe-area-inset-top));
+                left: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.15rem;
+            }
+        }
     </style>
 </head>
 <body>
+
+    <a class="volver-capitulos" href="../final.html?capitulo=3&listo=1" aria-label="Volver a los capítulos">←</a>
 
     <div id="stage">
         <canvas id="bg-canvas"></canvas>
@@ -447,7 +482,7 @@
                     <path d="M8.5 9.5V8a1.5 1.5 0 0 0-3 0v5c0 4.5 3.5 8 8 8 3.7 0 6.5-2.8 6.5-6.5v-3a1.5 1.5 0 0 0-3 0"/>
                 </svg>
             </span>
-            <span><strong>Tocá la caja</strong> o deslizá el lazo hacia afuera</span>
+            <span><strong>Tocá el moño</strong> y deslizá el listón</span>
         </div>
 
         <div id="draggable-gift-container" class="w-[300px] sm:w-[370px] md:w-[405px]" role="button" tabindex="0" aria-label="Caja de regalo. Tocala para abrirla">
@@ -659,25 +694,29 @@
                 </div>
 
                 <div class="font-letter text-lg sm:text-xl text-[#3b1d16] leading-relaxed overflow-y-auto pr-1 space-y-3.5 px-2">
-                    <p>
-                        Cada momento a tu lado es el regalo más bonito que la vida me ha dado. Gracias por llenar mis días de ternura, alegría y tanto amor.
-                    </p>
-                    <p>
-                        Quería darte esta pequeña sorpresa para recordarte lo especial que eres para mí y cuánto te llevo en mi corazón en cada instante.
-                    </p>
+<p>
+    Cada charla, cada risa y cada momento a tu lado se volvió el regalo más bonito de mis días. Gracias por traer tanta luz, ternura y buena onda a mi vida.
+</p>
+<p>
+    Quería hacerte este detalle para que nunca te olvides de lo muchísimo que valés para mí y de que te llevo siempre en el corazón, mi Pachuchaa.
+</p>
                 </div>
 
                 <div class="mt-6 pt-4 border-t border-rose-900/15 flex items-center justify-between">
                     <div>
                         <p class="text-xs text-rose-900/70 italic">Siempre tuyo,</p>
                         <p class="font-handwriting text-3xl text-rose-800 font-bold">
-                            Te Amo
+                            Abelardoo
                         </p>
                     </div>
 
-                    <button onclick="closeLoveLetter()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-rose-700 to-red-800 hover:from-rose-800 hover:to-red-900 text-amber-50 text-xs sm:text-sm font-semibold shadow-md transition">
-                        Cerrar carta
-                    </button>
+                    <div class="text-right">
+                        <p class="text-xs text-rose-900/70 italic mb-1">Para mi persona favorita,</p>
+                        <p class="font-handwriting text-xl sm:text-3xl text-rose-800 font-bold leading-none tracking-wide drop-shadow-sm">
+                            Señorita Iriss
+                        </p>
+                        <p class="text-rose-700/80 text-xs mt-1 tracking-widest">✦ ♥ ✦</p>
+                    </div>
                 </div>
             </div>
         </div>

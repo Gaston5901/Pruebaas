@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Iriss</title>
-    <script>
-        if (new URLSearchParams(window.location.search).get('capitulo') === '3') {
-            document.documentElement.classList.add('modo-capitulo');
-        }
-    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -424,45 +419,9 @@
         #love-letter-modal.active .parchment-card {
             transform: translateY(0) scale(1);
         }
-        .volver-capitulos {
-            display: none;
-            position: fixed;
-            top: max(14px, env(safe-area-inset-top));
-            left: 14px;
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-            width: 42px;
-            height: 42px;
-            padding: 0;
-            border-radius: 50%;
-            border: 1px solid rgba(255, 218, 160, 0.55);
-            background: rgba(36, 6, 13, 0.72);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            color: #fff8f2;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-decoration: none;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        }
-        html.modo-capitulo .volver-capitulos { display: inline-flex; }
-
-        @media (max-width: 520px) {
-            .volver-capitulos {
-                top: max(10px, env(safe-area-inset-top));
-                left: 10px;
-                width: 38px;
-                height: 38px;
-                font-size: 1rem;
-            }
-        }
     </style>
 </head>
 <body>
-
-    <a class="volver-capitulos" href="../../sorpresa9/inicio/final.html?capitulo=3&listo=1" aria-label="Volver a los capítulos">←</a>
 
     <div id="stage">
         <canvas id="bg-canvas"></canvas>

@@ -9,10 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     createFireflies();
     initIntroCandles();
 
-    if (new URLSearchParams(window.location.search).get('capitulo') === '2') {
-      const back = document.querySelector('.nav-btn');
-      if (back) back.href = '../sorpresa9/inicio/final.html';
-    }
   }
 
   // Si estamos en la vista del Lobby
@@ -50,19 +46,30 @@ function createFireflies() {
   }
 }
 
-/* ==========================================================
-   Efecto de sonido de Soplido (Web Audio API)
-========================================================== */
-function playBlowSound() {
+let audioCtx = null;
+
+function getAudioCtx() {
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-    
-    const ctx = new AudioContext();
-    const bufferSize = ctx.sampleRate * 0.2;
+    if (!AudioContext) return null;
+    if (!audioCtx) audioCtx = new AudioContext();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  } catch (e) {
+    return null;
+  }
+}
+
+function playBlowSound(numero) {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+
+  try {
+    const now = ctx.currentTime;
+    const bufferSize = Math.floor(ctx.sampleRate * 0.18);
     const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const data = buffer.getChannelData(0);
-    
+
     for (let i = 0; i < bufferSize; i++) {
       data[i] = Math.random() * 2 - 1;
     }
@@ -72,21 +79,73 @@ function playBlowSound() {
 
     const filter = ctx.createBiquadFilter();
     filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(700, ctx.currentTime);
-    filter.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.2);
+    filter.frequency.setValueAtTime(1100, now);
+    filter.frequency.exponentialRampToValueAtTime(120, now + 0.18);
 
     const gain = ctx.createGain();
-    gain.gain.setValueAtTime(0.25, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.85, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
 
     noise.connect(filter);
     filter.connect(gain);
     gain.connect(ctx.destination);
 
-    noise.start();
-  } catch (e) {
-    console.log("Audio interactivo no habilitado:", e);
-  }
+    const pop = ctx.createOscillator();
+    pop.type = 'sine';
+    pop.frequency.setValueAtTime(280 + numero * 10, now);
+    pop.frequency.exponentialRampToValueAtTime(90, now + 0.14);
+
+    const popGain = ctx.createGain();
+    popGain.gain.setValueAtTime(0.4, now);
+    popGain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+
+    pop.connect(popGain);
+    popGain.connect(ctx.destination);
+
+    noise.start(now);
+    pop.start(now);
+  } catch (e) {}
+
+  try {
+    if (navigator.vibrate) navigator.vibrate(numero === 21 ? [35, 45, 70] : 30);
+  } catch (e) {}
+}
+
+const DESEOS_MENSAJES = [
+  'Por tu sonrisa ✨',
+  'Por cada abrazo 💜',
+  'Por las risas compartidas',
+  'Por los días tranquilos',
+  'Por todo lo que viene',
+  'Por tu ternura',
+  'Por hacerme sentir en casa',
+  'Por escucharme siempre',
+  'Por tu mirada bonita',
+  'Por los planes que faltan',
+  'Por tu forma de querer',
+  'Por los detalles mínimos',
+  'Por cada mensaje tuyo',
+  'Por la calma que me das',
+  'Por tu voz',
+  'Por creer en mí',
+  'Por el 26 de abril 💫',
+  'Por todo lo que ya vivimos',
+  'Por lo que todavía no sabemos',
+  'Porque sos mi lugar favorito',
+  '¡Pediste tus 21 deseos! 🎂'
+];
+
+function mensajeDeseo(numero) {
+  return DESEOS_MENSAJES[(numero - 1) % DESEOS_MENSAJES.length];
+}
+
+function actualizarProgreso() {
+  const actual = document.getElementById('deseosActuales');
+  const mensaje = document.getElementById('deseoMensaje');
+  if (actual) actual.textContent = extinguishedCount;
+  if (mensaje) mensaje.textContent = extinguishedCount === 0
+    ? 'Tocá la primera vela ✨'
+    : mensajeDeseo(extinguishedCount);
 }
 
 /* ==========================================================
@@ -103,6 +162,7 @@ function initIntroCandles() {
   introContainer.innerHTML = '';
   totalCandles = 21;
   extinguishedCount = 0;
+  actualizarProgreso();
 
   let group = null;
 
@@ -126,17 +186,28 @@ function initIntroCandles() {
     `;
 
     wrapper.addEventListener("click", () => {
+      if (numero !== extinguishedCount + 1) {
+        const mensaje = document.getElementById('deseoMensaje');
+        if (mensaje) mensaje.textContent = `Tocá la vela ${extinguishedCount + 1} primero ✨`;
+        wrapper.classList.remove('error');
+        void wrapper.offsetWidth;
+        wrapper.classList.add('error');
+        setTimeout(() => wrapper.classList.remove('error'), 360);
+        return;
+      }
+
       if (!wrapper.classList.contains("extinguished")) {
         wrapper.classList.add("extinguished");
         extinguishedCount++;
 
-        playBlowSound();
+        playBlowSound(numero);
         createSmoke(wrapper);
+        actualizarProgreso();
 
         if (extinguishedCount === totalCandles) {
-          setTimeout(() => {
-            startCountdown();
-          }, 500);
+          wrapper.classList.add('listo');
+          createSparkles(wrapper);
+          setTimeout(mostrarContinuar, 650);
         }
       }
     });
@@ -146,90 +217,66 @@ function initIntroCandles() {
 }
 
 function createSmoke(element) {
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 5; i++) {
     const smoke = document.createElement('div');
     smoke.classList.add('smoke-particle');
-    
-    const smokeX = (Math.random() - 0.5) * 30;
+
+    const smokeX = (Math.random() - 0.5) * 36;
     smoke.style.setProperty('--smokeX', `${smokeX}px`);
+    smoke.style.left = `${10 + Math.random() * 12}px`;
+    smoke.style.animationDelay = `${i * 0.06}s`;
 
     element.appendChild(smoke);
-    setTimeout(() => smoke.remove(), 800);
+    setTimeout(() => smoke.remove(), 1100);
   }
 }
 
-/* ==========================================================
-   3. CUENTA REGRESIVA Y TRANSICIÓN AL LOBBY
-========================================================== */
-function startCountdown() {
-  let count = 3;
-  countdownWrapper.innerHTML = `<div class="countdown-number">${count}</div>`;
+function createSparkles(element) {
+  for (let i = 0; i < 16; i++) {
+    const spark = document.createElement('div');
+    spark.classList.add('spark-particle');
 
-  const interval = setInterval(() => {
-    count--;
-    if (count > 0) {
-      countdownWrapper.innerHTML = `<div class="countdown-number">${count}</div>`;
-    } else {
-      clearInterval(interval);
-      revealLobby();
-    }
-  }, 900);
+    const angle = (Math.PI * 2 * i) / 16;
+    const radio = 50 + Math.random() * 55;
+    spark.style.setProperty('--sparkX', `${Math.cos(angle) * radio}px`);
+    spark.style.setProperty('--sparkY', `${Math.sin(angle) * radio}px`);
+    spark.style.left = '50%';
+    spark.style.animationDelay = `${Math.random() * 0.18}s`;
+
+    element.appendChild(spark);
+    setTimeout(() => spark.remove(), 1300);
+  }
 }
 
-function mostrarTortaFinal(callback) {
-  const overlay = document.getElementById("tortaFinal");
-  const numero = document.getElementById("tortaNumero");
-  const gif = document.getElementById("tortaGif");
+function mostrarContinuar() {
+  countdownWrapper.innerHTML =
+    '<p class="continuar-frase">¡21 deseos pedidos, Iris! 🎂</p>' +
+    '<button class="continuar-velas" id="continuarVelas" type="button">Continuar a tu torta →</button>';
 
-  if (!overlay) {
-    callback();
-    return;
-  }
+  const boton = document.getElementById('continuarVelas');
+  if (!boton) return;
 
-  let restante = 7;
-  if (numero) numero.textContent = restante;
+  boton.addEventListener('click', () => {
+    boton.disabled = true;
+    mostrarTortaFinal();
+  });
+}
+
+function mostrarTortaFinal() {
+  const overlay = document.getElementById('tortaFinal');
+  if (!overlay) return;
+
+  const gif = document.getElementById('tortaGif');
   if (gif) gif.src = gif.src;
-  overlay.classList.add("visible");
 
-  const timer = setInterval(() => {
-    restante--;
-
-    if (restante <= 0) {
-      clearInterval(timer);
-      overlay.classList.remove("visible");
-      callback();
-      return;
-    }
-
-    if (numero) {
-      numero.textContent = restante;
-      numero.classList.remove("pop");
-      void numero.offsetWidth;
-      numero.classList.add("pop");
-    }
-  }, 1000);
-}
-
-function revealLobby() {
-  const overlay = document.getElementById("intro-overlay");
-
-  if (overlay) {
-    overlay.style.opacity = "0";
-    overlay.style.transform = "scale(1.05)";
-    overlay.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+  const intro = document.getElementById('intro-overlay');
+  if (intro) {
+    intro.style.opacity = '0';
+    intro.style.pointerEvents = 'none';
+    intro.style.transition = 'opacity 0.45s ease';
   }
 
-  const params = new URLSearchParams(window.location.search);
-
-  setTimeout(() => {
-    const destino = params.get('capitulo') === '4'
-      ? "../sorpresa9/inicio/final.html?capitulo=4&listo=1"
-      : "lobby.html?from=candles";
-
-    mostrarTortaFinal(() => {
-      window.location.href = destino;
-    });
-  }, 800);
+  overlay.classList.add('visible');
 }
 
 /* ==========================================================
