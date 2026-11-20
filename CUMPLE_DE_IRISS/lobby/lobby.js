@@ -222,8 +222,8 @@ function revealLobby() {
   const params = new URLSearchParams(window.location.search);
 
   setTimeout(() => {
-    const destino = params.get('capitulo') === '2'
-      ? "../sorpresa9/inicio/final.html?capitulo=2&listo=1"
+    const destino = params.get('capitulo') === '4'
+      ? "../sorpresa9/inicio/final.html?capitulo=4&listo=1"
       : "lobby.html?from=candles";
 
     mostrarTortaFinal(() => {

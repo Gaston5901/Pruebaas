@@ -2514,8 +2514,9 @@ if (IS_HEADER) {
 const botonContinuarFinal = document.querySelector('.fire-continue__btn');
 if (botonContinuarFinal) {
 	botonContinuarFinal.addEventListener('click', () => {
-		if (new URLSearchParams(window.location.search).get('capitulo') === '3') {
-			window.location.href = '../sorpresa9/inicio/final.html?capitulo=3&listo=1';
+		const cap = Number(new URLSearchParams(window.location.search).get('capitulo'));
+		if (cap === 5) {
+			window.location.href = `../sorpresa9/inicio/final.html?capitulo=${cap}&listo=1`;
 		}
 	});
 }

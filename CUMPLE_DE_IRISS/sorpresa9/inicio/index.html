@@ -827,36 +827,6 @@ Contáctame:
         .top-controls,
         .envelope-wrapper { display: none !important; }
 
-        .final-continue {
-            text-align: center;
-            width: 100%;
-            opacity: 0;
-        }
-        body.unlocked .final-continue {
-            animation: slideUpFade 1.6s ease forwards;
-            animation-delay: 1.8s;
-        }
-
-        .btn-final {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 14px 28px;
-            border-radius: 999px;
-            background: linear-gradient(135deg, var(--rose-imperial), var(--ruby-deep));
-            border: 1px solid var(--gold);
-            color: var(--gold-light);
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
-            letter-spacing: 0.12em;
-            text-decoration: none;
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45), 0 0 18px var(--gold-glow);
-            transition: transform 0.25s ease;
-        }
-
-        .btn-final:hover { transform: translateY(-2px); }
-        .btn-final:active { transform: scale(0.97); }
-
         @media (max-width: 520px) {
             .fp-gate { gap: 0.7rem; padding: 4.2rem 1rem 1rem; }
             .fp-gate-badge {
@@ -882,7 +852,6 @@ Contáctame:
             .promise-icon { font-size: 1.25rem; }
             .promise-card strong { font-size: 0.62rem; letter-spacing: 0.06em; }
             .promise-tap { font-size: 0.58rem; }
-            .btn-final { padding: 12px 18px; font-size: 0.72rem; }
             .counter-section { padding: 14px 10px 16px; }
         }
 
@@ -927,7 +896,7 @@ Contáctame:
         <div class="fp-hint" id="fpHint">Mantené la huella para seguir, Iris ♥</div>
     </div>
 
-    <a class="btn-volver-lobby" href="../../lobby/lobby.html" aria-label="Volver al lobby">←</a>
+    <a class="btn-volver-lobby" href="final.html?capitulo=2&listo=1" aria-label="Volver a los capítulos">←</a>
 
     <div class="top-controls" id="topControls">
         <button class="icon-btn" id="dateConfigBtn" title="Cambiar la fecha en que empezamos a hablar" aria-label="Personalizar fecha">
@@ -999,10 +968,6 @@ Contáctame:
                 </button>
             </div>
         </section>
-
-        <div class="final-continue">
-            <a class="btn-final" id="btnGranFinal" href="final.html">Tocá para seguir al gran final →</a>
-        </div>
 
         <section class="counter-section" aria-label="Tiempo desde que empezamos a hablar">
             <div class="counter-titulo">Desde que<br>empezamos a hablar</div>
@@ -1151,9 +1116,6 @@ Contáctame:
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') cerrarPromesa();
         });
-
-        const btnGranFinal = document.getElementById('btnGranFinal');
-        if (btnGranFinal) btnGranFinal.href = 'final.html' + window.location.search;
 
         
         (function() {
@@ -1451,12 +1413,9 @@ Contáctame:
                 hint.innerHTML = FP_SUCCESS;
                 
                 RomanticMusic.start();
-                
+
                 setTimeout(() => { hint.innerHTML = FP_WELCOME; }, 1050);
-                setTimeout(() => { 
-                    gate.classList.add('hidden'); 
-                    document.body.classList.add('unlocked');
-                }, 2300);
+                setTimeout(() => { window.location.href = 'final.html'; }, 2300);
             }
 
             fp.addEventListener('mousedown', startPress);

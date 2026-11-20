@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Iriss</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #24060d;
+        }
+
+        .font-serif-title {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+
+        .font-handwriting {
+            font-family: 'Caveat', cursive;
+        }
+
+        .font-letter {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+
+        #stage {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 50% 42%, rgba(255, 236, 197, 0.34) 0%, rgba(255, 205, 180, 0.12) 18%, transparent 38%),
+                radial-gradient(circle at 50% 48%, #8e1838 0%, #68142f 42%, #2e0718 78%, #12030b 100%);
+        }
+
+        #stage::before {
+            content: "";
+            position: absolute;
+            inset: -20%;
+            z-index: 2;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 50% 58%, rgba(255, 205, 142, 0.16), transparent 26%),
+                linear-gradient(115deg, transparent 34%, rgba(255, 220, 178, 0.07) 50%, transparent 64%);
+            filter: blur(2px);
+            animation: stageLight 8s ease-in-out infinite;
+        }
+
+        #stage::after {
+            content: "✦  ·  ✧  ·  ✦  ·  ✧";
+            position: absolute;
+            left: 50%;
+            bottom: 11%;
+            transform: translateX(-50%);
+            z-index: 3;
+            width: min(430px, 86vw);
+            color: rgba(255, 224, 167, 0.78);
+            text-align: center;
+            letter-spacing: 18px;
+            white-space: nowrap;
+            font-size: 13px;
+            text-shadow: 0 0 12px rgba(255, 211, 137, 0.85);
+            pointer-events: none;
+        }
+
+        @keyframes stageLight {
+            0%, 100% { opacity: 0.55; transform: translateX(-1.5%) rotate(-1deg); }
+            50% { opacity: 1; transform: translateX(1.5%) rotate(1deg); }
+        }
+
+        #bg-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #fx-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 45;
+        }
+
+        .center-floor-glow {
+            position: absolute;
+            left: 50%;
+            top: 68%;
+            transform: translate(-50%, -50%);
+            width: 680px;
+            height: 180px;
+            background: radial-gradient(ellipse at center, rgba(68, 6, 20, 0.38) 0%, rgba(68, 6, 20, 0) 72%);
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        @keyframes floatGentle {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-9px); }
+        }
+
+        @keyframes subtleRibbonBreeze {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(1.8deg); }
+        }
+
+        .gift-interaction-hint {
+            position: absolute;
+            left: 50%;
+            bottom: max(18px, env(safe-area-inset-bottom));
+            transform: translateX(-50%);
+            z-index: 50;
+            width: min(330px, calc(100vw - 32px));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border: 1px solid rgba(255, 218, 160, 0.58);
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(82, 8, 30, 0.92), rgba(32, 4, 15, 0.88));
+            box-shadow: 0 12px 34px rgba(15, 1, 7, 0.44), 0 0 24px rgba(255, 204, 130, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #fff8f2;
+            font-size: clamp(12px, 3.2vw, 14px);
+            font-weight: 700;
+            text-align: left;
+            pointer-events: none;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
+        .gift-interaction-hint.hidden {
+            opacity: 0;
+            transform: translate(-50%, 16px);
+        }
+
+        .hand-icon {
+            width: 31px;
+            height: 31px;
+            flex: 0 0 31px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #fff4d7, #dab36a);
+            color: #762034;
+            box-shadow: 0 0 14px rgba(255, 225, 158, 0.42);
+            animation: hintHand 1.8s ease-in-out infinite;
+        }
+
+        @keyframes hintHand {
+            0%, 100% { transform: translateY(0) rotate(-4deg); }
+            50% { transform: translateY(-5px) rotate(4deg); }
+        }
+
+        .teddy-interaction-hint {
+            position: absolute;
+            left: 50%;
+            top: calc(54% + min(33vh, 280px));
+            transform: translate(-50%, 12px);
+            z-index: 55;
+            min-width: 190px;
+            padding: 9px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(215, 174, 102, 0.72);
+            background: linear-gradient(135deg, rgba(255, 250, 237, 0.97), rgba(248, 222, 176, 0.94));
+            box-shadow: 0 10px 24px rgba(70, 5, 16, 0.28), 0 0 22px rgba(255, 217, 145, 0.34);
+            color: #8d1022;
+            font-size: 14px;
+            font-weight: 800;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .teddy-interaction-hint.visible {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        #single-rose-wrapper {
+            position: absolute;
+            left: calc(50% + 185px);
+            top: 63%;
+            transform: translate(-50%, -50%);
+            z-index: 15;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .rose-floor-shadow {
+            position: absolute;
+            bottom: 6%;
+            width: 78%;
+            height: 26px;
+            background: radial-gradient(ellipse at center, rgba(48, 4, 14, 0.55) 0%, rgba(48, 4, 14, 0) 75%);
+            filter: blur(6px);
+            transform: rotate(-6deg);
+            z-index: -1;
+        }
+
+        #rosa-img {
+            width: 175px;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 12px 18px rgba(55, 5, 16, 0.42));
+        }
+
+        @media (max-width: 640px) {
+            html, body {
+                overscroll-behavior: none;
+            }
+
+            #single-rose-wrapper {
+                left: calc(50% + min(24vw, 118px));
+                top: 67%;
+            }
+            #rosa-img {
+                width: min(112px, 30vw);
+            }
+
+            #draggable-gift-container {
+                top: 50%;
+                width: min(288px, 78vw) !important;
+            }
+
+            #teddy-wrapper.emerged {
+                top: 47% !important;
+            }
+
+            #teddy-wrapper.emerged .teddy-floor-shadow {
+                bottom: -8px;
+            }
+
+            #oso-img {
+                width: min(238px, 64vw);
+                max-height: 52dvh;
+            }
+
+            .gift-interaction-hint {
+                bottom: max(10px, env(safe-area-inset-bottom));
+                max-width: calc(100vw - 24px);
+                padding: 9px 11px;
+                font-size: 12px;
+            }
+
+            .teddy-interaction-hint {
+                top: calc(47% + min(31dvh, 210px));
+                font-size: 12px;
+            }
+
+            .teddy-magical-aura {
+                width: min(270px, 72vw);
+                height: min(270px, 72vw);
+            }
+
+            .parchment-card {
+                max-height: 82dvh;
+            }
+
+            #stage::after {
+                bottom: 16%;
+                letter-spacing: 10px;
+            }
+        }
+
+        #draggable-gift-container {
+            position: absolute;
+            left: 50%;
+            top: 55%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+            touch-action: none;
+            will-change: left, top, transform;
+        }
+
+        .gift-body-grab {
+            cursor: grab;
+        }
+        .gift-body-grab:active {
+            cursor: grabbing;
+        }
+
+        #ribbon-bow-handle {
+            cursor: grab;
+            touch-action: none;
+            filter: drop-shadow(0 9px 12px rgba(65, 4, 10, 0.42));
+        }
+        #ribbon-bow-handle:active {
+            cursor: grabbing;
+        }
+
+        #bow-loop-left {
+            transform-origin: 240px 138px;
+            will-change: transform;
+        }
+        #bow-loop-right {
+            transform-origin: 240px 138px;
+            will-change: transform;
+        }
+        #bow-knot {
+            transform-origin: 240px 138px;
+            will-change: transform;
+        }
+
+        #box-lid-group {
+            transform-origin: 240px 180px;
+            will-change: transform, opacity;
+        }
+
+        #teddy-wrapper {
+            position: absolute;
+            left: 50%;
+            top: 54%;
+            transform: translate(-50%, 15%) scale(0.18);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 18;
+            transition: transform 1.15s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.55s ease;
+            will-change: transform, opacity;
+        }
+
+        #teddy-wrapper.emerged {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 32;
+        }
+
+        .teddy-magical-aura {
+            position: absolute;
+            width: min(330px, 82vw);
+            height: min(330px, 82vw);
+            border-radius: 50%;
+            background:
+                radial-gradient(circle, rgba(255, 235, 182, 0.58) 0%, rgba(255, 204, 130, 0.22) 38%, transparent 68%);
+            filter: blur(10px);
+            animation: teddyAura 3.2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes teddyAura {
+            0%, 100% { transform: scale(0.94); opacity: 0.72; }
+            50% { transform: scale(1.06); opacity: 1; }
+        }
+
+        .teddy-floor-shadow {
+            position: absolute;
+            bottom: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 75%;
+            height: 36px;
+            background: radial-gradient(ellipse at center, rgba(50, 5, 16, 0.5) 0%, rgba(50, 5, 16, 0) 72%);
+            filter: blur(8px);
+            pointer-events: none;
+        }
+
+        #oso-img {
+            cursor: pointer;
+            animation: floatGentle 4s ease-in-out infinite;
+            filter: drop-shadow(0 22px 32px rgba(65, 8, 22, 0.5));
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.35s ease;
+        }
+
+        #oso-img:hover {
+            transform: scale(1.045);
+            filter: drop-shadow(0 26px 38px rgba(160, 18, 48, 0.65));
+        }
+
+        #love-letter-modal {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.45s ease;
+            z-index: 60;
+        }
+
+        #love-letter-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .parchment-card {
+            background: radial-gradient(circle at center, #fffdf6 0%, #fbf1da 68%, #dcc18a 100%);
+            box-shadow:
+                0 28px 65px -12px rgba(42, 4, 14, 0.72),
+                0 0 0 1px rgba(185, 130, 95, 0.4),
+                inset 0 0 45px rgba(205, 150, 110, 0.28);
+            transform: translateY(34px) scale(0.92);
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        #love-letter-modal.active .parchment-card {
+            transform: translateY(0) scale(1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="stage">
+        <canvas id="bg-canvas"></canvas>
+
+        <div class="center-floor-glow"></div>
+
+        <div id="single-rose-wrapper">
+            <div class="rose-floor-shadow"></div>
+            <img
+                src="flor.png"
+                id="rosa-img"
+                alt="Rosa"
+                onerror="loadRoseFallback(this)"
+            />
+        </div>
+
+        <div id="gift-interaction-hint" class="gift-interaction-hint" aria-live="polite">
+            <span class="hand-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8.5 11V5.5a1.5 1.5 0 0 1 3 0V10"/>
+                    <path d="M11.5 9V4.5a1.5 1.5 0 0 1 3 0V10"/>
+                    <path d="M14.5 9V6.5a1.5 1.5 0 0 1 3 0V12"/>
+                    <path d="M8.5 9.5V8a1.5 1.5 0 0 0-3 0v5c0 4.5 3.5 8 8 8 3.7 0 6.5-2.8 6.5-6.5v-3a1.5 1.5 0 0 0-3 0"/>
+                </svg>
+            </span>
+            <span><strong>Tocá la caja</strong> o deslizá el lazo hacia afuera</span>
+        </div>
+
+        <div id="draggable-gift-container" class="w-[300px] sm:w-[370px] md:w-[405px]" role="button" tabindex="0" aria-label="Caja de regalo. Tocala para abrirla">
+            <svg id="gift-box-svg" viewBox="0 0 500 470" class="w-full h-auto overflow-visible">
+                <defs>
+                    <linearGradient id="boxLeftFace" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#f23838"/>
+                        <stop offset="100%" stop-color="#b31217"/>
+                    </linearGradient>
+                    <linearGradient id="boxRightFace" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#9c0d13"/>
+                        <stop offset="100%" stop-color="#590307"/>
+                    </linearGradient>
+                    <linearGradient id="lidTopFace" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#fffdf1"/>
+                        <stop offset="48%" stop-color="#f4dfaa"/>
+                        <stop offset="100%" stop-color="#c99d54"/>
+                    </linearGradient>
+                    <linearGradient id="lidLeftEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#f8e9bd"/>
+                        <stop offset="100%" stop-color="#ba8f49"/>
+                    </linearGradient>
+                    <linearGradient id="lidRightEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#d6b86f"/>
+                        <stop offset="100%" stop-color="#8c682f"/>
+                    </linearGradient>
+                    <linearGradient id="satinRed" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#cf0610"/>
+                        <stop offset="28%" stop-color="#ff4750"/>
+                        <stop offset="55%" stop-color="#d40610"/>
+                        <stop offset="100%" stop-color="#6e0005"/>
+                    </linearGradient>
+                    <linearGradient id="satinRedLoopLeft" x1="0%" y1="20%" x2="100%" y2="80%">
+                        <stop offset="0%" stop-color="#850107"/>
+                        <stop offset="35%" stop-color="#ff424b"/>
+                        <stop offset="62%" stop-color="#e30b15"/>
+                        <stop offset="100%" stop-color="#610004"/>
+                    </linearGradient>
+                    <linearGradient id="satinRedLoopRight" x1="100%" y1="20%" x2="0%" y2="80%">
+                        <stop offset="0%" stop-color="#850107"/>
+                        <stop offset="35%" stop-color="#ff424b"/>
+                        <stop offset="62%" stop-color="#e30b15"/>
+                        <stop offset="100%" stop-color="#610004"/>
+                    </linearGradient>
+                    <linearGradient id="satinRedDark" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#a80710"/>
+                        <stop offset="100%" stop-color="#4d0003"/>
+                    </linearGradient>
+                    <path id="tinyWhiteHeart" d="M 0,-4 C -3,-8 -9,-7 -9,-1 C -9,4 0,8 0,11 C 0,8 9,4 9,-1 C 9,-7 3,-8 0,-4 Z" fill="#faece3" opacity="0.88"/>
+                    <path id="tinyDarkHeart" d="M 0,-4 C -3,-8 -9,-7 -9,-1 C -9,4 0,8 0,11 C 0,8 9,4 9,-1 C 9,-7 3,-8 0,-4 Z" fill="#c79e96" opacity="0.55"/>
+                </defs>
+
+                <polygon id="box-drop-shadow" points="50,328 225,448 458,348 275,245" fill="rgba(52, 5, 15, 0.46)" filter="blur(13px)"/>
+
+                <g id="box-base-group" class="gift-body-grab">
+                    <polygon points="68,195 245,120 432,195 232,282" fill="#2e0307" stroke="#660a10" stroke-width="2"/>
+                    <polygon points="68,195 245,120 245,255 68,310" fill="#3d050a" opacity="0.7"/>
+
+                    <polygon points="68,195 232,282 232,425 78,315" fill="url(#boxLeftFace)"/>
+                    <g transform="skewY(26)">
+                        <use href="#tinyWhiteHeart" x="95" y="175"/>
+                        <use href="#tinyWhiteHeart" x="125" y="195"/>
+                        <use href="#tinyWhiteHeart" x="175" y="180"/>
+                        <use href="#tinyWhiteHeart" x="208" y="205"/>
+                        <use href="#tinyWhiteHeart" x="102" y="222"/>
+                        <use href="#tinyWhiteHeart" x="165" y="228"/>
+                        <use href="#tinyWhiteHeart" x="195" y="248"/>
+                        <use href="#tinyWhiteHeart" x="120" y="255"/>
+                        <use href="#tinyWhiteHeart" x="215" y="275"/>
+                    </g>
+
+                    <polygon points="232,282 432,195 415,328 232,425" fill="url(#boxRightFace)"/>
+                    <g transform="skewY(-22)">
+                        <use href="#tinyDarkHeart" x="275" y="345"/>
+                        <use href="#tinyDarkHeart" x="320" y="385"/>
+                        <use href="#tinyDarkHeart" x="365" y="355"/>
+                        <use href="#tinyDarkHeart" x="395" y="390"/>
+                        <use href="#tinyDarkHeart" x="270" y="405"/>
+                        <use href="#tinyDarkHeart" x="355" y="420"/>
+                        <use href="#tinyDarkHeart" x="398" y="440"/>
+                    </g>
+
+                    <polygon id="base-ribbon-left" points="118,220 154,240 162,376 128,352" fill="url(#satinRed)"/>
+                    <polygon id="base-ribbon-right" points="325,241 364,224 352,361 316,380" fill="url(#satinRedDark)"/>
+                </g>
+
+                <g id="box-lid-group">
+                    <polygon points="52,202 232,298 446,204 438,195 232,285 58,192" fill="rgba(40, 3, 5, 0.38)"/>
+
+                    <polygon points="50,145 248,74 448,148 232,238" fill="url(#lidTopFace)" stroke="#fffaf5" stroke-width="1.5"/>
+                    <polygon points="50,145 232,238 232,290 54,194" fill="url(#lidLeftEdge)"/>
+                    <polygon points="232,238 448,148 444,198 232,290" fill="url(#lidRightEdge)"/>
+
+                    <g id="lid-ribbons-group">
+                        <polygon points="308,96 344,109 148,200 112,182" fill="url(#satinRed)"/>
+                        <polygon points="112,182 148,200 150,252 114,233" fill="url(#satinRed)"/>
+                        <polygon points="145,110 182,97 372,179 332,196" fill="url(#satinRed)"/>
+                        <polygon points="332,196 372,179 368,230 330,247" fill="url(#satinRedDark)"/>
+                    </g>
+
+                    <g id="ribbon-bow-handle">
+                        <ellipse id="bow-shadow" cx="242" cy="154" rx="88" ry="32" fill="rgba(75, 5, 10, 0.36)" filter="blur(5px)"/>
+
+                        <g id="bow-loop-left">
+
+                            <path d="M 238,136 C 185,92 122,98 118,132 C 115,152 178,150 238,136 Z" fill="#520003"/>
+
+                            <path d="M 238,138 C 192,82 108,90 120,136 C 130,168 202,156 238,138 Z" fill="url(#satinRedLoopLeft)" stroke="#ff6e75" stroke-width="0.9"/>
+
+                            <path d="M 238,140 C 172,108 90,138 110,174 C 130,204 205,168 238,140 Z" fill="url(#satinRedLoopLeft)" stroke="#ff7a80" stroke-width="1.1"/>
+
+                            <path d="M 232,137 C 195,126 162,138 148,154" fill="none" stroke="#ff9499" stroke-width="1.5" stroke-linecap="round" opacity="0.65"/>
+                        </g>
+
+                        <g id="bow-loop-right">
+
+                            <path d="M 244,136 C 288,85 358,98 354,138 C 350,158 292,152 244,136 Z" fill="#4a0003"/>
+
+                            <path d="M 242,136 C 215,62 254,30 284,56 C 310,80 274,122 242,136 Z" fill="url(#satinRedLoopRight)" stroke="#ff757b" stroke-width="1.1"/>
+
+                            <path d="M 244,138 C 298,86 374,102 358,145 C 344,182 278,158 244,138 Z" fill="url(#satinRedLoopRight)" stroke="#ff636a" stroke-width="1"/>
+
+                            <path d="M 250,136 C 288,118 322,126 336,142" fill="none" stroke="#ff9499" stroke-width="1.5" stroke-linecap="round" opacity="0.65"/>
+                        </g>
+
+
+                        <path id="bow-tail-left" d="M 236,142 Q 212,182 184,228 L 205,221 L 218,234 Q 230,190 243,142 Z" fill="url(#satinRed)" stroke="#ff5c64" stroke-width="0.9"/>
+                        <path id="bow-tail-right" d="M 244,140 Q 292,164 358,172 L 346,154 L 362,144 Q 302,140 244,140 Z" fill="url(#satinRedDark)" stroke="#ff525a" stroke-width="0.8"/>
+
+
+                        <g id="bow-knot">
+                            <ellipse cx="240" cy="138" rx="19" ry="15" transform="rotate(-14 240 138)" fill="url(#satinRed)" stroke="#ff636b" stroke-width="1.4"/>
+                            <path d="M 227,133 Q 241,124 253,137" fill="none" stroke="#ff9ea3" stroke-width="2.4" stroke-linecap="round" opacity="0.85"/>
+                            <path d="M 230,144 Q 242,149 252,141" fill="none" stroke="#5e0004" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+                        </g>
+
+
+                        <circle cx="240" cy="142" r="95" fill="transparent"/>
+                    </g>
+                </g>
+            </svg>
+        </div>
+
+
+        <div id="teddy-wrapper" class="flex flex-col items-center">
+            <div class="relative flex items-center justify-center">
+                <div class="teddy-floor-shadow"></div>
+                <div class="teddy-magical-aura"></div>
+                <img
+                    src="oso.png"
+                    id="oso-img"
+                    alt="Osito"
+                    tabindex="0"
+                    role="button"
+                    onclick="openLoveLetter()"
+                    onerror="loadBearFallback(this)"
+                    class="relative z-10 w-64 sm:w-80 md:w-96 max-h-[64vh] object-contain select-none"
+                />
+            </div>
+        </div>
+        <div id="teddy-interaction-hint" class="teddy-interaction-hint" aria-live="polite">
+            Tocá al osito para abrir tu carta
+        </div>
+
+
+        <canvas id="fx-canvas"></canvas>
+
+
+        <div id="love-letter-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4" onclick="handleModalBackdropClick(event)">
+            <div class="parchment-card relative w-full max-w-lg rounded-2xl p-7 sm:p-10 border border-[#d4ae8d] max-h-[90vh] flex flex-col">
+
+
+                <div class="absolute -top-7 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full shadow-xl flex items-center justify-center">
+                    <svg viewBox="0 0 80 80" class="w-full h-full drop-shadow-md">
+                        <defs>
+                            <radialGradient id="waxSealGrad" cx="35%" cy="30%" r="65%">
+                                <stop offset="0%" stop-color="#ff4d5a"/>
+                                <stop offset="45%" stop-color="#b80718"/>
+                                <stop offset="85%" stop-color="#6e020c"/>
+                                <stop offset="100%" stop-color="#3d0005"/>
+                            </radialGradient>
+                        </defs>
+                        <path d="M 40,4 C 52,3 63,9 70,19 C 77,29 77,42 73,53 C 68,65 56,74 43,76 C 29,77 15,71 8,59 C 2,47 3,31 11,19 C 19,8 28,5 40,4 Z" fill="url(#waxSealGrad)"/>
+                        <circle cx="40" cy="40" r="26" fill="none" stroke="#ff8a93" stroke-width="1.2" stroke-dasharray="3 2" opacity="0.65"/>
+                        <path d="M 40,29 C 35,21 23,23 23,33 C 23,43 40,52 40,57 C 40,52 57,43 57,33 C 57,23 45,21 40,29 Z" fill="#fa2a3b" stroke="#ff9ea6" stroke-width="1"/>
+                    </svg>
+                </div>
+
+
+                <button onclick="closeLoveLetter()" aria-label="Cerrar carta" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-rose-950/10 hover:bg-rose-950/20 text-rose-950 flex items-center justify-center transition">
+                    <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-current" stroke-width="2.2" fill="none" stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+
+                <div class="text-center mt-3 mb-5">
+                    <span class="text-xs uppercase tracking-[0.25em] text-rose-900/75 font-semibold block mb-1.5">Para ti, con todo mi amor</span>
+                    <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-rose-950 px-2">
+                        Te Amo muchísimo
+                    </h2>
+                    <div class="flex items-center justify-center gap-3 mt-3">
+                        <span class="h-[1px] w-16 bg-rose-900/30"></span>
+                        <svg viewBox="0 0 24 24" class="w-4 h-4 fill-rose-700">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                        <span class="h-[1px] w-16 bg-rose-900/30"></span>
+                    </div>
+                </div>
+
+                <div class="font-letter text-lg sm:text-xl text-[#3b1d16] leading-relaxed overflow-y-auto pr-1 space-y-3.5 px-2">
+                    <p>
+                        Cada momento a tu lado es el regalo más bonito que la vida me ha dado. Gracias por llenar mis días de ternura, alegría y tanto amor.
+                    </p>
+                    <p>
+                        Quería darte esta pequeña sorpresa para recordarte lo especial que eres para mí y cuánto te llevo en mi corazón en cada instante.
+                    </p>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-rose-900/15 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-rose-900/70 italic">Siempre tuyo,</p>
+                        <p class="font-handwriting text-3xl text-rose-800 font-bold">
+                            Te Amo
+                        </p>
+                    </div>
+
+                    <button onclick="closeLoveLetter()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-rose-700 to-red-800 hover:from-rose-800 hover:to-red-900 text-amber-50 text-xs sm:text-sm font-semibold shadow-md transition">
+                        Cerrar carta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+
+        function loadRoseFallback(imgEl) {
+            if (imgEl.dataset.fallback) return;
+            imgEl.dataset.fallback = 'true';
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 210" width="260" height="210">
+                <defs>
+                    <radialGradient id="rb" cx="40%" cy="35%" r="60%">
+                        <stop offset="0%" stop-color="#ff4d63"/>
+                        <stop offset="45%" stop-color="#d90b26"/>
+                        <stop offset="85%" stop-color="#850212"/>
+                        <stop offset="100%" stop-color="#4a0008"/>
+                    </radialGradient>
+                    <linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#254217"/>
+                        <stop offset="50%" stop-color="#416b2b"/>
+                        <stop offset="100%" stop-color="#1b3011"/>
+                    </linearGradient>
+                </defs>
+                <path d="M 35,165 Q 95,148 158,125" fill="none" stroke="url(#sg)" stroke-width="7" stroke-linecap="round"/>
+                <path d="M 75,152 C 55,128 85,108 112,126 C 98,145 85,152 75,152 Z" fill="#355922" stroke="#233d15" stroke-width="1.5"/>
+                <path d="M 95,150 C 115,172 148,168 152,146 C 132,140 112,144 95,150 Z" fill="#2d4d1c" stroke="#1e3612" stroke-width="1.5"/>
+                <g transform="translate(172, 112) rotate(12)">
+                    <circle cx="0" cy="0" r="46" fill="url(#rb)"/>
+                    <path d="M -42,-12 C -52,-40 -12,-55 12,-46 C 40,-52 55,-18 44,10 C 52,38 22,55 -6,46 C -36,52 -55,22 -42,-12 Z" fill="url(#rb)"/>
+                    <path d="M -30,-22 C -12,-46 28,-42 36,-12 C 44,16 20,42 -10,38 C -38,34 -45,0 -30,-22 Z" fill="#a8061a" stroke="#ff6b7d" stroke-width="1"/>
+                    <path d="M -22,-8 C -26,-30 10,-38 26,-18 C 35,2 18,28 -8,26 C -28,24 -34,-5 -18,-16" fill="url(#rb)" stroke="#ff7a8a" stroke-width="1.2"/>
+                    <path d="M -12,-12 C 4,-26 22,-12 18,8 C 12,22 -12,20 -16,4 C -20,-10 -2,-18 10,-10" fill="#800211" stroke="#ff5c70" stroke-width="1"/>
+                    <path d="M -6,-4 C 0,-12 12,-8 10,3 C 8,12 -6,10 -8,2 C -9,-5 2,-8 6,-3" fill="#d90b24" stroke="#ff8593" stroke-width="0.9"/>
+                </g>
+            </svg>`;
+            imgEl.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+        }
+
+        function loadBearFallback(imgEl) {
+            if (imgEl.dataset.fallback) return;
+            imgEl.dataset.fallback = 'true';
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 420" width="400" height="420">
+                <defs>
+                    <radialGradient id="fur" cx="45%" cy="38%" r="58%">
+                        <stop offset="0%" stop-color="#fffcf7"/>
+                        <stop offset="55%" stop-color="#f3dac4"/>
+                        <stop offset="100%" stop-color="#c99b78"/>
+                    </radialGradient>
+                    <radialGradient id="hg" cx="35%" cy="30%" r="65%">
+                        <stop offset="0%" stop-color="#ff6b7d"/>
+                        <stop offset="50%" stop-color="#e00b26"/>
+                        <stop offset="100%" stop-color="#800211"/>
+                    </radialGradient>
+                </defs>
+                <circle cx="115" cy="95" r="42" fill="url(#fur)"/>
+                <circle cx="115" cy="95" r="24" fill="#d9ad8b"/>
+                <circle cx="285" cy="95" r="42" fill="url(#fur)"/>
+                <circle cx="285" cy="95" r="24" fill="#d9ad8b"/>
+                <ellipse cx="200" cy="285" rx="95" ry="100" fill="url(#fur)"/>
+                <ellipse cx="105" cy="255" rx="38" ry="55" transform="rotate(25 105 255)" fill="url(#fur)"/>
+                <ellipse cx="295" cy="255" rx="38" ry="55" transform="rotate(-25 295 255)" fill="url(#fur)"/>
+                <circle cx="132" cy="355" r="45" fill="url(#fur)"/>
+                <circle cx="132" cy="358" r="28" fill="#e3b5a8"/>
+                <circle cx="268" cy="355" r="45" fill="url(#fur)"/>
+                <circle cx="268" cy="358" r="28" fill="#e3b5a8"/>
+                <ellipse cx="200" cy="155" rx="96" ry="84" fill="url(#fur)"/>
+                <ellipse cx="200" cy="182" rx="40" ry="30" fill="#fffaf5"/>
+                <circle cx="166" cy="148" r="9" fill="#1f110c"/>
+                <circle cx="163" cy="145" r="3" fill="#fff"/>
+                <circle cx="234" cy="148" r="9" fill="#1f110c"/>
+                <circle cx="231" cy="145" r="3" fill="#fff"/>
+                <ellipse cx="200" cy="170" rx="14" ry="10" fill="#4a2518"/>
+                <path d="M 200,180 L 200,194 M 184,190 Q 200,204 216,190" stroke="#4a2518" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <path d="M 200,245 C 165,205 110,225 115,275 C 120,320 185,350 200,368 C 215,350 280,320 285,275 C 290,225 235,205 200,245 Z" fill="url(#hg)"/>
+                <text x="200" y="302" text-anchor="middle" fill="#ffffff" font-size="28" font-family="Georgia, serif" font-weight="bold">Te amo</text>
+            </svg>`;
+            imgEl.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+        }
+
+
+
+
+        const bgCanvas = document.getElementById('bg-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        const fxCanvas = document.getElementById('fx-canvas');
+        const fxCtx = fxCanvas.getContext('2d');
+        let bgParticles = [];
+        const isMobile = window.matchMedia('(max-width: 640px)').matches;
+        let lastBackgroundFrame = 0;
+
+        function resizeCanvases() {
+            const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.35 : 2);
+            for (const canvas of [bgCanvas, fxCanvas]) {
+                canvas.width = Math.round(window.innerWidth * dpr);
+                canvas.height = Math.round(window.innerHeight * dpr);
+                canvas.style.width = `${window.innerWidth}px`;
+                canvas.style.height = `${window.innerHeight}px`;
+                canvas.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+            }
+            createBgParticles();
+        }
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(resizeCanvases, 120);
+        });
+        resizeCanvases();
+
+        function createBgParticles() {
+            bgParticles = [];
+            const count = isMobile
+                ? Math.min(24, Math.floor((window.innerWidth * window.innerHeight) / 30000))
+                : Math.min(70, Math.floor((window.innerWidth * window.innerHeight) / 16500));
+            for (let i = 0; i < count; i++) {
+                bgParticles.push({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    isHeart: Math.random() < 0.45,
+                    size: 4 + Math.random() * 14,
+                    speedY: 0.25 + Math.random() * 0.65,
+                    driftX: (Math.random() - 0.5) * 0.35,
+                    phase: Math.random() * Math.PI * 2,
+                    opacity: 0.22 + Math.random() * 0.55,
+                    color: Math.random() > 0.38 ? '#fff0f4' : '#ffe49e'
+                });
+            }
+        }
+        createBgParticles();
+
+        function drawHeartPath(ctx, x, y, size) {
+            ctx.beginPath();
+            const topCurveHeight = size * 0.3;
+            ctx.moveTo(x, y + topCurveHeight);
+            ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + topCurveHeight);
+            ctx.bezierCurveTo(x - size / 2, y + (size + topCurveHeight) / 2, x, y + (size + topCurveHeight) / 1.35, x, y + size);
+            ctx.bezierCurveTo(x, y + (size + topCurveHeight) / 1.35, x + size / 2, y + (size + topCurveHeight) / 2, x + size / 2, y + topCurveHeight);
+            ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + topCurveHeight);
+            ctx.closePath();
+        }
+
+        function animateBackground() {
+            if (!document.hidden) {
+            const now = performance.now();
+            if (now - lastBackgroundFrame < (isMobile ? 34 : 16)) {
+                requestAnimationFrame(animateBackground);
+                return;
+            }
+            lastBackgroundFrame = now;
+            bgCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+            for (let i = 0; i < bgParticles.length; i++) {
+                const p = bgParticles[i];
+                p.y -= p.speedY;
+                p.phase += 0.016;
+                p.x += Math.sin(p.phase) * 0.35 + p.driftX;
+
+                if (p.y < -30) {
+                    p.y = window.innerHeight + 25;
+                    p.x = Math.random() * window.innerWidth;
+                }
+                if (p.x < -30) p.x = window.innerWidth + 25;
+                if (p.x > window.innerWidth + 30) p.x = -25;
+
+                bgCtx.save();
+                bgCtx.globalAlpha = p.opacity * (0.75 + 0.25 * Math.sin(p.phase * 2));
+                bgCtx.fillStyle = p.color;
+                bgCtx.shadowColor = p.color;
+                bgCtx.shadowBlur = p.isHeart ? 8 : 14;
+
+                if (p.isHeart) {
+                    drawHeartPath(bgCtx, p.x, p.y, p.size * 1.15);
+                    bgCtx.fill();
+                } else {
+                    bgCtx.beginPath();
+                    bgCtx.arc(p.x, p.y, p.size * 0.45, 0, Math.PI * 2);
+                    bgCtx.fill();
+                }
+                bgCtx.restore();
+            }
+
+            requestAnimationFrame(animateBackground);
+            } else {
+                requestAnimationFrame(animateBackground);
+            }
+        }
+        animateBackground();
+
+
+
+
+        const giftContainer = document.getElementById('draggable-gift-container');
+        const giftSvg = document.getElementById('gift-box-svg');
+        const boxBaseGroup = document.getElementById('box-base-group');
+        const boxLidGroup = document.getElementById('box-lid-group');
+        const lidRibbonsGroup = document.getElementById('lid-ribbons-group');
+        const ribbonBowHandle = document.getElementById('ribbon-bow-handle');
+        const bowLoopLeft = document.getElementById('bow-loop-left');
+        const bowLoopRight = document.getElementById('bow-loop-right');
+        const bowKnot = document.getElementById('bow-knot');
+        const bowTailLeft = document.getElementById('bow-tail-left');
+        const bowTailRight = document.getElementById('bow-tail-right');
+        const bowShadow = document.getElementById('bow-shadow');
+        const teddyWrapper = document.getElementById('teddy-wrapper');
+        const loveLetterModal = document.getElementById('love-letter-modal');
+        const giftInteractionHint = document.getElementById('gift-interaction-hint');
+        const teddyInteractionHint = document.getElementById('teddy-interaction-hint');
+
+        const INITIAL_TAIL_LEFT_D = "M 236,142 Q 212,182 184,228 L 205,221 L 218,234 Q 230,190 243,142 Z";
+        const INITIAL_TAIL_RIGHT_D = "M 244,140 Q 292,164 358,172 L 346,154 L 362,144 Q 302,140 244,140 Z";
+
+        let isBoxOpened = false;
+        let isDraggingBox = false;
+        let isUntyingBow = false;
+        let activeTailSide = 'left';
+
+        let boxStartX = 0, boxStartY = 0, boxInitialLeft = 0, boxInitialTop = 0;
+        let bowStartX = 0, bowStartY = 0;
+        let boxMoved = false;
+        const UNTIE_DISTANCE_PX = 115;
+
+        function getPointerPos(e) {
+            if (e.touches && e.touches.length > 0) {
+                return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }
+            return { x: e.clientX, y: e.clientY };
+        }
+
+
+        function clientToSvgCoords(clientX, clientY) {
+            const rect = giftSvg.getBoundingClientRect();
+            const scaleX = 500 / rect.width;
+            const scaleY = 470 / rect.height;
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
+        }
+
+        function startDragBox(e) {
+            if (isDraggingBox) return;
+            if (isBoxOpened || isUntyingBow) return;
+            if (e.target.closest('#ribbon-bow-handle')) return;
+
+            isDraggingBox = true;
+            boxMoved = false;
+            const pos = getPointerPos(e);
+            boxStartX = pos.x;
+            boxStartY = pos.y;
+
+            const rect = giftContainer.getBoundingClientRect();
+            boxInitialLeft = rect.left + rect.width / 2;
+            boxInitialTop = rect.top + rect.height / 2;
+            giftContainer.style.transition = 'none';
+        }
+
+        function startUntieBow(e) {
+            if (isBoxOpened) return;
+            e.stopPropagation();
+            if (e.cancelable) e.preventDefault();
+
+            isUntyingBow = true;
+            const pos = getPointerPos(e);
+            bowStartX = pos.x;
+            bowStartY = pos.y;
+
+            const svgPt = clientToSvgCoords(pos.x, pos.y);
+            activeTailSide = svgPt.x <= 245 ? 'left' : 'right';
+
+            bowLoopLeft.style.transition = 'none';
+            bowLoopRight.style.transition = 'none';
+            bowKnot.style.transition = 'none';
+            boxLidGroup.style.transition = 'none';
+            giftContainer.style.transition = 'none';
+        }
+
+
+        function buildDynamicRibbonTail(anchorX, anchorY, tipX, tipY, width) {
+            const dx = tipX - anchorX;
+            const dy = tipY - anchorY;
+            const len = Math.hypot(dx, dy) || 1;
+            const nx = -dy / len;
+            const ny = dx / len;
+            const ux = dx / len;
+            const uy = dy / len;
+
+
+            const sag = Math.min(35, Math.max(8, 28 - len * 0.08));
+            const ctrlX = (anchorX + tipX) * 0.5 + nx * sag * (activeTailSide === 'left' ? -0.6 : 0.6);
+            const ctrlY = (anchorY + tipY) * 0.5 - Math.abs(sag * 0.45);
+
+            const halfW = width * 0.5;
+            const start1X = anchorX - nx * (halfW * 0.45);
+            const start1Y = anchorY - ny * (halfW * 0.45);
+            const start2X = anchorX + nx * (halfW * 0.45);
+            const start2Y = anchorY + ny * (halfW * 0.45);
+
+            const end1X = tipX - nx * halfW;
+            const end1Y = tipY - ny * halfW;
+            const end2X = tipX + nx * halfW;
+            const end2Y = tipY + ny * halfW;
+
+
+            const notchX = tipX - ux * (width * 0.55);
+            const notchY = tipY - uy * (width * 0.55);
+
+            return `M ${start1X.toFixed(1)},${start1Y.toFixed(1)} ` +
+                   `Q ${(ctrlX - nx * halfW * 0.7).toFixed(1)},${(ctrlY - ny * halfW * 0.7).toFixed(1)} ${end1X.toFixed(1)},${end1Y.toFixed(1)} ` +
+                   `L ${notchX.toFixed(1)},${notchY.toFixed(1)} ` +
+                   `L ${end2X.toFixed(1)},${end2Y.toFixed(1)} ` +
+                   `Q ${(ctrlX + nx * halfW * 0.7).toFixed(1)},${(ctrlY + ny * halfW * 0.7).toFixed(1)} ${start2X.toFixed(1)},${start2Y.toFixed(1)} Z`;
+        }
+
+        function onPointerMove(e) {
+            if (!isDraggingBox && !isUntyingBow) return;
+            const pos = getPointerPos(e);
+
+
+            if (isDraggingBox) {
+                const dx = pos.x - boxStartX;
+                const dy = pos.y - boxStartY;
+                if (Math.hypot(dx, dy) > 8) boxMoved = true;
+                const newLeft = Math.max(105, Math.min(window.innerWidth - 105, boxInitialLeft + dx));
+                const newTop = Math.max(125, Math.min(window.innerHeight - 95, boxInitialTop + dy));
+                const tilt = Math.max(-6, Math.min(6, dx * 0.035));
+
+                giftContainer.style.left = `${newLeft}px`;
+                giftContainer.style.top = `${newTop}px`;
+                giftContainer.style.transform = `translate(-50%, -50%) rotate(${tilt}deg)`;
+            }
+
+
+            if (isUntyingBow) {
+                const dx = pos.x - bowStartX;
+                const dy = pos.y - bowStartY;
+                const pullDist = Math.hypot(dx, dy);
+                const progress = Math.min(1, pullDist / UNTIE_DISTANCE_PX);
+
+
+                const svgCursor = clientToSvgCoords(pos.x, pos.y);
+
+                if (activeTailSide === 'left') {
+
+                    const targetX = 195 + (svgCursor.x - 195) * 0.92;
+                    const targetY = 195 + (svgCursor.y - 195) * 0.92;
+                    bowTailLeft.setAttribute('d', buildDynamicRibbonTail(238, 140, targetX, targetY, 26 - progress * 5));
+
+
+                    const rightTipX = 355 + progress * 25;
+                    const rightTipY = 160 - progress * 22;
+                    bowTailRight.setAttribute('d', buildDynamicRibbonTail(244, 140, rightTipX, rightTipY, 24));
+                } else {
+                    const targetX = 310 + (svgCursor.x - 310) * 0.92;
+                    const targetY = 160 + (svgCursor.y - 160) * 0.92;
+                    bowTailRight.setAttribute('d', buildDynamicRibbonTail(244, 140, targetX, targetY, 26 - progress * 5));
+
+                    const leftTipX = 185 - progress * 25;
+                    const leftTipY = 220 - progress * 25;
+                    bowTailLeft.setAttribute('d', buildDynamicRibbonTail(238, 140, leftTipX, leftTipY, 24));
+                }
+
+
+                const loopScaleX = Math.max(0.08, 1 - progress * 0.88);
+                const loopScaleY = Math.max(0.12, 1 - progress * 0.72);
+                const leftRot = progress * 28;
+                const rightRot = -progress * 28;
+
+                bowLoopLeft.style.transform = `rotate(${leftRot}deg) scale(${loopScaleX}, ${loopScaleY})`;
+                bowLoopRight.style.transform = `rotate(${rightRot}deg) scale(${loopScaleX}, ${loopScaleY})`;
+
+
+                const knotShiftX = Math.max(-14, Math.min(14, dx * 0.09));
+                const knotShiftY = Math.max(-18, Math.min(10, dy * 0.09));
+                const knotScale = Math.max(0.45, 1 - progress * 0.52);
+                bowKnot.style.transform = `translate(${knotShiftX}px, ${knotShiftY}px) scale(${knotScale})`;
+                bowShadow.setAttribute('rx', String(88 * (1 - progress * 0.65)));
+
+
+                const tensionShake = progress > 0.45 ? Math.sin(pullDist * 0.7) * (progress * 2.2) : 0;
+                const lidLift = Math.min(18, Math.max(0, -dy * 0.14) + progress * 10);
+                const lidTilt = Math.max(-8, Math.min(8, dx * 0.045)) + tensionShake;
+                boxLidGroup.style.transform = `translateY(${-lidLift}px) rotate(${lidTilt}deg)`;
+
+                const boxReactionTilt = Math.max(-3.5, Math.min(3.5, dx * 0.018)) + tensionShake * 0.4;
+                giftContainer.style.transform = `translate(-50%, -50%) rotate(${boxReactionTilt}deg)`;
+
+                if (progress >= 1) {
+                    completeUntieAndOpenBox(dx, dy);
+                }
+            }
+        }
+
+        function onPointerUp() {
+            if (isDraggingBox) {
+                const shouldOpen = !boxMoved;
+                isDraggingBox = false;
+                giftContainer.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                giftContainer.style.transform = 'translate(-50%, -50%) rotate(0deg)';
+                if (shouldOpen) {
+                    completeUntieAndOpenBox(0, -115);
+                    giftInteractionHint.classList.add('hidden');
+                }
+            }
+
+            if (isUntyingBow) {
+                isUntyingBow = false;
+                if (!isBoxOpened) {
+
+                    bowLoopLeft.style.transition = 'transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    bowLoopRight.style.transition = 'transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    bowKnot.style.transition = 'transform 0.35s ease';
+                    boxLidGroup.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    giftContainer.style.transition = 'transform 0.35s ease';
+
+                    bowLoopLeft.style.transform = 'rotate(0deg) scale(1, 1)';
+                    bowLoopRight.style.transform = 'rotate(0deg) scale(1, 1)';
+                    bowKnot.style.transform = 'translate(0px, 0px) scale(1)';
+                    bowShadow.setAttribute('rx', '88');
+                    bowTailLeft.setAttribute('d', INITIAL_TAIL_LEFT_D);
+                    bowTailRight.setAttribute('d', INITIAL_TAIL_RIGHT_D);
+                    boxLidGroup.style.transform = 'translateY(0px) rotate(0deg)';
+                    giftContainer.style.transform = 'translate(-50%, -50%) rotate(0deg)';
+                }
+            }
+        }
+
+        boxBaseGroup.addEventListener('mousedown', startDragBox);
+        boxBaseGroup.addEventListener('touchstart', startDragBox, { passive: false });
+        boxLidGroup.addEventListener('mousedown', startDragBox);
+        boxLidGroup.addEventListener('touchstart', startDragBox, { passive: false });
+        giftContainer.addEventListener('mousedown', startDragBox);
+        giftContainer.addEventListener('touchstart', startDragBox, { passive: false });
+        giftContainer.addEventListener('click', (event) => {
+            if (isBoxOpened || isUntyingBow) return;
+            if (event.target.closest('#ribbon-bow-handle')) return;
+            if (!boxMoved) {
+                completeUntieAndOpenBox(0, -115);
+                giftInteractionHint.classList.add('hidden');
+            }
+        });
+
+        ribbonBowHandle.addEventListener('mousedown', startUntieBow);
+        ribbonBowHandle.addEventListener('touchstart', startUntieBow, { passive: false });
+
+        window.addEventListener('mousemove', onPointerMove, { passive: false });
+        window.addEventListener('touchmove', onPointerMove, { passive: false });
+        window.addEventListener('mouseup', onPointerUp);
+        window.addEventListener('touchend', onPointerUp);
+
+        giftContainer.addEventListener('keydown', (event) => {
+            if ((event.key === 'Enter' || event.key === ' ') && !isBoxOpened) {
+                event.preventDefault();
+                completeUntieAndOpenBox(0, -115);
+                giftInteractionHint.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('oso-img').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openLoveLetter();
+            }
+        });
+
+
+
+
+        function completeUntieAndOpenBox(pullDx, pullDy) {
+            if (isBoxOpened) return;
+            isBoxOpened = true;
+            isUntyingBow = false;
+
+
+            ribbonBowHandle.style.transition = 'transform 0.32s ease-out, opacity 0.28s ease-out';
+            const whipX = Math.max(-90, Math.min(90, pullDx * 0.6));
+            const whipY = Math.min(-60, pullDy * 0.5);
+            ribbonBowHandle.style.transform = `translate(${whipX}px, ${whipY}px) scale(0.75)`;
+            ribbonBowHandle.style.opacity = '0';
+
+            lidRibbonsGroup.style.transition = 'transform 0.3s ease-in, opacity 0.26s ease';
+            lidRibbonsGroup.style.transform = 'translateY(-35px) scale(1.06)';
+            lidRibbonsGroup.style.opacity = '0';
+
+            const boxRect = giftContainer.getBoundingClientRect();
+            const originX = boxRect.left + boxRect.width / 2;
+            const originY = boxRect.top + boxRect.height * 0.42;
+
+
+            start3DExplosionTowardsCamera(originX, originY);
+
+
+            let lidX = 0;
+            let lidY = -18;
+            let lidAngle = 0;
+            let lidVx = (pullDx >= 0 ? 1 : -1) * (4.5 + Math.random() * 2.5);
+            let lidVy = -14.5;
+            let lidVa = (pullDx >= 0 ? 1 : -1) * 4.2;
+            let lidOpacity = 1;
+
+            function animateLidFlight() {
+                lidX += lidVx;
+                lidY += lidVy;
+                lidVy += 0.68;
+                lidAngle += lidVa;
+
+                if (lidY > -10 && lidVy > 0) {
+                    lidOpacity -= 0.075;
+                } else {
+                    lidOpacity -= 0.015;
+                }
+
+                boxLidGroup.style.transform = `translate(${lidX}px, ${lidY}px) rotate(${lidAngle}deg)`;
+                boxLidGroup.style.opacity = String(Math.max(0, lidOpacity));
+
+                if (lidOpacity > 0) {
+                    requestAnimationFrame(animateLidFlight);
+                } else {
+                    boxLidGroup.style.display = 'none';
+                }
+            }
+            requestAnimationFrame(animateLidFlight);
+
+
+            setTimeout(() => {
+                giftContainer.style.transition = 'transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.75s ease';
+                giftContainer.style.transform = 'translate(-50%, -18%) scale(0.82)';
+                giftContainer.style.opacity = '0';
+                giftContainer.style.pointerEvents = 'none';
+                giftInteractionHint.classList.add('hidden');
+
+
+                teddyWrapper.style.left = `${originX}px`;
+                teddyWrapper.style.top = `${originY + 25}px`;
+
+                requestAnimationFrame(() => {
+                    teddyWrapper.classList.add('emerged');
+                    teddyWrapper.style.left = '50%';
+                    teddyWrapper.style.top = '54%';
+                    setTimeout(() => teddyInteractionHint.classList.add('visible'), 850);
+                });
+            }, 190);
+        }
+
+
+
+
+        let explosionParticles3D = [];
+        let isExplosionRunning = false;
+
+        function start3DExplosionTowardsCamera(originX, originY) {
+            const fov = 340;
+            const heartPalette = [
+                { fill: '#e00720', highlight: '#ff7a88' },
+                { fill: '#ff1f4b', highlight: '#ffa6b6' },
+                { fill: '#b80418', highlight: '#ff5969' },
+                { fill: '#f5b82e', highlight: '#fff1b8' },
+                { fill: '#ff5c7c', highlight: '#ffd1da' }
+            ];
+            const confettiPalette = ['#e60922', '#ff2e55', '#ffd166', '#fff8f0', '#ff8da1', '#d4af37'];
+
+
+            const particleCount = isMobile ? 64 : 145;
+            for (let i = 0; i < particleCount; i++) {
+                const isHeart = i % 3 === 0 || Math.random() < 0.38;
+                const angle = Math.random() * Math.PI * 2;
+                const spreadSpeed = 1.5 + Math.random() * 14.5;
+
+
+
+                const startZ = 220 + Math.random() * 300;
+                const vz = -(5.5 + Math.random() * 9.5);
+
+                const heartColor = heartPalette[Math.floor(Math.random() * heartPalette.length)];
+
+                explosionParticles3D.push({
+                    isHeart,
+
+                    x: (Math.random() - 0.5) * 40,
+                    y: (Math.random() - 0.5) * 30,
+                    z: startZ,
+                    originX,
+                    originY,
+                    vx: Math.cos(angle) * spreadSpeed,
+                    vy: Math.sin(angle) * spreadSpeed - (4 + Math.random() * 7),
+                    vz: vz,
+                    gravity: 0.14 + Math.random() * 0.12,
+                    drag: 0.988,
+                    baseSize: isHeart ? (14 + Math.random() * 15) : (10 + Math.random() * 14),
+                    ribbonAspect: 0.42 + Math.random() * 0.45,
+                    heartColor,
+                    confettiColor: confettiPalette[Math.floor(Math.random() * confettiPalette.length)],
+
+                    pitch: Math.random() * Math.PI * 2,
+                    yaw: Math.random() * Math.PI * 2,
+                    roll: Math.random() * Math.PI * 2,
+                    vPitch: (Math.random() - 0.5) * 0.16,
+                    vYaw: (Math.random() - 0.5) * 0.16,
+                    vRoll: (Math.random() - 0.5) * 0.14,
+                    fov
+                });
+            }
+
+            if (!isExplosionRunning) {
+                isExplosionRunning = true;
+                requestAnimationFrame(render3DExplosion);
+            }
+        }
+
+        function render3DExplosion() {
+            fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+
+
+            explosionParticles3D.sort((a, b) => b.z - a.z);
+
+            const cx = fxCanvas.width * 0.5;
+            const cy = fxCanvas.height * 0.48;
+
+            for (let i = explosionParticles3D.length - 1; i >= 0; i--) {
+                const p = explosionParticles3D[i];
+
+
+                p.vx *= p.drag;
+                p.vy = p.vy * p.drag + p.gravity;
+                p.x += p.vx;
+                p.y += p.vy;
+                p.z += p.vz;
+
+                p.pitch += p.vPitch;
+                p.yaw += p.vYaw;
+                p.roll += p.vRoll;
+
+
+                if (p.z <= -p.fov + 18 || p.y > fxCanvas.height * 1.4) {
+                    explosionParticles3D.splice(i, 1);
+                    continue;
+                }
+
+
+                const perspective = p.fov / (p.fov + p.z);
+                const interpCenter = Math.min(1, Math.max(0, (420 - p.z) / 420));
+                const anchorX = p.originX * (1 - interpCenter * 0.45) + cx * (interpCenter * 0.45);
+                const anchorY = p.originY * (1 - interpCenter * 0.45) + cy * (interpCenter * 0.45);
+
+                const screenX = anchorX + p.x * perspective;
+                const screenY = anchorY + p.y * perspective;
+                const scale = perspective;
+
+
+                let alpha = 1;
+                if (p.z < -120) {
+                    alpha = Math.max(0, (p.z - (-p.fov + 18)) / 180);
+                }
+
+                fxCtx.save();
+                fxCtx.globalAlpha = alpha;
+                fxCtx.translate(screenX, screenY);
+                fxCtx.rotate(p.roll);
+
+
+                const tiltX = Math.cos(p.yaw);
+                const tiltY = Math.cos(p.pitch);
+
+                if (p.isHeart) {
+                    const hSize = p.baseSize * scale;
+                    fxCtx.scale(Math.max(0.28, Math.abs(tiltX)) * (tiltX < 0 ? -1 : 1), Math.max(0.35, Math.abs(tiltY)));
+
+
+                    if (scale > 1.6) {
+                        fxCtx.shadowColor = 'rgba(45, 2, 10, 0.35)';
+                        fxCtx.shadowBlur = 12 * (scale - 1);
+                    }
+
+
+                    fxCtx.fillStyle = p.heartColor.fill;
+                    drawHeartPath(fxCtx, 0, -hSize * 0.5, hSize);
+                    fxCtx.fill();
+
+
+                    fxCtx.fillStyle = p.heartColor.highlight;
+                    fxCtx.beginPath();
+                    fxCtx.arc(-hSize * 0.22, -hSize * 0.22, hSize * 0.13, 0, Math.PI * 2);
+                    fxCtx.fill();
+                } else {
+
+                    const w = p.baseSize * scale;
+                    const h = w * p.ribbonAspect;
+                    fxCtx.scale(tiltX, tiltY);
+
+                    fxCtx.fillStyle = p.confettiColor;
+                    fxCtx.beginPath();
+                    fxCtx.moveTo(-w * 0.5, -h * 0.5);
+                    fxCtx.quadraticCurveTo(0, -h * 0.85, w * 0.5, -h * 0.5);
+                    fxCtx.lineTo(w * 0.5, h * 0.5);
+                    fxCtx.quadraticCurveTo(0, h * 0.15, -w * 0.5, h * 0.5);
+                    fxCtx.closePath();
+                    fxCtx.fill();
+                }
+
+                fxCtx.restore();
+            }
+
+            if (explosionParticles3D.length > 0) {
+                requestAnimationFrame(render3DExplosion);
+            } else {
+                isExplosionRunning = false;
+                fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+            }
+        }
+
+
+
+
+        function openLoveLetter() {
+            loveLetterModal.classList.add('active');
+            teddyInteractionHint.classList.remove('visible');
+        }
+
+        function closeLoveLetter() {
+            loveLetterModal.classList.remove('active');
+        }
+
+        function handleModalBackdropClick(event) {
+            if (event.target === loveLetterModal) {
+                closeLoveLetter();
+            }
+        }
+    </script>
+</body>
+
+ <!--
+
+Contáctame:
+
+   * Crea tus diseños sin código
+ https://comparte-amor.vercel.app/
+
+    * Invitame un café
+ https://buymeacoffee.com/alexx.dev
+
+    * Portafolio Web
+ https://alexxdev.vercel.app
+
+    * Sigueme en tiktok
+ https://www.tiktok.com/@alexx.dev?is_from_webapp=1&sender_device=pc
+ 
+    * Canal de WhatsApp
+ https://whatsapp.com/channel/0029VazQEXq90x2vIdNkrH1p
+
+
+-->
+
+
+</html>
