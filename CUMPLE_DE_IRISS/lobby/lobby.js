@@ -266,8 +266,22 @@ function mostrarTortaFinal() {
   const overlay = document.getElementById('tortaFinal');
   if (!overlay) return;
 
-  const gif = document.getElementById('tortaGif');
-  if (gif) gif.src = gif.src;
+  const video = document.getElementById('tortaVideo');
+  if (video) {
+    video.controls = false;
+    video.loop = true;
+    video.disablePictureInPicture = true;
+    if ('disableRemotePlayback' in video) {
+      video.disableRemotePlayback = true;
+    }
+    try {
+      video.currentTime = 0;
+    } catch (e) {}
+    const intento = video.play();
+    if (intento && typeof intento.catch === 'function') {
+      intento.catch(() => {});
+    }
+  }
 
   const intro = document.getElementById('intro-overlay');
   if (intro) {
