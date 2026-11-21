@@ -41,9 +41,15 @@
     <section class="saludos" id="saludos" aria-hidden="true">
       <div class="saludos-cinta">💗 Para vos, Iris 💗</div>
       <div class="saludos-marco" id="saludosMarco">
-        <video id="saludosVideo" playsinline webkit-playsinline disablepictureinpicture disableremoteplayback controlsList="nodownload noplaybackrate noremoteplayback" preload="auto">
+        <video id="saludosVideo" class="oculto" playsinline webkit-playsinline disablepictureinpicture disableremoteplayback controlsList="nodownload noplaybackrate noremoteplayback" preload="auto">
           <source src="happy.mp4" type="video/mp4">
         </video>
+        <video id="logoVideo" class="logo-video" playsinline webkit-playsinline disablepictureinpicture disableremoteplayback controlsList="nodownload noplaybackrate noremoteplayback" preload="auto">
+          <source src="logo.mp4" type="video/mp4">
+        </video>
+        <div class="conteo-logo" id="conteoLogo" aria-hidden="true">
+          <span class="conteo-numero" id="conteoNumero">3</span>
+        </div>
         <div class="saludos-brillo"></div>
         <div class="fin-saludos" id="finSaludos">
           <span class="fin-corazon">💗</span>
