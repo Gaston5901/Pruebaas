@@ -5,6 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnClose = document.getElementById('btnCloseLetter');
   const letterScroll = letterModal ? letterModal.querySelector('.letter-scroll') : null;
 
+  if (letterModal) {
+    const lineas = letterModal.querySelectorAll('.paper-body > p, .handwritten-signature');
+    lineas.forEach((linea, i) => linea.style.setProperty('--delay', `${0.25 + i * 0.22}s`));
+  }
+
   const bloquearScroll = () => {
     document.body.classList.add('sin-scroll');
     if (letterScroll) letterScroll.scrollTop = 0;

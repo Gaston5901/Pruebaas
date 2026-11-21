@@ -10,7 +10,7 @@
 }
 
 body {
-  background: #fdf6f0;
+  background: #0d0714;
   color: #2c1820;
   min-height: 100vh;
   display: flex;
@@ -27,39 +27,9 @@ body {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 10% 20%, rgba(255, 182, 193, 0.35) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(255, 218, 185, 0.4) 0%, transparent 40%);
+    radial-gradient(circle at 10% 20%, rgba(255, 110, 160, 0.2) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(255, 190, 120, 0.16) 0%, transparent 45%);
   z-index: -1;
-}
-
-/* Botón Volver */
-.top-bar {
-  position: fixed;
-  top: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 600px;
-  padding: 0 12px;
-  z-index: 100;
-}
-
-.btn-back {
-  display: inline-block;
-  color: #c84b7a;
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 8px 16px;
-  border-radius: 20px;
-  background: #ffffff;
-  border: 1px solid #f4b4c6;
-  box-shadow: 0 4px 12px rgba(200, 75, 122, 0.1);
-  transition: all 0.3s ease;
-}
-
-.btn-back:active {
-  transform: scale(0.95);
 }
 
 /* ==========================================================
@@ -218,16 +188,15 @@ body.sin-scroll {
   border-radius: 8px;
   padding: 46px 30px 60px;
   background:
-    /* textura de fibras del papel */
-    repeating-linear-gradient(0deg, rgba(160, 110, 70, 0.025) 0 2px, transparent 2px 4px),
-    radial-gradient(ellipse at 50% 120%, rgba(120, 70, 30, 0.12), transparent 60%),
-    radial-gradient(ellipse at 12% 0%, rgba(255, 240, 200, 0.65), transparent 45%),
-    linear-gradient(180deg, #f8edd8 0%, #f2e3c6 50%, #ead6b3 100%);
+    radial-gradient(circle at 15% 0%, rgba(255, 130, 175, 0.14), transparent 45%),
+    radial-gradient(circle at 90% 100%, rgba(255, 200, 130, 0.12), transparent 45%),
+    linear-gradient(180deg, #180b1c 0%, #0d0714 55%, #120716 100%);
   box-shadow:
-    inset 0 0 60px rgba(120, 80, 40, 0.28),
-    inset 0 2px 8px rgba(255, 250, 230, 0.5),
-    0 25px 60px rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(150, 110, 70, 0.4);
+    inset 0 0 70px rgba(0, 0, 0, 0.65),
+    inset 0 0 0 1px rgba(255, 200, 150, 0.08),
+    0 0 45px rgba(255, 130, 175, 0.14),
+    0 25px 60px rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 200, 150, 0.28);
 }
 
 /* bordes desgastados tipo papel con los bordes más claros */
@@ -235,7 +204,7 @@ body.sin-scroll {
   content: '';
   position: absolute;
   inset: 6px;
-  border: 1px solid rgba(150, 110, 70, 0.28);
+  border: 1px solid rgba(255, 200, 150, 0.16);
   border-radius: 4px;
   pointer-events: none;
 }
@@ -246,8 +215,8 @@ body.sin-scroll {
   inset: 0;
   border-radius: 8px;
   background:
-    linear-gradient(115deg, transparent 0 30%, rgba(255, 255, 255, 0.16) 33%, transparent 36%),
-    linear-gradient(70deg, transparent 0 62%, rgba(120, 80, 40, 0.1) 65%, transparent 68%);
+    linear-gradient(115deg, transparent 0 30%, rgba(255, 220, 180, 0.06) 33%, transparent 36%),
+    linear-gradient(70deg, transparent 0 62%, rgba(255, 150, 190, 0.05) 65%, transparent 68%);
   pointer-events: none;
 }
 
@@ -260,9 +229,27 @@ body.sin-scroll {
   filter: drop-shadow(0 1px 1px rgba(90, 50, 20, 0.25));
 }
 .corner-heart.top-left { top: 16px; left: 18px; }
-.corner-heart.top-right { top: 16px; right: 18px; }
+.corner-heart.top-right { top: 42px; right: 18px; }
 .corner-heart.bottom-left { bottom: 18px; left: 18px; }
 .corner-heart.bottom-right { bottom: 18px; right: 18px; }
+
+.paper-date {
+  position: absolute;
+  top: 18px;
+  right: 34px;
+  z-index: 3;
+  font-family: 'Caveat', cursive;
+  font-size: 1.1rem;
+  color: #ffd9a8;
+  opacity: 0;
+  transform: rotate(2deg);
+  text-shadow: 0 0 12px rgba(255, 190, 130, 0.45);
+}
+
+.letter-modal.abierta .paper-date {
+  animation: escribirLinea 0.9s ease forwards;
+  animation-delay: 0.1s;
+}
 
 /* Sello de cera mágico */
 .wax-seal {
@@ -305,26 +292,26 @@ body.sin-scroll {
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 2px;
-  color: #b34a6e;
+  color: #ffd9a8;
   text-transform: uppercase;
-  background: rgba(255, 245, 230, 0.75);
+  background: rgba(255, 200, 150, 0.08);
   padding: 4px 14px;
   border-radius: 12px;
-  border: 1px solid rgba(180, 120, 90, 0.5);
+  border: 1px solid rgba(255, 200, 150, 0.3);
 }
 
 .paper-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2.4rem;
   font-weight: 700;
-  color: #4a1c2b;
+  color: #ffd9a8;
   margin-top: 10px;
-  text-shadow: 0 1px 0 rgba(255, 250, 230, 0.8);
+  text-shadow: 0 0 18px rgba(255, 180, 120, 0.45);
 }
 
 .paper-subtitle {
   font-size: 0.85rem;
-  color: #8c5b6e;
+  color: #d6a3b7;
   margin-top: 2px;
 }
 
@@ -332,7 +319,7 @@ body.sin-scroll {
   position: relative;
   z-index: 2;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(190, 120, 90, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 200, 150, 0.55), transparent);
   margin: 20px 0 30px 0;
 }
 
@@ -346,35 +333,84 @@ body.sin-scroll {
 
 .paper-body p {
   font-size: 1rem;
-  line-height: 1.95;
-  color: #3b202c;
+  line-height: 1.9;
+  color: #ffe9d6;
   margin-bottom: 22px;
   font-weight: 400;
   letter-spacing: 0.1px;
-  text-align: justify;
+  text-align: left;
+  text-shadow: 0 0 12px rgba(255, 160, 120, 0.22);
   hyphens: auto;
 }
 
+.paper-body > p,
+.handwritten-signature {
+  opacity: 0;
+  transform: translateY(8px);
+  clip-path: inset(0 100% 0 0);
+}
+
+.letter-modal.abierta .paper-body > p,
+.letter-modal.abierta .handwritten-signature {
+  animation: escribirLinea 1.05s ease forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes escribirLinea {
+  to {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(-10px -14px -14px -10px);
+  }
+}
+
 .paper-body p.greeting {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
+  font-family: 'Caveat', cursive;
   font-size: 2rem;
-  color: #b34a6e;
+  color: #ffc6d8;
   margin-bottom: 18px;
   text-align: left;
+  text-shadow: 0 0 16px rgba(255, 140, 180, 0.45);
+}
+
+.paper-body > p:nth-child(5) {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.45rem;
+  color: #ffc6d8;
+  text-align: center;
+  line-height: 1.5;
+  margin: 10px auto 26px;
+  max-width: 440px;
+}
+
+.paper-body > p:nth-child(6)::first-letter {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.1rem;
+  line-height: 0.9;
+  float: left;
+  padding: 4px 6px 0 0;
+  color: #ffd9a8;
+  text-shadow: 0 0 14px rgba(255, 190, 130, 0.5);
+}
+
+.paper-body > p:nth-child(11) {
+  font-style: italic;
+  color: #ffd9a8;
+  text-shadow: 0 0 14px rgba(255, 190, 130, 0.4);
 }
 
 /* Firma escrita a mano */
 .handwritten-signature {
   margin-top: 40px;
   text-align: right;
-  border-top: 1px dashed rgba(190, 120, 90, 0.6);
+  border-top: 1px dashed rgba(255, 200, 150, 0.35);
   padding-top: 22px;
 }
 
 .handwritten-signature p {
   font-size: 0.9rem !important;
-  color: #8c5b6e !important;
+  color: #d6a3b7 !important;
   margin-bottom: 0 !important;
   text-align: right !important;
 }
@@ -382,9 +418,12 @@ body.sin-scroll {
 .handwritten-signature span {
   font-family: 'Caveat', cursive;
   font-size: 2.4rem;
-  color: #b34a6e;
+  color: #ffd9a8;
   display: block;
   margin-top: 2px;
+  padding: 4px 8px 12px 0;
+  line-height: 1.2;
+  text-shadow: 0 0 18px rgba(255, 190, 130, 0.5);
 }
 
 /* botón para volver al lobby, fijo arriba a la izquierda */
@@ -393,28 +432,38 @@ body.sin-scroll {
   top: 10px;
   z-index: 30;
   float: left;
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  line-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
   text-align: center;
   border-radius: 50%;
-  background: linear-gradient(135deg, #f9eeda, #ead6b3);
-  color: #b34a6e;
+  background: linear-gradient(145deg, rgba(70, 25, 50, 0.92), rgba(25, 10, 30, 0.96));
+  color: #ffd9a8;
   text-decoration: none;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   font-weight: 700;
   box-shadow:
-    inset 0 2px 3px rgba(255, 250, 230, 0.7),
-    inset 0 -3px 5px rgba(120, 80, 40, 0.25),
-    0 5px 12px rgba(80, 20, 45, 0.35);
-  border: 2px solid rgba(150, 110, 70, 0.5);
-  transition: transform 0.2s ease, filter 0.2s ease;
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 18px rgba(255, 160, 120, 0.25),
+    0 6px 14px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 200, 150, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn-volver-lobby:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 0 24px rgba(255, 190, 130, 0.4),
+    0 8px 18px rgba(0, 0, 0, 0.55);
 }
 
 .btn-volver-lobby:active {
   transform: scale(0.92);
-  filter: brightness(1.1);
 }
 
 /* ==========================================================
@@ -461,6 +510,13 @@ body.sin-scroll {
     align-items: flex-start;
   }
 
+  .surprise-intro-overlay,
+  .letter-modal,
+  .btn-volver-lobby {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .letter-scroll {
     height: 100dvh;
     max-height: 100dvh;
@@ -477,6 +533,8 @@ body.sin-scroll {
   }
 
   .paper-title { font-size: 1.9rem; }
+  .paper-date { top: 16px; right: 28px; font-size: 0.95rem; }
+  .paper-body p.greeting { font-size: 1.6rem; }
   .paper-body p {
     font-size: 0.96rem;
     line-height: 1.9;
