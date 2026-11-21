@@ -21,11 +21,14 @@ const stage = document.getElementById("stage");
 const hint = document.getElementById("hint");
 const bar = document.getElementById("bar");
 const imageCanvas = document.getElementById("image-canvas");
+const infinityCanvas = document.getElementById("infinity-canvas");
+const firmaCanvas = document.getElementById("firma-canvas");
 
 const MAX_DIM = 780;
 const MAX_POINTS = 16000;
 const LINK = 10;
 const TRAIL = 110;
+const goldPalette = [[255, 216, 130], [255, 176, 194], [255, 235, 165]];
 
 let w = 0;
 let h = 0;
@@ -444,16 +447,22 @@ function frame(ts) {
   }
 }
 
-function colorAt(t, palette) {
+function colorRGB(t, palette) {
   const x = Math.min(0.999999, Math.max(0, t)) * (palette.length - 1);
   const i = Math.floor(x);
   const f = x - i;
   const a = palette[i];
   const b = palette[i + 1];
-  const r = Math.round(a[0] + (b[0] - a[0]) * f);
-  const g = Math.round(a[1] + (b[1] - a[1]) * f);
-  const bl = Math.round(a[2] + (b[2] - a[2]) * f);
-  return `rgb(${r},${g},${bl})`;
+  return [
+    Math.round(a[0] + (b[0] - a[0]) * f),
+    Math.round(a[1] + (b[1] - a[1]) * f),
+    Math.round(a[2] + (b[2] - a[2]) * f)
+  ];
+}
+
+function colorAt(t, palette) {
+  const c = colorRGB(t, palette);
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
 }
 
 function drawRangeGeneric(c, from, to, pts, color, lineWidth, blur, alpha) {
@@ -534,6 +543,164 @@ function drawImageStrokes(canvas, src, duration, onDone, colorStart = "#b76de0",
   img.src = src;
 }
 
+function makeLemniscate(A, B, cx, cy, steps) {
+  const pts = [];
+  for (let i = 0; i <= steps; i++) {
+    const t = (i / steps) * Math.PI * 2;
+    const d = 1 + Math.sin(t) * Math.sin(t);
+    pts.push({
+      x: cx + (A * Math.cos(t)) / d,
+      y: cy + (B * Math.sin(t) * Math.cos(t)) / d,
+      penUp: i === 0
+    });
+  }
+  return pts;
+}
+
+function makeHeart(cx, cy, s) {
+  const pts = [];
+  for (let i = 0; i <= 60; i++) {
+    const t = (i / 60) * Math.PI * 2;
+    const x = cx + (s * 16 * Math.pow(Math.sin(t), 3)) / 17;
+    const y = cy - (s * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))) / 17;
+    pts.push({ x, y, penUp: i === 0 });
+  }
+  return pts;
+}
+
+function makeStar(cx, cy, r) {
+  const q = r * 0.28;
+  const coords = [[0, -r], [q, -q], [r, 0], [q, q], [0, r], [-q, q], [-r, 0], [-q, -q], [0, -r]];
+  return coords.map((p, i) => ({ x: cx + p[0], y: cy + p[1], penUp: i === 0 }));
+}
+
+function makeDot(cx, cy, r) {
+  const pts = [];
+  for (let i = 0; i <= 20; i++) {
+    const t = (i / 20) * Math.PI * 2;
+    pts.push({ x: cx + r * Math.cos(t), y: cy + r * Math.sin(t), penUp: i === 0 });
+  }
+  return pts;
+}
+
+function drawOrnateInfinity(canvas, duration, palette) {
+  const W = 520, H = 220;
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext("2d");
+  const stars = [].concat(
+    makeStar(96, 60, 11), makeStar(424, 60, 11),
+    makeStar(96, 160, 11), makeStar(424, 160, 11),
+    makeStar(260, 20, 8), makeStar(260, 200, 8)
+  );
+  const dots = [].concat(
+    makeDot(54, 110, 3), makeDot(466, 110, 3),
+    makeDot(152, 26, 2.5), makeDot(368, 26, 2.5),
+    makeDot(152, 194, 2.5), makeDot(368, 194, 2.5)
+  );
+  const groups = [
+    { pts: makeLemniscate(175, 105, 260, 110, 260), width: 3, glow: 14, alpha: 1 },
+    { pts: makeLemniscate(192, 122, 260, 110, 260), width: 1.1, glow: 8, alpha: 0.7 },
+    { pts: makeLemniscate(156, 84, 260, 110, 260), width: 1.1, glow: 8, alpha: 0.8 },
+    { pts: makeHeart(260, 110, 18), width: 2, glow: 12, alpha: 1 },
+    { pts: stars, width: 1.8, glow: 12, alpha: 1 },
+    { pts: dots, width: 2.4, glow: 8, alpha: 0.9 }
+  ];
+  let startTime = 0;
+
+  function step(ts) {
+    if (!startTime) startTime = ts;
+    const t = Math.min(1, (ts - startTime) / duration);
+    const eased = easeInOut(t);
+    const color = colorAt(t, palette);
+    ctx.clearRect(0, 0, W, H);
+    for (const g of groups) {
+      const target = Math.floor(eased * g.pts.length);
+      const committed = Math.max(0, target - 22);
+      drawRangeGeneric(ctx, 0, committed, g.pts, color, g.width, g.glow, g.alpha * 0.92);
+      drawRangeGeneric(ctx, committed, target, g.pts, color, g.width * 1.25, g.glow * 1.4, 1);
+    }
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function drawInkSignature(canvas, src, duration, palette) {
+  const img = new Image();
+  img.onload = () => {
+    let iw = img.naturalWidth || img.width;
+    let ih = img.naturalHeight || img.height;
+    const scale = Math.min(1, 520 / Math.max(iw, ih));
+    iw = Math.max(2, Math.round(iw * scale));
+    ih = Math.max(2, Math.round(ih * scale));
+    const w = iw, h = ih;
+    canvas.width = w;
+    canvas.height = h;
+
+    const tmp = document.createElement("canvas");
+    tmp.width = w;
+    tmp.height = h;
+    const tctx = tmp.getContext("2d", { willReadFrequently: true });
+    tctx.drawImage(img, 0, 0, w, h);
+    const data = tctx.getImageData(0, 0, w, h).data;
+    const mask = buildBackgroundMask(data, w, h);
+    const ink = tctx.createImageData(w, h);
+
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const p = y * w + x;
+        const i = p * 4;
+        const lum = (0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]) / 255;
+        const alpha = data[i + 3] / 255;
+        let strength = mask[p] ? 0 : alpha * (1 - lum);
+        strength = Math.max(0, Math.min(1, (strength - 0.06) * 2.6));
+        const c = colorRGB(x / w, palette);
+        ink.data[i] = c[0];
+        ink.data[i + 1] = c[1];
+        ink.data[i + 2] = c[2];
+        ink.data[i + 3] = Math.round(strength * 255);
+      }
+    }
+
+    const inkCanvas = document.createElement("canvas");
+    inkCanvas.width = w;
+    inkCanvas.height = h;
+    inkCanvas.getContext("2d").putImageData(ink, 0, 0);
+
+    const maskCanvas = document.createElement("canvas");
+    maskCanvas.width = w;
+    maskCanvas.height = h;
+    const mctx = maskCanvas.getContext("2d");
+    const out = canvas.getContext("2d");
+    let startTime = 0;
+
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      const t = Math.min(1, (ts - startTime) / duration);
+      const reveal = easeInOut(t) * (w + 80) - 40;
+      out.clearRect(0, 0, w, h);
+      out.drawImage(inkCanvas, 0, 0);
+      mctx.clearRect(0, 0, w, h);
+      for (let y = 0; y < h; y += 6) {
+        const wobble = Math.sin(y * 0.05 + t * 5) * 7;
+        const g = mctx.createLinearGradient(reveal - 8 + wobble, 0, reveal + 34 + wobble, 0);
+        g.addColorStop(0, "rgba(255,255,255,1)");
+        g.addColorStop(0.35, "rgba(255,255,255,1)");
+        g.addColorStop(1, "rgba(255,255,255,0)");
+        mctx.fillStyle = g;
+        mctx.fillRect(0, y, w, 6);
+      }
+      out.save();
+      out.globalCompositeOperation = "destination-in";
+      out.drawImage(maskCanvas, 0, 0);
+      out.restore();
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  };
+  img.src = src;
+}
+
 function finish() {
   if (committed < flat.length) {
     baseCtx.save();
@@ -570,12 +737,21 @@ function finish() {
     imageCanvas.classList.add("visible");
     drawImageStrokes(
       imageCanvas,
-      "image copy.png",
+      "Irisss.png",
       2600,
-      null,
+      () => {
+        setTimeout(() => {
+          infinityCanvas.classList.add("visible");
+          drawOrnateInfinity(infinityCanvas, 2200, goldPalette);
+          setTimeout(() => {
+            firmaCanvas.classList.add("visible");
+            drawInkSignature(firmaCanvas, "firma.png", 2200, [[210, 190, 255], [255, 225, 250], [190, 230, 255]]);
+          }, 2400);
+        }, 300);
+      },
       "#ffd76a",
       "#fff3c4",
-      { thresholdFactor: 0.022, baseWidth: 2, liveWidth: 2.8, glow: 9, palette: [[255, 216, 130], [255, 176, 194], [255, 235, 165]] }
+      { thresholdFactor: 0.022, baseWidth: 2, liveWidth: 2.8, glow: 9, palette: goldPalette }
     );
   }, 900);
   running = false;
