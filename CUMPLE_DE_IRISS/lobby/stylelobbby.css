@@ -147,10 +147,10 @@ body {
   font-style: italic;
   font-size: 3.4rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #ffffff 0%, #f472b6 45%, #c084fc 75%, #38bdf8 100%);
+  background: linear-gradient(115deg, #fff8fb 0%, #ffe1ee 24%, #ffb6d5 52%, #f0b6f2 76%, #b9c8ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 25px rgba(244, 114, 182, 0.65));
+  filter: drop-shadow(0 4px 18px rgba(236, 72, 153, 0.5));
   letter-spacing: 1px;
   margin-top: 2px;
   animation: glowPulse 3s ease-in-out infinite alternate;
@@ -158,11 +158,11 @@ body {
 
 @keyframes glowPulse {
   0% {
-    filter: drop-shadow(0 0 18px rgba(244, 114, 182, 0.5));
+    filter: drop-shadow(0 0 18px rgba(255, 182, 193, 0.45));
     transform: scale(1);
   }
   100% {
-    filter: drop-shadow(0 0 32px rgba(192, 132, 252, 0.85));
+    filter: drop-shadow(0 0 32px rgba(240, 182, 242, 0.65));
     transform: scale(1.02);
   }
 }
@@ -805,24 +805,6 @@ body.solo-modal .modal-overlay {
   text-transform: uppercase;
 }
 
-.progress-track {
-  width: 100%;
-  height: 5px;
-  margin-top: 8px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-}
-
-.progress-fill {
-  display: block;
-  width: 0;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, #ec4899, #c084fc, #38bdf8);
-  transition: width 0.25s ease;
-}
-
 .completion-message {
   display: block;
   width: min(100%, 330px);
@@ -923,5 +905,41 @@ body.solo-modal .modal-overlay {
     width: 22px;
     height: 22px;
     font-size: 0.56rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .header-badge {
+    padding: 5px 14px;
+    color: #ffc0dd;
+    font-size: 0.66rem;
+    letter-spacing: 1.6px;
+  }
+
+  .typewriter-phrase {
+    font-size: clamp(1.4rem, 6.6vw, 1.75rem);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: #fdf2f8;
+    text-shadow: 0 2px 14px rgba(192, 132, 252, 0.28);
+  }
+
+  .highlight-title {
+    font-size: clamp(2rem, 10.5vw, 2.55rem);
+    line-height: 1.1;
+    padding-bottom: 0.06em;
+    letter-spacing: -0.02em;
+    background: linear-gradient(115deg, #fff8fb 0%, #ffe1ee 24%, #ffb6d5 52%, #f0b6f2 76%, #b9c8ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    filter: drop-shadow(0 3px 10px rgba(236, 72, 153, 0.38));
+  }
+
+  .subtitle {
+    margin-top: 12px;
+    font-size: 0.66rem;
+    letter-spacing: 1.5px;
+    line-height: 1.5;
+    text-wrap: balance;
   }
 }

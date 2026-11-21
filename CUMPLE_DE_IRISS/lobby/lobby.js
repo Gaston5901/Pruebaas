@@ -352,9 +352,8 @@ function initLobbyAnimations() {
 function initSurpriseProgress() {
   const cards = [...document.querySelectorAll('.gift-card[data-surprise]')];
   const progressText = document.getElementById('progressText');
-  const progressFill = document.getElementById('progressFill');
   const completionMessage = document.getElementById('completionMessage');
-  if (!cards.length || !progressText || !progressFill) return;
+  if (!cards.length) return;
 
   let visited = [];
   try {
@@ -365,8 +364,7 @@ function initSurpriseProgress() {
 
   const updateProgress = () => {
     const visitedCount = cards.filter((card) => visited.includes(card.dataset.surprise)).length;
-    progressText.textContent = `${visitedCount} de ${cards.length} descubiertas`;
-    progressFill.style.width = `${(visitedCount / cards.length) * 100}%`;
+    if (progressText) progressText.textContent = `${visitedCount} de ${cards.length} descubiertas`;
 
     if (completionMessage) {
       completionMessage.hidden = visitedCount !== cards.length;

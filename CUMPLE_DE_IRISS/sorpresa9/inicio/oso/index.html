@@ -407,14 +407,148 @@
         }
 
         .parchment-card {
-            background: radial-gradient(circle at center, #fffdf6 0%, #fbf1da 68%, #dcc18a 100%);
+            background:
+                radial-gradient(circle at 14% 6%, rgba(255, 255, 255, 0.9), transparent 34%),
+                radial-gradient(circle at 88% 92%, rgba(217, 138, 168, 0.2), transparent 40%),
+                repeating-linear-gradient(0deg, rgba(150, 100, 70, 0.035) 0 1px, transparent 1px 27px),
+                linear-gradient(155deg, #fffdf8 0%, #fdf3e4 58%, #f0dcbc 100%);
+            border: 1px solid rgba(150, 95, 65, 0.55) !important;
+            border-radius: 22px !important;
             box-shadow:
-                0 28px 65px -12px rgba(42, 4, 14, 0.72),
-                0 0 0 1px rgba(185, 130, 95, 0.4),
-                inset 0 0 45px rgba(205, 150, 110, 0.28);
+                0 30px 70px -14px rgba(42, 4, 14, 0.78),
+                0 0 0 6px rgba(255, 250, 240, 0.42),
+                0 0 0 7px rgba(150, 95, 65, 0.32),
+                inset 0 0 60px rgba(205, 150, 110, 0.2);
             transform: translateY(34px) scale(0.92);
             transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
         }
+
+        .parchment-card::before {
+            content: "";
+            position: absolute;
+            inset: 11px;
+            border: 1px dashed rgba(160, 106, 74, 0.38);
+            border-radius: 14px;
+            pointer-events: none;
+        }
+
+        .parchment-card::after {
+            content: "";
+            position: absolute;
+            right: -1px;
+            bottom: -1px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 0 40px 40px;
+            border-color: transparent transparent #e7d2ae transparent;
+            filter: drop-shadow(-2px -2px 3px rgba(120, 80, 50, 0.2));
+            border-radius: 0 0 14px 0;
+            pointer-events: none;
+        }
+
+        .carta-tape {
+            position: absolute;
+            top: 16px;
+            left: 18px;
+            width: 70px;
+            height: 20px;
+            transform: rotate(-14deg);
+            background: linear-gradient(180deg, rgba(255, 250, 230, 0.9), rgba(226, 198, 150, 0.8));
+            border-left: 1px dashed rgba(150, 100, 60, 0.35);
+            border-right: 1px dashed rgba(150, 100, 60, 0.35);
+            box-shadow: 0 3px 8px rgba(120, 80, 50, 0.2);
+            pointer-events: none;
+        }
+
+        .carta-doodle {
+            position: absolute;
+            color: rgba(180, 90, 118, 0.32);
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
+            pointer-events: none;
+        }
+        .carta-doodle.arriba { top: 58px; right: 22px; transform: rotate(12deg); }
+        .carta-doodle.abajo { bottom: 18px; left: 22px; transform: rotate(-14deg); }
+
+        .carta-eyebrow {
+            color: #a4586d;
+            font-family: 'Caveat', cursive;
+            font-size: 1.05rem !important;
+            letter-spacing: 0.02em !important;
+            text-transform: none !important;
+        }
+
+        .carta-titulo {
+            font-family: 'Caveat', cursive !important;
+            font-size: clamp(2.1rem, 8vw, 2.9rem) !important;
+            line-height: 1 !important;
+            transform: rotate(-1.5deg);
+            transform-origin: center;
+        }
+
+        .carta-riba {
+            color: #a4586d;
+            font-family: 'Caveat', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 0.35em;
+        }
+
+        .font-letter p:first-child::first-letter {
+            font-family: 'Caveat', cursive;
+            font-size: 1.75rem;
+            line-height: 1;
+            float: left;
+            padding: 3px 6px 0 0;
+            color: #b0455e;
+        }
+
+        #love-letter-modal {
+            background: radial-gradient(circle at 50% 42%, rgba(92, 12, 36, 0.55), rgba(6, 2, 8, 0.86) 78%) !important;
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+            padding: 14px !important;
+        }
+
+        .carta-close {
+            top: 14px !important;
+            right: 14px !important;
+            width: 38px !important;
+            height: 38px !important;
+            min-width: 38px;
+            min-height: 38px;
+            border: 1px solid rgba(160, 106, 74, 0.45) !important;
+            background: rgba(255, 250, 240, 0.72) !important;
+        }
+
+        .carta-cuerpo {
+            background-image: linear-gradient(rgba(160, 106, 74, 0.09) 1px, transparent 1px);
+            background-size: 100% 1.85rem;
+            border-radius: 12px;
+            padding: 8px 12px !important;
+            margin: 0 -4px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(160, 106, 74, 0.45) transparent;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .carta-cuerpo::-webkit-scrollbar { width: 5px; }
+        .carta-cuerpo::-webkit-scrollbar-thumb {
+            background: rgba(160, 106, 74, 0.4);
+            border-radius: 999px;
+        }
+
+        .carta-titulo::after {
+            content: "";
+            display: block;
+            width: 58%;
+            height: 6px;
+            margin: 8px auto 0;
+            background: radial-gradient(ellipse at center, rgba(176, 69, 94, 0.45), transparent 72%);
+            transform: rotate(-1deg);
+        }
+
+        .carta-footer { gap: 12px; }
 
         #love-letter-modal.active .parchment-card {
             transform: translateY(0) scale(1);
@@ -452,6 +586,34 @@
                 font-size: 1.15rem;
             }
         }
+
+        @media (max-width: 640px) {
+            #love-letter-modal { padding: 10px !important; }
+            .parchment-card {
+                max-height: 86dvh !important;
+                padding: 26px 18px 22px !important;
+                border-radius: 18px !important;
+            }
+            .parchment-card::before { inset: 8px; border-radius: 11px; }
+            .parchment-card::after { border-width: 0 0 30px 30px; }
+            .carta-tape { top: 12px; left: 12px; width: 58px; height: 17px; }
+            .carta-close {
+                top: 10px !important;
+                right: 10px !important;
+                width: 42px !important;
+                height: 42px !important;
+            }
+            .carta-doodle.arriba { top: 52px; right: 14px; font-size: 1.3rem; }
+            .carta-doodle.abajo { bottom: 12px; left: 14px; font-size: 1.3rem; }
+            .carta-eyebrow { font-size: 0.95rem !important; }
+            .carta-titulo { font-size: clamp(1.9rem, 10vw, 2.5rem) !important; }
+            .carta-riba { font-size: 1rem; }
+            .carta-cuerpo { padding: 6px 8px !important; margin: 0 -2px; }
+            .font-letter p:first-child::first-letter { font-size: 1.55rem; padding: 2px 5px 0 0; }
+            .carta-footer { gap: 8px; }
+            .carta-footer > div:first-child .font-handwriting { font-size: 1.8rem !important; }
+            .carta-footer > div:last-child .font-handwriting { font-size: 1.35rem !important; }
+        }
     </style>
 </head>
 <body>
@@ -465,12 +627,12 @@
 
         <div id="single-rose-wrapper">
             <div class="rose-floor-shadow"></div>
-            <img
+            <!-- <img
                 src="flor.png"
                 id="rosa-img"
                 alt="Rosa"
                 onerror="loadRoseFallback(this)"
-            />
+            /> -->
         </div>
 
         <div id="gift-interaction-hint" class="gift-interaction-hint" aria-live="polite">
@@ -655,45 +817,28 @@
             <div class="parchment-card relative w-full max-w-lg rounded-2xl p-7 sm:p-10 border border-[#d4ae8d] max-h-[90vh] flex flex-col">
 
 
-                <div class="absolute -top-7 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full shadow-xl flex items-center justify-center">
-                    <svg viewBox="0 0 80 80" class="w-full h-full drop-shadow-md">
-                        <defs>
-                            <radialGradient id="waxSealGrad" cx="35%" cy="30%" r="65%">
-                                <stop offset="0%" stop-color="#ff4d5a"/>
-                                <stop offset="45%" stop-color="#b80718"/>
-                                <stop offset="85%" stop-color="#6e020c"/>
-                                <stop offset="100%" stop-color="#3d0005"/>
-                            </radialGradient>
-                        </defs>
-                        <path d="M 40,4 C 52,3 63,9 70,19 C 77,29 77,42 73,53 C 68,65 56,74 43,76 C 29,77 15,71 8,59 C 2,47 3,31 11,19 C 19,8 28,5 40,4 Z" fill="url(#waxSealGrad)"/>
-                        <circle cx="40" cy="40" r="26" fill="none" stroke="#ff8a93" stroke-width="1.2" stroke-dasharray="3 2" opacity="0.65"/>
-                        <path d="M 40,29 C 35,21 23,23 23,33 C 23,43 40,52 40,57 C 40,52 57,43 57,33 C 57,23 45,21 40,29 Z" fill="#fa2a3b" stroke="#ff9ea6" stroke-width="1"/>
-                    </svg>
-                </div>
+                <div class="carta-tape" aria-hidden="true"></div>
+
+                <span class="carta-doodle arriba" aria-hidden="true">♥</span>
+                <span class="carta-doodle abajo" aria-hidden="true">✦</span>
 
 
-                <button onclick="closeLoveLetter()" aria-label="Cerrar carta" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-rose-950/10 hover:bg-rose-950/20 text-rose-950 flex items-center justify-center transition">
+                <button onclick="closeLoveLetter()" aria-label="Cerrar carta" class="carta-close absolute top-4 right-4 w-8 h-8 rounded-full bg-rose-950/10 hover:bg-rose-950/20 text-rose-950 flex items-center justify-center transition">
                     <svg viewBox="0 0 24 24" class="w-4 h-4 stroke-current" stroke-width="2.2" fill="none" stroke-linecap="round">
                         <line x1="18" y1="6" x2="6" y2="18"></line>
                         <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
                 </button>
 
-                <div class="text-center mt-3 mb-5">
-                    <span class="text-xs uppercase tracking-[0.25em] text-rose-900/75 font-semibold block mb-1.5">Para ti, con todo mi amor</span>
-                    <h2 class="font-serif-title text-2xl sm:text-3xl font-bold text-rose-950 px-2">
-                        Te Amo muchísimo
+                <div class="text-center mt-6 mb-5">
+                    <span class="carta-eyebrow block mb-1.5">Pachuchaa, esto es solo tuyo ♥</span>
+                    <h2 class="carta-titulo text-rose-950 px-2">
+                        Te quiero un montón ♥
                     </h2>
-                    <div class="flex items-center justify-center gap-3 mt-3">
-                        <span class="h-[1px] w-16 bg-rose-900/30"></span>
-                        <svg viewBox="0 0 24 24" class="w-4 h-4 fill-rose-700">
-                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                        </svg>
-                        <span class="h-[1px] w-16 bg-rose-900/30"></span>
-                    </div>
+                    <div class="carta-riba mt-3">♥ · ✦ · ♥</div>
                 </div>
 
-                <div class="font-letter text-lg sm:text-xl text-[#3b1d16] leading-relaxed overflow-y-auto pr-1 space-y-3.5 px-2">
+                <div class="carta-cuerpo font-letter text-lg sm:text-xl text-[#3b1d16] leading-relaxed overflow-y-auto pr-1 space-y-3.5 px-2">
 <p>
     Cada charla, cada risa y cada momento a tu lado se volvió el regalo más bonito de mis días. Gracias por traer tanta luz, ternura y buena onda a mi vida.
 </p>
@@ -702,7 +847,7 @@
 </p>
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-rose-900/15 flex items-center justify-between">
+                <div class="carta-footer mt-6 pt-4 border-t border-rose-900/15 flex items-center justify-between">
                     <div>
                         <p class="text-xs text-rose-900/70 italic">Siempre tuyo,</p>
                         <p class="font-handwriting text-3xl text-rose-800 font-bold">
