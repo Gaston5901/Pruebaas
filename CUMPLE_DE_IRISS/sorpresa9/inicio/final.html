@@ -175,7 +175,7 @@
         <div class="eyebrow">El gran final</div>
         <h1>Tu historia, por capítulos</h1>
         <p class="intro">Ya estamos llegando al final de este viaje, Iris. Vamos de a uno, sin apuro: cada capítulo se abre cuando terminás el anterior.</p>
-        <div class="progress" id="progress"><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="progress" id="progress"><span></span><span></span><span></span><span></span><span></span><span></span></div>
         <div id="contenido"></div>
     </div>
 
@@ -187,7 +187,8 @@
                 { id: 2, nombre: 'Las promesas', frase: 'El contador, las tres promesas y todo lo que empezó un 26 de abril.', destino: 'index.html?desbloqueado=1' },
                 { id: 3, nombre: 'Un osito para vos', frase: 'Algo tierno que guardé especialmente para este momento.', destino: 'oso/index.html?capitulo=3' },
                 { id: 4, nombre: 'Tus 21 deseos', frase: 'Tocá cada vela y pedí un deseo, hasta llegar a tus 21 deseos.', destino: '../../lobby/index.html?capitulo=4' },
-                { id: 5, nombre: 'Fuegos artificiales', frase: 'Elegí un asiento, poné el volumen y mirá el cielo que preparé para vos.', destino: '../../fuegos artificiales/index.html?capitulo=5' }
+                { id: 5, nombre: 'Fuegos artificiales', frase: 'Elegí un asiento, poné el volumen y mirá el cielo que preparé para vos.', destino: '../../fuegos artificiales/index.html?capitulo=5' },
+                { id: 6, nombre: 'Sorpresa', frase: 'Queda una última sorpresa esperándote, Iris. Cerrá los ojos y dejate llevar.', destino: 'rostro/index.html?capitulo=6', cta: 'Ver sorpresa →' }
             ];
 
             let completados = new Set();
@@ -200,7 +201,7 @@
 
             const params = new URLSearchParams(window.location.search);
             const cap = Number(params.get('capitulo'));
-            if (params.get('listo') === '1' && cap >= 1 && cap <= 5) completados.add(cap);
+            if (params.get('listo') === '1' && cap >= 1 && cap <= 6) completados.add(cap);
 
             function guardar() {
                 try { localStorage.setItem(KEY, JSON.stringify([...completados].sort((a, b) => a - b))); } catch (e) {}
@@ -215,7 +216,7 @@
             }
 
             function desbloqueado(id) {
-                if (totalProgreso() >= 5) return true;
+                if (totalProgreso() >= 6) return true;
                 if (id === 1) return true;
                 const capitulo = capitulos.find((c) => c.id === id);
                 if (capitulo && capitulo.proximamente) return false;
@@ -235,21 +236,21 @@
             function pintar() {
                 const contenido = document.getElementById('contenido');
                 contenido.innerHTML = '';
-                const todosListos = totalProgreso() >= 5;
-                const actual = capitulos.find((c) => !esProgreso(c.id)) || capitulos[4];
+                const todosListos = totalProgreso() >= 6;
+                const actual = capitulos.find((c) => !esProgreso(c.id)) || capitulos[5];
 
                 const panel = document.createElement('section');
                 panel.className = todosListos ? 'final-todo' : 'estacion';
                 if (todosListos) {
                     panel.innerHTML = '<div class="final-tag">Gran final completo</div>' +
                         '<h2 class="final-titulo">Todo listo, Iris 💜</h2>' +
-                        '<p class="final-frase">Recorrimos los cinco capítulos. Elegí cualquiera de abajo para volver a vivirlo cuando quieras.</p>';
+                        '<p class="final-frase">Recorrimos los seis capítulos. Elegí cualquiera de abajo para volver a vivirlo cuando quieras.</p>';
                 } else {
                     panel.innerHTML = '<div class="estacion-num">' + String(actual.id).padStart(2, '0') + '</div>' +
-                        '<div class="estacion-tag">Capítulo ' + actual.id + ' de 5</div>' +
+                        '<div class="estacion-tag">Capítulo ' + actual.id + ' de 6</div>' +
                         '<h2 class="estacion-titulo">' + actual.nombre + '</h2>' +
                         '<p class="estacion-frase">' + actual.frase + '</p>' +
-                        '<button class="estacion-cta" type="button">' + (actual.destino ? 'Abrir capítulo →' : 'Marcar como visto ✓') + '</button>';
+                        '<button class="estacion-cta" type="button">' + (actual.cta || (actual.destino ? 'Abrir capítulo →' : 'Marcar como visto ✓')) + '</button>';
                     const cta = panel.querySelector('.estacion-cta');
                     cta.addEventListener('click', () => abrir(actual));
                 }

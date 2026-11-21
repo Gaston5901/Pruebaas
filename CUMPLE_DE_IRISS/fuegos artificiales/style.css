@@ -445,6 +445,37 @@ body {
   transition-duration: 0.4s;
 }
 
+.fire-frase {
+  position: fixed;
+  left: 50%;
+  bottom: 12%;
+  transform: translate(-50%, 14px);
+  z-index: 920;
+  width: min(86vw, 620px);
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fire-frase.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+.fire-frase span {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 18px;
+  background: rgba(10, 4, 16, 0.42);
+  color: #ffe9f2;
+  font-family: "Caveat", cursive;
+  font-size: clamp(1.4rem, 5vw, 2.1rem);
+  line-height: 1.15;
+  text-shadow: 0 0 14px rgba(255, 95, 143, 0.7), 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+@media (max-width: 640px) {
+  .fire-frase { bottom: 15%; }
+}
+
 /* Countdown */
 .fire-countdown {
   position: fixed;
@@ -468,6 +499,12 @@ body {
   visibility: visible;
   opacity: 1;
 }
+.fire-countdown__label {
+  font-family: "Russo One", arial, sans-serif;
+  font-size: 0.8em;
+  letter-spacing: 0.06em;
+  color: #ffd3e5;
+}
 .fire-countdown__time {
   font-family: "Russo One", arial, sans-serif;
   font-size: 1.5em;
@@ -476,6 +513,11 @@ body {
 .fire-countdown__heart {
   color: #ff5f8f;
   font-size: 1em;
+}
+@media (max-width: 640px) {
+  .fire-countdown { gap: 6px; padding: 7px 12px; }
+  .fire-countdown__label { font-size: 0.7em; }
+  .fire-countdown__time { font-size: 1.2em; }
 }
 
 /* Continuar */
@@ -511,6 +553,45 @@ body {
   transform: scale(1.04);
   background: rgba(255, 42, 133, 0.25);
   color: #fff;
+}
+
+.fire-volver {
+  position: fixed;
+  top: 14px;
+  left: 14px;
+  z-index: 910;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.4s, visibility 0.4s;
+}
+.fire-volver.visible {
+  visibility: visible;
+  opacity: 1;
+}
+.fire-volver__btn {
+  outline: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffd3e5;
+  font-weight: 700;
+  font-size: 1.1rem;
+  line-height: 1;
+  font-family: "Russo One", arial, sans-serif;
+  transition: transform 0.2s, background 0.2s, color 0.2s;
+}
+.fire-volver__btn:hover, .fire-volver__btn:active {
+  transform: scale(1.04);
+  background: rgba(255, 42, 133, 0.25);
+  color: #fff;
+}
+@media (max-width: 640px) {
+  .fire-volver { top: 10px; left: 10px; }
+  .fire-volver__btn { width: 34px; height: 34px; font-size: 1rem; }
 }
 
 /* Contrastes ocultados con el sonido activado */

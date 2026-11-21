@@ -25,6 +25,8 @@ const MAX_WIDTH = 7680;
 const MAX_HEIGHT = 4320;
 const GRAVITY = 0.9; // Acceleration in px/s
 let simSpeed = 1;
+let countdownActive = false;
+let ultimoTramo = false;
 
 function getDefaultScaleFactor() {
 	if (IS_MOBILE) return 0.9;
@@ -869,6 +871,8 @@ function showIntroModal() {
 		toggleSound(true);
 		// Hide mute, pause and settings buttons
 		document.body.classList.add('sound-on');
+		const volverEl = document.querySelector('.fire-volver');
+		if (volverEl) volverEl.classList.add('visible');
 		// Close modal
 		modal.classList.remove('active');
 		// Ignite the show
@@ -883,27 +887,57 @@ function startCountdown(seconds) {
 	if (!countdown) return;
 	
 	const timeNode = countdown.querySelector('.fire-countdown__time');
+	const continueEl = document.querySelector('.fire-continue');
 	countdown.classList.add('visible');
+	countdownActive = true;
+	ultimoTramo = false;
 	
 	let remaining = seconds;
-	let finaleStarted = false;
 	timeNode.textContent = formatCountdown(remaining);
+	
+	[
+		[8, 'Me enamoré de vos antes de besarte.'],
+		[28, 'Me encanta tu sonrisaa'],
+		[40, 'Sos increíble y única'],
+		[48, 'Lo estás haciendo increíble. No dejes de creer en vos.'],
+		[58, 'Confiá en vos siempre'],
+		[68, 'Mi corazón te piensa todo el tiempo.'],
+		[76, 'Bellaa y magnífica'],
+		[84, 'Talentosa, capaz de todo'],
+		[88, 'Ojos bonitoss'],
+		[100, 'Te elijo siempree señoritaa'],
+		[109, 'uyuyyy 21 21 21 ya jiji'],
+		[115, 'saranghae 🌹', true]
+	].forEach(([segundo, texto, persistente]) => setTimeout(() => showFrase(texto, persistente), segundo * 1000));
+	
+	setTimeout(() => showSkyShape(), 92000);
+	
+	let ambientTick = 0;
+	setInterval(() => {
+		ambientTick++;
+		if (!isRunning() || store.state.paused) return;
+		if (!countdownActive && !(continueEl && continueEl.classList.contains('visible'))) return;
+		if (ultimoTramo && ambientTick % 2 !== 0) return;
+		if (IS_MOBILE) seqRandomFastShell();
+		else launchShellFromConfig();
+	}, IS_MOBILE ? 1400 : 1000);
 	
 	const interval = setInterval(() => {
 		remaining--;
 		
-		// Kick off a bigger mix in the final stretch.
-		if (!finaleStarted && remaining <= 25) {
-			finaleStarted = true;
-			startFinaleCombos();
+		if (!ultimoTramo && remaining <= 25) {
+			ultimoTramo = true;
 		}
 		
 		if (remaining <= 0) {
 			remaining = 0;
 			clearInterval(interval);
+			countdownActive = false;
+			ultimoTramo = false;
 			countdown.classList.remove('visible');
 			showContinueButton();
 			endFinale();
+			if (store.state.soundEnabled) soundManager.resumeAll();
 		}
 		timeNode.textContent = formatCountdown(remaining);
 	}, 1000);
@@ -935,14 +969,65 @@ function startFinaleCombos() {
 
 function endFinale() {
 	store.setState({ config: Object.assign({}, store.state.config, { finale: false }) });
-	// Keep the show going, but calmer: slower speed means fewer, more spaced out combos.
-	simSpeed = 0.75;
+	simSpeed = 1;
 }
 
 function showContinueButton() {
 	const continueEl = document.querySelector('.fire-continue');
 	if (!continueEl) return;
 	continueEl.classList.add('visible');
+}
+
+const skyShapes = [];
+let fraseTimer = null;
+
+function showSkyShape() {
+	const scale = Math.min(stageW, stageH) * (IS_MOBILE ? 0.075 : 0.09);
+	const shape = {
+		born: performance.now(),
+		life: 4200,
+		x: stageW * (0.5 + (Math.random() * 0.22 - 0.11)),
+		y: stageH * (0.3 + (Math.random() * 0.08 - 0.04)),
+		scale
+	};
+	skyShapes.push(shape);
+	BurstFlash.add(shape.x, shape.y, scale * 2.6);
+	soundManager.playSound('burst', 0.75);
+}
+
+function drawSkyShapes(now) {
+	for (let i = skyShapes.length - 1; i >= 0; i--) {
+		const shape = skyShapes[i];
+		const t = (now - shape.born) / shape.life;
+		if (t >= 1) {
+			skyShapes.splice(i, 1);
+			continue;
+		}
+		const ctx = mainStage.ctx;
+		ctx.save();
+		ctx.globalAlpha = Math.sin(Math.PI * Math.max(0, Math.min(1, t)));
+		ctx.globalCompositeOperation = 'lighter';
+		ctx.shadowBlur = IS_MOBILE ? 12 : 20;
+		ctx.shadowColor = '#ff5f9e';
+		ctx.font = `600 ${Math.round(shape.scale * 1.5)}px Caveat, cursive`;
+		ctx.textAlign = 'center';
+		ctx.textBaseline = 'middle';
+		ctx.fillStyle = '#fff1d6';
+		ctx.shadowColor = '#ffb3d1';
+		ctx.fillText('G ♥ I', shape.x, shape.y);
+		ctx.restore();
+	}
+}
+
+function showFrase(texto, persistente) {
+	const fraseEl = document.getElementById('fire-frase');
+	if (!fraseEl) return;
+	const span = fraseEl.querySelector('span');
+	if (fraseTimer) clearTimeout(fraseTimer);
+	fraseTimer = null;
+	span.textContent = texto;
+	fraseEl.classList.add('visible');
+	if (!persistente) fraseTimer = setTimeout(() => fraseEl.classList.remove('visible'), 4200);
 }
 
 function formatCountdown(seconds) {
@@ -1442,7 +1527,7 @@ function updateGlobals(timeStep, lag) {
 	if (store.state.config.autoLaunch) {
 		autoLaunchTime -= timeStep;
 		if (autoLaunchTime <= 0) {
-			autoLaunchTime = startSequence() * 1.25;
+			autoLaunchTime = startSequence() * (ultimoTramo ? 0.85 : countdownActive ? 0.65 : 1);
 		}
 	}
 }
@@ -1638,6 +1723,8 @@ function render(speed) {
 		trailsCtx.stroke();
 	});
 	
+	
+	drawSkyShapes(performance.now());
 	
 	// Render speed bar if visible
 	if (speedBarOpacity) {
@@ -2514,9 +2601,15 @@ if (IS_HEADER) {
 const botonContinuarFinal = document.querySelector('.fire-continue__btn');
 if (botonContinuarFinal) {
 	botonContinuarFinal.addEventListener('click', () => {
-		const cap = Number(new URLSearchParams(window.location.search).get('capitulo'));
-		if (cap === 5) {
-			window.location.href = `../sorpresa9/inicio/final.html?capitulo=${cap}&listo=1`;
-		}
+		const cap = Number(new URLSearchParams(window.location.search).get('capitulo')) || 5;
+		window.location.href = `../sorpresa9/inicio/final.html?capitulo=${cap}&listo=1`;
+	});
+}
+
+const botonVolverFinal = document.querySelector('.fire-volver__btn');
+if (botonVolverFinal) {
+	botonVolverFinal.addEventListener('click', () => {
+		const cap = Number(new URLSearchParams(window.location.search).get('capitulo')) || 5;
+		window.location.href = `../sorpresa9/inicio/final.html?capitulo=${cap}&listo=1`;
 	});
 }
