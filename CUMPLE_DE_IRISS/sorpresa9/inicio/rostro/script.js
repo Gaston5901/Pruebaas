@@ -20,8 +20,7 @@ const statusEl = document.getElementById("status");
 const stage = document.getElementById("stage");
 const hint = document.getElementById("hint");
 const bar = document.getElementById("bar");
-const despuesCanvas = document.getElementById("despues-canvas");
-const continuaraCanvas = document.getElementById("continuara-canvas");
+const imageCanvas = document.getElementById("image-canvas");
 
 const MAX_DIM = 780;
 const MAX_POINTS = 16000;
@@ -168,7 +167,7 @@ function buildBackgroundMask(data, w, h) {
   return mask;
 }
 
-function detect(src, w, h, mask) {
+function detect(src, w, h, mask, factor = 0.045) {
   const gxA = new Float32Array(w * h);
   const gyA = new Float32Array(w * h);
   const mag = new Float32Array(w * h);
@@ -191,7 +190,7 @@ function detect(src, w, h, mask) {
     }
   }
 
-  const threshold = Math.max(12, max * 0.045);
+  const threshold = Math.max(12, max * factor);
   const at = (x, y) => (x < 0 || y < 0 || x >= w || y >= h ? 0 : mag[y * w + x]);
   const pts = [];
 
@@ -445,6 +444,18 @@ function frame(ts) {
   }
 }
 
+function colorAt(t, palette) {
+  const x = Math.min(0.999999, Math.max(0, t)) * (palette.length - 1);
+  const i = Math.floor(x);
+  const f = x - i;
+  const a = palette[i];
+  const b = palette[i + 1];
+  const r = Math.round(a[0] + (b[0] - a[0]) * f);
+  const g = Math.round(a[1] + (b[1] - a[1]) * f);
+  const bl = Math.round(a[2] + (b[2] - a[2]) * f);
+  return `rgb(${r},${g},${bl})`;
+}
+
 function drawRangeGeneric(c, from, to, pts, color, lineWidth, blur, alpha) {
   if (to <= from) return;
   c.save();
@@ -466,7 +477,12 @@ function drawRangeGeneric(c, from, to, pts, color, lineWidth, blur, alpha) {
   c.restore();
 }
 
-function drawImageStrokes(canvas, src, duration, onDone) {
+function drawImageStrokes(canvas, src, duration, onDone, colorStart = "#b76de0", colorEnd = "#ff8fc7", opts = {}) {
+  const thresholdFactor = opts.thresholdFactor ?? 0.045;
+  const palette = opts.palette;
+  const baseWidth = opts.baseWidth ?? 1.4;
+  const liveWidth = opts.liveWidth ?? 2;
+  const glow = opts.glow ?? 12;
   const img = new Image();
   img.onload = () => {
     let iw = img.naturalWidth || img.width;
@@ -489,7 +505,7 @@ function drawImageStrokes(canvas, src, duration, onDone) {
       gray[p] = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
     }
     const mask = buildBackgroundMask(data, w, h);
-    const edges = detect(gaussian(gray, w, h), w, h, mask);
+    const edges = detect(gaussian(gray, w, h), w, h, mask, thresholdFactor);
     const pts = flatten(buildStrokes(edges, w, h));
     const base = document.createElement("canvas");
     base.width = w;
@@ -502,14 +518,14 @@ function drawImageStrokes(canvas, src, duration, onDone) {
       if (!startTime) startTime = ts;
       const t = Math.min(1, (ts - startTime) / duration);
       const target = Math.floor(easeInOut(t) * pts.length);
-      const color = t < 0.5 ? "#b76de0" : "#ff8fc7";
+      const color = palette ? colorAt(t, palette) : (t < 0.5 ? colorStart : colorEnd);
       if (target - 30 > committed) {
-        drawRangeGeneric(bctx, committed, target - 30, pts, color, 1.4, 5, 0.9);
+        drawRangeGeneric(bctx, committed, target - 30, pts, color, baseWidth, 5, 0.95);
         committed = target - 30;
       }
       ctx.clearRect(0, 0, w, h);
       ctx.drawImage(base, 0, 0);
-      drawRangeGeneric(ctx, Math.max(0, target - 30), target, pts, color, 2, 12, 1);
+      drawRangeGeneric(ctx, Math.max(0, target - 30), target, pts, color, liveWidth, glow, 1);
       if (t < 1) requestAnimationFrame(step);
       else if (onDone) onDone();
     }
@@ -551,13 +567,16 @@ function finish() {
   stage.classList.add("done");
   continuarBtn.classList.add("visible");
   setTimeout(() => {
-    despuesCanvas.classList.add("visible");
-    drawImageStrokes(despuesCanvas, "despuesdeldibujo.png", 2600, () => {
-      setTimeout(() => {
-        continuaraCanvas.classList.add("visible");
-        drawImageStrokes(continuaraCanvas, "continuara.png", 2400);
-      }, 500);
-    });
+    imageCanvas.classList.add("visible");
+    drawImageStrokes(
+      imageCanvas,
+      "image copy.png",
+      2600,
+      null,
+      "#ffd76a",
+      "#fff3c4",
+      { thresholdFactor: 0.022, baseWidth: 2, liveWidth: 2.8, glow: 9, palette: [[255, 216, 130], [255, 176, 194], [255, 235, 165]] }
+    );
   }, 900);
   running = false;
   animId = null;
@@ -622,10 +641,6 @@ updateDuration();
 
 const volverBtn = document.getElementById("volver");
 volverBtn.addEventListener("click", () => {
-  window.location.href = "../final.html?capitulo=6&listo=1";
-});
-
-continuaraCanvas.addEventListener("click", () => {
   window.location.href = "../final.html?capitulo=6&listo=1";
 });
 
