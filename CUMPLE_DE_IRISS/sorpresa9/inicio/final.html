@@ -27,7 +27,7 @@
                 radial-gradient(circle at 82% 78%, rgba(232, 199, 124, 0.14), transparent 42%),
                 linear-gradient(160deg, #2a0a17, var(--bg) 55%, #12040b);
             overflow-x: hidden;
-            padding: 26px 16px 36px;
+            padding: 20px 16px 36px;
         }
         body::before,
         body::after { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; }
@@ -78,13 +78,6 @@
             font-weight: 700;
             letter-spacing: 0.28em; text-transform: uppercase;
             text-shadow: 0 0 18px rgba(232, 199, 124, 0.35);
-        }
-        h1 {
-            text-align: center; font-family: 'Cinzel', serif; font-weight: 600;
-            font-size: clamp(1.15rem, 4.4vw, 1.6rem); line-height: 1.15;
-            margin: 8px 0 6px;
-            background: linear-gradient(120deg, #fff7e6, var(--gold), var(--rose));
-            -webkit-background-clip: text; background-clip: text; color: transparent;
         }
         .intro {
             text-align: center; color: var(--muted);
@@ -203,7 +196,7 @@
         .strip button:disabled { opacity: 0.4; cursor: default; }
         .strip button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
         @media (max-width: 520px) {
-            body { padding: 20px 12px 30px; }
+            body { padding: 16px 12px 30px; }
             .nav-arriba { margin-bottom: 10px; }
             .volver { width: 44px; height: 44px; font-size: 1.4rem; }
             .intro { margin-bottom: 8px; }
@@ -228,8 +221,7 @@
             <a class="volver" href="../../lobby/lobby.html" title="Volver al lobby" aria-label="Volver al lobby">←</a>
         </div>
         <div class="eyebrow">El gran final</div>
-        <h1>Tu historia, por capítulos</h1>
-        <p class="intro">Ya estamos llegando al final de este viaje, Iris. Vamos de a uno, sin apuro: cada capítulo se abre cuando terminás el anterior.</p>
+        <p class="intro">Ya estamos llegando al final de este viaje Iriss. Vamos de a uno, sin apuro: cada capítulo se abre cuando terminás el anterior.</p>
         <div id="contenido"></div>
     </div>
 
@@ -303,7 +295,7 @@
                     panel.innerHTML = esquinas +
                         '<div class="final-tag">Última parada</div>' +
                         '<h2 class="final-titulo">Llegamos Irisss</h2>' +
-                        '<p class="final-frase">9 sorpresas, capítulos y todo este viaje para tu dia. Felizzz 21 añoss señoritaaa: te deseo lo mejor siempre y disfrute, Saranghae. Tocá la estrella del capítulo que quieras volver a ver.</p>';
+                        '<p class="final-frase">9 sorpresas, capítulos y todo este viaje para tu día. Felizzz 21 añoss señoritaaa: te deseo lo mejor siempre y que lo disfrutes al maximo, acordate que no tenés límites y sos capaz de alcanzar cualquier cosa que te propongas, Pachuchaa🌹✨</p>';
                 } else {
                     panel.innerHTML = esquinas +
                         '<div class="estacion-tag">Capítulo</div>' +
