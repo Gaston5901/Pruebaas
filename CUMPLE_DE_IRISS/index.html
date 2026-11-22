@@ -290,6 +290,11 @@
     </a>
   </div>
 
+  <div class="loading-overlay" id="loadingOverlay" aria-hidden="true">
+    <div class="loading-ring"></div>
+    <p class="loading-text">Preparando tu sorpresa...</p>
+  </div>
+
   <script>
     const avisoOverlay = document.getElementById('avisoOverlay');
     const avisoContinuar = document.getElementById('avisoContinuar');
@@ -373,6 +378,7 @@
     const surpriseOverlay = document.getElementById('surpriseOverlay');
     const surpriseBtn = document.getElementById('surpriseBtn');
     const waitHint = document.getElementById('waitHint');
+    const loadingOverlay = document.getElementById('loadingOverlay');
 
     // CONFIGURACIÓN DEL BUCLE DE FONDO
     const TIEMPO_INICIO_BUCLE = 10; // Cambiá este valor al segundo donde querés que reinicie el bucle
@@ -403,11 +409,9 @@
 
     // Manejador de fin de reproducción para activar el bucle y mostrar el botón
     myVideo.addEventListener('ended', () => {
-      // Oculta el aviso de espera
-      waitHint.classList.remove('show');
-
-      // Muestra el botón sorpresa únicamente la primera vez
+      // El aviso sigue hasta que aparece el botón
       if (!yaMostroBoton) {
+        waitHint.classList.remove('show');
         surpriseOverlay.classList.add('active');
         yaMostroBoton = true;
       }
@@ -427,10 +431,11 @@
 
     surpriseBtn.addEventListener('click', (event) => {
       event.preventDefault();
+      if (loadingOverlay) loadingOverlay.classList.add('visible');
       surpriseBtn.classList.add('cut');
       setTimeout(() => {
         window.location.href = surpriseBtn.getAttribute('href');
-      }, 650);
+      }, 3000);
     });
   </script>
 </body>
