@@ -198,7 +198,8 @@
             stroke-dasharray: 1000; 
             stroke-dashoffset: 1000; 
             filter: drop-shadow(0 0 8px rgba(191, 238, 203, 0.7));
-            transition: stroke-dashoffset .1s linear; 
+            transition: none;
+            will-change: stroke-dashoffset;
         }
         
         .fp-gate.is-scanning .fp-svg-base { opacity: 0.25; }
@@ -215,27 +216,34 @@
             transform: scale(1.05);
         }
         .fp-gate.is-success .fp-tint { opacity: 0; }
-        .fp-hint { 
-            font-family: 'Cormorant Garamond', serif; 
-            font-style: italic; 
+        .fp-hint {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
             font-weight: 500;
-            font-size: clamp(1rem, 2.5vw, 1.2rem);
-            color: var(--text-muted); 
-            letter-spacing: 0.04em;
-            text-align: center; 
-            line-height: 1.4;
-            max-width: 420px;
-            min-height: 1.6em; 
-            transition: opacity .6s, color .6s; 
+            font-size: clamp(0.98rem, 2.5vw, 1.2rem);
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            text-align: center;
+            line-height: 1.35;
+            text-wrap: balance;
+            max-width: min(420px, 88vw);
+            min-height: 2.7em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 0.4rem;
+            transition: opacity .6s, color .6s;
         }
-        .fp-gate.is-success .fp-hint { 
+        .fp-gate.is-success .fp-hint {
             font-family: 'DM Serif Display', serif;
-            font-size: clamp(1.9rem, 4.8vw, 2.7rem);
+            font-size: clamp(1.5rem, 4.6vw, 2.6rem);
             font-style: italic;
             letter-spacing: -0.01em;
-            color: var(--gold-light); 
+            line-height: 1.15;
+            min-height: 2.3em;
+            color: var(--gold-light);
             text-shadow: 0 0 20px rgba(127, 214, 164, 0.5);
-            transition: all 0.8s ease; 
+            transition: all 0.8s ease;
         }
 
         
@@ -817,8 +825,8 @@
             }
             .fp-gate .subtitle { font-size: 2.35rem; transform: translateY(-10px); }
             .fp-wrap { width: min(56vw, 200px); margin: 0.1rem 0; }
-            .fp-hint { font-size: 1rem; max-width: 300px; transform: translateY(10px); }
-            .fp-gate.is-success .fp-hint { font-size: 1.9rem; }
+            .fp-hint { font-size: 0.98rem; max-width: min(320px, 90vw); transform: translateY(10px); }
+            .fp-gate.is-success .fp-hint { font-size: clamp(1.3rem, 6vw, 1.65rem); }
             main { padding: 4rem 1rem 2.5rem; gap: 1.4rem; }
             .header-aniversario .pre-title { letter-spacing: 0.28em; font-size: 0.72rem; }
             .promises-title { font-size: 0.9rem; letter-spacing: 0.18em; }
@@ -848,7 +856,7 @@
 
     
     <div class="fp-gate" id="fpGate">
-        <div class="fp-gate-badge">Ya estamos llegando al final de este viaje Iris 🌹</div>
+        <div class="fp-gate-badge">Ya estamos llegando al final de este viaje Iriss 🌹</div>
         <div class="subtitle">Para tuu</div>
         <div class="fp-wrap" id="fp" role="button" aria-label="Mantén presionada la huella" tabindex="0">
             <div class="fp-ring"></div>
@@ -868,7 +876,7 @@
             <div class="fp-svg-base" aria-hidden="true"></div>
             <span class="fp-tint" aria-hidden="true"></span>
         </div>
-        <div class="fp-hint" id="fpHint">Mantené la huella para seguir Iris ♥</div>
+        <div class="fp-hint" id="fpHint">Mantené la huella para seguir ♥</div>
     </div>
 
     <a class="btn-volver-lobby" href="final.html?capitulo=2&listo=1" aria-label="Volver a los capítulos">←</a>
@@ -1115,7 +1123,10 @@
             ];
 
             
-            const count = Math.min(85, Math.floor((width * height) / 14000));
+            const isSmallScreen = window.innerWidth <= 520;
+            const count = isSmallScreen
+                ? Math.min(32, Math.floor((width * height) / 30000))
+                : Math.min(85, Math.floor((width * height) / 14000));
             for (let i = 0; i < count; i++) {
                 ambientParticles.push({
                     x: Math.random() * width,
@@ -1176,7 +1187,7 @@
                         ctx.arc(p.x, p.y, rad, 0, Math.PI * 2);
                     } else {
                         ctx.fillStyle = p.colorPrefix + twinkle + ')';
-                        ctx.shadowBlur = 10;
+                        ctx.shadowBlur = width <= 520 ? 0 : 10;
                         ctx.shadowColor = 'rgba(191, 238, 203, 0.7)';
                         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
                     }
@@ -1321,7 +1332,7 @@
             { at: 1650, text: "Confirmando al amor de mi vida..." }
         ];
         const FP_SUCCESS = "Almas gemelas reconocidas ♥";
-        const FP_WELCOME = "Hola, mi amor. Todo empieza acá 💜";
+        const FP_WELCOME = "Hii señoritaa, vamoss 💜";
 
         (function() {
             const gate = document.getElementById('fpGate');
@@ -1338,11 +1349,15 @@
 
             const HOLD_MS = 2500;
             let pressing = false, startTs = 0, raf = 0, done = false;
+            let lastMsg = '';
 
             function setMsg(elapsed) {
                 let m = null;
                 for (const x of FP_MESSAGES) { if (elapsed >= x.at) m = x; }
-                if (m) hint.innerHTML = m.text;
+                if (m && m.text !== lastMsg) {
+                    lastMsg = m.text;
+                    hint.textContent = m.text;
+                }
             }
 
             function tick() {
@@ -1361,8 +1376,10 @@
                 e.preventDefault();
                 pressing = true; 
                 startTs = performance.now();
+                bar.style.transition = 'none';
                 gate.classList.add('is-scanning');
-                hint.innerHTML = FP_MESSAGES[0].text;
+                lastMsg = FP_MESSAGES[0].text;
+                hint.textContent = lastMsg;
                 raf = requestAnimationFrame(tick);
             }
 
@@ -1374,7 +1391,8 @@
                 
                 bar.style.transition = 'stroke-dashoffset .8s cubic-bezier(0.2, 0.8, 0.2, 1)';
                 bar.style.strokeDashoffset = 1000;
-                setTimeout(() => { bar.style.transition = 'stroke-dashoffset .1s linear'; }, 850);
+                setTimeout(() => { bar.style.transition = 'none'; }, 850);
+                lastMsg = '';
                 hint.textContent = "Mantené la huella para seguir, Iris ♥";
             }
 
@@ -1385,11 +1403,11 @@
                 bar.style.strokeDashoffset = 0;
                 gate.classList.remove('is-scanning');
                 gate.classList.add('is-success');
-                hint.innerHTML = FP_SUCCESS;
+                hint.textContent = FP_SUCCESS;
                 
                 RomanticMusic.start();
 
-                setTimeout(() => { hint.innerHTML = FP_WELCOME; }, 1050);
+                setTimeout(() => { hint.textContent = FP_WELCOME; }, 1050);
                 setTimeout(() => { window.location.href = 'final.html'; }, 2300);
             }
 

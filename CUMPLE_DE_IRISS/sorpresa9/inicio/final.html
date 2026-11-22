@@ -54,22 +54,35 @@
             flex-direction: column;
             animation: appear 0.9s ease both;
         }
-        .nav-arriba { display: flex; align-items: center; margin-bottom: 18px; }
+        .nav-arriba { display: flex; align-items: center; margin-bottom: 14px; }
         .volver {
-            display: inline-flex; align-items: center; gap: 8px;
-            color: var(--muted); text-decoration: none;
-            font-size: 0.78rem; letter-spacing: 0.06em;
+            display: inline-grid; place-items: center;
+            width: 46px; height: 46px; border-radius: 50%;
+            background: rgba(58, 14, 31, 0.8);
+            border: 1px solid var(--gold);
+            color: var(--gold); text-decoration: none;
+            font-size: 1.5rem; line-height: 1;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), 0 0 14px rgba(232, 199, 124, 0.22), inset 0 0 0 3px rgba(26, 7, 16, 0.5);
+            backdrop-filter: blur(14px);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
         }
-        .volver:hover { color: var(--gold-light); }
+        .volver:hover {
+            color: var(--gold-light);
+            transform: translateX(-3px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5), 0 0 22px rgba(232, 199, 124, 0.45), inset 0 0 0 3px rgba(26, 7, 16, 0.5);
+        }
+        .volver:active { transform: scale(0.94); }
         .eyebrow {
             text-align: center; color: var(--gold);
-            font-family: 'Cinzel', serif; font-size: 0.66rem;
-            letter-spacing: 0.3em; text-transform: uppercase;
+            font-family: 'Cinzel', serif; font-size: clamp(0.82rem, 2.6vw, 1rem);
+            font-weight: 700;
+            letter-spacing: 0.28em; text-transform: uppercase;
+            text-shadow: 0 0 18px rgba(232, 199, 124, 0.35);
         }
         h1 {
             text-align: center; font-family: 'Cinzel', serif; font-weight: 600;
-            font-size: clamp(1.5rem, 6vw, 2.2rem); line-height: 1.15;
-            margin: 10px 0 8px;
+            font-size: clamp(1.15rem, 4.4vw, 1.6rem); line-height: 1.15;
+            margin: 8px 0 6px;
             background: linear-gradient(120deg, #fff7e6, var(--gold), var(--rose));
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
@@ -162,17 +175,18 @@
         .final-todo .estacion-cta { margin-top: 4px; }
         .strip {
             display: flex; justify-content: center; flex-wrap: wrap;
-            gap: 8px; margin-top: 18px;
+            gap: 12px; margin-top: 18px;
         }
         .strip button {
             appearance: none; font: inherit; cursor: pointer;
-            width: 42px; height: 42px; border: 0;
+            width: 54px; height: 54px; border: 0;
             clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
             background: linear-gradient(145deg, #f9e6ad 0%, #d9b86a 55%, #a8782f 100%);
             color: #2a1608;
-            font-family: 'Cinzel', serif; font-size: 0.64rem; font-weight: 700;
+            font-family: 'Cinzel', serif; font-size: 0.76rem; font-weight: 700;
             display: flex; align-items: center; justify-content: center;
-            padding-top: 6px; line-height: 1;
+            padding-top: 8px; line-height: 1;
+            touch-action: manipulation;
             text-shadow: 0 1px 0 rgba(255, 248, 220, 0.5);
             transition: transform 0.2s ease, background 0.2s ease;
         }
@@ -180,11 +194,18 @@
         .strip button.hecho { background: linear-gradient(145deg, #fff4d2 0%, #e8c77c 55%, #c2943f 100%); }
         .strip button.actual { background: linear-gradient(145deg, #fff9e6 0%, #f2d58c 55%, #d9ae55 100%); }
         .strip button:disabled { opacity: 0.45; cursor: default; }
-        @media (max-width: 420px) {
+        @media (max-width: 520px) {
             body { padding: 20px 12px 30px; }
+            .nav-arriba { margin-bottom: 10px; }
+            .volver { width: 44px; height: 44px; font-size: 1.4rem; }
+            .intro { margin-bottom: 8px; }
+            #contenido { justify-content: flex-start; padding-top: 4px; }
+            .strip { gap: 10px; margin-top: 14px; }
+            .strip button { width: 50px; height: 50px; font-size: 0.72rem; padding-top: 7px; }
+        }
+        @media (max-width: 420px) {
             .estacion, .final-todo { padding: 22px 16px; }
             .intro { font-size: 0.8rem; }
-            .strip button { width: 36px; height: 36px; font-size: 0.56rem; padding-top: 5px; }
         }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
@@ -194,7 +215,7 @@
 <body>
     <div class="final-wrap">
         <div class="nav-arriba">
-            <a class="volver" href="../../lobby/lobby.html">← Volver al lobby</a>
+            <a class="volver" href="../../lobby/lobby.html" title="Volver al lobby" aria-label="Volver al lobby">←</a>
         </div>
         <div class="eyebrow">El gran final</div>
         <h1>Tu historia, por capítulos</h1>
