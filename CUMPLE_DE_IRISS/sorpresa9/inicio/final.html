@@ -54,7 +54,7 @@
             flex-direction: column;
             animation: appear 0.9s ease both;
         }
-        .nav-arriba { display: flex; align-items: center; margin-bottom: 14px; }
+        .nav-arriba { display: flex; align-items: center; margin-bottom: 20px; }
         .volver {
             display: inline-grid; place-items: center;
             width: 46px; height: 46px; border-radius: 50%;
@@ -73,6 +73,8 @@
         }
         .volver:active { transform: scale(0.94); }
         .eyebrow {
+            position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+            white-space: nowrap;
             text-align: center; color: var(--gold);
             font-family: 'Cinzel', serif; font-size: clamp(0.82rem, 2.6vw, 1rem);
             font-weight: 700;
@@ -197,7 +199,8 @@
         .strip button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 3px; }
         @media (max-width: 520px) {
             body { padding: 16px 12px 30px; }
-            .nav-arriba { margin-bottom: 10px; }
+            .nav-arriba { margin-bottom: 16px; }
+            .eyebrow { top: 9px; font-size: 0.8rem; }
             .volver { width: 44px; height: 44px; font-size: 1.4rem; }
             .intro { margin-bottom: 8px; }
             #contenido { justify-content: flex-start; padding-top: 4px; }
