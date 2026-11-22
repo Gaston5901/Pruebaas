@@ -302,18 +302,73 @@ function playMemberActivation(index) {
 
   try {
     const now = ctx.currentTime;
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(520 + index * 55, now);
-    osc.frequency.exponentialRampToValueAtTime(780 + index * 55, now + 0.11);
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.055, now + 0.015);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start(now);
-    osc.stop(now + 0.17);
+    const scale = [0, 2, 4, 7, 9, 12, 14];
+    const freq = 523.25 * Math.pow(2, scale[index % scale.length] / 12);
+
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.18, now + 0.008);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.9);
+    master.connect(ctx.destination);
+
+    const strike = (start, volume) => {
+      const partials = [
+        { ratio: 1, level: 0.7, decay: 0.85 },
+        { ratio: 2.76, level: 0.22, decay: 0.45 },
+        { ratio: 5.4, level: 0.08, decay: 0.25 }
+      ];
+      partials.forEach((partial) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq * partial.ratio, start);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(partial.level * volume, start + 0.005);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + partial.decay);
+        osc.connect(gain);
+        gain.connect(master);
+        osc.start(start);
+        osc.stop(start + partial.decay + 0.02);
+      });
+    };
+
+    strike(now, 1);
+    strike(now + 0.14, 0.35);
+  } catch (e) {}
+}
+
+function playCompletionSound() {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+
+  try {
+    const now = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.13, now + 0.01);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
+    master.connect(ctx.destination);
+
+    [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
+      const start = now + i * 0.07;
+      const partials = [
+        { ratio: 1, level: 0.55, decay: 1.25 },
+        { ratio: 2.01, level: 0.16, decay: 0.7 }
+      ];
+      partials.forEach((partial) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq * partial.ratio, start);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(partial.level, start + 0.008);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + partial.decay);
+        osc.connect(gain);
+        gain.connect(master);
+        osc.start(start);
+        osc.stop(start + partial.decay + 0.02);
+      });
+    });
   } catch (e) {}
 }
 
@@ -342,6 +397,7 @@ function initWelcomeModal() {
   modal.classList.remove('hidden-modal');
 
   closeBtn.addEventListener('click', () => {
+    getAudioCtx();
     try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
     modal.classList.add('hidden-modal');
     setTimeout(() => modal.remove(), 300);
@@ -367,6 +423,7 @@ function initWelcomeModal() {
           playMemberActivation(index);
         }, 420 + index * 1280);
       });
+      setTimeout(() => playCompletionSound(), 420 + Math.max(members.length - 1, 0) * 1280 + 520);
     }
     setTimeout(() => {
       document.body.classList.remove('solo-modal');
