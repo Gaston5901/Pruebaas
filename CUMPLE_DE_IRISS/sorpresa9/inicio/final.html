@@ -10,22 +10,22 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --bg: #07040e;
-            --panel: rgba(24, 12, 34, 0.72);
-            --gold: #d9b86a;
-            --gold-light: #fff2cf;
-            --rose: #d98aa8;
-            --violet: #8d5bb8;
-            --muted: #b9a9c8;
+            --bg: #1a0710;
+            --panel: rgba(58, 14, 31, 0.8);
+            --gold: #e8c77c;
+            --gold-light: #fff0d2;
+            --rose: #f0a7a0;
+            --violet: #9c3f5a;
+            --muted: #d9b9bd;
         }
         body {
             min-height: 100dvh;
             font-family: 'Outfit', sans-serif;
-            color: #f8f2ff;
+            color: #fff7e6;
             background:
-                radial-gradient(circle at 18% 12%, rgba(141, 91, 184, 0.28), transparent 38%),
-                radial-gradient(circle at 82% 78%, rgba(217, 138, 168, 0.22), transparent 42%),
-                linear-gradient(160deg, #0b0616, var(--bg) 55%, #120820);
+                radial-gradient(circle at 18% 12%, rgba(156, 63, 90, 0.22), transparent 38%),
+                radial-gradient(circle at 82% 78%, rgba(232, 199, 124, 0.14), transparent 42%),
+                linear-gradient(160deg, #2a0a17, var(--bg) 55%, #12040b);
             overflow-x: hidden;
             padding: 26px 16px 36px;
         }
@@ -33,15 +33,15 @@
         body::after { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; }
         body::before {
             background-image:
-                radial-gradient(1.5px 1.5px at 12% 22%, #fff 40%, transparent 45%),
-                radial-gradient(1.5px 1.5px at 78% 16%, #ffe9b8 40%, transparent 45%),
-                radial-gradient(1px 1px at 42% 68%, #fff 40%, transparent 45%),
-                radial-gradient(1.5px 1.5px at 88% 54%, #f4b9d2 40%, transparent 45%);
+                radial-gradient(1.5px 1.5px at 12% 22%, #fff0d2 40%, transparent 45%),
+                radial-gradient(1.5px 1.5px at 78% 16%, #e8c77c 40%, transparent 45%),
+                radial-gradient(1px 1px at 42% 68%, #fff0d2 40%, transparent 45%),
+                radial-gradient(1.5px 1.5px at 88% 54%, #f0a7a0 40%, transparent 45%);
             background-size: 240px 240px;
             opacity: 0.5;
             animation: breathing 7s ease-in-out infinite alternate;
         }
-        body::after { background: radial-gradient(ellipse at center, transparent 45%, rgba(0, 0, 0, 0.62) 100%); }
+        body::after { background: radial-gradient(ellipse at center, transparent 45%, rgba(12, 2, 7, 0.68) 100%); }
         @keyframes breathing { from { opacity: 0.32; } to { opacity: 0.68; } }
         @keyframes appear { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
 
@@ -70,7 +70,7 @@
             text-align: center; font-family: 'Cinzel', serif; font-weight: 600;
             font-size: clamp(1.5rem, 6vw, 2.2rem); line-height: 1.15;
             margin: 10px 0 8px;
-            background: linear-gradient(120deg, var(--gold-light), var(--rose), var(--gold));
+            background: linear-gradient(120deg, #fff7e6, var(--gold), var(--rose));
             -webkit-background-clip: text; background-clip: text; color: transparent;
         }
         .intro {
@@ -78,44 +78,52 @@
             font-size: 0.85rem; line-height: 1.5;
             max-width: 470px; margin: 0 auto 16px;
         }
-        .progress { display: flex; justify-content: center; gap: 7px; margin-bottom: 16px; }
-        .progress span {
-            width: 26px; height: 4px; border-radius: 999px;
-            background: rgba(255, 255, 255, 0.14);
-            transition: background 0.4s ease, box-shadow 0.4s ease;
-        }
-        .progress span.hecho {
-            background: linear-gradient(90deg, var(--rose), var(--gold));
-            box-shadow: 0 0 10px rgba(217, 184, 106, 0.5);
-        }
         #contenido { flex: 1; display: flex; flex-direction: column; justify-content: center; }
 
         .estacion,
         .final-todo {
+            position: relative;
             text-align: center;
-            padding: 26px 20px;
-            border-radius: 22px;
-            background: var(--panel);
-            border: 1px solid rgba(217, 184, 106, 0.22);
-            box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(12px);
+            padding: 30px 22px 26px;
+            border-radius: 30px 10px 30px 10px;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(232, 199, 124, 0.1), transparent 60%),
+                var(--panel);
+            border: 1px solid rgba(232, 199, 124, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), inset 0 0 0 5px rgba(26, 7, 16, 0.4), inset 0 0 0 6px rgba(232, 199, 124, 0.16);
+            backdrop-filter: blur(14px);
             animation: appear 0.7s ease both;
+            overflow: visible;
         }
+        .estacion > *:not(.esquina),
+        .final-todo > *:not(.esquina) { position: relative; z-index: 1; }
+        .esquina {
+            position: absolute;
+            font-family: 'Cinzel', serif; font-size: 0.9rem; line-height: 1;
+            color: rgba(232, 199, 124, 0.75);
+            text-shadow: 0 0 10px rgba(232, 199, 124, 0.35);
+            pointer-events: none; z-index: 2;
+        }
+        .esquina.tl { top: 7px; left: 11px; }
+        .esquina.tr { top: 7px; right: 11px; }
+        .esquina.bl { bottom: 7px; left: 11px; }
+        .esquina.br { bottom: 7px; right: 11px; }
         .estacion-num {
             font-family: 'Cinzel', serif;
             font-size: clamp(3.2rem, 14vw, 5rem);
             line-height: 1;
             color: transparent;
-            background: linear-gradient(135deg, var(--gold-light), var(--rose));
+            background: linear-gradient(135deg, #fff7e6, var(--gold));
             -webkit-background-clip: text; background-clip: text;
-            filter: drop-shadow(0 4px 18px rgba(217, 138, 168, 0.3));
+            filter: drop-shadow(0 4px 18px rgba(232, 199, 124, 0.35));
         }
         .estacion-tag,
         .final-tag {
             color: var(--gold); font-family: 'Cinzel', serif;
             font-size: 0.62rem; letter-spacing: 0.24em; text-transform: uppercase;
-            margin-top: 8px;
         }
+        .estacion-tag { margin: 0 0 6px; font-size: 0.72rem; letter-spacing: 0.22em; font-weight: 600; }
+        .final-tag { margin-top: 8px; }
         .estacion-titulo,
         .final-titulo {
             font-family: 'Cinzel', serif; font-weight: 600;
@@ -129,14 +137,27 @@
         }
         .estacion-cta {
             appearance: none; font: inherit; cursor: pointer;
-            padding: 13px 24px; border-radius: 999px;
-            background: linear-gradient(135deg, var(--rose), var(--violet));
-            border: 1px solid var(--gold); color: var(--gold-light);
-            font-family: 'Cinzel', serif; font-size: 0.74rem; letter-spacing: 0.1em;
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
-            transition: transform 0.25s ease;
+            position: relative; isolation: isolate; overflow: hidden;
+            padding: 14px 26px; border-radius: 16px 5px 16px 5px;
+            background: linear-gradient(135deg, #fff1c9 0%, #e8c77c 45%, #c9963f 100%);
+            border: 1px solid rgba(255, 247, 222, 0.8); color: #2a0a17;
+            font-family: 'Cinzel', serif; font-weight: 700; font-size: 0.76rem; letter-spacing: 0.14em;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(156, 63, 90, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -2px 0 rgba(120, 70, 20, 0.25);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
-        .estacion-cta:hover { transform: translateY(-2px); }
+        .estacion-cta::after {
+            content: ''; position: absolute; z-index: -1;
+            top: -50%; left: -60%; width: 38%; height: 200%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transform: rotate(25deg);
+            transition: left 0.6s ease;
+        }
+        .estacion-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(156, 63, 90, 0.5), 0 0 18px rgba(232, 199, 124, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.7), inset 0 -2px 0 rgba(120, 70, 20, 0.3);
+        }
+        .estacion-cta:hover::after { left: 120%; }
         .estacion-cta:active { transform: scale(0.97); }
         .final-todo .estacion-cta { margin-top: 4px; }
         .strip {
@@ -145,22 +166,25 @@
         }
         .strip button {
             appearance: none; font: inherit; cursor: pointer;
-            width: 38px; height: 38px; border-radius: 50%;
-            border: 1px solid rgba(217, 184, 106, 0.35);
-            background: rgba(217, 184, 106, 0.08);
-            color: var(--gold-light);
-            font-family: 'Cinzel', serif; font-size: 0.72rem;
+            width: 42px; height: 42px; border: 0;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            background: linear-gradient(145deg, #f9e6ad 0%, #d9b86a 55%, #a8782f 100%);
+            color: #2a1608;
+            font-family: 'Cinzel', serif; font-size: 0.64rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            padding-top: 6px; line-height: 1;
+            text-shadow: 0 1px 0 rgba(255, 248, 220, 0.5);
             transition: transform 0.2s ease, background 0.2s ease;
         }
-        .strip button:hover:not(:disabled) { transform: translateY(-2px); }
-        .strip button.hecho { background: linear-gradient(135deg, var(--rose), var(--violet)); }
-        .strip button.actual { border-color: var(--gold-light); box-shadow: 0 0 12px rgba(217, 184, 106, 0.35); }
-        .strip button:disabled { opacity: 0.3; cursor: default; }
+        .strip button:hover:not(:disabled) { transform: translateY(-2px) scale(1.1); }
+        .strip button.hecho { background: linear-gradient(145deg, #fff4d2 0%, #e8c77c 55%, #c2943f 100%); }
+        .strip button.actual { background: linear-gradient(145deg, #fff9e6 0%, #f2d58c 55%, #d9ae55 100%); }
+        .strip button:disabled { opacity: 0.45; cursor: default; }
         @media (max-width: 420px) {
             body { padding: 20px 12px 30px; }
             .estacion, .final-todo { padding: 22px 16px; }
             .intro { font-size: 0.8rem; }
-            .strip button { width: 34px; height: 34px; }
+            .strip button { width: 36px; height: 36px; font-size: 0.56rem; padding-top: 5px; }
         }
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
@@ -175,20 +199,22 @@
         <div class="eyebrow">El gran final</div>
         <h1>Tu historia, por capítulos</h1>
         <p class="intro">Ya estamos llegando al final de este viaje, Iris. Vamos de a uno, sin apuro: cada capítulo se abre cuando terminás el anterior.</p>
-        <div class="progress" id="progress"><span></span><span></span><span></span><span></span><span></span><span></span></div>
         <div id="contenido"></div>
     </div>
 
     <script>
         (function () {
             const KEY = 'sorpresa9_capitulos_completados_v2';
+            if (new URLSearchParams(window.location.search).get('reiniciar') === '1') {
+                try { localStorage.removeItem(KEY); } catch (e) {}
+            }
             const capitulos = [
-                { id: 1, nombre: 'La carta', frase: 'La carta que guardé para este momento, cuando ya estábamos llegando al final.', destino: 'carta.html?capitulo=1' },
-                { id: 2, nombre: 'Las promesas', frase: 'El contador, las tres promesas y todo lo que empezó un 26 de abril.', destino: 'index.html?desbloqueado=1' },
-                { id: 3, nombre: 'Un osito para vos', frase: 'Algo tierno que guardé especialmente para este momento.', destino: 'oso/index.html?capitulo=3' },
-                { id: 4, nombre: 'Tus 21 deseos', frase: 'Tocá cada vela y pedí un deseo, hasta llegar a tus 21 deseos.', destino: '../../lobby/index.html?capitulo=4' },
-                { id: 5, nombre: 'Fuegos artificiales', frase: 'Elegí un asiento, poné el volumen y mirá el cielo que preparé para vos.', destino: '../../fuegos artificiales/index.html?capitulo=5' },
-                { id: 6, nombre: 'Sorpresa', frase: 'Queda una última sorpresa esperándote, Iris. Cerrá los ojos y dejate llevar.', destino: 'rostro/index.html?capitulo=6', cta: 'Ver sorpresa →' }
+                { id: 1, nombre: 'Palabras guardadas', frase: 'Algo que escribí para vos y que recién cobra sentido acá, al final.', destino: 'carta.html?capitulo=1' },
+                { id: 2, nombre: 'El comienzo', frase: 'Lo que empezó aquel día todavía sigue latiendo en cada vuelta.', destino: 'index.html?desbloqueado=1' },
+                { id: 3, nombre: 'Un detallito', frase: 'Algo chiquito, elegido con ganas, esperando su momento.', destino: 'oso/index.html?capitulo=3' },
+                { id: 4, nombre: 'Los deseos', frase: 'Tocá, pedí y dejá que el momento haga lo suyo.', destino: '../../lobby/index.html?capitulo=4' },
+                { id: 5, nombre: 'El cielo', frase: 'Buscá tu lugar, mirá arriba y disfrutalo sin apuro.', destino: '../../fuegos artificiales/index.html?capitulo=5' },
+                { id: 6, nombre: 'Lo último', frase: 'Queda una última cosa para vos Iriss.', destino: 'rostro/index.html?capitulo=6', cta: 'Ver sorpresa →' }
             ];
 
             let completados = new Set();
@@ -240,14 +266,17 @@
                 const actual = capitulos.find((c) => !esProgreso(c.id)) || capitulos[5];
 
                 const panel = document.createElement('section');
+                const esquinas = '<span class="esquina tl">✦</span><span class="esquina tr">✦</span><span class="esquina bl">✦</span><span class="esquina br">✦</span>';
                 panel.className = todosListos ? 'final-todo' : 'estacion';
                 if (todosListos) {
-                    panel.innerHTML = '<div class="final-tag">Gran final completo</div>' +
-                        '<h2 class="final-titulo">Todo listo, Iris 💜</h2>' +
-                        '<p class="final-frase">Recorrimos los seis capítulos. Elegí cualquiera de abajo para volver a vivirlo cuando quieras.</p>';
+                    panel.innerHTML = esquinas +
+                        '<div class="final-tag">Última parada</div>' +
+                        '<h2 class="final-titulo">Llegamos Irisss</h2>' +
+                        '<p class="final-frase">9 sorpresas, capítulos y todo este viaje para tu dia. Felizzz 21 añoss señoritaaa: te deseo lo mejor siempre y disfrute, Saranghae. Tocá la estrella del capítulo que quieras volver a ver.</p>';
                 } else {
-                    panel.innerHTML = '<div class="estacion-num">' + String(actual.id).padStart(2, '0') + '</div>' +
-                        '<div class="estacion-tag">Capítulo ' + actual.id + ' de 6</div>' +
+                    panel.innerHTML = esquinas +
+                        '<div class="estacion-tag">Capítulo</div>' +
+                        '<div class="estacion-num">' + actual.id + '</div>' +
                         '<h2 class="estacion-titulo">' + actual.nombre + '</h2>' +
                         '<p class="estacion-frase">' + actual.frase + '</p>' +
                         '<button class="estacion-cta" type="button">' + (actual.cta || (actual.destino ? 'Abrir capítulo →' : 'Marcar como visto ✓')) + '</button>';
@@ -261,7 +290,7 @@
                 capitulos.forEach((capitulo) => {
                     const btn = document.createElement('button');
                     btn.type = 'button';
-                    btn.textContent = String(capitulo.id).padStart(2, '0');
+                    btn.textContent = String(capitulo.id);
                     if (esProgreso(capitulo.id)) btn.classList.add('hecho');
                     if (!todosListos && capitulo.id === actual.id) btn.classList.add('actual');
                     const habilitado = desbloqueado(capitulo.id) && !capitulo.proximamente;
@@ -271,16 +300,13 @@
                     strip.appendChild(btn);
                 });
                 contenido.appendChild(strip);
-
-                const dots = Array.prototype.slice.call(document.querySelectorAll('#progress span'));
-                dots.forEach((dot, i) => dot.classList.toggle('hecho', esProgreso(i + 1)));
             }
 
             guardar();
             pintar();
 
             try {
-                if (params.has('capitulo') || params.has('listo')) {
+                if (params.has('capitulo') || params.has('listo') || params.has('reiniciar')) {
                     history.replaceState({}, '', window.location.pathname);
                 }
             } catch (e) {}
