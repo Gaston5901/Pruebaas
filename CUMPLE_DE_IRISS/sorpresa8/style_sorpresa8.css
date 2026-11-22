@@ -157,56 +157,45 @@ body {
 .logo-video.oculto { opacity: 0; }
 
 .conteo-logo {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-start;
-  gap: 4px;
-  padding: max(14px, env(safe-area-inset-top)) 14px 0;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
-}
-
-.conteo-logo.activo { opacity: 1; visibility: visible; }
-
-.conteo-numero {
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
-  width: clamp(40px, 10vw, 58px);
-  height: clamp(40px, 10vw, 58px);
-  border-radius: 50%;
-  border: 1px solid rgba(255, 102, 178, 0.85);
-  background: rgba(22, 7, 19, 0.78);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  color: #fff;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(1.35rem, 5vw, 2rem);
+  gap: 10px;
+  padding: 7px 16px;
+  border-radius: 20px;
+  background: rgba(22, 7, 19, 0.72);
+  border: 1px solid rgba(255, 102, 178, 0.65);
+  pointer-events: none;
+}
+
+.conteo-logo.activo { display: flex; animation: aparecer 0.3s ease both; }
+
+.conteo-numero {
+  color: #fff6e5;
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1.5rem, 5.5vw, 2.1rem);
+  font-weight: 700;
   line-height: 1;
-  text-shadow: 0 0 12px rgba(255, 42, 133, 0.85);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 42, 133, 0.4);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
 }
 
 .conteo-numero.pulso { animation: conteo-pulso 0.85s ease both; }
 
 @keyframes conteo-pulso {
-  0% { transform: scale(0.72); opacity: 0.15; }
-  45% { transform: scale(1.09); opacity: 1; }
+  0% { transform: scale(0.8); opacity: 0; }
+  40% { transform: scale(1.12); opacity: 1; }
+  70% { transform: scale(0.97); }
   100% { transform: scale(1); opacity: 1; }
 }
 
 .conteo-texto {
-  color: #ffe6f2;
-  font-size: clamp(0.6rem, 2.6vw, 0.76rem);
+  color: #fff6e5;
+  font-family: 'Caveat', cursive;
+  font-size: clamp(1rem, 3.8vw, 1.3rem);
   font-weight: 700;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
 .saludos-brillo {
@@ -229,6 +218,8 @@ body {
   white-space: nowrap;
   pointer-events: none;
 }
+
+.saludos-cinta.oculto { display: none; }
 
 .fin-saludos {
   display: none;

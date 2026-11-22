@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Sorpresa 8 - Te Quiero</title>
+  <title>Sorpresa 8</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,17 +39,18 @@
 
   <main class="contenido" id="contenido">
     <section class="saludos" id="saludos" aria-hidden="true">
-      <div class="saludos-cinta">💗 Para vos, Iris 💗</div>
+      <div class="saludos-cinta" id="saludosCinta">💗 Para vos, Iris 💗</div>
+      <div class="conteo-logo" id="conteoLogo" aria-hidden="true">
+        <span class="conteo-texto">Espere, espere...</span>
+        <span class="conteo-numero" id="conteoNumero">5</span>
+      </div>
       <div class="saludos-marco" id="saludosMarco">
         <video id="saludosVideo" class="oculto" playsinline webkit-playsinline disablepictureinpicture disableremoteplayback controlsList="nodownload noplaybackrate noremoteplayback" preload="auto">
           <source src="happy.mp4" type="video/mp4">
         </video>
-        <video id="logoVideo" class="logo-video" playsinline webkit-playsinline disablepictureinpicture disableremoteplayback controlsList="nodownload noplaybackrate noremoteplayback" preload="auto">
+        <video id="logoVideo" class="logo-video" muted playsinline webkit-playsinline disablepictureinpicture disableremoteplayback controlsList="nodownload noplaybackrate noremoteplayback" preload="auto">
           <source src="logo.mp4" type="video/mp4">
         </video>
-        <div class="conteo-logo" id="conteoLogo" aria-hidden="true">
-          <span class="conteo-numero" id="conteoNumero">3</span>
-        </div>
         <div class="saludos-brillo"></div>
         <div class="fin-saludos" id="finSaludos">
           <span class="fin-corazon">💗</span>

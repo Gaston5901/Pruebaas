@@ -15,7 +15,16 @@ class Paper {
   currentPaperY = 0;
   rotating = false;
 
-  init(paper) {
+  init(paper, index, total) {
+    if (window.innerWidth <= 600) {
+      const ancho = window.innerWidth;
+      const alto = window.innerHeight;
+      this.currentPaperX = (index % 2 === 0 ? -1 : 1) * ancho * 0.075;
+      this.currentPaperY = (index - (total - 1) / 2) * alto * 0.032;
+      this.rotation = Math.random() * 12 - 6;
+      paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
+    }
+
     document.addEventListener('pointermove', (e) => {
       if (!this.rotating) {
         this.mouseX = e.clientX;
@@ -75,9 +84,9 @@ class Paper {
 }
 
 const papers = Array.from(document.querySelectorAll('.paper'));
-papers.forEach(paper => {
+papers.forEach((paper, index) => {
   const p = new Paper();
-  p.init(paper);
+  p.init(paper, index, papers.length);
 });
 
 document.getElementById('backButton').addEventListener('click', () => {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Feliz Cumpleaños ❤️</title>
+    <title>Guadiss ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <style>
         /* --- ESTILOS GENERALES Y FONDO --- */
@@ -25,29 +25,31 @@
             position: fixed;
             top: clamp(12px, 3vh, 24px);
             left: clamp(12px, 3vw, 28px);
-            z-index: 100;
+            z-index: 9999;
             display: grid;
             place-items: center;
             width: clamp(40px, 5vw, 48px);
             height: clamp(40px, 5vw, 48px);
-            border: 0;
+            border: 1.5px solid #d7a75f;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.92);
-            color: #ad1457;
+            background: linear-gradient(145deg, #4a2a1b, #25120c);
+            color: #ffdba3;
             font-size: clamp(1.8rem, 4vw, 2.3rem);
             line-height: 1;
+            text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
             cursor: pointer;
-            box-shadow: 0 3px 12px rgba(173, 20, 87, 0.28);
-            transition: transform 0.2s ease, background-color 0.2s ease;
+            box-shadow: inset 0 1px 0 rgba(255, 220, 160, 0.18), 0 6px 14px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 219, 163, 0.12);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
         }
 
         .back-button:hover {
-            background: #fff;
-            transform: translateX(-3px) scale(1.06);
+            background: linear-gradient(145deg, #5a3422, #2c150e);
+            transform: translateX(-3px) scale(1.04);
+            box-shadow: inset 0 1px 0 rgba(255, 220, 160, 0.28), 0 8px 18px rgba(0, 0, 0, 0.5), 0 0 16px rgba(255, 190, 110, 0.2);
         }
 
         .back-button:focus-visible {
-            outline: 3px solid #ad1457;
+            outline: 3px solid rgba(255, 219, 163, 0.55);
             outline-offset: 3px;
         }
 
@@ -478,14 +480,14 @@
 
     <button class="regalo-tocable" id="regalo" type="button" aria-label="Abrir regalo">
         <img src="regalo.gif" alt="Regalo sorpresa">
-        <span>Tocá el regalo 🎁</span>
+        <span>Tocá el regalo...</span>
     </button>
 
     <!-- Modal extra -->
     <div class="modal-extra" id="modalExtra">
         <div class="modal-extra-content">
             <button class="modal-extra-close" id="closeModalExtra" aria-label="Cerrar">&times;</button>
-            <h3 class="modal-extra-title">¡Tu gatito... o sea yo! 🐱</h3>
+            <h3 class="modal-extra-title">Soy yo tu regalo Waa</h3>
             <img class="modal-extra-img" src="https://i.pinimg.com/736x/e1/78/ed/e178ed3d4101a7f87d89db1b9338f440.jpg" alt="detalle de cumpleaños">
         </div>
     </div>

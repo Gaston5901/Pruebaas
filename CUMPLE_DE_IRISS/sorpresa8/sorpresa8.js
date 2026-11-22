@@ -7,11 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const logo = document.getElementById('logoVideo');
   const conteo = document.getElementById('conteoLogo');
   const conteoNumero = document.getElementById('conteoNumero');
+  const cinta = document.getElementById('saludosCinta');
   const fin = document.getElementById('finSaludos');
   const btnRepetir = document.getElementById('btnRepetir');
 
+  const DURACION_LOGO = 5;
+
   let ultimoNumero = null;
   let conteoFallback = null;
+  let logoCortado = false;
 
   function ajustarAspecto(videoEl) {
     if (!videoEl || !marco || !videoEl.videoWidth || !videoEl.videoHeight) return;
@@ -67,23 +71,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function actualizarConteo() {
     if (!logo || !conteo || !conteo.classList.contains('activo')) return;
-    if (Number.isFinite(logo.duration) && logo.duration > 0) {
-      ponerNumero(Math.max(1, Math.ceil(logo.duration - logo.currentTime)));
-    }
+    const restante = Math.max(0, DURACION_LOGO - logo.currentTime);
+    ponerNumero(Math.max(1, Math.ceil(restante)));
   }
 
   function iniciarConteo() {
     if (!conteo) return;
     detenerConteo();
     ultimoNumero = null;
+    if (cinta) cinta.classList.add('oculto');
     conteo.classList.add('activo');
 
-    if (logo && Number.isFinite(logo.duration) && logo.duration > 0) {
-      ponerNumero(Math.ceil(logo.duration));
+    if (logo) {
+      logo.muted = true;
+      logo.defaultMuted = true;
+      logo.volume = 0;
+      ponerNumero(DURACION_LOGO);
       return;
     }
 
-    let restante = 3;
+    let restante = DURACION_LOGO;
     ponerNumero(restante);
     conteoFallback = setInterval(() => {
       restante -= 1;
@@ -93,14 +100,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function detenerConteo() {
     if (conteo) conteo.classList.remove('activo');
+    if (cinta) cinta.classList.remove('oculto');
     if (conteoFallback) {
       clearInterval(conteoFallback);
       conteoFallback = null;
     }
   }
 
+  function verificarCorteLogo() {
+    if (!logo || logoCortado) return;
+    if (logo.currentTime >= DURACION_LOGO) {
+      logoCortado = true;
+      logo.pause();
+      reproducirHappy();
+    }
+  }
+
   function reproducirHappy() {
     if (!video) return;
+    logoCortado = true;
     mostrarSaludos();
     detenerConteo();
     ajustarAspecto(video);
@@ -122,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function reproducir() {
     mostrarSaludos();
+    logoCortado = false;
 
     if (!logo) {
       reproducirHappy();
@@ -131,6 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (video) video.classList.add('oculto');
     logo.style.display = 'block';
     logo.classList.remove('oculto');
+    logo.muted = true;
+    logo.defaultMuted = true;
+    logo.volume = 0;
     ajustarAspecto(logo);
     iniciarConteo();
 
@@ -158,7 +180,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (logo) {
     logo.addEventListener('ended', reproducirHappy);
-    logo.addEventListener('timeupdate', actualizarConteo);
+    logo.addEventListener('timeupdate', () => {
+      verificarCorteLogo();
+      actualizarConteo();
+    });
     logo.addEventListener('loadedmetadata', actualizarConteo);
   }
 
