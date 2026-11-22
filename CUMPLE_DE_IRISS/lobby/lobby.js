@@ -296,19 +296,45 @@ function mostrarTortaFinal() {
 /* ==========================================================
    4. CONTROL DEL MODAL DE BIENVENIDA (SE MUESTRA 1 SOLA VEZ)
 ========================================================== */
+function playMemberActivation(index) {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+
+  try {
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(520 + index * 55, now);
+    osc.frequency.exponentialRampToValueAtTime(780 + index * 55, now + 0.11);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.055, now + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.17);
+  } catch (e) {}
+}
+
 function initWelcomeModal() {
   const modal = document.getElementById('welcomeModal');
   const closeBtn = document.getElementById('closeModalBtn');
-
+  const loading = document.getElementById('lobbyLoading');
   if (!modal || !closeBtn) return;
 
-  // Solo se muestra cuando se llega EXACTAMENTE desde el corazón (botón "Tocar").
-  // Volver desde una sorpresa dentro del lobby NO vuelve a mostrarlo.
+  const KEY = 'lobby_intro_vista';
   const params = new URLSearchParams(window.location.search);
-  const fromHeart = params.get('from') === 'heart';
+  if (params.get('from') === 'heart' || params.get('reset') === '1') {
+    try { sessionStorage.removeItem(KEY); } catch (e) {}
+  }
 
-  if (!fromHeart) {
+  let yaVista = false;
+  try { yaVista = sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+
+  if (yaVista) {
     modal.remove();
+    document.documentElement.classList.add('lobby-listo');
     return;
   }
 
@@ -316,9 +342,37 @@ function initWelcomeModal() {
   modal.classList.remove('hidden-modal');
 
   closeBtn.addEventListener('click', () => {
-    document.body.classList.remove('solo-modal');
+    try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
     modal.classList.add('hidden-modal');
-    setTimeout(() => modal.remove(), 350);
+    setTimeout(() => modal.remove(), 300);
+    if (loading) {
+      loading.classList.add('visible');
+      const progressRing = loading.querySelector('.loading-progress-value');
+      if (progressRing) {
+        progressRing.style.animation = 'none';
+        void progressRing.getBoundingClientRect();
+        progressRing.style.animation = '';
+      }
+      const spinnerArc = loading.querySelector('.loading-spinner-arc');
+      if (spinnerArc) {
+        spinnerArc.style.animation = 'none';
+        void spinnerArc.getBoundingClientRect();
+        spinnerArc.style.animation = '';
+      }
+      const members = loading.querySelectorAll('.bts-member-slot');
+      members.forEach(member => member.classList.remove('member-active'));
+      members.forEach((member, index) => {
+        setTimeout(() => {
+          member.classList.add('member-active');
+          playMemberActivation(index);
+        }, 420 + index * 1280);
+      });
+    }
+    setTimeout(() => {
+      document.body.classList.remove('solo-modal');
+      if (loading) loading.classList.remove('visible');
+      document.documentElement.classList.add('lobby-listo');
+    }, 10000);
   });
 }
 
