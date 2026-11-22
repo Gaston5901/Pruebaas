@@ -8,7 +8,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 let scene, camera, renderer, particles, composer, controls;
 let time = 0;
 let isAnimationEnabled = true;
-let currentTheme = 'molten';
+let currentTheme = 'cosmic';
 let morphTarget = 1;
 let morphProgress = 1;
 
