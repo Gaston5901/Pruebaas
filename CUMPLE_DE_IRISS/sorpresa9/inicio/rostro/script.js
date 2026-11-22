@@ -746,7 +746,7 @@ function finish() {
           setTimeout(() => {
             firmaCanvas.classList.add("visible");
             drawInkSignature(firmaCanvas, "firma.png", 2200, [[210, 190, 255], [255, 225, 250], [190, 230, 255]]);
-          }, 2400);
+          }, 1800);
         }, 300);
       },
       "#ffd76a",

@@ -280,127 +280,55 @@ html, body {
 .btn-surprise {
   position: relative;
   display: inline-block;
-  width: min(88vw, 420px);
+  width: min(62vw, 280px);
   cursor: pointer;
   text-decoration: none;
+  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.38));
+  animation: tocarPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both,
+             tocarFloat 2.8s 0.6s infinite ease-in-out;
 }
 
-.surprise-overlay.active .btn-surprise {
-  animation: ribbonPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both,
-             ribbonFloat 2.8s 0.6s infinite ease-in-out;
-}
-
-@keyframes ribbonPop {
-  0% { opacity: 0; transform: scale(0.82); }
-  100% { opacity: 1; transform: scale(1); }
+.btn-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
 }
 
 .btn-surprise .touch-badge {
   position: absolute;
-  top: 55%;
+  top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
-  z-index: 4;
   color: #fff3c4;
   font-family: 'Caveat', 'Segoe Script', cursive;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   letter-spacing: 1px;
   line-height: 1;
   white-space: nowrap;
-  padding: 3px 20px 5px;
-  border-radius: 999px;
-  background: rgba(18, 8, 24, 0.55);
-  border: 1px solid rgba(255, 215, 120, 0.45);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 0 12px rgba(255, 215, 120, 0.15);
-  -webkit-backdrop-filter: blur(4px);
-  backdrop-filter: blur(4px);
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7), 0 0 14px rgba(255, 215, 120, 0.5);
+  background: linear-gradient(180deg, #fff8d8 0%, #ffd98c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 6px rgba(40, 0, 40, 0.7));
   animation: badgePulse 1.6s infinite ease-in-out;
 }
 
-/* Destellos alrededor del moño */
-.ribbon-sparkles {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
+@keyframes tocarPop {
+  0% { opacity: 0; transform: scale(0.82); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
-.ribbon-sparkles i {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #fff3c4;
-  box-shadow: 0 0 8px 2px rgba(255, 215, 120, 0.9);
-  opacity: 0;
-  animation: sparkleTwinkle 2.4s ease-in-out infinite;
-}
-
-.ribbon-sparkles i:nth-child(1) { top: 16%; left: 7%; animation-delay: 0s; }
-.ribbon-sparkles i:nth-child(2) { top: 6%; left: 72%; animation-delay: 0.4s; }
-.ribbon-sparkles i:nth-child(3) { top: 40%; left: 94%; animation-delay: 0.8s; }
-.ribbon-sparkles i:nth-child(4) { top: 80%; left: 84%; animation-delay: 1.2s; }
-.ribbon-sparkles i:nth-child(5) { top: 90%; left: 20%; animation-delay: 0.6s; }
-.ribbon-sparkles i:nth-child(6) { top: 58%; left: 3%; animation-delay: 1s; }
-
-@keyframes sparkleTwinkle {
-  0%, 100% { opacity: 0; transform: scale(0.4); }
-  50% { opacity: 1; transform: scale(1.25); }
-}
-
-.surprise-overlay.active .btn-surprise img {
-  animation: ribbonGlow 2.6s ease-in-out infinite;
-}
-
-@keyframes ribbonGlow {
-  0%, 100% {
-    filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 10px rgba(255, 120, 180, 0.35));
-  }
-  50% {
-    filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 26px rgba(255, 120, 180, 0.75));
-  }
-}
-
-@keyframes badgePulse {
-  0%, 100% { opacity: 0.92; transform: translate3d(-50%, -50%, 0) scale(1); }
-  50% { opacity: 1; transform: translate3d(-50%, -50%, 0) scale(1.07); }
-}
-
-.btn-surprise img {
-  width: 100%;
-  height: auto;
-  display: block;
-  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.4));
-}
-
-.btn-cut-line {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 110px;
-  transform: translate3d(-50%, -50%, 0) rotate(8deg);
-  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.95) 50%, transparent);
-  opacity: 0;
-  z-index: 2;
-}
-
-.btn-surprise.cut .btn-cut-line {
-  opacity: 1;
-  animation: cutFlash 0.6s ease-out;
-}
-
-@keyframes ribbonFloat {
+@keyframes tocarFloat {
   0%, 100% { transform: translate3d(0, 0, 0); }
   50% { transform: translate3d(0, -5px, 0); }
 }
 
-@keyframes cutFlash {
-  0% { transform: translate3d(-50%, -50%, 0) rotate(8deg) scaleY(0.2); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translate3d(-50%, -50%, 0) rotate(8deg) scaleY(1); opacity: 0; }
+@keyframes badgePulse {
+  0%, 100% { opacity: 0.95; transform: translate3d(-50%, -50%, 0) scale(1); }
+  50% { opacity: 1; transform: translate3d(-50%, -50%, 0) scale(1.05); }
 }
 
 /* BOTÓN VOLVER AL INICIO */
@@ -446,14 +374,12 @@ html, body {
     bottom: 14%;
   }
 
-  .btn-surprise .touch-badge {
-    font-size: 1.55rem;
-    padding: 2px 16px 4px;
+  .btn-surprise {
+    width: min(72vw, 220px);
   }
 
-  .ribbon-sparkles i {
-    width: 5px;
-    height: 5px;
+  .btn-surprise .touch-badge {
+    font-size: 1.9rem;
   }
 
   .wait-hint {
@@ -628,45 +554,27 @@ body.abriendo .globos {
   }
 
   .btn-surprise .touch-badge {
-    font-size: 1.5rem;
+    font-size: 1.9rem;
   }
 }
 
-/* ==========================================================
-   RENDIMIENTO EN CELULAR (video de fondo + listón "Tocar")
-   ========================================================== */
 @media (max-width: 700px) {
-  /* Un solo video: ocultamos la copia difuminada de fondo */
   .video-bg {
     display: none;
   }
 
-  /* El blur sobre un video que se mueve se recalcula en cada frame: lo sacamos */
   .video-frame {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
     background: rgba(18, 10, 30, 0.9);
   }
 
-  /* El brillo animado repinta el moño en cada frame: lo dejamos fijo */
-  .surprise-overlay.active .btn-surprise img {
-    animation: none;
-    filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.45));
-  }
-
-  /* Animaciones solo con transform/opacity y en su propia capa */
   .surprise-overlay.active .btn-surprise {
     will-change: transform;
+    animation: tocarPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   }
 
   .btn-surprise .touch-badge {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    background: rgba(18, 8, 24, 0.78);
-    will-change: transform, opacity;
-  }
-
-  .ribbon-sparkles i {
     will-change: transform, opacity;
   }
 }
