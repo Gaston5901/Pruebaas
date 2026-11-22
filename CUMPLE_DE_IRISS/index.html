@@ -437,6 +437,10 @@
         window.location.href = surpriseBtn.getAttribute('href');
       }, 3000);
     });
+
+    if (new URLSearchParams(window.location.search).get('replay') === '1') {
+      giftBtn.click();
+    }
   </script>
 </body>
 </html>

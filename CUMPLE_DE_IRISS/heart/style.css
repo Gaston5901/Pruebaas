@@ -257,6 +257,39 @@ body.theme-emerald .theme-dot.active {
   transform: translate(-50%, -50%) scale(0.94);
 }
 
+/* BOTÓN PARA VOLVER AL REGALO */
+.btn-volver-regalo {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 95;
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(15, 6, 28, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 215, 120, 0.75);
+  color: #ffd78c;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.4rem;
+  line-height: 1;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 14px rgba(255, 215, 120, 0.2);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.btn-volver-regalo:hover {
+  transform: translateX(-3px);
+  background: rgba(45, 18, 62, 0.7);
+}
+
+.btn-volver-regalo:active {
+  transform: scale(0.96);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   #controls {
@@ -289,6 +322,13 @@ body.theme-emerald .theme-dot.active {
   .btn-corazon {
     padding: 12px 30px;
     font-size: 0.95rem;
+  }
+  .btn-volver-regalo {
+    top: 14px;
+    left: 12px;
+    width: 42px;
+    height: 42px;
+    font-size: 1.25rem;
   }
 }
 
