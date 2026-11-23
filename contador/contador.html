@@ -134,9 +134,27 @@
       to { transform: rotate(360deg); }
     }
 
-    .loader-frame {
+    .loader-centro {
       position: relative;
       z-index: 2;
+      display: grid;
+      place-items: center;
+      width: 96px;
+      height: 96px;
+    }
+
+    .loader-frame {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+
+    .loader-emoji {
+      position: relative;
+      z-index: 3;
+      font-size: 2.2rem;
+      line-height: 1;
+      filter: drop-shadow(0 0 10px rgba(255, 209, 102, 0.6));
     }
 
     .loader-glow {
@@ -802,9 +820,12 @@
   <!-- Cargador con marco dorado -->
   <div class="loader-overlay" id="loader">
     <div class="loader-glow" aria-hidden="true"></div>
-    <svg class="loader-frame" viewBox="0 0 100 100" aria-hidden="true">
-      <use href="#gold-frame-decor"></use>
-    </svg>
+    <div class="loader-centro">
+      <svg class="loader-frame" viewBox="0 0 100 100" aria-hidden="true">
+        <use href="#gold-frame-decor"></use>
+      </svg>
+      <span class="loader-emoji" aria-hidden="true">🎂</span>
+    </div>
     <div class="loader-texto">Preparando tu sorpresa <span class="loader-puntos" aria-hidden="true"><i></i><i></i><i></i></span></div>
     <div class="loader-linea" aria-hidden="true"><span></span></div>
   </div>
