@@ -107,31 +107,29 @@ const tapaBack = document.getElementById('tapaBack');
 const pagina = document.getElementById('pagina');
 const fotoActual = document.getElementById('fotoActual');
 const contador = document.getElementById('contador');
-const visorTitulo = document.getElementById('visorTitulo');
-const momentosLista = document.getElementById('momentosLista');
+const momentoNum = document.getElementById('momentoNum');
+const momentoTitulo = document.getElementById('momentoTitulo');
+const momentoTexto = document.getElementById('momentoTexto');
 const btnAnterior = document.getElementById('btnAnterior');
 const btnSiguiente = document.getElementById('btnSiguiente');
 const btnCerrar = document.querySelector('.btn-back');
 
-momentosLista.innerHTML = momentos.map((momento, i) => `
-  <article class="momento-item" data-index="${i}">
-    <span class="momento-num">${String(i + 1).padStart(2, '0')} / ${momentos.length}</span>
-    <h3 class="momento-titulo">${momento.titulo}</h3>
-    <p class="momento-texto">${momento.texto}</p>
-  </article>
-`).join('');
-
-const items = Array.from(document.querySelectorAll('.momento-item'));
 let actual = 0;
 
 function mostrar(index) {
   actual = (index + momentos.length) % momentos.length;
   const momento = momentos[actual];
-  fotoActual.src = momento.img;
-  fotoActual.alt = `Momento ${actual + 1}: ${momento.titulo}`;
+  fotoActual.classList.add('cambiando');
   contador.textContent = `${actual + 1}/${momentos.length}`;
-  visorTitulo.textContent = momento.titulo;
-  items.forEach((item, i) => item.classList.toggle('activo', i === actual));
+  momentoNum.textContent = `${String(actual + 1).padStart(2, '0')} / ${momentos.length}`;
+  momentoTitulo.textContent = momento.titulo;
+  momentoTexto.textContent = momento.texto;
+
+  setTimeout(() => {
+    fotoActual.src = momento.img;
+    fotoActual.alt = `Momento ${actual + 1}: ${momento.titulo}`;
+    fotoActual.onload = () => fotoActual.classList.remove('cambiando');
+  }, 140);
 }
 
 function abrirAlbum() {
@@ -166,6 +164,20 @@ btnCerrar.addEventListener('click', (event) => {
 
 btnAnterior.addEventListener('click', () => mostrar(actual - 1));
 btnSiguiente.addEventListener('click', () => mostrar(actual + 1));
+
+let toqueInicial = null;
+
+fotoActual.addEventListener('touchstart', (event) => {
+  toqueInicial = event.changedTouches[0].clientX;
+}, { passive: true });
+
+fotoActual.addEventListener('touchend', (event) => {
+  if (toqueInicial === null) return;
+  const desplazamiento = event.changedTouches[0].clientX - toqueInicial;
+  toqueInicial = null;
+  if (Math.abs(desplazamiento) < 45) return;
+  mostrar(desplazamiento > 0 ? actual - 1 : actual + 1);
+}, { passive: true });
 
 document.addEventListener('keydown', (event) => {
   if (!pagina.classList.contains('abierta')) return;

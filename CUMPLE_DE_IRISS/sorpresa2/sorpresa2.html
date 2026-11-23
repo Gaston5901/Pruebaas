@@ -37,8 +37,8 @@
   <div class="pagina" id="pagina">
     <header class="visor-fijo">
       <div class="visor-barra">
-        <a href="../lobby/lobby.html" class="btn-back">✕ cerrar albunu</a>
-        <h2 class="visor-titulo">momentos</h2>
+        <a href="../lobby/lobby.html" class="btn-back">Cerrar</a>
+        <h2 class="visor-titulo">Momentos</h2>
       </div>
 
       <div class="visor-foto">
@@ -46,14 +46,23 @@
       </div>
 
       <div class="visor-controles">
-        <button class="flecha" id="btnAnterior" aria-label="Foto anterior">◀</button>
+        <button class="flecha flecha-anterior" id="btnAnterior" aria-label="Cambiar momento">
+          <span aria-hidden="true">❮</span>
+        </button>
         <span class="contador" id="contador">1/20</span>
-        <button class="flecha" id="btnSiguiente" aria-label="Foto siguiente">▶</button>
+        <button class="flecha flecha-siguiente" id="btnSiguiente" aria-label="Cambiar momento">
+          <span aria-hidden="true">❯</span>
+        </button>
       </div>
-      <p class="visor-pista" id="visorTitulo">El comienzo</p>
     </header>
 
-    <main class="momentos-lista" id="momentosLista"></main>
+    <main class="momentos-lista">
+      <article class="momento-item activo">
+        <span class="momento-num" id="momentoNum">01 / 20</span>
+        <h3 class="momento-titulo" id="momentoTitulo">El comienzo</h3>
+        <p class="momento-texto" id="momentoTexto"></p>
+      </article>
+    </main>
   </div>
 
   <script src="sorpresa2.js"></script>
