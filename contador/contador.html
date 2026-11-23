@@ -3,30 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sorpresa Iriss💜</title>
+  <title>Para Iriss 💜</title>
   
-  <!-- Tipografía Quicksand & Nunito -->
+  <!-- Tipografía: Great Vibes para el título + Quicksand & Nunito -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@600;700;800&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg1: #fff0f6;
-      --bg2: #fbeaff;
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --accent1: #f48fb1;
-      --accent2: #b39ddb;
-      --gold: #ffd700;
-      --text: #7c3a6a;
-      --muted: #b48bbd;
+      --bg-1: #0b1021;
+      --bg-2: #171c3a;
+      --bg-3: #2a1945;
+      --card-bg: rgba(20, 25, 52, 0.84);
+      --gold: #ffd166;
+      --gold-bright: #fff0b3;
+      --coral: #ff6b8b;
+      --cyan: #4cc9f0;
+      --violet: #9d4edd;
+      --text: #f8f9ff;
+      --muted: #b8c1ec;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      height: 100vh;
+      min-height: 100vh;
       font-family: 'Quicksand', 'Nunito', sans-serif;
       color: var(--text);
       display: flex;
@@ -35,30 +38,36 @@
       text-align: center;
       overflow-x: hidden;
       overflow-y: auto;
-      padding: 24px 0;
+      padding: 46px 0;
       background:
-        radial-gradient(900px 500px at 15% 10%, #ffe0ef 30%, transparent 60%),
-        radial-gradient(900px 500px at 85% 20%, #e1bee7 25%, transparent 60%),
-        radial-gradient(900px 600px at 50% 95%, #fffde7 20%, transparent 60%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
+        radial-gradient(620px 480px at 15% 15%, rgba(76, 201, 240, 0.2), transparent 65%),
+        radial-gradient(650px 520px at 85% 20%, rgba(255, 107, 139, 0.2), transparent 65%),
+        radial-gradient(700px 550px at 50% 90%, rgba(255, 209, 102, 0.14), transparent 65%),
+        linear-gradient(150deg, var(--bg-1) 0%, var(--bg-2) 55%, var(--bg-3) 100%);
       position: relative;
     }
 
     /* Fondo con brillitos flotantes */
     .bg-sparkles {
-      position: absolute;
+      position: fixed;
       inset: 0;
       pointer-events: none;
-      background-image: 
-        radial-gradient(circle, rgba(244, 143, 177, 0.4) 2px, transparent 2px),
-        radial-gradient(circle, rgba(255, 215, 0, 0.5) 1.5px, transparent 1.5px);
-      background-size: 60px 60px, 90px 90px;
-      animation: floatBg 20s linear infinite;
+      background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.85) 1.4px, transparent 2px),
+        radial-gradient(circle, rgba(255, 209, 102, 0.75) 1.2px, transparent 1.8px),
+        radial-gradient(circle, rgba(76, 201, 240, 0.7) 1.2px, transparent 1.8px);
+      background-size: 80px 80px, 120px 120px, 100px 100px;
+      animation: floatBg 42s linear infinite, twinkleBg 4s ease-in-out infinite alternate;
     }
 
     @keyframes floatBg {
-      0% { background-position: 0 0, 30px 45px; }
-      100% { background-position: 0 500px, 30px 545px; }
+      0% { background-position: 0 0, 30px 45px, 15px 20px; }
+      100% { background-position: 0 500px, 30px 545px, 15px 520px; }
+    }
+
+    @keyframes twinkleBg {
+      from { opacity: 0.4; }
+      to { opacity: 0.9; }
     }
 
     /* Contenedor principal */
@@ -66,43 +75,150 @@
       position: relative;
       z-index: 2;
       background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 2px solid var(--accent1);
-      border-radius: 28px;
-      padding: clamp(30px, 5vw, 42px) clamp(16px, 3.5vw, 28px);
-      max-width: 480px;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1.5px solid rgba(255, 209, 102, 0.45);
+      border-radius: 34px;
+      padding: clamp(46px, 6vw, 54px) clamp(38px, 6vw, 48px) clamp(34px, 5vw, 42px);
+      max-width: 500px;
       width: 92%;
-      box-shadow: 
-        0 16px 40px rgba(248, 187, 208, 0.45),
-        0 2px 12px rgba(255, 224, 239, 0.8);
-      animation: floatCard 4s ease-in-out infinite alternate;
+      box-shadow:
+        0 0 0 6px rgba(76, 201, 240, 0.08),
+        0 26px 65px rgba(4, 7, 18, 0.65),
+        inset 0 1px 1px rgba(255, 255, 255, 0.18);
     }
 
-    @keyframes floatCard {
-      from { transform: translateY(0); }
-      to { transform: translateY(-6px); }
-    }
-
-    /* ESTILOS PARA LOS CÍRCULOS DE IMAGEN (ARRIBA Y ABAJO) */
-    .avatar-circle {
+    /* ==========================================
+       LUCES ARRIBA Y A LOS COSTADOS
+       ========================================== */
+    .lights-top {
       position: absolute;
-      width: clamp(50px, 12vw, 68px);
-      height: clamp(50px, 12vw, 68px);
-      border-radius: 50%;
-      border: 3px solid #fff;
-      box-shadow: 0 6px 16px rgba(244, 143, 177, 0.4);
-      overflow: hidden;
-      background: #ffe082;
+      top: 4px;
+      left: 36px;
+      right: 36px;
+      height: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .lights-side {
+      position: absolute;
+      top: 48px;
+      bottom: 48px;
+      width: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .lights-left { left: 4px; }
+    .lights-right { right: 4px; }
+
+    .bulb {
+      position: relative;
+      width: 10px;
+      height: 14px;
+      border-radius: 50% 50% 50% 50% / 35% 35% 65% 65%;
+      animation: bulbBlink 1.7s infinite alternate ease-in-out;
+    }
+
+    .bulb::before {
+      content: "";
+      position: absolute;
+      top: -3px;
+      left: 2.5px;
+      width: 5px;
+      height: 4px;
+      background: #1b223c;
+      border-radius: 2px 2px 0 0;
+    }
+
+    .lights-side .bulb {
+      transform: rotate(90deg);
+      animation-name: bulbBlinkSide;
+    }
+
+    .bulb.coral  { background: #ff6b8b; box-shadow: 0 2px 10px #ff6b8b, 0 0 18px rgba(255, 107, 139, 0.7); animation-delay: 0s; }
+    .bulb.gold   { background: #ffd166; box-shadow: 0 2px 10px #ffd166, 0 0 18px rgba(255, 209, 102, 0.7); animation-delay: 0.35s; }
+    .bulb.cyan   { background: #4cc9f0; box-shadow: 0 2px 10px #4cc9f0, 0 0 18px rgba(76, 201, 240, 0.7); animation-delay: 0.7s; }
+    .bulb.violet { background: #c77dff; box-shadow: 0 2px 10px #c77dff, 0 0 18px rgba(199, 125, 255, 0.7); animation-delay: 1.05s; }
+    .bulb.mint   { background: #52ffb8; box-shadow: 0 2px 10px #52ffb8, 0 0 18px rgba(82, 255, 184, 0.7); animation-delay: 1.4s; }
+
+    @keyframes bulbBlink {
+      0%   { opacity: 0.45; transform: scale(0.92); filter: brightness(0.85); }
+      100% { opacity: 1;    transform: scale(1.08); filter: brightness(1.25); }
+    }
+
+    @keyframes bulbBlinkSide {
+      0%   { opacity: 0.45; transform: rotate(90deg) scale(0.92); filter: brightness(0.85); }
+      100% { opacity: 1;    transform: rotate(90deg) scale(1.08); filter: brightness(1.25); }
+    }
+
+    /* ==========================================
+       FOTOS REDONDEADAS CON DECORACIÓN DORADA
+       ========================================== */
+    .avatar-wrapper {
+      position: absolute;
+      width: clamp(68px, 16vw, 88px);
+      height: clamp(68px, 16vw, 88px);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 10;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .avatar-circle:hover {
-      transform: scale(1.1);
+    .avatar-wrapper:hover {
+      transform: scale(1.1) rotate(3deg);
+    }
+
+    .avatar-top-left     { top: -32px; left: -22px; }
+    .avatar-top-right    { top: -32px; right: -22px; }
+    .avatar-bottom-left  { bottom: -32px; left: -22px; }
+    .avatar-bottom-right { bottom: -32px; right: -22px; }
+
+    .gold-frame-svg {
+      position: absolute;
+      inset: -4px;
+      width: calc(100% + 8px);
+      height: calc(100% + 8px);
+      pointer-events: none;
+      z-index: 3;
+      filter: drop-shadow(0 2px 8px rgba(255, 209, 102, 0.45));
+    }
+
+    .gold-crown-gem {
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+      line-height: 1;
+      color: var(--gold-bright);
+      text-shadow: 0 0 10px rgba(255, 209, 102, 0.9);
+      pointer-events: none;
+    }
+
+    .avatar-circle {
+      position: relative;
+      width: 76%;
+      height: 76%;
+      border-radius: 50%;
+      border: 2.5px solid var(--gold);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      background: linear-gradient(135deg, #24315e, #48286b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
     }
 
     .avatar-circle img {
@@ -111,287 +227,450 @@
       object-fit: cover;
     }
 
-    /* Posicionamiento en Esquinas */
-    .avatar-top-left {
-      top: -22px;
-      left: -12px;
-    }
-
-    .avatar-top-right {
-      top: -22px;
-      right: -12px;
-    }
-
-    .avatar-bottom-left {
-      bottom: -22px;
-      left: -12px;
-    }
-
-    .avatar-bottom-right {
-      bottom: -22px;
-      right: -12px;
-    }
-
-    .badge-icon {
-      display: inline-flex;
+    /* ==========================================
+       TÍTULO CON CALIGRAFÍA EN "Para" E "Iriss"
+       ========================================== */
+    .title-wrap {
+      display: flex;
       align-items: center;
       justify-content: center;
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(135deg, #ffe082, #f48fb1);
-      border-radius: 50%;
-      font-size: 1.6rem;
-      box-shadow: 0 6px 18px rgba(244, 143, 177, 0.4);
-      margin-bottom: 8px;
-      border: 2px solid #fff;
+      gap: 6px;
+      margin: 0 0 12px 0;
     }
 
     h1 {
-      font-size: clamp(1.3rem, 4.5vw, 1.65rem);
-      color: var(--text);
-      margin: 0 0 6px 0;
-      font-weight: 700;
+      margin: 0;
+      display: inline-flex;
+      align-items: baseline;
+      gap: 10px;
+      line-height: 1.15;
+      font-family: 'Great Vibes', cursive;
+      font-weight: 400;
     }
 
-    /* Frases dinámicas cambiantes */
-    .phrase-box {
-      position: relative;
-      min-height: 52px;
-      display: flex;
-      flex-direction: column;
+    .title-para {
+      font-size: clamp(2.1rem, 6.5vw, 2.75rem);
+      letter-spacing: 0.8px;
+      padding-right: 2px;
+      background: linear-gradient(90deg, #ffd166 0%, #fff3c4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 10px rgba(255, 209, 102, 0.35));
+    }
+
+    .title-iriss {
+      font-size: clamp(2.65rem, 8.2vw, 3.45rem);
+      letter-spacing: 1px;
+      padding: 0 4px;
+      background: linear-gradient(90deg, #ffffff 0%, #ffd166 50%, #ff9ebb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 3px 14px rgba(255, 209, 102, 0.35));
+    }
+
+    .title-heart {
+      font-size: clamp(1.45rem, 4.5vw, 1.85rem);
+      filter: drop-shadow(0 0 10px rgba(199, 125, 255, 0.7));
+      animation: heartBeat 2s ease-in-out infinite;
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.13); }
+    }
+
+    /* ==========================================
+       INFINITO COMPACTO + 100% DORADO
+       ========================================== */
+    .infinity-row {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 16px;
-      gap: 4px;
-    }
-
-    .phrase-counter {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: var(--accent1);
-      background: rgba(244, 143, 177, 0.15);
-      border: 1px solid rgba(244, 143, 177, 0.3);
-      padding: 2px 8px;
+      gap: 10px;
+      margin: 0 auto 18px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 7px 14px;
       border-radius: 999px;
-      letter-spacing: 0.5px;
-      transition: opacity 0.4s ease;
+      border: 1px solid rgba(255, 209, 102, 0.35);
+      box-shadow: inset 0 0 14px rgba(255, 209, 102, 0.06);
     }
 
-    p.subtext {
-      margin: 0;
-      color: var(--muted);
-      font-size: clamp(0.85rem, 2.8vw, 0.98rem);
-      font-weight: 600;
-      transition: opacity 0.4s ease;
-    }
-
-    /* Barra de Progreso */
-    .progress-container {
-      margin-bottom: 18px;
-      background: rgba(255, 255, 255, 0.8);
-      padding: 10px 14px;
-      border-radius: 16px;
-      border: 1px solid var(--accent2);
-    }
-
-    .progress-info {
+    .infinity-box {
+      position: relative;
+      width: clamp(78px, 21vw, 94px);
+      height: 34px;
       display: flex;
-      justify-content: space-between;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 6px;
+      align-items: center;
+      justify-content: center;
     }
 
-    .progress-bar-bg {
+    .infinity-svg {
       width: 100%;
-      height: 10px;
-      background: rgba(179, 157, 219, 0.25);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
       height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #ffe082, #f48fb1);
-      border-radius: 999px;
-      transition: width 1s ease-in-out;
+      overflow: visible;
+      filter: drop-shadow(0 0 8px rgba(255, 209, 102, 0.45));
     }
 
-    /* CONTADOR EN HORIZONTAL COMPLETO (1 SOLA FILA) */
+    .infinity-track {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.14);
+      stroke-width: 7;
+      stroke-linecap: round;
+    }
+
+    .infinity-progress {
+      fill: none;
+      stroke: url(#infinityGoldGrad);
+      stroke-width: 7;
+      stroke-linecap: round;
+      stroke-dasharray: 260;
+      stroke-dashoffset: 260;
+      transition: stroke-dashoffset 0.8s ease;
+    }
+
+    .infinity-glow-dot {
+      fill: #fff8d6;
+      filter: drop-shadow(0 0 5px #ffd166) drop-shadow(0 0 9px #ffffff);
+    }
+
+    .progress-percent-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress-percent {
+      font-size: 1.05rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      background: linear-gradient(180deg, #fff8d6 0%, #ffd166 55%, #e5a524 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 8px rgba(255, 209, 102, 0.65));
+      white-space: nowrap;
+      animation: percentGlow 2.2s ease-in-out infinite alternate;
+    }
+
+    .percent-sparkle {
+      position: absolute;
+      top: -6px;
+      right: -5px;
+      font-size: 0.72rem;
+      line-height: 1;
+      color: #fff8d6;
+      text-shadow: 0 0 8px #ffd166, 0 0 14px #fff3c4;
+      pointer-events: none;
+      animation: sparkleTwinkle 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes percentGlow {
+      0%   { filter: drop-shadow(0 0 5px rgba(255, 209, 102, 0.45)); }
+      100% { filter: drop-shadow(0 0 12px rgba(255, 226, 112, 0.95)); }
+    }
+
+    @keyframes sparkleTwinkle {
+      0%   { opacity: 0.35; transform: scale(0.75) rotate(-12deg); }
+      100% { opacity: 1;    transform: scale(1.18) rotate(15deg); }
+    }
+
+    /* CONTADOR HORIZONTAL */
     .countdown {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      gap: 8px;
       width: 100%;
     }
 
     .box {
-      background: rgba(255, 255, 255, 0.9);
-      border: 1.5px solid var(--accent2);
-      border-radius: 14px;
-      padding: 10px 2px;
-      box-shadow: 0 4px 12px rgba(180, 139, 189, 0.12);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-bottom: 3px solid var(--cyan);
+      border-radius: 18px;
+      padding: 11px 2px;
     }
 
     .num {
-      font-size: clamp(1.1rem, 4.2vw, 1.7rem);
-      font-weight: 700;
-      color: var(--accent1);
+      font-size: clamp(1.1rem, 4vw, 1.55rem);
+      font-weight: 800;
+      color: var(--gold);
       line-height: 1;
     }
 
     .label {
-      font-size: clamp(0.6rem, 2.2vw, 0.72rem);
+      font-size: clamp(0.58rem, 2vw, 0.68rem);
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-top: 4px;
+      letter-spacing: 1px;
+      margin-top: 5px;
       font-weight: 700;
     }
-            .volver-inicio{
-            position: fixed;
-            top: 14px;
-            left: 14px;
-            z-index: 9999;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 12px;
-            border-radius: 999px;
-            background: rgba(255,255,255,.85);
-            border: 1px solid rgba(0,0,0,.10);
-            color: #3b2f2f;
-            text-decoration: none;
-            font-weight: 800;
-            box-shadow: 0 10px 26px rgba(0,0,0,.18);
-        }
-        .volver-inicio:hover{ transform: translateY(-1px); background: rgba(255,255,255,.95); }
 
-    /* Botón para entrar antes de tiempo */
-    .entrar-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .entrar-ya {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 26px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #f48fb1, #b39ddb);
-      color: #fff;
-      font-weight: 700;
-      font-size: clamp(0.85rem, 3vw, 1rem);
-      text-decoration: none;
-      border: 2px solid #fff;
-      box-shadow: 0 10px 24px rgba(244, 143, 177, 0.45);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      animation: pulseBtn 2.4s ease-in-out infinite;
-    }
-
-    .entrar-ya:hover {
-      transform: translateY(-2px) scale(1.04);
-      box-shadow: 0 14px 30px rgba(244, 143, 177, 0.6);
-      animation-play-state: paused;
-    }
-
-    .entrar-ya:active { transform: scale(0.97); }
-
-    @keyframes pulseBtn {
-      0%, 100% { box-shadow: 0 10px 24px rgba(244, 143, 177, 0.45); }
-      50% { box-shadow: 0 12px 32px rgba(179, 157, 219, 0.7); }
-    }
-
-    .entrar-hint {
-      font-size: 0.68rem;
-      font-weight: 700;
-      color: var(--muted);
-      letter-spacing: 0.3px;
-    }
-
-    /* Mensaje cuando llega el día */
+    /* ==========================================
+       MENSAJE MEJORADO: LLEGÓ EL DÍA
+       ========================================== */
     .llegada {
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 4px;
-      margin: 4px 0;
-      padding: 18px 12px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(255, 224, 130, 0.5), rgba(244, 143, 177, 0.35));
-      border: 2px dashed var(--accent1);
+      margin-bottom: 18px;
+      padding: 16px 18px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(255, 107, 139, 0.2), rgba(255, 209, 102, 0.16), rgba(76, 201, 240, 0.16));
+      border: 1.5px solid rgba(255, 209, 102, 0.65);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35), inset 0 0 20px rgba(255, 209, 102, 0.12);
     }
 
     .llegada.show {
       display: flex;
-      animation: llegadaPop 0.6s ease;
+      animation: llegadaEntrada 0.55s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .llegada .big {
-      font-size: clamp(1.2rem, 5vw, 1.6rem);
+      font-size: clamp(1.35rem, 5vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      background: linear-gradient(90deg, #ffd166, #ff6b8b, #ffd166);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .llegada .sub {
+      font-size: 0.88rem;
       font-weight: 700;
-      color: var(--accent1);
+      color: var(--text);
+      opacity: 0.92;
     }
 
-    .llegada .small {
-      font-size: clamp(0.8rem, 3vw, 0.95rem);
-      font-weight: 700;
-      color: var(--muted);
+    @keyframes llegadaEntrada {
+      0% { transform: translateY(10px) scale(0.94); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
     }
 
-    @keyframes llegadaPop {
-      0% { transform: scale(0.85); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+    /* ==========================================
+       BOTÓN DE REGALO CON ESTILO Y COLOR
+       ========================================== */
+    .entrar-wrap {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
     }
 
+    .entrar-ya {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 14px 30px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff5d8f 0%, #ff8fa3 45%, #ffd166 100%);
+      color: #141026;
+      font-weight: 800;
+      font-size: clamp(0.92rem, 3.2vw, 1.05rem);
+      letter-spacing: 0.3px;
+      text-decoration: none;
+      border: 2px solid rgba(255, 255, 255, 0.75);
+      box-shadow:
+        0 10px 26px rgba(255, 93, 143, 0.42),
+        0 0 0 4px rgba(255, 209, 102, 0.16);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+    }
+
+    .entrar-ya:hover {
+      transform: translateY(-3px) scale(1.03);
+      filter: brightness(1.06);
+      box-shadow:
+        0 14px 32px rgba(255, 209, 102, 0.5),
+        0 0 0 6px rgba(255, 93, 143, 0.22);
+    }
+
+    .entrar-ya:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    /* ==========================================
+       CONTENEDOR PARA TU IMAGEN torta.png (SIN FONDO)
+       ========================================== */
+    .torta-img-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      padding: 2px 0 0;
+    }
+
+    .torta-img {
+      width: clamp(115px, 34vw, 150px);
+      height: auto;
+      display: block;
+      object-fit: contain;
+      background: transparent;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.45));
+      transition: transform 0.3s ease;
+    }
+
+    .torta-img:hover {
+      transform: scale(1.05);
+    }
+
+    .volver-inicio {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 9999;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(20, 25, 52, 0.88);
+      border: 1.5px solid rgba(255, 209, 102, 0.45);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 800;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .volver-inicio:hover { transform: translateY(-2px); background: rgba(42, 25, 69, 0.96); }
   </style>
 </head>
 <body>
-  	    <a class="volver-inicio" href="../index.html" aria-label="Volver al inicio">← </a>
+  <!-- Decoración dorada circular alrededor de cada foto -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="goldRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fff0b3" />
+        <stop offset="50%" stop-color="#ffd166" />
+        <stop offset="100%" stop-color="#d99b26" />
+      </linearGradient>
 
-  <!-- Capa de partículas -->
+      <linearGradient id="infinityGoldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="35%" stop-color="#ffd166" />
+        <stop offset="70%" stop-color="#fff3c4" />
+        <stop offset="100%" stop-color="#f4a261" />
+      </linearGradient>
+
+      <g id="gold-frame-decor">
+        <circle cx="50" cy="50" r="42" fill="none" stroke="url(#goldRingGrad)" stroke-width="2.6" />
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#ffd166" stroke-width="1.3" stroke-dasharray="3 6" opacity="0.85" />
+
+        <polygon points="50,4 51.8,8.2 56,10 51.8,11.8 50,16 48.2,11.8 44,10 48.2,8.2" fill="#fff3c4" />
+        <polygon points="86,18 87.2,20.8 90,22 87.2,23.2 86,26 84.8,23.2 82,22 84.8,20.8" fill="#ffd166" />
+        <polygon points="90,50 91.5,53.5 95,55 91.5,56.5 90,60 88.5,56.5 85,55 88.5,53.5" fill="#fff0b3" />
+        <polygon points="82,82 83.2,84.8 86,86 83.2,87.2 82,90 80.8,87.2 78,86 80.8,84.8" fill="#ffd166" />
+        <polygon points="50,84 51.8,88.2 56,90 51.8,91.8 50,96 48.2,91.8 44,90 48.2,88.2" fill="#fff3c4" />
+        <polygon points="18,82 19.2,84.8 22,86 19.2,87.2 18,90 16.8,87.2 14,86 16.8,84.8" fill="#ffd166" />
+        <polygon points="10,45 11.5,48.5 15,50 11.5,51.5 10,55 8.5,51.5 5,50 8.5,48.5" fill="#fff0b3" />
+        <polygon points="18,18 19.2,20.8 22,22 19.2,23.2 18,26 16.8,23.2 14,22 16.8,20.8" fill="#ffd166" />
+
+        <circle cx="69" cy="9" r="2.2" fill="#fff3c4" />
+        <circle cx="91" cy="70" r="2.2" fill="#ffd166" />
+        <circle cx="31" cy="91" r="2.2" fill="#fff3c4" />
+        <circle cx="9" cy="30" r="2.2" fill="#ffd166" />
+      </g>
+    </defs>
+  </svg>
+
+  <a class="volver-inicio" href="../index.html" aria-label="Volver al inicio">←</a>
+
+  <!-- Fondo con partículas -->
   <div class="bg-sparkles"></div>
 
   <!-- Tarjeta central -->
   <div class="card-container">
-    
-    <!-- CÍRCULOS SUPERIORES PARA IMÁGENES -->
-    <div class="avatar-circle avatar-top-left">
-      <img src="foto1.jpeg" alt="Foto 1" onerror="this.onerror=null; this.parentNode.innerHTML='🌸';">
-    </div>
-    <div class="avatar-circle avatar-top-right">
-      <img src="foto2.png" alt="Foto 2" onerror="this.onerror=null; this.parentNode.innerHTML='✨';">
-    </div>
 
-    <div class="badge-icon">🎂</div>
-    <h1>¡Atención curiosa! 😚</h1>
-
-    <!-- Frase cambiante con indicador de cantidad -->
-    <div class="phrase-box">
-      <span class="phrase-counter" id="phrase-counter">1/6</span>
-      <p class="subtext" id="phrase">Falta para tu sorpresa especial 🌸</p>
+    <!-- LUCES ARRIBA -->
+    <div class="lights-top" aria-hidden="true">
+      <span class="bulb coral"></span>
+      <span class="bulb gold"></span>
+      <span class="bulb cyan"></span>
+      <span class="bulb violet"></span>
+      <span class="bulb mint"></span>
+      <span class="bulb coral"></span>
+      <span class="bulb gold"></span>
+      <span class="bulb cyan"></span>
+      <span class="bulb violet"></span>
+      <span class="bulb mint"></span>
     </div>
 
-    <!-- Barra de progreso -->
-    <div class="progress-container">
-      <div class="progress-info">
-        <span id="progressLabel">Sorpresa cargada:</span>
-        <span id="progress-text">0%</span>
+    <!-- LUCES COSTADO IZQUIERDO -->
+    <div class="lights-side lights-left" aria-hidden="true">
+      <span class="bulb gold"></span>
+      <span class="bulb cyan"></span>
+      <span class="bulb coral"></span>
+      <span class="bulb violet"></span>
+      <span class="bulb mint"></span>
+    </div>
+
+    <!-- LUCES COSTADO DERECHO -->
+    <div class="lights-side lights-right" aria-hidden="true">
+      <span class="bulb mint"></span>
+      <span class="bulb violet"></span>
+      <span class="bulb coral"></span>
+      <span class="bulb cyan"></span>
+      <span class="bulb gold"></span>
+    </div>
+
+    <!-- FOTO 1 (ARRIBA IZQUIERDA) -->
+    <div class="avatar-wrapper avatar-top-left">
+      <span class="gold-crown-gem" aria-hidden="true">✦</span>
+      <svg class="gold-frame-svg" viewBox="0 0 100 100" aria-hidden="true">
+        <use href="#gold-frame-decor"></use>
+      </svg>
+      <div class="avatar-circle">
+        <img src="foto1.jpeg" alt="Foto 1" onerror="this.onerror=null; this.parentNode.innerHTML='🌸';">
       </div>
-      <div class="progress-bar-bg">
-        <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+
+    <!-- FOTO 2 (ARRIBA DERECHA) -->
+    <div class="avatar-wrapper avatar-top-right">
+      <span class="gold-crown-gem" aria-hidden="true">✦</span>
+      <svg class="gold-frame-svg" viewBox="0 0 100 100" aria-hidden="true">
+        <use href="#gold-frame-decor"></use>
+      </svg>
+      <div class="avatar-circle">
+        <img src="foto2.png" alt="Foto 2" onerror="this.onerror=null; this.parentNode.innerHTML='✨';">
       </div>
     </div>
 
-    <!-- Contador horizontal de 1 sola fila -->
+    <!-- TÍTULO CON CALIGRAFÍA EN "Para" E "Iriss" -->
+    <div class="title-wrap">
+      <h1>
+        <span class="title-para">Para</span>
+        <span class="title-iriss">Iriss</span>
+      </h1>
+      <span class="title-heart" aria-hidden="true">💜</span>
+    </div>
+
+    <!-- INFINITO COMPACTO + 100% DORADO -->
+    <div class="infinity-row">
+      <div class="infinity-box">
+        <svg class="infinity-svg" viewBox="0 0 140 60" aria-hidden="true">
+          <path class="infinity-track"
+                d="M 70,30 C 52,6 16,6 16,30 C 16,54 52,54 70,30 C 88,6 124,6 124,30 C 124,54 88,54 70,30 Z" />
+          <path class="infinity-progress" id="infinity-fill"
+                d="M 70,30 C 52,6 16,6 16,30 C 16,54 52,54 70,30 C 88,6 124,6 124,30 C 124,54 88,54 70,30 Z" />
+          <circle class="infinity-glow-dot" r="3.4">
+            <animateMotion dur="4.2s" repeatCount="indefinite"
+              path="M 70,30 C 52,6 16,6 16,30 C 16,54 52,54 70,30 C 88,6 124,6 124,30 C 124,54 88,54 70,30 Z" />
+          </circle>
+        </svg>
+      </div>
+
+      <span class="progress-percent-wrap">
+        <span class="progress-percent" id="progress-text">0%</span>
+        <span class="percent-sparkle" aria-hidden="true">✦</span>
+      </span>
+    </div>
+
+    <!-- CONTADOR -->
     <div class="countdown" id="countdown">
       <div class="box">
         <div class="num" id="d">--</div>
@@ -411,69 +690,50 @@
       </div>
     </div>
 
-    <!-- Mensaje cuando ya es el día -->
+    <!-- MENSAJE LLEGÓ EL DÍA -->
     <div class="llegada" id="llegada">
-      <span class="big">¡Llegó el día! 🎉</span>
-      <span class="small">Disfrutalo mucho 💜</span>
+      <span class="big">¡Llegó el día! 🎂✨</span>
+      <span class="sub">Hoy es tu momento, disfrutalo a pleno 💜</span>
     </div>
 
-    <!-- Botón para entrar antes de tiempo -->
+    <!-- BOTÓN E IMAGEN torta.png SIN FONDO ABAJO -->
     <div class="entrar-wrap">
       <a class="entrar-ya" href="../CUMPLE_DE_IRISS/index.html">Abrir mi regalo ahora 🎁</a>
-      <span class="entrar-hint" id="entrarHint">o esperá a que llegue el día 💜</span>
+
+      <div class="torta-img-wrap">
+        <img class="torta-img" src="torta.png" alt="Torta de cumpleaños 21" onerror="this.style.display='none';">
+      </div>
     </div>
 
-    <!-- CÍRCULOS INFERIORES PARA IMÁGENES -->
-    <div class="avatar-circle avatar-bottom-left">
-      <img src="hope.png" alt="Foto 3" onerror="this.onerror=null; this.parentNode.innerHTML='💖';">
+    <!-- FOTO 3 (ABAJO IZQUIERDA) -->
+    <div class="avatar-wrapper avatar-bottom-left">
+      <span class="gold-crown-gem" aria-hidden="true">✦</span>
+      <svg class="gold-frame-svg" viewBox="0 0 100 100" aria-hidden="true">
+        <use href="#gold-frame-decor"></use>
+      </svg>
+      <div class="avatar-circle">
+        <img src="hope.png" alt="Foto 3" onerror="this.onerror=null; this.parentNode.innerHTML='💖';">
+      </div>
     </div>
-    <div class="avatar-circle avatar-bottom-right">
-      <img src="image.png" alt="Foto 4" onerror="this.onerror=null; this.parentNode.innerHTML='🌷';">
+
+    <!-- FOTO 4 (ABAJO DERECHA) -->
+    <div class="avatar-wrapper avatar-bottom-right">
+      <span class="gold-crown-gem" aria-hidden="true">✦</span>
+      <svg class="gold-frame-svg" viewBox="0 0 100 100" aria-hidden="true">
+        <use href="#gold-frame-decor"></use>
+      </svg>
+      <div class="avatar-circle">
+        <img src="image.png" alt="Foto 4" onerror="this.onerror=null; this.parentNode.innerHTML='🌷';">
+      </div>
     </div>
 
   </div>
 
   <script>
-    // LISTA DE FRASES DINÁMICAS
-    const frases = [
-      "Falta para tu sorpresa especial 🌸",
-      "Prometo que la espera vale la pena 💖",
-      "No seas ansiosa Señoritaa 😜",
-      "Cada segundo falta menos para tu día ✨",
-      "Preparando los detalles más lindos... 🎨",
-      "Cuenta regresiva activada ⏳"
-    ];
-
-    let currentPhraseIdx = 0;
-    const phraseEl = document.getElementById("phrase");
-    const phraseCounterEl = document.getElementById("phrase-counter");
-
-    function updatePhrase() {
-      phraseEl.textContent = frases[currentPhraseIdx];
-      phraseCounterEl.textContent = `${currentPhraseIdx + 1} / ${frases.length}`;
-    }
-
-    updatePhrase();
-
-    const phraseInterval = setInterval(() => {
-      phraseEl.style.opacity = 0;
-      phraseCounterEl.style.opacity = 0;
-
-      setTimeout(() => {
-        if (llegado) return;
-        currentPhraseIdx = (currentPhraseIdx + 1) % frases.length;
-        updatePhrase();
-        phraseEl.style.opacity = 1;
-        phraseCounterEl.style.opacity = 1;
-      }, 400);
-    }, 4000);
-
-    // LÓGICA DE FECHA (1 DE ENERO DE 2027) Y BARRA DE PROGRESO
     function getDates() {
       const now = new Date();
-      const target = new Date(2027, 0, 1, 0, 0, 0, 0);
+      const target = new Date(2026, 10, 23, 0, 0, 0, 0);
       const start = new Date(2026, 0, 1, 0, 0, 0, 0);
-
       return { now, start, target };
     }
 
@@ -481,62 +741,62 @@
     const elH = document.getElementById("h");
     const elM = document.getElementById("m");
     const elS = document.getElementById("s");
-    const progressFill = document.getElementById("progress-fill");
+    const infinityFill = document.getElementById("infinity-fill");
     const progressText = document.getElementById("progress-text");
-    const progressLabel = document.getElementById("progressLabel");
     const countdownEl = document.getElementById("countdown");
     const llegadaEl = document.getElementById("llegada");
-    const entrarHint = document.getElementById("entrarHint");
+
+    const infinityLength = infinityFill.getTotalLength();
+    infinityFill.style.strokeDasharray = infinityLength;
+    infinityFill.style.strokeDashoffset = infinityLength;
+
+    function setInfinityProgress(pct) {
+      const offset = infinityLength - (infinityLength * pct) / 100;
+      infinityFill.style.strokeDashoffset = offset;
+    }
 
     let llegado = false;
 
-function tick() {
-  const { now, start, target } = getDates();
-  let diff = target - now;
+    function tick() {
+      const { now, start, target } = getDates();
+      let diff = target - now;
 
-  if (diff <= 0) {
-    // Se completó la cuenta: se oculta el contador y se muestra el mensaje
-    progressFill.style.width = "100%";
-    progressText.textContent = "100%";
+      if (diff <= 0) {
+        setInfinityProgress(100);
+        progressText.textContent = "100%";
 
-    if (!llegado) {
-      llegado = true;
-      progressLabel.textContent = "¡Sorpresa lista!";
-      countdownEl.style.display = "none";
-      llegadaEl.classList.add("show");
-      entrarHint.textContent = "Ya podés abrirlo cuando quieras 🎁";
-      clearInterval(phraseInterval);
-      phraseEl.textContent = "¡Llegó el día! Disfrutalo mucho 💜";
-      phraseCounterEl.textContent = "🎉";
+        if (!llegado) {
+          llegado = true;
+          countdownEl.style.display = "none";
+          llegadaEl.classList.add("show");
+        }
+        return;
+      }
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      diff -= d * 24 * 60 * 60 * 1000;
+      const h = Math.floor(diff / (1000 * 60 * 60));
+      diff -= h * 60 * 60 * 1000;
+      const m = Math.floor(diff / (1000 * 60));
+      diff -= m * 60 * 1000;
+      const s = Math.floor(diff / 1000);
+
+      elD.textContent = d;
+      elH.textContent = h.toString().padStart(2, "0");
+      elM.textContent = m.toString().padStart(2, "0");
+      elS.textContent = s.toString().padStart(2, "0");
+
+      const totalTime = target - start;
+      const elapsedTime = now - start;
+
+      let percentage = Math.min(
+        Math.max((elapsedTime / totalTime) * 100, 5),
+        99.9
+      );
+
+      setInfinityProgress(percentage);
+      progressText.textContent = percentage.toFixed(1) + "%";
     }
-    return;
-  }
-
-  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-  diff -= d * 24 * 60 * 60 * 1000;
-  const h = Math.floor(diff / (1000 * 60 * 60));
-  diff -= h * 60 * 60 * 1000;
-  const m = Math.floor(diff / (1000 * 60));
-  diff -= m * 60 * 1000;
-  const s = Math.floor(diff / 1000);
-
-  elD.textContent = d;
-  elH.textContent = h.toString().padStart(2, "0");
-  elM.textContent = m.toString().padStart(2, "0");
-  elS.textContent = s.toString().padStart(2, "0");
-
-  const totalTime = target - start;
-  const elapsedTime = now - start;
-
-  // Nunca llega al 100% antes del momento exacto
-  let percentage = Math.min(
-    Math.max((elapsedTime / totalTime) * 100, 5),
-    99.9
-  );
-
-  progressFill.style.width = percentage.toFixed(1) + "%";
-  progressText.textContent = percentage.toFixed(1) + "%";
-}
 
     setInterval(tick, 1000);
     tick();
