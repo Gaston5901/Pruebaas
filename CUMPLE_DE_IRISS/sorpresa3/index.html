@@ -39,7 +39,10 @@
       <p class="surprise-desc">
         Preparé algo muy especial para vos, puedes deslizar y moverlos. Tocá cada imagen giratoria para descubrir mensajes ocultos, recuerdos y tus artistas favoritos. ✨
       </p>
-      <button class="btn-enter-surprise" id="btnOpenLetter">Entrar a la sorpresa 💌</button>
+      <button class="btn-enter-surprise" id="btnOpenLetter" disabled>
+        <span>Entrar</span>
+        <span class="btn-spinner" aria-hidden="true"></span>
+      </button>
     </div>
   </div>
 
@@ -196,7 +199,43 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (btnOpen && overlay) {
+    let botonListo = false;
+
+    const marcarListo = () => {
+      if (botonListo) return;
+      botonListo = true;
+      btnOpen.disabled = false;
+      btnOpen.classList.add('listo');
+    };
+
+    const rutasImagenes = [...new Set(
+      [...document.querySelectorAll('.card, .modal-img-container img, .valentine-footer img')]
+        .map((img) => img.getAttribute('src'))
+        .filter(Boolean)
+    )];
+
+    let restantes = rutasImagenes.length;
+
+    if (restantes === 0) {
+      marcarListo();
+    } else {
+      const terminarImagen = () => {
+        restantes -= 1;
+        if (restantes <= 0) marcarListo();
+      };
+
+      rutasImagenes.forEach((src) => {
+        const imagen = new Image();
+        imagen.onload = terminarImagen;
+        imagen.onerror = terminarImagen;
+        imagen.src = src;
+      });
+
+      setTimeout(marcarListo, 8000);
+    }
+
     btnOpen.addEventListener('click', () => {
+      if (btnOpen.disabled) return;
 
       playMusic();
 

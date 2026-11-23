@@ -484,6 +484,50 @@ body {
   transform: scale(0.985);
 }
 
+.visor-loader {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border-radius: inherit;
+  background: rgba(20, 4, 14, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.visor-loader.activo {
+  opacity: 1;
+  visibility: visible;
+}
+
+.visor-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(228, 195, 106, 0.25);
+  border-top-color: var(--rosa);
+  border-radius: 50%;
+  animation: girarLoader 0.8s linear infinite;
+}
+
+.visor-loader span {
+  color: var(--dorado);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0 var(--negro);
+}
+
+@keyframes girarLoader {
+  to { transform: rotate(360deg); }
+}
+
 .visor-controles {
   display: flex;
   align-items: center;

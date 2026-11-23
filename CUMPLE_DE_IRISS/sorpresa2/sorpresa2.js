@@ -106,6 +106,7 @@ const tapa = document.getElementById('tapa');
 const tapaBack = document.getElementById('tapaBack');
 const pagina = document.getElementById('pagina');
 const fotoActual = document.getElementById('fotoActual');
+const visorLoader = document.getElementById('visorLoader');
 const contador = document.getElementById('contador');
 const momentoNum = document.getElementById('momentoNum');
 const momentoTitulo = document.getElementById('momentoTitulo');
@@ -115,10 +116,27 @@ const btnSiguiente = document.getElementById('btnSiguiente');
 const btnCerrar = document.querySelector('.btn-back');
 
 let actual = 0;
+let imagenLista = true;
+let minimoCumplido = true;
 
-function mostrar(index) {
+function verificarLoader() {
+  if (imagenLista && minimoCumplido) visorLoader.classList.remove('activo');
+}
+
+function mostrar(index, conLoader = false) {
   actual = (index + momentos.length) % momentos.length;
   const momento = momentos[actual];
+
+  if (conLoader) {
+    imagenLista = false;
+    minimoCumplido = false;
+    visorLoader.classList.add('activo');
+    setTimeout(() => {
+      minimoCumplido = true;
+      verificarLoader();
+    }, 3000);
+  }
+
   fotoActual.classList.add('cambiando');
   contador.textContent = `${actual + 1}/${momentos.length}`;
   momentoNum.textContent = `${String(actual + 1).padStart(2, '0')} / ${momentos.length}`;
@@ -126,9 +144,18 @@ function mostrar(index) {
   momentoTexto.textContent = momento.texto;
 
   setTimeout(() => {
+    fotoActual.onload = () => {
+      fotoActual.classList.remove('cambiando');
+      imagenLista = true;
+      verificarLoader();
+    };
+    fotoActual.onerror = () => {
+      fotoActual.classList.remove('cambiando');
+      imagenLista = true;
+      verificarLoader();
+    };
     fotoActual.src = momento.img;
     fotoActual.alt = `Momento ${actual + 1}: ${momento.titulo}`;
-    fotoActual.onload = () => fotoActual.classList.remove('cambiando');
   }, 140);
 }
 
@@ -136,7 +163,7 @@ function abrirAlbum() {
   if (overlay.classList.contains('abriendo')) return;
   overlay.classList.add('abriendo');
   pagina.classList.add('abierta');
-  mostrar(0);
+  mostrar(0, true);
   window.scrollTo(0, 0);
   setTimeout(() => {
     overlay.style.display = 'none';

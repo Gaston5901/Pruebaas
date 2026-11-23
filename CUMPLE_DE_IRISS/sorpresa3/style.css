@@ -360,10 +360,47 @@ body {
   cursor: pointer;
   box-shadow: 0 0 20px rgba(255, 42, 133, 0.7);
   font-family: 'Outfit', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.btn-enter-surprise:active {
+.btn-enter-surprise:disabled {
+  cursor: wait;
+  opacity: 0.82;
+  box-shadow: 0 0 14px rgba(255, 42, 133, 0.4);
+}
+
+.btn-enter-surprise:active:not(:disabled) {
   transform: scale(0.96);
+}
+
+.btn-enter-surprise.listo {
+  animation: botonListo 1.4s ease-in-out infinite alternate;
+}
+
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: girarBoton 0.8s linear infinite;
+}
+
+.btn-enter-surprise.listo .btn-spinner {
+  display: none;
+}
+
+@keyframes girarBoton {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes botonListo {
+  from { box-shadow: 0 0 14px rgba(255, 42, 133, 0.45); }
+  to { box-shadow: 0 0 26px rgba(255, 42, 133, 0.85); }
 }
 
 /* ==========================================================
