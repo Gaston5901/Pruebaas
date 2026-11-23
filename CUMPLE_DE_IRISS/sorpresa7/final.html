@@ -479,7 +479,7 @@
     <div class="loading-overlay" id="loadingOverlay" aria-live="polite">
         <div class="spinner-wrap">
             <div class="spinner-ring"></div>
-            <p class="loading-text" id="loadingText">Preparando tu sorpresa...</p>
+            <p class="loading-text" id="loadingText">Cargando detalle 1...</p>
         </div>
     </div>
 
@@ -641,7 +641,7 @@
         let indicePuntos = 0;
         const intervaloPuntos = setInterval(() => {
             indicePuntos = (indicePuntos + 1) % puntosCarga.length;
-            loadingText.textContent = 'Preparando tu sorpresa' + puntosCarga[indicePuntos];
+            loadingText.textContent = 'Cargando detalle 1' + puntosCarga[indicePuntos];
         }, 450);
 
         let experienciaIniciada = false;

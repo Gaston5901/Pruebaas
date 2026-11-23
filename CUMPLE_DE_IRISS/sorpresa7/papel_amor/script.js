@@ -19,8 +19,8 @@ class Paper {
     if (window.innerWidth <= 600) {
       const ancho = window.innerWidth;
       const alto = window.innerHeight;
-      this.currentPaperX = (index % 2 === 0 ? -1 : 1) * ancho * 0.075;
-      this.currentPaperY = (index - (total - 1) / 2) * alto * 0.032;
+      this.currentPaperX = (index % 2 === 0 ? -1 : 1) * ancho * 0.06;
+      this.currentPaperY = (index - (total - 1) / 2) * alto * 0.045;
       this.rotation = Math.random() * 12 - 6;
       paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
     }
@@ -84,11 +84,50 @@ class Paper {
 }
 
 const papers = Array.from(document.querySelectorAll('.paper'));
-papers.forEach((paper, index) => {
-  const p = new Paper();
-  p.init(paper, index, papers.length);
-});
+
+function iniciarPapeles() {
+  papers.forEach((paper, index) => {
+    const p = new Paper();
+    p.init(paper, index, papers.length);
+  });
+}
 
 document.getElementById('backButton').addEventListener('click', () => {
   window.location.href = '../loby.html';
 });
+
+const criticalImages = [
+  '1.png', '2.png', '3.png', '4.png', '8.jpg', '9.jpg',
+  'https://cdn.pixabay.com/photo/2016/03/31/19/25/cartoon-1294994__340.png'
+];
+
+function preloadImages(urls) {
+  return Promise.all(urls.map(src => new Promise(resolve => {
+    const img = new Image();
+    img.onload = img.onerror = resolve;
+    img.src = src;
+  })));
+}
+
+const loadingText = document.getElementById('loadingText');
+const puntosCarga = ['...', '.', '..', '...'];
+let indicePuntos = 0;
+const intervaloPuntos = setInterval(() => {
+  indicePuntos = (indicePuntos + 1) % puntosCarga.length;
+  loadingText.textContent = 'Cargando detalle 2' + puntosCarga[indicePuntos];
+}, 450);
+
+let experienciaIniciada = false;
+
+function startExperience() {
+  if (experienciaIniciada) return;
+  experienciaIniciada = true;
+  clearInterval(intervaloPuntos);
+  iniciarPapeles();
+  document.body.classList.add('is-ready');
+  document.getElementById('loadingOverlay').classList.add('hidden');
+}
+
+const cargaMinima = new Promise(resolve => setTimeout(resolve, 5000));
+Promise.all([preloadImages(criticalImages), cargaMinima]).then(startExperience);
+setTimeout(startExperience, 8000);
