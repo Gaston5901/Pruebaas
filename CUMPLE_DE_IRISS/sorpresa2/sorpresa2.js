@@ -2,7 +2,7 @@ const momentos = [
   {
     img: '../img/detalle.png',
     titulo: 'El comienzo',
-    texto: 'Acá va la historia de ese primer momento, de cómo empezó todo y de lo que sentí ese día.'
+    texto: 'Acá empieza todo, y la verdad es que todavía me cuesta poner en palabras lo que sentí ese día. Recuerdo cada detalle como si hubiera sido ayer: la luz, tu voz, esa forma tuya de estar que me desarma sin hacer nada. Nunca imaginé que algo tan simple pudiera quedarse conmigo para siempre, pero desde ese momento entendí que hay cosas que no se explican, se sienten. Me acuerdo de la charla que se nos fue de las manos, de las risas que no podíamos contener y de ese silencio que tampoco hacía falta llenar porque estábamos ahí, nomas. Pensé en vos mil veces después, en cómo me mirabas, en cómo me hacías sentir cómoda sin yo tener que fingir nada. Y cada vez que vuelvo a esto, vuelvo a sentir lo mismo: esa mezcla de nervios, de calma y de ganas de que el tiempo se quede un ratito más. Si hay un punto donde todo empezó a tomar sentido, creo que fue acá, en este momento que hoy se volvió para siempre parte de mi.'
   },
   {
     img: '../img/deseo.png',
