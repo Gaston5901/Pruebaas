@@ -257,3 +257,76 @@ body {
   .infinity-canvas { width: 80vw; max-height: 11dvh; }
   .firma-canvas { right: 10px; bottom: 10px; width: 52vw; max-height: 12dvh; }
 }
+
+.loading-overlay {
+  position: fixed; inset: 0; z-index: 1000000;
+  display: grid; place-items: center;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(125, 249, 255, 0.13) 0%, transparent 45%),
+    radial-gradient(circle at 50% 70%, rgba(255, 215, 106, 0.09) 0%, transparent 45%),
+    #05030a;
+  opacity: 1; visibility: visible;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.loading-overlay.hidden {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+
+.spinner-wrap {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  padding: 28px 36px;
+  border-radius: 22px;
+  border: 1px solid rgba(125, 249, 255, 0.32);
+  background: linear-gradient(145deg, rgba(20, 10, 34, 0.94), rgba(5, 3, 10, 0.96));
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6), 0 0 30px rgba(125, 249, 255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.spinner-figure {
+  position: relative;
+  width: 76px; height: 76px;
+}
+
+.spinner-ring {
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  border: 3px solid rgba(242, 184, 214, 0.18);
+  border-top-color: #f2b8d6;
+  border-right-color: #b9a6ef;
+  box-shadow: 0 0 18px rgba(242, 184, 214, 0.22), inset 0 0 12px rgba(185, 166, 239, 0.14);
+  animation: girarRostro 0.9s linear infinite;
+}
+
+.spinner-centro {
+  position: absolute; inset: 12px;
+  width: calc(100% - 24px); height: calc(100% - 24px);
+  fill: none;
+  stroke: #f8e6f1;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px rgba(242, 184, 214, 0.45));
+  animation: respirarRostro 1.3s ease-in-out infinite alternate;
+}
+
+.loading-text {
+  margin: 0;
+  color: #f1e7ef;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(242, 184, 214, 0.3);
+  display: inline-block;
+  width: 13rem; max-width: 100%; white-space: nowrap;
+}
+
+@keyframes girarRostro { to { transform: rotate(360deg); } }
+@keyframes respirarRostro {
+  from { opacity: 0.45; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1.04); }
+}
+
+body:not(.is-ready) .wrap,
+body:not(.is-ready) .volver { pointer-events: none; }

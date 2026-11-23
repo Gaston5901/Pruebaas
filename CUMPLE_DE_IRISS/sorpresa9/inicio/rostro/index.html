@@ -7,6 +7,20 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="loading-overlay" id="loadingOverlay" aria-live="polite">
+    <div class="spinner-wrap">
+      <div class="spinner-figure">
+        <div class="spinner-ring"></div>
+        <svg class="spinner-centro" viewBox="0 0 100 100" aria-hidden="true">
+          <path d="M50 18 L58 40 L82 40 L62 54 L70 78 L50 64 L30 78 L38 54 L18 40 L42 40 Z" />
+          <circle cx="24" cy="22" r="2" />
+          <circle cx="78" cy="20" r="1.6" />
+        </svg>
+      </div>
+      <p class="loading-text" id="loadingText">Cargando...</p>
+    </div>
+  </div>
+
   <button id="volver" class="volver" aria-label="Volver">←</button>
   <main class="wrap">
     <header class="top">

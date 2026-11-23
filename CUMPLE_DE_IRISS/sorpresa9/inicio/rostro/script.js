@@ -40,6 +40,8 @@ let duration = 10;
 let running = false;
 let drawColor = "#c07ad8";
 let source = null;
+let imagenInicialLista = false;
+let experienciaIniciada = false;
 
 function setStatus(text) {
   statusEl.textContent = text;
@@ -820,11 +822,50 @@ volverBtn.addEventListener("click", () => {
   window.location.href = "../final.html?capitulo=6&listo=1";
 });
 
+function iniciarDibujoSiListo() {
+  if (!experienciaIniciada || !imagenInicialLista || !source) return;
+  build();
+}
+
+function preloadImages(urls) {
+  return Promise.all(urls.map(src => new Promise(resolve => {
+    const img = new Image();
+    img.onload = img.onerror = resolve;
+    img.src = src;
+  })));
+}
+
 window.addEventListener("load", () => {
   const img = new Image();
   img.onload = () => {
     source = img;
-    build();
+    imagenInicialLista = true;
+    iniciarDibujoSiListo();
   };
   img.src = "Iriss.png";
 });
+
+const loadingText = document.getElementById("loadingText");
+const puntosCarga = ["...", ".", "..", "..."];
+let indicePuntos = 0;
+const intervaloPuntos = setInterval(() => {
+  indicePuntos = (indicePuntos + 1) % puntosCarga.length;
+  if (loadingText) loadingText.textContent = "Cargando" + puntosCarga[indicePuntos];
+}, 350);
+
+function startExperience() {
+  if (experienciaIniciada) return;
+  experienciaIniciada = true;
+  clearInterval(intervaloPuntos);
+  document.body.classList.add("is-ready");
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  if (loadingOverlay) {
+    loadingOverlay.classList.add("hidden");
+    setTimeout(() => { loadingOverlay.style.display = "none"; }, 400);
+  }
+  setTimeout(iniciarDibujoSiListo, 120);
+}
+
+const cargaMinima = new Promise(resolve => setTimeout(resolve, 5000));
+Promise.all([preloadImages(["Iriss.png", "Irisss.png", "firma.png"]), cargaMinima]).then(startExperience);
+setTimeout(startExperience, 7000);

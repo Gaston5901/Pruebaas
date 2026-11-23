@@ -13,10 +13,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Si estamos en la vista del Lobby
   if (document.getElementById('mainLobby')) {
+    preloadLobbyAssets();
     initWelcomeModal();
     initLobbyAnimations();
   }
 });
+
+function preloadLobbyAssets() {
+  if (window.__lobbyPreloadedImages) return;
+  window.__lobbyPreloadedImages = [];
+
+  const elements = document.querySelectorAll('.bts-member, .gift-img');
+  const urls = [...new Set([...elements].map(el => el.src || el.getAttribute('src')).filter(Boolean))];
+
+  urls.forEach(src => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.src = src;
+    window.__lobbyPreloadedImages.push(img);
+  });
+}
 
 /* ==========================================================
    1. LUCIÉRNAGAS Y AMBIENTE DE JARDÍN
@@ -47,6 +63,7 @@ function createFireflies() {
 }
 
 let audioCtx = null;
+let progresoCargaId = null;
 
 function getAudioCtx() {
   try {
@@ -337,39 +354,38 @@ function playMemberActivation(index) {
   } catch (e) {}
 }
 
-function playCompletionSound() {
-  const ctx = getAudioCtx();
-  if (!ctx) return;
+function iniciarProgresoCarga(loading, duracion) {
+  const barra = loading.querySelector('.lobby-loading-fill');
+  const texto = loading.querySelector('.lobby-loading-pct');
+  const progress = loading.querySelector('.lobby-loading-progress');
+  if (!barra || !texto) return;
 
-  try {
-    const now = ctx.currentTime;
-    const master = ctx.createGain();
-    master.gain.setValueAtTime(0.0001, now);
-    master.gain.exponentialRampToValueAtTime(0.13, now + 0.01);
-    master.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
-    master.connect(ctx.destination);
+  detenerProgresoCarga();
+  barra.style.width = '0%';
+  texto.textContent = '0%';
+  if (progress) progress.setAttribute('aria-valuenow', '0');
 
-    [523.25, 659.25, 783.99, 1046.5].forEach((freq, i) => {
-      const start = now + i * 0.07;
-      const partials = [
-        { ratio: 1, level: 0.55, decay: 1.25 },
-        { ratio: 2.01, level: 0.16, decay: 0.7 }
-      ];
-      partials.forEach((partial) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq * partial.ratio, start);
-        gain.gain.setValueAtTime(0.0001, start);
-        gain.gain.exponentialRampToValueAtTime(partial.level, start + 0.008);
-        gain.gain.exponentialRampToValueAtTime(0.0001, start + partial.decay);
-        osc.connect(gain);
-        gain.connect(master);
-        osc.start(start);
-        osc.stop(start + partial.decay + 0.02);
-      });
-    });
-  } catch (e) {}
+  const inicio = performance.now();
+  const paso = ahora => {
+    const avance = Math.min((ahora - inicio) / duracion, 1);
+    const valor = Math.floor(avance * 100);
+    barra.style.width = valor + '%';
+    texto.textContent = valor + '%';
+    if (progress) progress.setAttribute('aria-valuenow', String(valor));
+    if (avance < 1) {
+      progresoCargaId = requestAnimationFrame(paso);
+    } else {
+      progresoCargaId = null;
+    }
+  };
+  progresoCargaId = requestAnimationFrame(paso);
+}
+
+function detenerProgresoCarga() {
+  if (progresoCargaId !== null) {
+    cancelAnimationFrame(progresoCargaId);
+    progresoCargaId = null;
+  }
 }
 
 function initWelcomeModal() {
@@ -403,6 +419,7 @@ function initWelcomeModal() {
     setTimeout(() => modal.remove(), 300);
     if (loading) {
       loading.classList.add('visible');
+      iniciarProgresoCarga(loading, 10000);
       const progressRing = loading.querySelector('.loading-progress-value');
       if (progressRing) {
         progressRing.style.animation = 'none';
@@ -423,11 +440,11 @@ function initWelcomeModal() {
           playMemberActivation(index);
         }, 420 + index * 1280);
       });
-      setTimeout(() => playCompletionSound(), 420 + Math.max(members.length - 1, 0) * 1280 + 520);
     }
     setTimeout(() => {
       document.body.classList.remove('solo-modal');
       if (loading) loading.classList.remove('visible');
+      detenerProgresoCarga();
       document.documentElement.classList.add('lobby-listo');
     }, 10000);
   });
