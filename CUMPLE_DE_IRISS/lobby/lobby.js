@@ -354,6 +354,35 @@ function playMemberActivation(index) {
   } catch (e) {}
 }
 
+function playFinalTick() {
+  const ctx = getAudioCtx();
+  if (!ctx) return;
+
+  try {
+    const now = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.0001, now);
+    master.gain.exponentialRampToValueAtTime(0.09, now + 0.008);
+    master.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
+    master.connect(ctx.destination);
+
+    [1318.51, 1760].forEach((freq, i) => {
+      const start = now + i * 0.06;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, start);
+      gain.gain.setValueAtTime(0.0001, start);
+      gain.gain.exponentialRampToValueAtTime(i ? 0.35 : 0.5, start + 0.006);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.5);
+      osc.connect(gain);
+      gain.connect(master);
+      osc.start(start);
+      osc.stop(start + 0.52);
+    });
+  } catch (e) {}
+}
+
 function iniciarProgresoCarga(loading, duracion) {
   const barra = loading.querySelector('.lobby-loading-fill');
   const texto = loading.querySelector('.lobby-loading-pct');
@@ -440,6 +469,7 @@ function initWelcomeModal() {
           playMemberActivation(index);
         }, 420 + index * 1280);
       });
+      setTimeout(() => playFinalTick(), 9600);
     }
     setTimeout(() => {
       document.body.classList.remove('solo-modal');
