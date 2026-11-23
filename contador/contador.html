@@ -8,7 +8,7 @@
   <!-- Tipografía: Great Vibes para el título + Quicksand & Nunito -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@600;700;800&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -30,6 +30,7 @@
     body {
       margin: 0;
       min-height: 100vh;
+      min-height: 100dvh;
       font-family: 'Quicksand', 'Nunito', sans-serif;
       color: var(--text);
       display: flex;
@@ -82,6 +83,7 @@
       padding: clamp(46px, 6vw, 54px) clamp(38px, 6vw, 48px) clamp(34px, 5vw, 42px);
       max-width: 500px;
       width: 92%;
+      margin: auto;
       box-shadow:
         0 0 0 6px rgba(76, 201, 240, 0.08),
         0 26px 65px rgba(4, 7, 18, 0.65),
@@ -288,11 +290,11 @@
       justify-content: center;
       gap: 10px;
       margin: 0 auto 18px;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 7px 14px;
+      padding: 8px 16px;
       border-radius: 999px;
-      border: 1px solid rgba(255, 209, 102, 0.35);
-      box-shadow: inset 0 0 14px rgba(255, 209, 102, 0.06);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 231, 180, 0.28);
+      box-shadow: 0 6px 20px rgba(4, 7, 18, 0.28), inset 0 0 16px rgba(255, 209, 102, 0.06);
     }
 
     .infinity-box {
@@ -414,13 +416,12 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 6px;
       margin-bottom: 18px;
-      padding: 16px 18px;
-      border-radius: 22px;
-      background: linear-gradient(135deg, rgba(255, 107, 139, 0.2), rgba(255, 209, 102, 0.16), rgba(76, 201, 240, 0.16));
-      border: 1.5px solid rgba(255, 209, 102, 0.65);
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35), inset 0 0 20px rgba(255, 209, 102, 0.12);
+      padding: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
     }
 
     .llegada.show {
@@ -429,12 +430,13 @@
     }
 
     .llegada .big {
-      font-size: clamp(1.35rem, 5vw, 1.75rem);
-      font-weight: 800;
-      letter-spacing: 0.4px;
-      background: linear-gradient(90deg, #ffd166, #ff6b8b, #ffd166);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(1.05rem, 4vw, 1.35rem);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--gold);
+      text-shadow: 0 0 14px rgba(255, 209, 102, 0.4);
     }
 
     .llegada .sub {
@@ -453,7 +455,7 @@
        BOTÓN DE REGALO CON ESTILO Y COLOR
        ========================================== */
     .entrar-wrap {
-      margin-top: 20px;
+      margin-top: 32px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -467,16 +469,18 @@
       gap: 9px;
       padding: 14px 30px;
       border-radius: 999px;
-      background: linear-gradient(135deg, #ff5d8f 0%, #ff8fa3 45%, #ffd166 100%);
-      color: #141026;
-      font-weight: 800;
-      font-size: clamp(0.92rem, 3.2vw, 1.05rem);
-      letter-spacing: 0.3px;
+      background: linear-gradient(135deg, #f7e7b4 0%, #d4af37 50%, #f3d98b 100%);
+      color: #2a1f0b;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: clamp(1rem, 3.4vw, 1.15rem);
+      letter-spacing: 0.6px;
       text-decoration: none;
-      border: 2px solid rgba(255, 255, 255, 0.75);
+      border: 2px solid rgba(255, 246, 214, 0.85);
       box-shadow:
-        0 10px 26px rgba(255, 93, 143, 0.42),
-        0 0 0 4px rgba(255, 209, 102, 0.16);
+        0 10px 26px rgba(212, 175, 55, 0.3),
+        0 0 0 4px rgba(247, 231, 180, 0.14);
       transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
     }
 
@@ -484,12 +488,21 @@
       transform: translateY(-3px) scale(1.03);
       filter: brightness(1.06);
       box-shadow:
-        0 14px 32px rgba(255, 209, 102, 0.5),
-        0 0 0 6px rgba(255, 93, 143, 0.22);
+        0 14px 32px rgba(212, 175, 55, 0.45),
+        0 0 0 6px rgba(247, 231, 180, 0.22);
     }
 
     .entrar-ya:active {
       transform: translateY(0) scale(0.98);
+    }
+
+    .flecha {
+      display: inline-block;
+      transition: transform 0.25s ease;
+    }
+
+    .entrar-ya:hover .flecha {
+      transform: translateX(4px);
     }
 
     /* ==========================================
@@ -501,7 +514,7 @@
       justify-content: center;
       background: transparent;
       border: none;
-      padding: 2px 0 0;
+      padding: 18px 0 0;
     }
 
     .torta-img {
@@ -538,6 +551,53 @@
       transition: transform 0.2s ease, background 0.2s ease;
     }
     .volver-inicio:hover { transform: translateY(-2px); background: rgba(42, 25, 69, 0.96); }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 56px 20px;
+      }
+
+      .card-container {
+        width: 100%;
+        padding: 46px 26px 34px;
+      }
+
+      .lights-top { left: 20px; right: 20px; }
+      .lights-side { top: 40px; bottom: 40px; width: 16px; }
+      .lights-left { left: 2px; }
+      .lights-right { right: 2px; }
+
+      .avatar-wrapper {
+        width: clamp(56px, 17vw, 72px);
+        height: clamp(56px, 17vw, 72px);
+      }
+      .avatar-top-left { top: -22px; left: -12px; }
+      .avatar-top-right { top: -22px; right: -12px; }
+      .avatar-bottom-left { bottom: -22px; left: -12px; }
+      .avatar-bottom-right { bottom: -22px; right: -12px; }
+
+      .title-wrap { gap: 4px; margin-bottom: 10px; }
+      h1 { gap: 6px; }
+      .title-para { font-size: 1.9rem; }
+      .title-iriss { font-size: 2.35rem; }
+      .title-heart { font-size: 1.25rem; }
+
+      .infinity-row { gap: 8px; padding: 6px 12px; margin-bottom: 14px; }
+      .infinity-box { width: 72px; height: 30px; }
+      .progress-percent { font-size: 0.95rem; }
+
+      .countdown { gap: 5px; }
+      .box { padding: 9px 0; border-radius: 14px; }
+      .num { font-size: 1.05rem; }
+      .label { font-size: 0.55rem; letter-spacing: 0.5px; }
+
+      .llegada { margin-bottom: 14px; }
+      .llegada .sub { font-size: 0.76rem; }
+
+      .entrar-wrap { margin-top: 26px; gap: 10px; }
+      .entrar-ya { padding: 12px 18px; font-size: 0.95rem; }
+      .torta-img { width: 105px; }
+    }
   </style>
 </head>
 <body>
@@ -692,13 +752,13 @@
 
     <!-- MENSAJE LLEGÓ EL DÍA -->
     <div class="llegada" id="llegada">
-      <span class="big">¡Llegó el día! 🎂✨</span>
-      <span class="sub">Hoy es tu momento, disfrutalo a pleno 💜</span>
+      <span class="big">¡Llegó el día!</span>
+      <span class="sub">Hoy es tu momento, disfrutalo a pleno</span>
     </div>
 
     <!-- BOTÓN E IMAGEN torta.png SIN FONDO ABAJO -->
     <div class="entrar-wrap">
-      <a class="entrar-ya" href="../CUMPLE_DE_IRISS/index.html">Abrir mi regalo ahora 🎁</a>
+      <a class="entrar-ya" href="../CUMPLE_DE_IRISS/index.html">Abrir mi regalo <span class="flecha" aria-hidden="true">→</span></a>
 
       <div class="torta-img-wrap">
         <img class="torta-img" src="torta.png" alt="Torta de cumpleaños 21" onerror="this.style.display='none';">
@@ -732,7 +792,7 @@
   <script>
     function getDates() {
       const now = new Date();
-      const target = new Date(2026, 10, 23, 0, 0, 0, 0);
+      const target = new Date(2027, 0, 1, 0, 0, 0, 0);
       const start = new Date(2026, 0, 1, 0, 0, 0, 0);
       return { now, start, target };
     }
