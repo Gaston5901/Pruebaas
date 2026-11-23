@@ -1,196 +1,176 @@
-document.addEventListener('DOMContentLoaded', () => {
-  if (window.lucide) {
-    lucide.createIcons();
+const momentos = [
+  {
+    img: '../img/detalle.png',
+    titulo: 'El comienzo',
+    texto: 'Acá va la historia de ese primer momento, de cómo empezó todo y de lo que sentí ese día.'
+  },
+  {
+    img: '../img/deseo.png',
+    titulo: 'Nuestros deseos',
+    texto: 'Las cosas que soñamos juntos y los planes que fuimos armando sin darnos cuenta.'
+  },
+  {
+    img: '../img/memorias.png',
+    titulo: 'Memorias guardadas',
+    texto: 'Cada charla, cada risa y cada momento simple que se volvió un recuerdo enorme.'
+  },
+  {
+    img: '../img/jardin.png',
+    titulo: 'Nuestro jardín',
+    texto: 'Ese rincón que es solo nuestro, donde crecen las flores y las cosas lindas.'
+  },
+  {
+    img: '../img/carta2.png',
+    titulo: 'Lo que no te dije',
+    texto: 'Palabras que a veces no salen pero que pienso siempre. Acá va mi carta.'
+  },
+  {
+    img: '../img/bts.png',
+    titulo: 'Nuestra música',
+    texto: 'Las canciones que nos representan y que siempre me hacen acordar a vos.'
+  },
+  {
+    img: '../img/image.png',
+    titulo: 'Una sonrisa tuya',
+    texto: 'Acá escribo qué pasó en este momento y por qué se me quedó para siempre.'
+  },
+  {
+    img: '../img/image copy.png',
+    titulo: 'Ese día',
+    texto: 'Detalles del día, lo que hicimos, lo que reímos y lo que guardé.'
+  },
+  {
+    img: '../img/image copy 2.png',
+    titulo: 'Entre nosotros',
+    texto: 'Una charla que parecía común y terminó siendo de las que no se olvidan.'
+  },
+  {
+    img: '../img/image copy 3.png',
+    titulo: 'Cerca tuyo',
+    texto: 'Lo que sentí en este momento, contado con mis palabras.'
+  },
+  {
+    img: '../img/image copy 4.png',
+    titulo: 'Otro recuerdo',
+    texto: 'Acá va el suceso que quiero que nunca se nos pierda.'
+  },
+  {
+    img: '../img/image copy 5.png',
+    titulo: 'Momentos simples',
+    texto: 'De esos que parecen chiquitos y después se vuelven los más lindos.'
+  },
+  {
+    img: '../img/image copy 6.png',
+    titulo: 'Tu manera de ser',
+    texto: 'Lo que me gustó de vos en este momento y cómo me hizo sentir.'
+  },
+  {
+    img: '../img/cartaa.png',
+    titulo: 'Otra carta',
+    texto: 'Una cosa más que quería decirte y que acá por fin te escribo.'
+  },
+  {
+    img: '../img/wasa.png',
+    titulo: 'Nuestro código',
+    texto: 'Las palabras y los gestos que solo nosotros entendemos.'
+  },
+  {
+    img: '../img/9.png',
+    titulo: 'Sorpresas',
+    texto: 'Cuando las cosas salieron mejor de lo que imaginaba.'
+  },
+  {
+    img: '../img/listonrojo.png',
+    titulo: 'Detalles',
+    texto: 'Los detallitos que a lo mejor nadie más notó, pero yo sí guardé.'
+  },
+  {
+    img: '../sorpresa7/papel_amor/1.png',
+    titulo: 'Momento 18',
+    texto: 'Acá escribo lo que pasó en este momento.'
+  },
+  {
+    img: '../sorpresa7/papel_amor/2.png',
+    titulo: 'Momento 19',
+    texto: 'Acá escribo lo que pasó en este momento.'
+  },
+  {
+    img: '../sorpresa7/papel_amor/3.png',
+    titulo: 'Momento 20',
+    texto: 'Acá escribo lo que pasó en este momento.'
   }
+];
 
-  const overlay = document.getElementById('surpriseOverlay');
-  const btnAbrir = document.getElementById('btnOpenAlbum');
-  const libro = document.getElementById('libroWrap');
-  const tapa = document.getElementById('tapa');
-  const hojas = Array.from(document.querySelectorAll('.hoja'));
-  const btnVolver = document.getElementById('btnVolver');
-  const btnSiguiente = document.getElementById('btnSiguiente');
-  const navegacion = document.querySelector('.navegacion');
-  const contador = document.getElementById('contador');
+const overlay = document.getElementById('surpriseOverlay');
+const tapa = document.getElementById('tapa');
+const tapaBack = document.getElementById('tapaBack');
+const pagina = document.getElementById('pagina');
+const fotoActual = document.getElementById('fotoActual');
+const contador = document.getElementById('contador');
+const visorTitulo = document.getElementById('visorTitulo');
+const momentosLista = document.getElementById('momentosLista');
+const btnAnterior = document.getElementById('btnAnterior');
+const btnSiguiente = document.getElementById('btnSiguiente');
+const btnCerrar = document.querySelector('.btn-back');
 
-  const total = hojas.length;
-  let paginaActual = 0;
-  let animando = false;
+momentosLista.innerHTML = momentos.map((momento, i) => `
+  <article class="momento-item" data-index="${i}">
+    <span class="momento-num">${String(i + 1).padStart(2, '0')} / ${momentos.length}</span>
+    <h3 class="momento-titulo">${momento.titulo}</h3>
+    <p class="momento-texto">${momento.texto}</p>
+  </article>
+`).join('');
 
-  /* === AJUSTE RESPONSIVE DEL TAMAÑO DEL LIBRO === */
-  const RATIO = 4.1 / 3;
-  function ajustarTamaño() {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const topH = document.querySelector('.top-bar').offsetHeight;
-    const navH = navegacion.offsetHeight;
-    const gapY = parseFloat(getComputedStyle(document.body).gap) || 10;
-    const padY = Math.max(10, vh * 0.05);
-    const landscape = vw > vh;
+const items = Array.from(document.querySelectorAll('.momento-item'));
+let actual = 0;
 
-    const disponibleW = Math.max(200, vw - 24 - (landscape ? 110 : 0));
-    const disponibleH = Math.max(260, vh - topH - (landscape ? 0 : navH) - gapY * 2 - padY - 6);
+function mostrar(index) {
+  actual = (index + momentos.length) % momentos.length;
+  const momento = momentos[actual];
+  fotoActual.src = momento.img;
+  fotoActual.alt = `Momento ${actual + 1}: ${momento.titulo}`;
+  contador.textContent = `${actual + 1}/${momentos.length}`;
+  visorTitulo.textContent = momento.titulo;
+  items.forEach((item, i) => item.classList.toggle('activo', i === actual));
+}
 
-    let ancho = Math.min(disponibleW, disponibleH * 0.75);
+function abrirAlbum() {
+  if (overlay.classList.contains('abriendo')) return;
+  overlay.classList.add('abriendo');
+  pagina.classList.add('abierta');
+  mostrar(0);
+  window.scrollTo(0, 0);
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    overlay.classList.remove('abriendo');
+  }, 820);
+}
 
-    const maxAncho = 420;
-    ancho = Math.min(ancho, maxAncho);
-    ancho = Math.max(ancho, 180);
+function cerrarAlbum() {
+  if (overlay.classList.contains('cerrando')) return;
+  overlay.style.display = 'flex';
+  overlay.classList.remove('hidden');
+  overlay.classList.add('cerrando');
+  setTimeout(() => {
+    pagina.classList.remove('abierta');
+    overlay.classList.remove('cerrando');
+  }, 720);
+}
 
-    const alto = ancho * RATIO;
-    libro.style.width = ancho + 'px';
-    libro.style.height = alto + 'px';
-
-    if (window.innerWidth > 480) {
-      const maxAltoVh = vh * 0.72;
-      if (alto > maxAltoVh) {
-        const nuevoAncho = maxAltoVh * 0.75;
-        if (nuevoAncho >= 180) {
-          libro.style.width = nuevoAncho + 'px';
-          libro.style.height = nuevoAncho * RATIO + 'px';
-        }
-      }
-    }
-  }
-
-  function ajustarTodo() {
-    ajustarTamaño();
-    actualizarNavegacion();
-  }
-
-  window.addEventListener('resize', () => {
-    clearTimeout(window.__ajResize);
-    window.__ajResize = setTimeout(ajustarTamaño, 100);
-  });
-
-  window.addEventListener('orientationchange', () => {
-    setTimeout(ajustarTamaño, 250);
-  });
-
-  const ACTIVE_Z = total * 2;
-
-  function actualizarZ() {
-    hojas.forEach((hoja, i) => {
-      hoja.style.zIndex = hoja.classList.contains('volteada') ? (total - i + 1) : (ACTIVE_Z - i);
-    });
-  }
-
-  actualizarZ();
-  ajustarTodo();
-
-  function actualizarNavegacion() {
-    const abierto = libro.classList.contains('abierto');
-
-    if (!abierto) {
-      contador.textContent = '✦';
-      btnVolver.classList.remove('visible');
-      btnSiguiente.classList.add('oculto');
-      return;
-    }
-
-    btnSiguiente.classList.remove('oculto');
-    contador.textContent = `${paginaActual + 1}/${total}`;
-
-    btnVolver.classList.add('visible');
-
-    if (paginaActual >= total - 1) {
-      navegacion.classList.add('sin-siguiente');
-    } else {
-      navegacion.classList.remove('sin-siguiente');
-    }
-  }
-
-  function pasarPagina() {
-    if (paginaActual >= total - 1 || animando) return;
-    animando = true;
-
-    const hoja = hojas[paginaActual];
-    hoja.classList.add('volteada');
-    paginaActual++;
-    actualizarNavegacion();
-
-    finalizarFlip(hoja, () => {
-      actualizarZ();
-      animando = false;
-    });
-  }
-
-  function volverPagina() {
-    if (paginaActual <= 0 || animando) return;
-    animando = true;
-
-    paginaActual--;
-    const hoja = hojas[paginaActual];
-    hoja.classList.remove('volteada');
-    actualizarZ();
-    actualizarNavegacion();
-
-    finalizarFlip(hoja, () => {
-      animando = false;
-    });
-  }
-
-  function finalizarFlip(hoja, callback) {
-    const alTerminar = (e) => {
-      if (e.propertyName !== 'transform') return;
-      hoja.removeEventListener('transitionend', alTerminar);
-      clearTimeout(hoja._flipFallback);
-      callback();
-    };
-    hoja.addEventListener('transitionend', alTerminar);
-    hoja._flipFallback = setTimeout(() => {
-      hoja.removeEventListener('transitionend', alTerminar);
-      callback();
-    }, 1000);
-  }
-
-  function abrirLibro() {
-    if (libro.classList.contains('abierto')) return;
-    tapa.classList.add('abriendo');
-    setTimeout(() => {
-      libro.classList.add('abierto');
-      ajustarTodo();
-    }, 950);
-  }
-
-  function cerrarLibro() {
-    if (!libro.classList.contains('abierto')) return;
-    animando = true;
-    const alCerrar = () => {
-      animando = false;
-      ajustarTodo();
-    };
-    libro.classList.remove('abierto');
-    tapa.classList.add('volviendo');
-    setTimeout(() => {
-      tapa.classList.remove('abriendo', 'volviendo');
-      alCerrar();
-    }, 850);
-  }
-
-  btnAbrir.addEventListener('click', () => {
-    overlay.classList.add('hidden');
-    setTimeout(() => {
-      overlay.style.display = 'none';
-    }, 250);
-  });
-
-  tapa.addEventListener('click', abrirLibro);
-
-  btnSiguiente.addEventListener('click', pasarPagina);
-  btnVolver.addEventListener('click', () => {
-    if (paginaActual === 0) {
-      cerrarLibro();
-    } else {
-      volverPagina();
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === ' ') pasarPagina();
-    if (e.key === 'ArrowLeft') {
-      if (paginaActual === 0) cerrarLibro();
-      else volverPagina();
-    }
-  });
+tapa.addEventListener('click', abrirAlbum);
+tapaBack.addEventListener('click', (event) => event.stopPropagation());
+btnCerrar.addEventListener('click', (event) => {
+  event.preventDefault();
+  cerrarAlbum();
 });
+
+btnAnterior.addEventListener('click', () => mostrar(actual - 1));
+btnSiguiente.addEventListener('click', () => mostrar(actual + 1));
+
+document.addEventListener('keydown', (event) => {
+  if (!pagina.classList.contains('abierta')) return;
+  if (event.key === 'ArrowLeft') mostrar(actual - 1);
+  if (event.key === 'ArrowRight') mostrar(actual + 1);
+});
+
+mostrar(0);
