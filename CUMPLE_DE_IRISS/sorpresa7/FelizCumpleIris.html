@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Guadiss ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Dancing+Script:wght@700&family=Great+Vibes&family=Indie+Flower&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* --- ESTILOS GENERALES Y FONDO --- */
         *, ::before, ::after { box-sizing: border-box; }
@@ -72,9 +72,10 @@
             align-items: center;
             gap: 14px;
             color: #fff;
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(1.6rem, 5vw, 2.2rem);
-            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(1.8rem, 5.5vw, 2.6rem);
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65), 0 0 18px rgba(255, 182, 219, 0.45);
         }
 
         .regalo-tocable img {
@@ -400,11 +401,12 @@
 
         .modal-extra-title {
             margin: 0 0 12px;
-            font-family: 'Dancing Script', cursive;
-            font-size: clamp(1.6rem, 5vw, 2.1rem);
-            color: #111;
-            font-weight: 700;
-            text-shadow: 0 1px 6px rgba(255, 255, 255, 0.95);
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(1.9rem, 5.5vw, 2.5rem);
+            color: #9c245d;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.95), 0 2px 8px rgba(255, 255, 255, 0.9);
             background: rgba(255, 255, 255, 0.75);
             border-radius: 999px;
             padding: 6px 14px;
@@ -471,9 +473,107 @@
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
         }
+
+        .loading-overlay {
+            position: fixed; inset: 0; z-index: 100000;
+            display: grid; place-items: center;
+            background:
+                radial-gradient(ellipse at 50% -10%, rgba(255, 184, 96, 0.16) 0%, transparent 55%),
+                radial-gradient(circle at 10% 85%, rgba(120, 58, 26, 0.35) 0%, transparent 40%),
+                repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.14) 0 2px, transparent 2px 11px),
+                repeating-linear-gradient(0deg, rgba(255, 230, 190, 0.025) 0 1px, transparent 1px 15px),
+                linear-gradient(125deg, #3a1e14 0%, #1c0d09 58%, #2c150e 100%);
+            opacity: 1; visibility: visible;
+            transition: opacity 0.45s ease, visibility 0.45s ease;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0; visibility: hidden; pointer-events: none;
+        }
+
+        .spinner-wrap {
+            position: relative;
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
+            padding: 28px 38px;
+            border-radius: 18px;
+            border: 1px solid #6b4429;
+            background:
+                repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0 2px, transparent 2px 10px),
+                linear-gradient(160deg, #4a2a1b, #25120c);
+            box-shadow: inset 0 1px 0 rgba(255, 220, 160, 0.14), 0 16px 36px rgba(0, 0, 0, 0.5);
+            outline: 1px dashed rgba(255, 219, 163, 0.16);
+            outline-offset: -8px;
+        }
+
+        .spinner-wrap::before,
+        .spinner-wrap::after {
+            content: '✦'; position: absolute; font-size: 1.3rem;
+            animation: brilloSpinner 1.4s ease-in-out infinite alternate;
+        }
+
+        .spinner-wrap::before { left: 8px; top: 8px; color: #f0c987; }
+        .spinner-wrap::after { right: 10px; bottom: 38px; color: #c99657; animation-delay: 0.55s; }
+
+        .spinner-badge {
+            position: absolute; top: 10px; right: 14px;
+            color: #c9a471; font-family: 'Cinzel', Georgia, serif;
+            font-size: 0.8rem; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase;
+            -webkit-text-stroke: 0.3px rgba(0, 0, 0, 0.35);
+            text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.95), 0 1px 0 rgba(255, 225, 175, 0.25), 1px 0 1px rgba(0, 0, 0, 0.4);
+        }
+        .spinner-badge-num {
+            font-size: 1.2em; color: #ffdba3; letter-spacing: 1px;
+            text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.95), 0 1px 0 rgba(255, 235, 180, 0.45), 0 0 6px rgba(255, 190, 110, 0.35);
+        }
+
+        .spinner-ring {
+            position: relative;
+            width: 68px; height: 68px; border-radius: 50%;
+            border: 4px solid rgba(255, 219, 163, 0.25);
+            border-top-color: #f0c987;
+            border-right-color: #c99657;
+            box-shadow: 0 0 28px rgba(255, 190, 110, 0.35), inset 0 0 14px rgba(201, 150, 87, 0.3);
+            animation: girarSpinner 1s linear infinite;
+        }
+
+        .spinner-ring::after {
+            content: '♥'; position: absolute; inset: 0;
+            display: grid; place-items: center;
+            color: #ffdba3; font-size: 1.5rem; line-height: 1;
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+            animation: girarContrario 1s linear infinite;
+        }
+
+        .loading-text {
+            margin: 0; color: #ffdba3; font-size: 1.05rem; font-weight: bold;
+            font-family: 'Indie Flower', cursive;
+            text-align: center; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+            display: inline-block; width: 13.5rem; max-width: 100%; white-space: nowrap;
+        }
+
+        @keyframes girarSpinner { to { transform: rotate(360deg); } }
+        @keyframes girarContrario { to { transform: rotate(-360deg); } }
+        @keyframes brilloSpinner {
+            from { opacity: 0.25; transform: scale(0.7) rotate(0deg); }
+            to { opacity: 1; transform: scale(1.2) rotate(25deg); }
+        }
+
+        body:not(.is-ready) .regalo-tocable img,
+        body:not(.is-ready) .modal-extra-img {
+            animation-play-state: paused !important;
+        }
     </style>
 </head>
 <body>
+
+    <div class="loading-overlay" id="loadingOverlay" aria-live="polite">
+        <div class="spinner-wrap">
+            <span class="spinner-badge">𝔇𝔢𝔱𝔞𝔩𝔩𝔢 <span class="spinner-badge-num">3</span></span>
+            <div class="spinner-ring"></div>
+            <p class="loading-text" id="loadingText">Cargando tu sorpresa...</p>
+        </div>
+    </div>
 
     <div class="bg-gif-fijo"></div>
     <button class="back-button" id="backButton" type="button" aria-label="Volver al lobby" title="Volver al lobby">&#8592;</button>
@@ -523,6 +623,42 @@
                 closeModalExtra();
             }
         });
+
+        const criticalImages = [
+            'regalo.gif',
+            'https://i.pinimg.com/736x/e1/78/ed/e178ed3d4101a7f87d89db1b9338f440.jpg',
+            'https://i.pinimg.com/736x/ce/ea/8c/ceea8cc707d9cbe845db2e8ab6653889.jpg'
+        ];
+
+        function preloadImages(urls) {
+            return Promise.all(urls.map(src => new Promise(resolve => {
+                const img = new Image();
+                img.onload = img.onerror = resolve;
+                img.src = src;
+            })));
+        }
+
+        const loadingText = document.getElementById('loadingText');
+        const puntosCarga = ['...', '.', '..', '...'];
+        let indicePuntos = 0;
+        const intervaloPuntos = setInterval(() => {
+            indicePuntos = (indicePuntos + 1) % puntosCarga.length;
+            loadingText.textContent = 'Cargando tu sorpresa' + puntosCarga[indicePuntos];
+        }, 450);
+
+        let experienciaIniciada = false;
+
+        function startExperience() {
+            if (experienciaIniciada) return;
+            experienciaIniciada = true;
+            clearInterval(intervaloPuntos);
+            document.body.classList.add('is-ready');
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        const cargaMinima = new Promise(resolve => setTimeout(resolve, 5000));
+        Promise.all([preloadImages(criticalImages), cargaMinima]).then(startExperience);
+        setTimeout(startExperience, 8000);
     </script>
 </body>
 </html>

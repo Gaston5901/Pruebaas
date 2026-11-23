@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Indie+Flower&display=swap" rel="stylesheet">
     <title>Feliz Cumplee</title>
 
     <style>
@@ -288,6 +288,19 @@
         .spinner-wrap::before { left: 8px; top: 8px; color: #f0c987; }
         .spinner-wrap::after { right: 10px; bottom: 38px; color: #c99657; animation-delay: 0.55s; }
 
+        .spinner-badge {
+            position: absolute; top: 10px; right: 14px;
+            color: #c9a471; font-family: 'Cinzel', Georgia, serif;
+            font-size: 0.8rem; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase;
+            -webkit-text-stroke: 0.3px rgba(0, 0, 0, 0.35);
+            text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.95), 0 1px 0 rgba(255, 225, 175, 0.25), 1px 0 1px rgba(0, 0, 0, 0.4);
+        }
+        .spinner-badge-num {
+            font-size: 1.2em; color: #ffdba3; letter-spacing: 1px;
+            text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.95), 0 1px 0 rgba(255, 235, 180, 0.45), 0 0 6px rgba(255, 190, 110, 0.35);
+        }
+
         .spinner-ring {
             position: relative;
             width: 68px; height: 68px; border-radius: 50%;
@@ -478,8 +491,9 @@
 
     <div class="loading-overlay" id="loadingOverlay" aria-live="polite">
         <div class="spinner-wrap">
+            <span class="spinner-badge">𝔇𝔢𝔱𝔞𝔩𝔩𝔢 <span class="spinner-badge-num">1</span></span>
             <div class="spinner-ring"></div>
-            <p class="loading-text" id="loadingText">Cargando detalle 1...</p>
+            <p class="loading-text" id="loadingText">Cargando tu sorpresa...</p>
         </div>
     </div>
 
@@ -641,7 +655,7 @@
         let indicePuntos = 0;
         const intervaloPuntos = setInterval(() => {
             indicePuntos = (indicePuntos + 1) % puntosCarga.length;
-            loadingText.textContent = 'Cargando detalle 1' + puntosCarga[indicePuntos];
+            loadingText.textContent = 'Cargando tu sorpresa' + puntosCarga[indicePuntos];
         }, 450);
 
         let experienciaIniciada = false;

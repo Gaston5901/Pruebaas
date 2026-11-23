@@ -97,8 +97,7 @@ document.getElementById('backButton').addEventListener('click', () => {
 });
 
 const criticalImages = [
-  '1.png', '2.png', '3.png', '4.png', '8.jpg', '9.jpg',
-  'https://cdn.pixabay.com/photo/2016/03/31/19/25/cartoon-1294994__340.png'
+  '1.png', '2.png', '3.png', '4.png', '5.png', '8.jpg', '9.jpg'
 ];
 
 function preloadImages(urls) {
@@ -114,7 +113,7 @@ const puntosCarga = ['...', '.', '..', '...'];
 let indicePuntos = 0;
 const intervaloPuntos = setInterval(() => {
   indicePuntos = (indicePuntos + 1) % puntosCarga.length;
-  loadingText.textContent = 'Cargando detalle 2' + puntosCarga[indicePuntos];
+  loadingText.textContent = 'Cargando tu sorpresa' + puntosCarga[indicePuntos];
 }, 450);
 
 let experienciaIniciada = false;
