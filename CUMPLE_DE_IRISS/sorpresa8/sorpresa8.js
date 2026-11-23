@@ -168,11 +168,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnOpen) {
     btnOpen.addEventListener('click', () => {
-      if (overlay) overlay.classList.add('hidden');
-      reproducir();
-      setTimeout(() => {
-        if (overlay) overlay.style.display = 'none';
-      }, 400);
+      if (overlay) {
+        overlay.classList.add('hidden');
+        setTimeout(() => {
+          overlay.style.display = 'none';
+        }, 400);
+      }
+      mostrarSpinner();
+      Promise.all([videoPreload, new Promise(resolve => setTimeout(resolve, 5000))]).then(iniciarReproduccion);
+      setTimeout(iniciarReproduccion, 7000);
     });
   }
 
@@ -196,5 +200,72 @@ document.addEventListener('DOMContentLoaded', () => {
   if (marco) {
     marco.addEventListener('contextmenu', (e) => e.preventDefault());
     marco.addEventListener('click', (e) => e.preventDefault());
+  }
+
+  function preloadVideo(videoEl) {
+    if (!videoEl) return Promise.resolve();
+    return new Promise(resolve => {
+      let terminado = false;
+      const finish = () => {
+        if (terminado) return;
+        terminado = true;
+        videoEl.removeEventListener('canplay', finish);
+        videoEl.removeEventListener('loadeddata', finish);
+        videoEl.removeEventListener('error', finish);
+        clearTimeout(temporizador);
+        resolve();
+      };
+      const temporizador = setTimeout(finish, 9000);
+      videoEl.preload = 'auto';
+      videoEl.addEventListener('canplay', finish);
+      videoEl.addEventListener('loadeddata', finish);
+      videoEl.addEventListener('error', finish);
+      videoEl.load();
+    });
+  }
+
+  const videoPreload = Promise.all([preloadVideo(logo), preloadVideo(video)]);
+
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  const loadingText = document.getElementById('loadingText');
+  const puntosCarga = ['...', '.', '..', '...'];
+  let indicePuntos = 0;
+  let intervaloPuntos = null;
+
+  function iniciarPuntos() {
+    detenerPuntos();
+    intervaloPuntos = setInterval(() => {
+      indicePuntos = (indicePuntos + 1) % puntosCarga.length;
+      if (loadingText) loadingText.textContent = 'Cargando tu sorpresa' + puntosCarga[indicePuntos];
+    }, 300);
+  }
+
+  function detenerPuntos() {
+    if (intervaloPuntos) clearInterval(intervaloPuntos);
+    intervaloPuntos = null;
+    if (loadingText) loadingText.textContent = 'Cargando tu sorpresa...';
+  }
+
+  function mostrarSpinner() {
+    if (!loadingOverlay) return;
+    loadingOverlay.style.display = 'grid';
+    loadingOverlay.classList.add('activo');
+    iniciarPuntos();
+  }
+
+  function ocultarSpinner() {
+    detenerPuntos();
+    if (!loadingOverlay) return;
+    loadingOverlay.classList.remove('activo');
+    setTimeout(() => { loadingOverlay.style.display = 'none'; }, 250);
+  }
+
+  let reproduccionIniciada = false;
+
+  function iniciarReproduccion() {
+    if (reproduccionIniciada) return;
+    reproduccionIniciada = true;
+    ocultarSpinner();
+    reproducir();
   }
 });

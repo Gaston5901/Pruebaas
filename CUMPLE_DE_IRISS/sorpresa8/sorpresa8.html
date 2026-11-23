@@ -14,6 +14,13 @@
 
 <body>
 
+  <div class="loading-overlay" id="loadingOverlay" aria-live="polite">
+    <div class="spinner-wrap">
+      <div class="spinner-ring"></div>
+      <p class="loading-text" id="loadingText">Cargando tu sorpresa...</p>
+    </div>
+  </div>
+
   <!-- MODAL DE PRESENTACIÓN INICIAL -->
   <div class="surprise-intro-overlay" id="surpriseOverlay">
     <div class="surprise-intro-card">
@@ -41,7 +48,6 @@
     <section class="saludos" id="saludos" aria-hidden="true">
       <div class="saludos-cinta" id="saludosCinta">💗 Para vos, Iris 💗</div>
       <div class="conteo-logo" id="conteoLogo" aria-hidden="true">
-        <span class="conteo-texto">Espere, espere...</span>
         <span class="conteo-numero" id="conteoNumero">5</span>
       </div>
       <div class="saludos-marco" id="saludosMarco">
