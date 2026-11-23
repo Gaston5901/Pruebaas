@@ -40,15 +40,18 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  width: max-content;
+  width: min(620px, calc(100vw - 32px));
   max-width: calc(100vw - 32px);
   pointer-events: none;
 }
 
 .stage-note {
+  position: relative;
+  width: 100%;
   max-width: 100%;
-  padding: 0 10px;
-  text-align: center;
+  min-height: 1.4em;
+  padding: 0 10px 0 28px;
+  text-align: left;
   background: none;
   border: none;
   color: #ffd1e8;
@@ -62,6 +65,18 @@ body {
   animation: note-in 0.9s ease forwards;
 }
 
+.stage-note::before {
+  content: '✦';
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff0a8;
+  font-style: normal;
+  font-size: 0.72rem;
+  text-shadow: 0 0 8px #ffcf70, 0 0 14px rgba(255, 112, 182, 0.72);
+}
+
 /* Nombre que se va formando arriba */
 .stage-name {
   position: fixed;
@@ -69,19 +84,99 @@ body {
   left: 0;
   right: 0;
   margin: 0 auto;
-  width: max-content;
-  max-width: calc(100vw - 32px);
+  width: min(500px, calc(100vw - 32px));
   text-align: center;
   z-index: 6;
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-weight: 600;
-  font-size: clamp(1.3rem, 2.6vw, 2rem);
-  letter-spacing: 0.04em;
-  line-height: 1.1;
-  color: #ffe0f0;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 16px rgba(255, 90, 170, 0.55));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  line-height: 1;
+  filter: drop-shadow(0 3px 12px rgba(0, 0, 0, 0.75));
   pointer-events: none;
+}
+
+.name-prelude {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.62rem;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.55em;
+  color: #dcbcff;
+  text-shadow: 0 0 12px rgba(196, 142, 255, 0.8);
+  opacity: 0;
+  animation: name-form 0.7s ease forwards 0.15s;
+}
+
+.name-first {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.15rem, 7vw, 3.65rem);
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  background: linear-gradient(115deg, #fff8fb 8%, #ffd7e9 32%, #e5c4ff 58%, #fff4ca 86%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 22px rgba(255, 180, 220, 0.28);
+  opacity: 0;
+  transform: translateY(12px) scale(0.96);
+  animation: name-main-in 1s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.35s;
+}
+
+.name-last {
+  position: relative;
+  margin-top: 4px;
+  padding: 0 28px;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(0.68rem, 2vw, 0.9rem);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: #ffc5df;
+  text-shadow: 0 0 12px rgba(255, 112, 182, 0.7);
+  opacity: 0;
+  animation: name-form 0.8s ease forwards 0.75s;
+}
+
+.name-last i {
+  position: absolute;
+  right: 7px;
+  top: -1px;
+  color: #fff0a8;
+  font-style: normal;
+  text-shadow: 0 0 10px #ffd98a;
+}
+
+.stage-name::before,
+.stage-name::after {
+  content: '';
+  position: absolute;
+  top: 38px;
+  width: clamp(36px, 12vw, 82px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 192, 224, 0.75));
+  opacity: 0;
+  animation: name-form 0.8s ease forwards 0.8s;
+}
+
+.stage-name::before { left: 50%; transform: translateX(-215px); }
+.stage-name::after {
+  right: 50%;
+  transform: translateX(215px) scaleX(-1);
+}
+
+.stage-name.is-building .name-first,
+.stage-name.is-building .name-prelude,
+.stage-name.is-building .name-last,
+.stage-name.is-building::before,
+.stage-name.is-building::after {
+  animation-play-state: running;
+}
+
+@keyframes name-main-in {
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .stage-name .name-letter {
@@ -237,7 +332,17 @@ body {
 
 @media (max-width: 480px) {
   .surprise-title { font-size: 1.5rem; }
-  .stage-notes { bottom: 56px; gap: 4px; }
-  .stage-note { font-size: 0.85rem; padding: 0 8px; }
-  .stage-name { top: 54px; font-size: clamp(1.3rem, 6vw, 1.8rem); }
+  .stage-notes { bottom: 56px; gap: 4px; width: calc(100vw - 24px); }
+  .stage-note { font-size: 0.85rem; padding: 0 8px 0 24px; }
+  .stage-name { top: 48px; }
+  .name-first { font-size: clamp(1.85rem, 9vw, 2.35rem); }
+  .name-prelude { font-size: 0.52rem; }
+  .name-last { font-size: 0.62rem; letter-spacing: 0.32em; }
+  .stage-name::before,
+  .stage-name::after {
+    top: 31px;
+    width: 24px;
+  }
+  .stage-name::before { transform: translateX(-145px); }
+  .stage-name::after { transform: translateX(145px) scaleX(-1); }
 }

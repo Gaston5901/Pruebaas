@@ -123,10 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.stroke();
     } else {
       ctx.fillStyle = BLOSSOM;
-      ctx.shadowColor = 'rgba(255, 255, 255, 0.9)';
-      ctx.shadowBlur = 12;
+      ctx.shadowColor = 'rgba(255, 255, 255, 1)';
+      ctx.shadowBlur = 20;
       ctx.beginPath();
-      ctx.arc(ox + p.x * S, oy - p.y * S, Math.max(1, 2.2 * S), 0, Math.PI * 2);
+      ctx.arc(ox + p.x * S, oy - p.y * S, Math.max(1.2, 2.6 * S), 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
     }
@@ -154,38 +154,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function buildName() {
     if (!nameEl || nameEl.dataset.built) return;
-    const txt = nameEl.dataset.text || '';
-    nameEl.innerHTML = '';
-    for (let i = 0; i < txt.length; i++) {
-      const span = document.createElement('span');
-      if (txt[i] === ' ') {
-        span.className = 'name-space';
-      } else {
-        span.className = 'name-letter';
-        span.textContent = txt[i];
-      }
-      span.style.setProperty('--i', i);
-      nameEl.appendChild(span);
-    }
+    nameEl.classList.add('is-building');
+    nameEl.innerHTML = `
+      <span class="name-first">Iriss Guadalupe</span>
+      <span class="name-last">Tevez <i>✦</i></span>
+    `;
     nameEl.dataset.built = '1';
   }
 
   function endDraw() {
     done = true;
     playing = false;
-    addNote('Que se te cumpla todo lo que pediste, Señoritaa🌹');
   }
 
   function play() {
     if (playing) return;
     playing = true;
     buildName();
-    addNote('Señoritaaa, pedí tu deseo en voz baja, que este árbol sabe escuchar.');
+    addNote('Tus sueños tienen permiso de hacerse realidad');
 
     const total = prims.length;
     const DURACION = 9600; // misma lentitud que antes, pero fluida
     const inicio = performance.now();
-    let midNoteShown = false;
+    let secondNoteShown = false;
+    let thirdNoteShown = false;
+    let fourthNoteShown = false;
     drawnPrims = 0;
 
     (function frame(now) {
@@ -197,9 +190,19 @@ document.addEventListener('DOMContentLoaded', () => {
         drawnPrims++;
       }
 
-      if (!midNoteShown && t >= 0.5) {
-        midNoteShown = true;
-        addNote('Miralo crecer, cada rama es un pedacito de todo lo que te quiero.');
+      if (!secondNoteShown && t >= 0.25) {
+        secondNoteShown = true;
+        addNote('Lo bonito empieza cuando vos creés en vos');
+      }
+
+      if (!thirdNoteShown && t >= 0.5) {
+        thirdNoteShown = true;
+        addNote('Cada año sos más fuerte, más sabia y más vos');
+      }
+
+      if (!fourthNoteShown && t >= 0.75) {
+        fourthNoteShown = true;
+        addNote('Nunca dejés de brillar Señoritaa 🌹');
       }
 
       if (t < 1) {
@@ -227,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
         sway: 0.6 + Math.random() * 1.6,
         phase: Math.random() * Math.PI * 2,
         size: 2.5 + Math.random() * 2.5,
-        alpha: 0.55 + Math.random() * 0.35,
+        alpha: 0.75 + Math.random() * 0.25,
         rot: Math.random() * Math.PI
       });
     }
@@ -256,8 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.rotate(p.rot);
       ctx.globalAlpha = p.alpha;
       ctx.fillStyle = BLOSSOM;
-      ctx.shadowColor = 'rgba(255, 255, 255, 0.7)';
-      ctx.shadowBlur = 8;
+      ctx.shadowColor = 'rgba(255, 255, 255, 1)';
+      ctx.shadowBlur = 14;
       ctx.beginPath();
       ctx.arc(0, 0, p.size, 0, Math.PI * 2);
       ctx.fill();
