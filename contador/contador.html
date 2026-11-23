@@ -88,6 +88,131 @@
         0 0 0 6px rgba(76, 201, 240, 0.08),
         0 26px 65px rgba(4, 7, 18, 0.65),
         inset 0 1px 1px rgba(255, 255, 255, 0.18);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .card-container.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .loader-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(600px 500px at 50% 45%, rgba(255, 209, 102, 0.10), transparent 65%),
+        linear-gradient(150deg, #0b1021, #171c3a 55%, #2a1945);
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+
+    .loader-overlay.oculto {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-frame {
+      width: 96px;
+      height: 96px;
+      overflow: visible;
+      filter: drop-shadow(0 0 10px rgba(255, 209, 102, 0.75))
+              drop-shadow(0 0 24px rgba(255, 240, 179, 0.45));
+      animation: loaderSpin 2.2s linear infinite;
+    }
+
+    @keyframes loaderSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .loader-frame {
+      position: relative;
+      z-index: 2;
+    }
+
+    .loader-glow {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 150px;
+      height: 150px;
+      border-radius: 24px;
+      background: radial-gradient(circle, rgba(255, 209, 102, 0.2), transparent 70%);
+      filter: blur(8px);
+      animation: glowPulse 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      from { transform: rotate(45deg) scale(0.9); opacity: 0.6; }
+      to { transform: rotate(45deg) scale(1.15); opacity: 1; }
+    }
+
+    .loader-texto {
+      position: relative;
+      z-index: 2;
+      margin-top: 24px;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(1rem, 4vw, 1.2rem);
+      letter-spacing: 0.6px;
+      color: var(--gold);
+      text-shadow: 0 0 14px rgba(255, 209, 102, 0.45);
+    }
+
+    .loader-puntos {
+      display: inline-flex;
+      gap: 6px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .loader-puntos i {
+      width: 6px;
+      height: 6px;
+      border: 1px solid var(--gold);
+      transform: rotate(45deg);
+      animation: puntoBrillo 1.2s ease-in-out infinite;
+    }
+
+    .loader-puntos i:nth-child(2) { animation-delay: 0.2s; }
+    .loader-puntos i:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes puntoBrillo {
+      0%, 100% { opacity: 0.25; box-shadow: none; }
+      50% { opacity: 1; box-shadow: 0 0 8px var(--gold); }
+    }
+
+    .loader-linea {
+      position: relative;
+      z-index: 2;
+      width: 160px;
+      height: 3px;
+      margin-top: 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      overflow: hidden;
+    }
+
+    .loader-linea span {
+      position: absolute;
+      inset: 0;
+      width: 40%;
+      background: linear-gradient(90deg, transparent, #ffd166, transparent);
+      animation: brilloLinea 1.4s linear infinite;
+    }
+
+    @keyframes brilloLinea {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(350%); }
     }
 
     /* ==========================================
@@ -192,7 +317,9 @@
       height: calc(100% + 8px);
       pointer-events: none;
       z-index: 3;
-      filter: drop-shadow(0 2px 8px rgba(255, 209, 102, 0.45));
+      filter: drop-shadow(0 0 6px rgba(255, 240, 179, 0.75))
+              drop-shadow(0 0 14px rgba(255, 209, 102, 0.55))
+              drop-shadow(0 2px 10px rgba(255, 209, 102, 0.5));
     }
 
     .gold-crown-gem {
@@ -204,7 +331,7 @@
       font-size: clamp(0.85rem, 2.5vw, 1.05rem);
       line-height: 1;
       color: var(--gold-bright);
-      text-shadow: 0 0 10px rgba(255, 209, 102, 0.9);
+      text-shadow: 0 0 8px rgba(255, 240, 179, 0.95), 0 0 18px rgba(255, 209, 102, 0.8), 0 0 28px rgba(255, 209, 102, 0.45);
       pointer-events: none;
     }
 
@@ -227,6 +354,34 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    .img-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 24px;
+      height: 24px;
+      border: 2px solid rgba(255, 240, 179, 0.25);
+      border-top-color: #ffd166;
+      border-right-color: #fff8dc;
+      border-radius: 3px;
+      transform: translate(-50%, -50%) rotate(45deg);
+      animation: diamondSpin 0.9s linear infinite;
+      z-index: 6;
+      pointer-events: none;
+      filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.7));
+    }
+
+    .torta-spinner {
+      width: 34px;
+      height: 34px;
+      border-width: 3px;
+    }
+
+    @keyframes diamondSpin {
+      from { transform: translate(-50%, -50%) rotate(45deg); }
+      to { transform: translate(-50%, -50%) rotate(405deg); }
     }
 
     /* ==========================================
@@ -509,6 +664,7 @@
        CONTENEDOR PARA TU IMAGEN torta.png (SIN FONDO)
        ========================================== */
     .torta-img-wrap {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -605,9 +761,9 @@
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <linearGradient id="goldRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stop-color="#fff0b3" />
-        <stop offset="50%" stop-color="#ffd166" />
-        <stop offset="100%" stop-color="#d99b26" />
+          <stop offset="0%" stop-color="#fff8dc" />
+          <stop offset="50%" stop-color="#ffdd85" />
+          <stop offset="100%" stop-color="#e6ad35" />
       </linearGradient>
 
       <linearGradient id="infinityGoldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -642,6 +798,16 @@
 
   <!-- Fondo con partículas -->
   <div class="bg-sparkles"></div>
+
+  <!-- Cargador con marco dorado -->
+  <div class="loader-overlay" id="loader">
+    <div class="loader-glow" aria-hidden="true"></div>
+    <svg class="loader-frame" viewBox="0 0 100 100" aria-hidden="true">
+      <use href="#gold-frame-decor"></use>
+    </svg>
+    <div class="loader-texto">Preparando tu sorpresa <span class="loader-puntos" aria-hidden="true"><i></i><i></i><i></i></span></div>
+    <div class="loader-linea" aria-hidden="true"><span></span></div>
+  </div>
 
   <!-- Tarjeta central -->
   <div class="card-container">
@@ -685,6 +851,7 @@
         <use href="#gold-frame-decor"></use>
       </svg>
       <div class="avatar-circle">
+        <span class="img-spinner" aria-hidden="true"></span>
         <img src="foto1.jpeg" alt="Foto 1" onerror="this.onerror=null; this.parentNode.innerHTML='🌸';">
       </div>
     </div>
@@ -696,6 +863,7 @@
         <use href="#gold-frame-decor"></use>
       </svg>
       <div class="avatar-circle">
+        <span class="img-spinner" aria-hidden="true"></span>
         <img src="foto2.png" alt="Foto 2" onerror="this.onerror=null; this.parentNode.innerHTML='✨';">
       </div>
     </div>
@@ -761,6 +929,7 @@
       <a class="entrar-ya" href="../CUMPLE_DE_IRISS/index.html">Abrir mi regalo <span class="flecha" aria-hidden="true">→</span></a>
 
       <div class="torta-img-wrap">
+        <span class="img-spinner torta-spinner" aria-hidden="true"></span>
         <img class="torta-img" src="torta.png" alt="Torta de cumpleaños 21" onerror="this.style.display='none';">
       </div>
     </div>
@@ -772,6 +941,7 @@
         <use href="#gold-frame-decor"></use>
       </svg>
       <div class="avatar-circle">
+        <span class="img-spinner" aria-hidden="true"></span>
         <img src="hope.png" alt="Foto 3" onerror="this.onerror=null; this.parentNode.innerHTML='💖';">
       </div>
     </div>
@@ -783,6 +953,7 @@
         <use href="#gold-frame-decor"></use>
       </svg>
       <div class="avatar-circle">
+        <span class="img-spinner" aria-hidden="true"></span>
         <img src="image.png" alt="Foto 4" onerror="this.onerror=null; this.parentNode.innerHTML='🌷';">
       </div>
     </div>
@@ -857,6 +1028,43 @@
       setInfinityProgress(percentage);
       progressText.textContent = percentage.toFixed(1) + "%";
     }
+
+    const loaderEl = document.getElementById("loader");
+    const cardEl = document.querySelector(".card-container");
+    const loaderStart = Date.now();
+    let imgsPendientes = 0;
+
+    const terminarLoader = () => {
+      const restante = Math.max(0, 2000 - (Date.now() - loaderStart));
+      setTimeout(() => {
+        loaderEl.classList.add("oculto");
+        cardEl.classList.add("visible");
+      }, restante);
+    };
+
+    document.querySelectorAll(".avatar-circle img, .torta-img").forEach((img) => {
+      const spinner = img.parentElement.querySelector(".img-spinner");
+      if (!spinner) return;
+      imgsPendientes++;
+      const alCargar = () => {
+        spinner.style.display = "none";
+        imgsPendientes--;
+        if (imgsPendientes === 0) terminarLoader();
+      };
+      if (img.complete) {
+        alCargar();
+      } else {
+        img.addEventListener("load", alCargar);
+        img.addEventListener("error", alCargar);
+      }
+    });
+
+    setTimeout(() => {
+      if (imgsPendientes > 0) {
+        imgsPendientes = 0;
+        terminarLoader();
+      }
+    }, 8000);
 
     setInterval(tick, 1000);
     tick();
