@@ -375,6 +375,91 @@ body {
   box-shadow: 0 0 20px rgba(255, 42, 133, 0.7);
 }
 
+.cancion-dedicatoria {
+  position: relative;
+  z-index: 2;
+  margin: 34px 0 6px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #fff0f5, #fff9fb);
+  border: 1px solid #f7c5d8;
+  box-shadow: 0 8px 20px rgba(180, 120, 140, 0.12);
+}
+
+.cancion-titulo {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.35rem;
+  color: #c84b7a;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.reproductor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reproductor-btn {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #f4b4c6;
+  border-radius: 50%;
+  background: #fff;
+  color: #c84b7a;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(200, 75, 122, 0.12);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.reproductor-btn:active {
+  transform: scale(0.93);
+}
+
+.reproductor-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.reproductor-nombre {
+  color: #8e3158;
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reproductor-barra {
+  height: 4px;
+  border-radius: 999px;
+  background: #f7dce7;
+  overflow: hidden;
+}
+
+.reproductor-barra span {
+  display: block;
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ff8ac4, #c84b7a);
+  transition: width 0.2s linear;
+}
+
+.reproductor-tiempo {
+  color: #8c5b6e;
+  font-size: 0.65rem;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ADAPTACIÓN MOBILE */
 @media (max-width: 480px) {
   body {
@@ -447,5 +532,30 @@ body {
   .handwritten-signature small {
     font-size: 0.74rem;
     line-height: 1.5;
+  }
+}
+
+@media (max-width: 480px) {
+  .cancion-dedicatoria {
+    margin: 28px 0 4px;
+    padding: 16px 12px;
+  }
+
+  .cancion-titulo {
+    font-size: 1.2rem;
+  }
+
+  .reproductor {
+    gap: 7px;
+  }
+
+  .reproductor-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 0.8rem;
+  }
+
+  .reproductor-nombre {
+    font-size: 0.76rem;
   }
 }
