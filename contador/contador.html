@@ -510,13 +510,13 @@
     }
 
     /* ==========================================
-       INFINITO COMPACTO + 100% DORADO
+       INFINITO COMPACTO + 21 PARA EL DÍA
        ========================================== */
-    .infinity-row {
+    .progress-row {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
       margin: 0 auto 18px;
       padding: 8px 16px;
       border-radius: 999px;
@@ -562,6 +562,25 @@
       fill: #fff8d6;
       filter: drop-shadow(0 0 5px #ffd166) drop-shadow(0 0 9px #ffffff);
     }
+
+    .progress-21 {
+      display: none;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 900;
+      font-size: 2.1rem;
+      line-height: 1;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #fff8d6 0%, #ffd166 50%, #e5a524 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 9px rgba(255, 209, 102, 0.85));
+      user-select: none;
+    }
+
+    .progress-row.mostrar21 .infinity-box { display: none; }
+    .progress-row.mostrar21 .progress-21 { display: inline-block; }
 
     .progress-percent-wrap {
       position: relative;
@@ -811,8 +830,9 @@
       .title-iriss { font-size: 2.35rem; }
       .title-heart { font-size: 1.25rem; }
 
-      .infinity-row { gap: 8px; padding: 6px 12px; margin-bottom: 14px; }
+      .progress-row { gap: 8px; padding: 6px 12px; margin-bottom: 14px; }
       .infinity-box { width: 72px; height: 30px; }
+      .progress-21 { font-size: 1.75rem; }
       .progress-percent { font-size: 0.95rem; }
 
       .countdown { gap: 5px; }
@@ -964,9 +984,9 @@
       <span class="title-heart" aria-hidden="true">💜</span>
     </div>
 
-    <!-- INFINITO COMPACTO + 100% DORADO -->
-    <div class="infinity-row">
-      <div class="infinity-box">
+    <!-- INFINITO COMPACTO + 21 PARA EL DÍA -->
+    <div class="progress-row" id="progress-row">
+      <div class="infinity-box" id="infinity-box" aria-hidden="true">
         <svg class="infinity-svg" viewBox="0 0 140 60" aria-hidden="true">
           <path class="infinity-track"
                 d="M 70,30 C 52,6 16,6 16,30 C 16,54 52,54 70,30 C 88,6 124,6 124,30 C 124,54 88,54 70,30 Z" />
@@ -978,6 +998,8 @@
           </circle>
         </svg>
       </div>
+
+      <span class="progress-21" id="progress-21" aria-hidden="true">21</span>
 
       <span class="progress-percent-wrap">
         <span class="progress-percent" id="progress-text">0%</span>
@@ -1060,6 +1082,7 @@
     const elM = document.getElementById("m");
     const elS = document.getElementById("s");
     const infinityFill = document.getElementById("infinity-fill");
+    const progressRow = document.getElementById("progress-row");
     const progressText = document.getElementById("progress-text");
     const countdownEl = document.getElementById("countdown");
     const llegadaEl = document.getElementById("llegada");
@@ -1081,6 +1104,7 @@
 
       if (diff <= 0) {
         setInfinityProgress(100);
+        progressRow.classList.add("mostrar21");
         progressText.textContent = "100%";
 
         if (!llegado) {
