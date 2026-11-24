@@ -1,10 +1,12 @@
 const textoPrimerMomento = 'Acá empieza todo, y la verdad es que todavía me cuesta poner en palabras lo que sentí ese día. Recuerdo cada detalle como si hubiera sido ayer: la luz, tu voz, esa forma tuya de estar que me desarma sin hacer nada. Nunca imaginé que algo tan simple pudiera quedarse conmigo para siempre, pero desde ese momento entendí que hay cosas que no se explican, se sienten. Me acuerdo de la charla que se nos fue de las manos, de las risas que no podíamos contener y de ese silencio que tampoco hacía falta llenar porque estábamos ahí, nomas. Pensé en vos mil veces después, en cómo me mirabas, en cómo me hacías sentir cómoda sin yo tener que fingir nada. Y cada vez que vuelvo a esto, vuelvo a sentir lo mismo: esa mezcla de nervios, de calma y de ganas de que el tiempo se quede un ratito más. Si hay un punto donde todo empezó a tomar sentido, creo que fue acá, en este momento que hoy se volvió para siempre parte de mi.';
 
-const momentos = Array.from({ length: 83 }, (_, i) => {
+const BASE = 'https://raw.githubusercontent.com/Gaston5901/sorp2/main/img/';
+
+const momentos = Array.from({ length: 86 }, (_, i) => {
   const numero = i + 1;
-  const esVideo = numero >= 81;
+  const esVideo = numero >= 84;
   return {
-    img: `img/${numero}.${esVideo ? 'mp4' : 'png'}`,
+    img: BASE + numero + '.' + (esVideo ? 'mp4' : 'png'),
     tipo: esVideo ? 'video' : 'imagen',
     giro: 0,
     titulo: numero === 1 ? 'El comienzo' : `Momento ${String(numero).padStart(2, '0')}`,
@@ -16,9 +18,9 @@ const overlay = document.getElementById('surpriseOverlay');
 const tapa = document.getElementById('tapa');
 const tapaBack = document.getElementById('tapaBack');
 const pagina = document.getElementById('pagina');
-const visorFoto = document.getElementById('visorFoto');
 const fotoActual = document.getElementById('fotoActual');
 const videoActual = document.getElementById('videoActual');
+const videoSource = document.getElementById('videoSource');
 const visorLoader = document.getElementById('visorLoader');
 const contador = document.getElementById('contador');
 const momentoNum = document.getElementById('momentoNum');
@@ -31,6 +33,7 @@ const btnGirar = document.getElementById('btnGirar');
 
 let actual = 0;
 let tokenCarga = 0;
+const precargados = new Map();
 
 function iniciarCarga() {
   const token = ++tokenCarga;
@@ -44,6 +47,7 @@ function iniciarCarga() {
       visorLoader.classList.remove('activo');
       fotoActual.classList.remove('cambiando');
       videoActual.classList.remove('cambiando');
+      precargarSiguiente();
     }, restante);
   };
 }
@@ -56,6 +60,28 @@ function aplicarGiro() {
   const etiqueta = `Girar ${momento.tipo === 'video' ? 'video' : 'foto'} (${giro}°)`;
   btnGirar.setAttribute('aria-label', etiqueta);
   btnGirar.title = etiqueta;
+}
+
+function precargarSiguiente() {
+  const indice = (actual + 1) % momentos.length;
+  if (precargados.has(indice)) return;
+  const momento = momentos[indice];
+
+  if (momento.tipo === 'video') {
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+    video.muted = true;
+    const source = document.createElement('source');
+    source.src = momento.img;
+    source.type = 'video/mp4';
+    video.appendChild(source);
+    precargados.set(indice, video);
+    video.load();
+  } else {
+    const imagen = new Image();
+    imagen.src = momento.img;
+    precargados.set(indice, imagen);
+  }
 }
 
 function mostrar(index) {
@@ -82,13 +108,13 @@ function mostrar(index) {
       videoActual.onloadeddata = terminar;
       videoActual.oncanplay = terminar;
       videoActual.onerror = terminar;
-      videoActual.src = momento.img;
+      videoSource.src = momento.img;
       videoActual.load();
     } else {
       videoActual.pause();
       videoActual.classList.add('oculto');
       videoActual.style.display = 'none';
-      videoActual.removeAttribute('src');
+      videoSource.removeAttribute('src');
       fotoActual.style.display = 'block';
       fotoActual.onload = terminar;
       fotoActual.onerror = terminar;
@@ -139,20 +165,6 @@ btnGirar.addEventListener('click', () => {
   void btnGirar.offsetWidth;
   btnGirar.classList.add('girando');
 });
-
-let toqueInicial = null;
-
-visorFoto.addEventListener('touchstart', (event) => {
-  toqueInicial = event.changedTouches[0].clientX;
-}, { passive: true });
-
-visorFoto.addEventListener('touchend', (event) => {
-  if (toqueInicial === null) return;
-  const desplazamiento = event.changedTouches[0].clientX - toqueInicial;
-  toqueInicial = null;
-  if (Math.abs(desplazamiento) < 45) return;
-  mostrar(desplazamiento > 0 ? actual - 1 : actual + 1);
-}, { passive: true });
 
 document.addEventListener('keydown', (event) => {
   if (!pagina.classList.contains('abierta')) return;
