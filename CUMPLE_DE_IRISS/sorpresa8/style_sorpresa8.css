@@ -409,3 +409,48 @@ body {
   from { opacity: 0.3; transform: scale(0.75) rotate(0deg); }
   to { opacity: 1; transform: scale(1.15) rotate(20deg); }
 }
+
+@media (max-width: 480px) {
+  body {
+    justify-content: flex-start;
+    padding-top: max(64px, env(safe-area-inset-top));
+    padding-bottom: 10px;
+  }
+
+  .saludos {
+    position: relative;
+    gap: 0;
+  }
+
+  .saludos-cinta {
+    position: absolute;
+    z-index: 6;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .conteo-logo {
+    position: absolute;
+    z-index: 7;
+    top: 10px;
+    right: 10px;
+    left: auto;
+    transform: none;
+  }
+
+  .conteo-logo.activo {
+    animation: none;
+  }
+
+  .saludos-marco {
+    width: min(100%, calc((100dvh - 90px) * var(--video-aspect)));
+    max-height: calc(100dvh - 90px);
+  }
+
+  body.video-centrado {
+    justify-content: center;
+    padding-top: max(10px, env(safe-area-inset-top));
+    padding-bottom: 10px;
+  }
+}

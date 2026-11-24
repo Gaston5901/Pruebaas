@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function reproducirHappy() {
     if (!video) return;
     logoCortado = true;
+    document.body.classList.add('video-centrado');
     mostrarSaludos();
     detenerConteo();
     ajustarAspecto(video);
@@ -139,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function reproducir() {
+    document.body.classList.remove('video-centrado');
     mostrarSaludos();
     logoCortado = false;
 
