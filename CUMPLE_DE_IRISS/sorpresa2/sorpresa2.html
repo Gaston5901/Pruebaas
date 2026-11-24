@@ -41,11 +41,13 @@
         <h2 class="visor-titulo">Momentos</h2>
       </div>
 
-      <div class="visor-foto">
+      <div class="visor-foto" id="visorFoto">
         <img id="fotoActual" alt="Momento 1">
+        <video id="videoActual" class="oculto" controls playsinline webkit-playsinline preload="auto" controlsList="nodownload noplaybackrate noremoteplayback"></video>
+        <button class="btn-girar" id="btnGirar" type="button" aria-label="Girar foto" title="Girar foto">⟳</button>
         <div class="visor-loader activo" id="visorLoader">
           <div class="visor-spinner"></div>
-          <span>Cargando imagen...</span>
+          <span>Cargando momento...</span>
         </div>
       </div>
 
@@ -53,7 +55,7 @@
         <button class="flecha flecha-anterior" id="btnAnterior" aria-label="Cambiar momento">
           <span aria-hidden="true">❮</span>
         </button>
-        <span class="contador" id="contador">1/20</span>
+        <span class="contador" id="contador">1/83</span>
         <button class="flecha flecha-siguiente" id="btnSiguiente" aria-label="Cambiar momento">
           <span aria-hidden="true">❯</span>
         </button>
@@ -62,7 +64,7 @@
 
     <main class="momentos-lista">
       <article class="momento-item activo">
-        <span class="momento-num" id="momentoNum">01 / 20</span>
+        <span class="momento-num" id="momentoNum">01 / 83</span>
         <h3 class="momento-titulo" id="momentoTitulo">El comienzo</h3>
         <p class="momento-texto" id="momentoTexto"></p>
       </article>

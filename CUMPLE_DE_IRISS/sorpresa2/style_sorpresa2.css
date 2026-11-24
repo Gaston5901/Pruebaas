@@ -466,7 +466,8 @@ body {
   text-shadow: 0 0 8px var(--rosa);
 }
 
-.visor-foto img {
+.visor-foto img,
+.visor-foto video {
   display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
@@ -476,12 +477,62 @@ body {
     radial-gradient(circle, rgba(228, 195, 106, 0.09), transparent 55%),
     #241106;
   border: 2px solid #b89a5c;
+  transform: rotate(var(--giro, 0deg));
   transition: opacity 0.16s ease, transform 0.22s ease;
 }
 
-.visor-foto img.cambiando {
+.visor-foto video.oculto {
+  display: none;
+}
+
+.visor-foto img.cambiando,
+.visor-foto video.cambiando {
   opacity: 0;
-  transform: scale(0.985);
+  transform: rotate(var(--giro, 0deg)) scale(0.985);
+}
+
+.btn-girar {
+  position: absolute;
+  z-index: 4;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  border: 3px solid var(--negro);
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(rgba(228, 195, 106, 0.08) 0% 25%, transparent 0% 50%) 0 0 / 5px 5px,
+    linear-gradient(145deg, #70452a, #4a2a12 58%, #271307);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 224, 138, 0.24),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.55),
+    0 3px 0 #160a03,
+    0 6px 10px rgba(0, 0, 0, 0.5);
+  color: #ffe9a3;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.1rem;
+  line-height: 34px;
+  text-align: center;
+  text-shadow: 2px 2px 0 var(--negro);
+  cursor: pointer;
+  transition: transform 0.16s ease, filter 0.16s ease;
+}
+
+.btn-girar:hover {
+  filter: brightness(1.16);
+  transform: translateY(-2px);
+}
+
+.btn-girar:active {
+  transform: translateY(3px);
+}
+
+.btn-girar.girando {
+  animation: giroBoton 0.32s ease;
+}
+
+@keyframes giroBoton {
+  to { transform: rotate(360deg); }
 }
 
 .visor-loader {
@@ -684,5 +735,110 @@ body {
     min-height: 0;
     aspect-ratio: 3 / 4.1;
     border: 4px solid var(--negro);
+  }
+}
+
+@media (min-width: 900px) {
+  .surprise-intro-overlay { padding: 24px; }
+
+  .tapa {
+    width: auto;
+    height: min(82dvh, 600px);
+    min-height: 0;
+    max-width: none;
+    aspect-ratio: 3 / 4.1;
+    padding: 3.5%;
+  }
+
+  .tapa-back {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+  }
+
+  .tapa-creado {
+    font-size: 0.5rem;
+  }
+
+  .tapa-marco {
+    gap: clamp(8px, 1.6vh, 16px);
+    padding: 5% 5% 4%;
+  }
+
+  .tapa-amor {
+    font-size: clamp(0.72rem, 1.1vw, 1rem);
+  }
+
+  .tapa-imagen {
+    width: clamp(90px, 9vw, 132px);
+  }
+
+  .tapa-titulo {
+    font-size: clamp(1rem, 1.5vw, 1.4rem);
+    line-height: 1.65;
+  }
+
+  .tapa-sub {
+    font-size: clamp(1.2rem, 1.7vw, 1.6rem);
+  }
+
+  .tapa-level {
+    padding: 6px 10px;
+    font-size: clamp(0.44rem, 0.65vw, 0.62rem);
+  }
+
+  .tapa-pista {
+    margin: 2% 0 4%;
+    padding: 8px 12px;
+    font-size: 0.58rem;
+  }
+
+  .visor-fijo {
+    padding: 8px 16px 10px;
+  }
+
+  .visor-barra {
+    max-width: 560px;
+    margin-bottom: 8px;
+  }
+
+  .visor-foto {
+    max-width: 520px;
+    padding: 6px 6px 14px;
+  }
+
+  .visor-foto img,
+  .visor-foto video {
+    max-height: 48dvh;
+  }
+
+  .visor-controles {
+    max-width: 520px;
+    margin-top: 8px;
+  }
+
+  .flecha {
+    width: 46px;
+    height: 46px;
+    font-size: 1rem;
+    line-height: 38px;
+  }
+
+  .btn-girar {
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    font-size: 0.95rem;
+    line-height: 30px;
+  }
+
+  .momentos-lista {
+    max-width: 760px;
+    padding: 14px 16px 60px;
+  }
+
+  .momento-item {
+    padding: 16px 20px;
   }
 }
