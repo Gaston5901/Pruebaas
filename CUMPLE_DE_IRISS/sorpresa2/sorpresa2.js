@@ -1,5 +1,7 @@
 const textoPrimerMomento = 'Acá empieza todo, y la verdad es que todavía me cuesta poner en palabras lo que sentí ese día. Recuerdo cada detalle como si hubiera sido ayer: la luz, tu voz, esa forma tuya de estar que me desarma sin hacer nada. Nunca imaginé que algo tan simple pudiera quedarse conmigo para siempre, pero desde ese momento entendí que hay cosas que no se explican, se sienten. Me acuerdo de la charla que se nos fue de las manos, de las risas que no podíamos contener y de ese silencio que tampoco hacía falta llenar porque estábamos ahí, nomas. Pensé en vos mil veces después, en cómo me mirabas, en cómo me hacías sentir cómoda sin yo tener que fingir nada. Y cada vez que vuelvo a esto, vuelvo a sentir lo mismo: esa mezcla de nervios, de calma y de ganas de que el tiempo se quede un ratito más. Si hay un punto donde todo empezó a tomar sentido, creo que fue acá, en este momento que hoy se volvió para siempre parte de mi.';
 
+const textoDibujo = 'Este dibujo me mandaste para hacerlo señoritaa y asi quedo: lo hice para vos. Puse cada trazo pensando en vos, y por eso quería que estuviera acá, en nuestros momentos.';
+
 const BASE = 'https://raw.githubusercontent.com/Gaston5901/sorp2/main/img/';
 
 const momentos = Array.from({ length: 86 }, (_, i) => {
@@ -9,8 +11,9 @@ const momentos = Array.from({ length: 86 }, (_, i) => {
     img: BASE + numero + '.' + (esVideo ? 'mp4' : 'png'),
     tipo: esVideo ? 'video' : 'imagen',
     giro: 0,
-    titulo: numero === 1 ? 'El comienzo' : `Momento ${String(numero).padStart(2, '0')}`,
-    texto: numero === 1 ? textoPrimerMomento : 'Acá escribo lo que pasó en este momento.'
+    titulo: numero === 1 ? 'El comienzo' : numero === 4 ? 'Dibujo' : `Momento ${String(numero).padStart(2, '0')}`,
+    texto: numero === 1 ? textoPrimerMomento : numero === 4 ? textoDibujo : 'Acá escribo lo que pasó en este momento.',
+    extra: numero === 4 ? 'dibujo.png' : ''
   };
 });
 
@@ -26,6 +29,7 @@ const contador = document.getElementById('contador');
 const momentoNum = document.getElementById('momentoNum');
 const momentoTitulo = document.getElementById('momentoTitulo');
 const momentoTexto = document.getElementById('momentoTexto');
+const momentoExtra = document.getElementById('momentoExtra');
 const btnAnterior = document.getElementById('btnAnterior');
 const btnSiguiente = document.getElementById('btnSiguiente');
 const btnCerrar = document.querySelector('.btn-back');
@@ -37,18 +41,17 @@ const precargados = new Map();
 
 function iniciarCarga() {
   const token = ++tokenCarga;
-  const inicio = Date.now();
-  visorLoader.classList.add('activo');
+  const spinnerTimer = setTimeout(() => {
+    if (token === tokenCarga) visorLoader.classList.add('activo');
+  }, 180);
 
   return () => {
-    const restante = Math.max(0, 300 - (Date.now() - inicio));
-    setTimeout(() => {
-      if (token !== tokenCarga) return;
-      visorLoader.classList.remove('activo');
-      fotoActual.classList.remove('cambiando');
-      videoActual.classList.remove('cambiando');
-      precargarSiguiente();
-    }, restante);
+    clearTimeout(spinnerTimer);
+    if (token !== tokenCarga) return;
+    visorLoader.classList.remove('activo');
+    fotoActual.classList.remove('cambiando');
+    videoActual.classList.remove('cambiando');
+    precargarSiguiente();
   };
 }
 
@@ -98,6 +101,14 @@ function mostrar(index) {
   momentoNum.textContent = `${String(actual + 1).padStart(2, '0')} / ${momentos.length}`;
   momentoTitulo.textContent = momento.titulo;
   momentoTexto.textContent = momento.texto;
+  if (momento.extra) {
+    momentoExtra.src = momento.extra;
+    momentoExtra.alt = momento.titulo;
+    momentoExtra.hidden = false;
+  } else {
+    momentoExtra.hidden = true;
+    momentoExtra.removeAttribute('src');
+  }
   aplicarGiro();
 
   setTimeout(() => {

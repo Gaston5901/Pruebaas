@@ -711,6 +711,20 @@ body {
   hyphens: auto;
 }
 
+.momento-extra {
+  display: block;
+  width: min(100%, 420px);
+  margin: 16px auto 0;
+  border: 2px solid var(--dorado);
+  border-radius: 12px;
+  background: #241106;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.momento-extra[hidden] {
+  display: none;
+}
+
 @media (max-width: 599px) {
   .momento-item { padding: 16px 14px; border-radius: 14px; }
   .momento-texto { font-size: 1.05rem; line-height: 1.55; }
@@ -718,6 +732,10 @@ body {
 
 @media (max-width: 599px) {
   .tapa { padding: 14% 7% 12%; }
+  .btn-girar {
+    top: 4px;
+    right: 4px;
+  }
 }
 
 @media (min-width: 600px) {
